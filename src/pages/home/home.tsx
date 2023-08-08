@@ -17,7 +17,6 @@ export function Home() {
                     button={'مشاهده'}
                     iconSrc={'/public/img/fav-icon.png'}/>
             </section>
-
             <section>
                 <div className="resumeText">
                 <h2>نمونه کار ها</h2>

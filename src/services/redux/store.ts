@@ -1,11 +1,9 @@
 import { combineReducers } from 'redux';
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from "./reducers/userSlice.ts";
-import tweakReducer from "./reducers/tweakSlice.ts";
 
 const rootReducer = combineReducers({
   userReducer,
-  tweakReducer
 });
 
 const store = configureStore({
