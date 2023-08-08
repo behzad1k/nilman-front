@@ -1,0 +1,213 @@
+@font-face {
+    font-family: "poppins";
+    font-weight: normal;
+    font-display: swap;
+    src: url("../fonts/Poppins-Light.woff") format("woff"),
+    url("../fonts/Poppins-Light.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "poppins";
+    font-weight: bold;
+    font-display: swap;
+    src: url("../fonts/Poppins-Medium.woff") format("woff"),
+    url("../fonts/Poppins-Medium.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "yekan";
+    font-weight: bold;
+    src: url("../fonts/m2.woff") format("woff");
+}
+
+@font-face {
+    font-family: "yekan";
+    font-weight: normal;
+    src: url("../fonts/m1.woff") format("woff");
+}
+
+@font-face {
+    font-family: "vazir";
+    font-weight: bold;
+    src: url("../fonts/Vazir-Bold.woff") format("woff");
+}
+
+@font-face {
+    font-family: "vazir";
+    font-weight: normal;
+    src: url("../fonts/Vazir-Medium.woff") format("woff");
+}
+
+@font-face {
+    font-family: "vazir";
+    font-weight: 300;
+    src: url("../fonts/Vazir-Light.woff") format("woff");
+}
+
+@font-face {
+    font-family: "vazir";
+    font-weight: 150;
+    src: url("../fonts/Vazir-Thin.woff") format("woff");
+}
+
+body{
+    direction: rtl;
+    font-family: vazir, poppins, serif;
+    font-weight: 300;
+}
+:root {
+    --light-pink: rgb(250, 224, 216);
+    --mid-pink: rgb(236, 170, 151);
+    --light-black: rgb(51, 51, 51);
+}
+.header{
+    margin: 0;
+    padding: 0;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+    font-size: 25px;
+    font-family: poppins, serif;
+    color: var(--light-black);
+    /*border-bottom: var(--light-black) 1px solid;*/
+}
+
+/* appBar */
+.appBar{
+    display: flex;
+    width: 100%;
+    height: 60px;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-around;
+    position: fixed;
+    bottom: 0;
+    z-index: 10;
+    background-color: #FFF;
+    border-top: var(--light-black) 1px solid;;
+    /*shadow-bar px-5 py-4 flex gap-2 justify-between fixed bottom-0 inset-x-0 z-10*/
+}
+.appBarIcon{
+    width: 30px;
+    height: 30px;
+    color: var(--light-black);
+}
+
+/* slider component*/
+.sliderContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 5px;
+    font-weight: normal;
+    padding: 10px 10px;
+}
+.sliderCardContainer{
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 5px;
+}
+.sliderCard{
+    width: 40vw;
+    height: 22vh;
+    flex-shrink: 0;
+    border-radius: 15px;
+    overflow: hidden;
+    max-height: 200px;
+    max-width: 200px;
+    background-size: cover;
+    color: #FFF;
+    margin-bottom: 10px;
+}
+.sliderCard span {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    height: 8vh;
+    top: 14vh;
+    padding: 35px 10px;
+    background-image: linear-gradient(360deg, var(--mid-pink), rgba(255,0,0,0))
+}
+.sliderCard i {
+    background: url("../img/svg/searchExtra.svg");
+    color: #FFF;
+    width: 22px;
+    height: 22px;
+    border-radius: 10px;
+    background-size: cover;
+}
+
+/* resume Texts in home*/
+.resumeText {
+    padding: 10px 10px;
+}
+.resumeText h2 {
+    font-size: 16px;
+    font-weight: 400;
+}
+.resumeText p {
+    font-size: 14px;
+    padding-right: 10px;
+}
+/* banners in home */
+.banners {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.bannerCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-width: 500px;
+    max-height: 200px;
+    height: 30vh;
+    width: 95vw;
+    color: #fff;
+    border-radius: 10px;
+    padding: 20px 15px 10px;
+    background: linear-gradient(282deg, rgb(187, 147, 228), rgb(95, 109, 197));
+}
+.bannerCard img {
+    width: 40px;
+    height: 40px;
+}
+.bannerCard h2 {
+    font-weight: 300;
+    font-size: 17px;
+    margin-top: 5px;
+}
+.bannerCard p {
+    font-size: 15px;
+    font-weight: 200;
+}
+.bannerCard button {
+    display: flex;
+    min-width: 100px;
+    width: fit-content;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 4px 10px;
+    background-color: var(--mid-pink);
+    border-radius: 12px;
+}
+.bannerCard button > i {
+    display: block;
+    width: 15px;
+    height: 15px;
+    background: url("../img/svg/arrow.svg");
+
+}
