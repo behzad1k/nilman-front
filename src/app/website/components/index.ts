@@ -8,3 +8,5 @@ export {Header} from './layout/header';
 
 // ** Common
 export {BannerCard} from './BannerCard/BannerCard.tsx';
+export {Slider} from './Slider/Slider.tsx'
+export {ProfilePicture} from './ProfilePicture/ProfilePicture.tsx'

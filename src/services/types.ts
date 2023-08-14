@@ -10,12 +10,24 @@ export interface LoginParams {
   password: string;
 }
 export interface IUserData {
-    displayName: string,
+    name: string,
     username: string,
-    email: string
+    email: string,
+    imageUrl: string
 }
 
 export interface IUserCompact {
     displayName: string,
     username: string
+}
+
+export interface IService {
+  title: string,
+  details: string[],
+  date: string,
+  discount: number,
+  price: number,
+  status?: number,
+  address: string,
+  employee: IUserData
 }

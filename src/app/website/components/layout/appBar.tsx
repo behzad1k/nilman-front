@@ -1,18 +1,24 @@
-import {Link} from 'react-router-dom';
-import {House, User, Clipboard} from '@phosphor-icons/react';
+import {NavLink} from 'react-router-dom';
+import { House, PlusCircle, Clipboard, Newspaper, User } from '@phosphor-icons/react';
 
 export function AppBar() {
   return (
-    <nav className="appBar">
-        <Link to="/search">
-            <User className="appBarIcon" />
-        </Link>
-        <Link to="/">
-            <House className="appBarIcon" />
-        </Link>
-        <Link to="/profile">
+      <nav className="appBar plusHighlight">
+        <NavLink to="/" className={(navData) => (navData.isActive ? 'active' : '')}>
+          <House className="appBarIcon"/>
+        </NavLink>
+        <NavLink to="/orders">
           <Clipboard className="appBarIcon" />
-        </Link>
-    </nav>
+        </NavLink>
+        <NavLink to="/newOrder">
+          <PlusCircle className="appBarIcon"/>
+        </NavLink>
+        <NavLink to="/profile">
+          <Newspaper className="appBarIcon" />
+        </NavLink>
+        <NavLink to="/profile">
+          <User className="appBarIcon" />
+        </NavLink>
+      </nav>
   );
 }

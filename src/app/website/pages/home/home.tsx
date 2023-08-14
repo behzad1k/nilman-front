@@ -1,5 +1,5 @@
-import Slider from '../../components/Slider/Slider.tsx';
-import {BannerCard} from '../../components/BannerCard/BannerCard.tsx';
+import { Slider } from '../../components';
+import { BannerCard } from '../../components';
 
 export default function Home() {
   return (
@@ -9,7 +9,7 @@ export default function Home() {
           title={'اینستاگرام زیب'}
           description={' برای مشاهده نمونه خدمات بیشتر به اینستاگرام زیب مراجعه کنید '}
           button={'مشاهده'}
-          iconSrc={'/public/img/fav-icon.png'}
+          iconSrc={'/public/img/logo.png'}
         />
       </section>
       <section>
@@ -24,6 +24,14 @@ export default function Home() {
         <Slider title={'نمونه کار خدمات ناخن'} />
         <Slider title={'نمونه کار خدمات زیبایی'} />
         <Slider title={'نمونه کار آرایشی'} />
+      </section>
+      <section className="banners">
+        <BannerCard
+            title={'اینستاگرام زیب'}
+            description={' برای مشاهده نمونه خدمات بیشتر به اینستاگرام زیب مراجعه کنید '}
+            button={'مشاهده'}
+            iconSrc={'/public/img/logo.png'}
+        />
       </section>
     </main>
   );
