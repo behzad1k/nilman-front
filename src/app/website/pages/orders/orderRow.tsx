@@ -18,8 +18,8 @@ const orderItem = ({service}:IProps) => {
             {service.details?.length > 0 &&
             <span className="orderItem">
               <Article/>
-              {service.details.map((value) =>
-                  <p>{value}</p>
+              {service.details.map((value,index) =>
+                  <p key={index}>{value}</p>
               )}
             </span>
             }

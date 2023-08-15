@@ -3,9 +3,9 @@ import Layout from './layout';
 import Home from './pages/home/home';
 import Login from './pages/login/login';
 import Register from './pages/register/register';
-// import NotFound from './pages/notFound/notFound';
 import NewOrder from "./pages/newOrder/newOrder.tsx";
 import Orders from "./pages/orders/orders.tsx";
+import Profile from "./pages/profile/profile.tsx";
 
 export default function Website() {
   return (
@@ -26,6 +26,11 @@ export default function Website() {
       <Route path="/orders" element={
           <Layout>
             <Orders/>
+          </Layout>
+      }/>
+      <Route path="/profile" element={
+          <Layout>
+            <Profile/>
           </Layout>
       }/>
       <Route path="/login" element={<Login />} />
