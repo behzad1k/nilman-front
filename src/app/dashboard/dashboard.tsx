@@ -1,15 +1,15 @@
 import {Routes, Route} from 'react-router-dom';
 import Layout from './layout';
 import Home from './pages/home/home';
-import Login from './pages/login/login';
 import NewService from './pages/newService/newService';
 import Users from './pages/users/users';
+import Orders from './pages/orders/orders';
 
 export default function Dashboard() {
   return (
     <Routes>
       <Route
-        path="/dashboard/"
+        path="/dashboard"
         element={
           <Layout>
             <Home />
@@ -32,8 +32,14 @@ export default function Dashboard() {
           </Layout>
         }
       />
-
-      <Route path="/dashboard/login" element={<Login />} />
+      <Route
+        path="/dashboard/orders"
+        element={
+          <Layout>
+            <Orders />
+          </Layout>
+        }
+      />
     </Routes>
   );
 }
