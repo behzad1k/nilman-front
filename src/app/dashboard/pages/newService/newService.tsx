@@ -1,16 +1,16 @@
 import {Box, Button, Typography} from '@mui/material';
-import {useForm} from 'react-hook-form';
+import {useForm, FieldValues} from 'react-hook-form';
 import TextInput from '../../components/textInput';
 
-type Data = {
-  title: string;
-  file: FileList;
-};
+// type Data = {
+//   title: string;
+//   file: FileList;
+// };
 
 export default function NewService() {
   const {register, handleSubmit, control} = useForm();
 
-  const onSubmit = (data: Data) => {
+  const onSubmit = (data: FieldValues) => {
     console.log(data);
     const formData = new FormData();
     formData.append('file', data.file[0]);

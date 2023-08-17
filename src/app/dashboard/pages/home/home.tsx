@@ -1,5 +1,4 @@
 import {Paper, Card, Typography, Container, Box} from '@mui/material';
-import {theme} from '../../theme';
 
 export default function Home() {
   return (
