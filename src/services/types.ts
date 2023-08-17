@@ -31,3 +31,8 @@ export interface IService {
   address: string,
   employee: IUserData
 }
+
+export interface ISliderCardInfo {
+  title: string,
+  imgSrc: string
+}

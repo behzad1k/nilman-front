@@ -1,7 +1,6 @@
 // import {Input} from '@/components/';
 import {Link} from 'react-router-dom';
 // import {login} from '@/services/authService';
-import Logo from '@/images/logo.png';
 
 export default function Login() {
   // const handleSubmit = async (event: React.FormEvent) => {
@@ -16,7 +15,6 @@ export default function Login() {
 
   return (
     <main className="flex flex-col items-center justify-center">
-      <img src={Logo} className="w-56" />
       <h1 className="text-3xl text-white">Login</h1>
       <form className="flex flex-col gap-4 py-6 px-4">
         {/* <Input

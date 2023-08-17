@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, FormControl, InputLabel, MenuItem, Select, Table } from "@mui/material";
+import { formatPrice } from "../../../../utils/utils.ts";
 import { Input } from "../../components";
 
 export default function NewOrder(){
@@ -86,19 +87,19 @@ export default function NewOrder(){
             <tbody>
             <tr>
               <td>قیمت سرویس</td>
-              <td> 300,000 تومان</td>
+              <td> {formatPrice(300000)} تومان</td>
             </tr>
             <tr>
               <td>قیمت طرح دار</td>
-              <td> 20,000 تومان</td>
+              <td> {formatPrice(300000)}  تومان</td>
             </tr>
             <tr>
               <td>ایاب ذهاب</td>
-              <td> 90,000 تومان</td>
+              <td> {formatPrice(300000)} تومان</td>
             </tr>
             <tr>
               <td>جمع کل</td>
-              <td> 410,000 تومان</td>
+              <td> {formatPrice(300000)} تومان</td>
             </tr>
             </tbody>
           </table>

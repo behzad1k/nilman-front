@@ -86,7 +86,7 @@ s{
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: 800;
+  font-weight: 700;
   font-size: 22px;
   font-family: poppins, serif;
   color: var(--light-black);
@@ -258,6 +258,21 @@ main{
 }
 
 /*
+  ------------------------------------------------------max page---------------------------------------------------------
+*/
+.magMain{
+  padding: 20px 20px;
+  background-color: var(--light-pink);
+}
+.magCategories{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/*
   -----------------------------------------------------profile page------------------------------------------------------
 */
 
@@ -314,13 +329,6 @@ main{
   width: 100%;
   height: 100%;
 }
-
-
-
-
-
-
-
 
 .profileMain .infoBox{
   width: 100%;
@@ -426,9 +434,8 @@ main{
   color: #fff;
   border-radius: 10px;
   padding: 20px 15px 10px;
-  background: linear-gradient(282deg, rgb(187, 147, 228), rgb(95, 109, 197));
 }
-.bannerCard img {
+.bannerCard svg {
   width: 40px;
   height: 40px;
 }
@@ -442,6 +449,7 @@ main{
   font-weight: 200;
 }
 .bannerCard button {
+  color: #000;
   display: flex;
   min-width: 100px;
   width: fit-content;
@@ -515,9 +523,5 @@ main{
   background-color: var(--light-grey);
   width: 85%;
   outline: none;
-}
-
-.iconInput > input:disabled{
-  background-color: var(--light-grey);
   color: black;
 }

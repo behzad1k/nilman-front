@@ -17,6 +17,7 @@ function App() {
     key: 'muirtl',
     stylisPlugins: [prefixer, rtlPlugin],
   });
+
   return (
     <Provider store={store}>
       <CacheProvider value={cacheRtl}>

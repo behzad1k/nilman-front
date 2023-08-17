@@ -80,7 +80,7 @@ export function ProfileCard() {
             </span>
           </div>
           <div className="profileCardPicture">
-            <ProfilePicture imgSrc={'./src/assets/img/girl.png'}/>
+            <ProfilePicture imgSrc={'/img/girl.png'}/>
           </div>
         </div>
       </section>  );

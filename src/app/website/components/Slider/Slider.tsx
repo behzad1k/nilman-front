@@ -1,18 +1,26 @@
+import { ReactElement } from "react";
+import { ISliderCardInfo } from "../../../../services/types.ts";
 import SliderCard from "./SliderCard.tsx";
 
 type IProps = {
-    title?: string
+  title:string,
+  cardInfos: ISliderCardInfo[]
 }
-export function Slider({title}: IProps) {
+export function Slider({title,cardInfos}: IProps) {
+  const renderSliderCards = () => {
+    const rows: ReactElement[] = []
+    cardInfos.map((value: ISliderCardInfo) => {
+      rows.push(
+          <SliderCard imgSrc={value.imgSrc} title={value.title}/>
+      )
+    })
+    return rows;
+  }
     return(
         <div className="sliderContainer">
             <h4>{title}</h4>
             <div className="sliderCardContainer">
-                <SliderCard imgSrc='../../public/img/img1.jpg'/>
-                <SliderCard imgSrc='../../public/img/img2.jpg'/>
-                <SliderCard imgSrc='../../public/img/img3.jpg'/>
-                <SliderCard imgSrc='../../public/img/img4.jpg'/>
-                <SliderCard imgSrc='../../public/img/img5.jpg'/>
+              {renderSliderCards()}
             </div>
         </div>
     )

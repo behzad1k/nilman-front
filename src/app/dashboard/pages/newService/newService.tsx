@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom';
 
 export default function NewService() {
   const {register, handleSubmit, reset, control, setValue} = useForm();
-
+  // @ts-ignore
   const onSubmit = (data) => {
     console.log(data);
     const formData = new FormData();

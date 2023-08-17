@@ -1,11 +1,10 @@
-type IProps = {
-    imgSrc: string,
-}
-export default function SliderCard({imgSrc}: IProps) {
+import { ISliderCardInfo } from "../../../../services/types.ts";
+
+export default function SliderCard({imgSrc,title}: ISliderCardInfo) {
     return(
         <div className="sliderCard" style={{backgroundImage: `url(${imgSrc})`}}>
             <span>
-                <p>ناخن خوب</p>
+                <p>{title}</p>
                 <i></i>
             </span>
 

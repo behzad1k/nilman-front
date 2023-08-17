@@ -20,7 +20,7 @@ export function AddressRow() {
         </div>
         <div className="addressMap">
           <span>
-            <img src='./src/assets/img/map.png' />
+            <img src='/img/map.png' />
           </span>
         </div>
       </article>

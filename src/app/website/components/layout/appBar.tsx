@@ -13,7 +13,7 @@ export function AppBar() {
         <NavLink to="/newOrder">
           <PlusCircle className="appBarIcon"/>
         </NavLink>
-        <NavLink to="/profile">
+        <NavLink to="/mag">
           <Newspaper className="appBarIcon" />
         </NavLink>
         <NavLink to="/profile">

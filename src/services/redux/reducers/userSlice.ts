@@ -9,9 +9,11 @@ interface IUserSlice {
 
 const initialState: IUserSlice = {
   data: {
-    displayName: '',
+    name: '',
     username: '',
     email: '',
+    imageUrl: ''
+
   },
   token: '',
 };

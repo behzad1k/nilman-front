@@ -17,7 +17,7 @@ export default function Orders() {
       name: "آیدا شهابی",
       username: "aida",
       email: "aida@gmail.co m",
-      imageUrl: "./src/assets/img/girl.png"
+      imageUrl: "/img/girl.png"
     },
   }
   return (
