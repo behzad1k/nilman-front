@@ -1,32 +1,22 @@
 import {useState} from 'react';
-import {Link} from 'react-router-dom';
+
+import {Theme} from '../theme';
+
 import {
   AppBar,
-  Box,
   Toolbar,
   Typography,
   IconButton,
   MenuItem,
   Menu,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Fab,
-  Divider,
+  Box,
 } from '@mui/material';
-import {
-  AccountCircle,
-  Menu as MenuIcon,
-  People,
-  Category,
-  Assignment,
-  Close,
-} from '@mui/icons-material';
 
-export default function Header() {
+import {AccountCircle, Menu as MenuIcon} from '@mui/icons-material';
+
+import Drawer from './drawer';
+
+export default function Header({drawerWidth}: {drawerWidth: number}) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -38,34 +28,25 @@ export default function Header() {
     setAnchorEl(null);
   };
 
-  const listItems = [
-    {
-      icon: <People />,
-      text: 'کاربران',
-      link: '/users',
-    },
-    {
-      icon: <Assignment />,
-      text: 'سفارش ها',
-      link: '/orders',
-    },
-    {
-      icon: <Category />,
-      text: 'خدمات',
-      link: '/services',
-    },
-  ];
-
   return (
-    <Box sx={{flexGrow: 1}}>
-      <AppBar position="static">
+    <>
+      <AppBar
+        elevation={1}
+        position="relative"
+        sx={{
+          backgroundColor: {xs: Theme.palette.primary.main, md: 'white'},
+          width: {md: `calc(100% - ${drawerWidth}px)`},
+          ml: {md: `${drawerWidth}px`},
+          color: {xs: 'white', md: Theme.palette.primary.main},
+        }}
+      >
         <Toolbar>
           <IconButton
             size="large"
             edge="start"
             color="inherit"
             aria-label="menu"
-            sx={{mr: 2}}
+            sx={{mr: 2, display: {xs: 'block', md: 'none'}}}
             onClick={() => setDrawerOpen(true)}
           >
             <MenuIcon />
@@ -74,7 +55,7 @@ export default function Header() {
             زیبا آنلاین
           </Typography>
 
-          <div>
+          <Box>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -95,38 +76,10 @@ export default function Header() {
               <MenuItem onClick={handleClose}>پروفایل</MenuItem>
               <MenuItem onClick={handleClose}>خروج</MenuItem>
             </Menu>
-          </div>
+          </Box>
         </Toolbar>
       </AppBar>
-      <Drawer
-        sx={{[`& .MuiDrawer-paper`]: {width: '70%', maxWidth: '300px'}}}
-        anchor="left"
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-      >
-        <Fab
-          color="primary"
-          size="small"
-          aria-label="close"
-          sx={{margin: 2}}
-          onClick={() => setDrawerOpen(false)}
-        >
-          <Close />
-        </Fab>
-        <Divider />
-        <List>
-          {listItems.map((item, index) => (
-            <Link key={index} to={item.link}>
-              <ListItem disablePadding>
-                <ListItemButton sx={{display: 'flex', gap: 2, alignItems: 'center'}}>
-                  <ListItemIcon sx={{minWidth: 'unset'}}>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.text} />
-                </ListItemButton>
-              </ListItem>
-            </Link>
-          ))}
-        </List>
-      </Drawer>
-    </Box>
+      <Drawer open={drawerOpen} setOpen={setDrawerOpen} width={drawerWidth} />
+    </>
   );
 }
