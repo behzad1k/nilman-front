@@ -9,7 +9,7 @@ export default function Dashboard() {
   return (
     <Routes>
       <Route
-        path="/dashboard"
+        path="/"
         element={
           <Layout>
             <Home />
@@ -17,7 +17,7 @@ export default function Dashboard() {
         }
       />
       <Route
-        path="/dashboard/new-service"
+        path="/new-service"
         element={
           <Layout>
             <NewService />
@@ -25,7 +25,7 @@ export default function Dashboard() {
         }
       />
       <Route
-        path="/dashboard/users"
+        path="/users"
         element={
           <Layout>
             <Users />
@@ -33,7 +33,7 @@ export default function Dashboard() {
         }
       />
       <Route
-        path="/dashboard/orders"
+        path="/orders"
         element={
           <Layout>
             <Orders />

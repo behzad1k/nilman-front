@@ -75,11 +75,16 @@ a {
   --white-pink: rgba(248, 243, 243, 0.74);
   --light-grey: rgba(224, 222, 222, 1);
 }
-s{
+
+img {
+  width: 100%;
+  height: 100%;
+}
+s {
   color: #f16969;
 }
 .header {
-  background-color: #FFF;
+  background-color: #fff;
   width: 100%;
   padding: 0;
   height: 50px;
@@ -95,16 +100,16 @@ s{
 }
 
 .header a {
-  margin: 7px 0  0 7px;
+  margin: 7px 0 0 7px;
 }
 
-.header span{
+.header span {
   width: 40px;
   height: 40px;
 }
 
-main{
-  padding: 0 5px 70px;
+main {
+  /* padding: 0 5px 70px; */
 }
 /* appBar */
 .appBar {
@@ -131,7 +136,6 @@ main{
   color: var(--light-black);
 }
 
-
 /*
   ------------------------------------------------------pages---------------------------------------------------------
 
@@ -149,7 +153,7 @@ main{
   padding-right: 10px;
 }
 /* newOrder page */
-.newOrderMain{
+.newOrderMain {
   display: flex;
   padding: 0 20px 70px;
   flex-direction: column;
@@ -157,59 +161,59 @@ main{
   align-items: center;
 }
 
-.orderForm{
+.orderForm {
   margin: 10px 0 20px;
   display: flex;
   flex-direction: column;
   width: 100%;
   max-width: 600px;
-  gap: 20px
+  gap: 20px;
 }
-.orderForm > *{
-    width: 100%;
+.orderForm > * {
+  width: 100%;
 }
 
-.orderSelect{
+.orderSelect {
   border: 1px solid var(--mid-pink) !important;
 }
-.table{
+.table {
   border-collapse: collapse;
   padding: 40px 20px;
 }
-.discount{
+.discount {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
 }
-.discountButton{
+.discountButton {
   background-color: var(--mid-pink) !important;
   width: 20%;
   text-decoration: none !important;
   font-size: 18px !important;
-  color: #FFF !important;
+  color: #fff !important;
   height: 50px;
 }
-.discountInput{
+.discountInput {
   border: 1px solid var(--mid-pink);
   padding: 10px;
   width: 75%;
   border-radius: 10px;
   background-color: var(--white-pink);
 }
-.table tr{
+.table tr {
   border-bottom: 1px solid black;
 }
-.table td{
+.table td {
   padding: 10px 20px 0;
 }
-.table tbody tr:last-child{
+.table tbody tr:last-child {
   border-bottom: 0;
 }
 
 /* orders page */
 
-.ordersMain{
+.ordersMain {
   padding: 0 20px 70px;
 }
 
@@ -220,21 +224,21 @@ main{
   align-items: flex-start;
   justify-content: space-between;
 }
-.infoBox.orderRow{
+.infoBox.orderRow {
   padding-top: 5px;
   align-items: center;
 }
-.orderItem{
+.orderItem {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   gap: 7px;
 }
-.orderItem > svg{
+.orderItem > svg {
   min-width: 20px;
   min-height: 20px;
 }
-.orderRow > div{
+.orderRow > div {
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -260,11 +264,11 @@ main{
 /*
   ------------------------------------------------------max page---------------------------------------------------------
 */
-.magMain{
+.magMain {
   padding: 20px 20px;
   background-color: var(--light-pink);
 }
-.magCategories{
+.magCategories {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -276,7 +280,7 @@ main{
   -----------------------------------------------------profile page------------------------------------------------------
 */
 
-.profileMain{
+.profileMain {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -285,7 +289,7 @@ main{
   padding: 10px 20px 70px;
 }
 
-.addressSection{
+.addressSection {
   display: flex;
   width: 100%;
   max-width: 600px;
@@ -294,7 +298,7 @@ main{
   justify-content: space-between;
   /*align-items: center;*/
 }
-.addressContainer{
+.addressContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -302,7 +306,7 @@ main{
   border-radius: 12px;
   padding: 10px 10px;
 }
-.addressDetails{
+.addressDetails {
   padding-right: 10px;
   width: 50%;
   display: flex;
@@ -311,7 +315,7 @@ main{
   flex-direction: column;
   align-self: stretch;
 }
-.addressMap{
+.addressMap {
   width: 40%;
   display: flex;
   align-items: center;
@@ -323,14 +327,14 @@ main{
   align-items: center;
   justify-content: center;
 }
-.addressMap > span img{
+.addressMap > span img {
   border-radius: 12px;
 
   width: 100%;
   height: 100%;
 }
 
-.profileMain .infoBox{
+.profileMain .infoBox {
   width: 100%;
   height: auto;
   max-width: 600px;
@@ -339,22 +343,22 @@ main{
   align-items: flex-start;
   background-color: var(--light-pink);
 }
-.profileMain .infoBox h4{
+.profileMain .infoBox h4 {
   margin-right: 50px;
 }
-.profileCardContainer{
+.profileCardContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.profileCardDetails{
+.profileCardDetails {
   width: 50%;
   display: flex;
   justify-content: space-evenly;
   flex-direction: column;
   align-self: stretch;
 }
-.profileCardPicture{
+.profileCardPicture {
   width: 40%;
   display: flex;
   align-items: center;
@@ -482,13 +486,13 @@ main{
   background-color: var(--white-pink);
   box-shadow: 2px 2px 5px grey;
 }
-.infoBox h2{
+.infoBox h2 {
   padding-bottom: 10px;
 }
 
 /* profile picture component*/
 
-.profilePicture{
+.profilePicture {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -496,14 +500,14 @@ main{
   width: 100%;
   height: 100%;
 }
-.profilePicture img{
+.profilePicture img {
   max-width: 100%;
   max-height: 100%;
 }
 
 /* icon input component */
 
-.iconInput{
+.iconInput {
   border: 0;
   border-radius: 12px;
   box-shadow: 2px 2px 5px #d3d1d1;
@@ -517,11 +521,29 @@ main{
   width: 100%;
 }
 
-.iconInput > input{
+.iconInput > input {
   border: 0;
   border-radius: 12px;
   background-color: var(--light-grey);
   width: 85%;
   outline: none;
   color: black;
+}
+
+/* articles page */
+.categories-swiper {
+  width: 100%;
+}
+.swiper-wrapper {
+}
+.categories-swiper .swiper-slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 95px;
+}
+.categories-swiper .swiper-slide > img {
+  width: 95px;
+  height: 118px;
 }

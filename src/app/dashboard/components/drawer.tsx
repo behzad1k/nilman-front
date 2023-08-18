@@ -9,7 +9,7 @@ import {
 
 import {People, Assignment, Category} from '@mui/icons-material';
 
-import {Theme} from '../theme';
+import {theme} from '../../../mui';
 
 import {Link} from 'react-router-dom';
 
@@ -27,7 +27,7 @@ const listItems = [
   {
     icon: <Category />,
     text: 'خدمات',
-    link: '/dashboard/services',
+    link: '/dashboard/new-service',
   },
 ];
 
@@ -70,7 +70,7 @@ export default function Drawer({open, setOpen, width}: Props) {
         sx={{
           display: {xs: 'block', md: 'none'},
           '& .MuiDrawer-paper': {width: `${width}px`},
-          '& .MuiPaper-root': {backgroundColor: Theme.palette.primary.main},
+          '& .MuiPaper-root': {backgroundColor: theme.palette.primary.main},
         }}
       >
         {drawer}
@@ -81,7 +81,7 @@ export default function Drawer({open, setOpen, width}: Props) {
         sx={{
           display: {xs: 'none', md: 'block'},
           '& .MuiDrawer-paper': {width: `${width}px`},
-          '& .MuiPaper-root': {backgroundColor: Theme.palette.primary.main},
+          '& .MuiPaper-root': {backgroundColor: theme.palette.primary.main},
         }}
       >
         {drawer}
