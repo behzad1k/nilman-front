@@ -27,7 +27,7 @@ const listItems = [
   {
     icon: <Category />,
     text: 'خدمات',
-    link: '/dashboard/services',
+    link: '/dashboard/new-service',
   },
 ];
 
