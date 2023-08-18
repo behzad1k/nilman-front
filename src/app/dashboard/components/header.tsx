@@ -1,6 +1,6 @@
 import {useState} from 'react';
 
-import {Theme} from '../theme';
+import {theme} from '../../../mui';
 
 import {
   AppBar,
@@ -34,10 +34,10 @@ export default function Header({drawerWidth}: {drawerWidth: number}) {
         elevation={1}
         position="relative"
         sx={{
-          backgroundColor: {xs: Theme.palette.primary.main, md: 'white'},
+          backgroundColor: {xs: theme.palette.primary.main, md: 'white'},
           width: {md: `calc(100% - ${drawerWidth}px)`},
           ml: {md: `${drawerWidth}px`},
-          color: {xs: 'white', md: Theme.palette.primary.main},
+          color: {xs: 'white', md: theme.palette.primary.main},
         }}
       >
         <Toolbar>

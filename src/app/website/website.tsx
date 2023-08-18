@@ -1,22 +1,22 @@
-import { useEffect } from "react";
+import {useEffect} from 'react';
 import {Routes, Route} from 'react-router-dom';
-import { initialApis } from "../../services/apis/global.ts";
-import { AppDispatch, useAppDispatch } from "../../services/redux/store.ts";
-import { AppBar } from "./components";
+import {initialApis} from '../../services/apis/global.ts';
+import {AppDispatch, useAppDispatch} from '../../services/redux/store.ts';
+import {AppBar} from './components';
 import Layout from './layout';
 import Home from './pages/home/home';
 import Login from './pages/login/login';
-import { Mag } from "./pages/mag/mag.tsx";
+import Mag from './pages/mag/mag.tsx';
 import Register from './pages/register/register';
-import NewOrder from "./pages/newOrder/newOrder.tsx";
-import Orders from "./pages/orders/orders.tsx";
-import Profile from "./pages/profile/profile.tsx";
+import NewOrder from './pages/newOrder/newOrder.tsx';
+import Orders from './pages/orders/orders.tsx';
+import Profile from './pages/profile/profile.tsx';
 
 export default function Website() {
-  const dispatch: AppDispatch = useAppDispatch()
+  const dispatch: AppDispatch = useAppDispatch();
 
   useEffect(() => {
-    initialApis(dispatch)
+    initialApis(dispatch);
   }, []);
   return (
     <Routes>
@@ -28,27 +28,40 @@ export default function Website() {
           </Layout>
         }
       />
-      <Route path="/orders" element={
-        <Layout>
-          <Orders/>
-        </Layout>
-      }/>
-      <Route path="/newOrder" element={
+      <Route
+        path="/orders"
+        element={
           <Layout>
-            <NewOrder/>
+            <Orders />
           </Layout>
-      }/>
-      <Route path="/mag" element={
-        <>
-          <Mag/>
-          <AppBar/>
-        </>
-      }/>
-      <Route path="/profile" element={
+        }
+      />
+      <Route
+        path="/newOrder"
+        element={
           <Layout>
-            <Profile/>
+            <NewOrder />
           </Layout>
-      }/>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <Layout>
+            <Profile />
+          </Layout>
+        }
+      />
+      <Route
+        path="/mag"
+        element={
+          <>
+            <Layout>
+              <Mag />
+            </Layout>
+          </>
+        }
+      />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 

@@ -15,19 +15,19 @@
     "jsx": "react-jsx",
 
     /* Linting */
-    "strict": true,
-//    "noUnusedLocals": true,
-//    "noUnusedParameters": true,
-//    "noFallthroughCasesInSwitch": true
+    "strict": true
+    //    "noUnusedLocals": true,
+    //    "noUnusedParameters": true,
+    //    "noFallthroughCasesInSwitch": true
   },
   "baseUrl": ".",
   "paths": {
-    "@/images/*": ["src/assets/*"],
+    "@/images/*": ["src/assets/img/*"],
     "@/components/*": ["src/components/*"],
     "@/hooks/*": ["src/hooks/*"],
     "@/pages/*": ["src/pages/*"],
     "@/services/*": ["src/services/*"]
   },
   "include": ["src", "src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules"]
 }

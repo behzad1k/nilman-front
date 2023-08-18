@@ -1,11 +1,16 @@
+import {Box} from '@mui/material';
 import {Header, AppBar} from './components';
 
 export default function Layout({children}: {children: React.ReactNode}) {
   return (
     <>
-      <Header />
-      {children}
-      <AppBar />
+      <Box sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
+        <Header />
+        <Box component="main" flexGrow={1} pb="60px">
+          {children}
+          <AppBar />
+        </Box>
+      </Box>
     </>
   );
 }
