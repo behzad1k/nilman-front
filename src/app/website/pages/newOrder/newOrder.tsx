@@ -4,6 +4,8 @@ import {formatPrice} from '../../../../utils/utils.ts';
 import {Input} from '../../components';
 // @ts-nocheck
 // @ts-ignore
+import moment from 'moment-jalali';
+// @ts-ignore
 import {DatePicker} from 'react-persian-datepicker';
 
 const styles = {
@@ -22,6 +24,9 @@ const styles = {
 export default function NewOrder() {
   const [hasAttributes, setHasAttribute] = useState(false);
   const [date, setDate] = useState();
+  const curDate = new Date();
+  const minDate = curDate.setDate(curDate.getDate() - 1);
+  const defaultDate = moment(new Date());
 
   useEffect(() => {
     console.log(date);
@@ -103,11 +108,11 @@ export default function NewOrder() {
         <div className="app-date-picker">
           <DatePicker
             value={date}
-            min={new Date()}
+            min={minDate}
             calendarStyles={styles}
             // @ts-ignore
             onChange={(value) => setDate(value)}
-            defaultValue={date}
+            defaultValue={defaultDate}
           />
           <FormControl fullWidth>
             <InputLabel id="time">ساعت</InputLabel>
@@ -122,7 +127,6 @@ export default function NewOrder() {
                   borderRadius: '10px',
                 },
               }}
-              // onChange={() => setHasAttribute(true)}
             >
               <MenuItem value={10}>۸-۱۰</MenuItem>
               <MenuItem value={20}>۱۰-۱۲</MenuItem>
