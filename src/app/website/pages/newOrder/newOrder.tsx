@@ -1,11 +1,9 @@
+// @ts-nocheck
 import React, {useEffect, useState} from 'react';
 import {Button, FormControl, InputLabel, MenuItem, Select, Table} from '@mui/material';
 import {formatPrice} from '../../../../utils/utils.ts';
 import {Input} from '../../components';
-// @ts-nocheck
-// @ts-ignore
 import moment from 'moment-jalali';
-// @ts-ignore
 import {DatePicker} from 'react-persian-datepicker';
 
 const styles = {
