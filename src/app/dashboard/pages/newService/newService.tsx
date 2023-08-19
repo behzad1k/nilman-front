@@ -1,11 +1,6 @@
 import {Box, Button, Typography} from '@mui/material';
 import {useForm, FieldValues} from 'react-hook-form';
-import TextInput from '../../components/textInput';
-
-// type Data = {
-//   title: string;
-//   file: FileList;
-// };
+import {TextInput} from '../../../../components';
 
 export default function NewService() {
   const {register, handleSubmit, control} = useForm();

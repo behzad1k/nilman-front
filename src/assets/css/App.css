@@ -75,6 +75,7 @@ a {
   --white-pink: rgba(248, 243, 243, 0.74);
   --light-grey: rgba(224, 222, 222, 1);
   --white-pink-opacity: rgba(236, 170, 151, 0.5);
+  --dashboard-dark: #3f4d67;
 }
 
 img {

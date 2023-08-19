@@ -1,8 +1,8 @@
 import {useState} from 'react';
 
-import Modal from '../../components/modal';
+import {Modal} from '../../../../components';
 
-import TextInput from '../../components/textInput';
+import {TextInput} from '../../../../components';
 
 import {
   Typography,

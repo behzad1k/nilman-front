@@ -1,8 +1,7 @@
 // @ts-nocheck
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Button, FormControl, InputLabel, MenuItem, Select, Table} from '@mui/material';
 import {formatPrice} from '../../../../utils/utils.ts';
-import {Input} from '../../components';
 import moment from 'moment-jalali';
 import {DatePicker} from 'react-persian-datepicker';
 

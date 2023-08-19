@@ -1,8 +1,8 @@
 import {useState} from 'react';
 
-import Modal from '../../components/modal';
-import OrdersTable from '../../components/OrdersTable';
-import OrdersModalContent from '../../components/OrdersModalContent';
+import {Modal} from '../../../../components';
+import {OrdersTable} from '../../../../components';
+import {OrdersModalContent} from '../../../../components';
 
 import {Typography, Paper, Tab, Tabs} from '@mui/material';
 

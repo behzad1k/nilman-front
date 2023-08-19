@@ -9,7 +9,7 @@ interface Props extends StandardTextFieldProps {
   defaultValue: string | number;
 }
 
-export default function TextInput({name, label, control, defaultValue, ...props}: Props) {
+export function TextInput({name, label, control, defaultValue, ...props}: Props) {
   return (
     <Controller
       name={name}

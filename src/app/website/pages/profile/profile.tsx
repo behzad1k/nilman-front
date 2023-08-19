@@ -1,13 +1,12 @@
-import { ProfileCard } from "./profileCard.tsx";
-import { Addresses } from "./Addresses.tsx";
-import React from "react";
+import {ProfileCard} from './profileCard.tsx';
+import {Addresses} from './Addresses.tsx';
 
 export default function Profile() {
   return (
-      <main className="profileMain">
-        <ProfileCard/>
-        <h3>آدرس ها</h3>
-        <Addresses/>
-      </main>
+    <main className="profileMain">
+      <ProfileCard />
+      <h3>آدرس ها</h3>
+      <Addresses />
+    </main>
   );
 }

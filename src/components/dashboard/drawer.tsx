@@ -9,8 +9,6 @@ import {
 
 import {People, Assignment, Category} from '@mui/icons-material';
 
-import {theme} from '../../../mui';
-
 import {Link} from 'react-router-dom';
 
 const listItems = [
@@ -37,7 +35,7 @@ type Props = {
   width: number;
 };
 
-export default function Drawer({open, setOpen, width}: Props) {
+export function Drawer({open, setOpen, width}: Props) {
   const drawer = (
     <nav>
       <List>
@@ -70,7 +68,7 @@ export default function Drawer({open, setOpen, width}: Props) {
         sx={{
           display: {xs: 'block', md: 'none'},
           '& .MuiDrawer-paper': {width: `${width}px`},
-          '& .MuiPaper-root': {backgroundColor: theme.palette.primary.main},
+          '& .MuiPaper-root': {backgroundColor: 'var(--dashboard-dark)'},
         }}
       >
         {drawer}
@@ -81,7 +79,7 @@ export default function Drawer({open, setOpen, width}: Props) {
         sx={{
           display: {xs: 'none', md: 'block'},
           '& .MuiDrawer-paper': {width: `${width}px`},
-          '& .MuiPaper-root': {backgroundColor: theme.palette.primary.main},
+          '& .MuiPaper-root': {backgroundColor: 'var(--dashboard-dark)'},
         }}
       >
         {drawer}

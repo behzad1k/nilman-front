@@ -13,13 +13,7 @@ type Props = {
   options: option[];
 };
 
-export default function SelectInput({
-  name,
-  label,
-  control,
-  defaultValue,
-  options,
-}: Props) {
+export function SelectInput({name, label, control, defaultValue, options}: Props) {
   return (
     <FormControl>
       <InputLabel>{label}</InputLabel>

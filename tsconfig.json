@@ -22,12 +22,8 @@
   },
   "baseUrl": ".",
   "paths": {
-    "@/images/*": ["src/assets/img/*"],
-    "@/components/*": ["src/components/*"],
-    "@/hooks/*": ["src/hooks/*"],
-    "@/pages/*": ["src/pages/*"],
-    "@/services/*": ["src/services/*"]
+    "@/*": ["./src/*"]
   },
-  "include": ["src", "src/**/*.ts", "src/**/*.tsx"],
+  "include": ["src"],
   "exclude": ["node_modules"]
 }

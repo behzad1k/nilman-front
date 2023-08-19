@@ -57,7 +57,7 @@ type Props = {
   setEditData: (val: Data) => void;
 };
 
-export default function OrdersTable({rows, setOpenModal, setEditData}: Props) {
+export function OrdersTable({rows, setOpenModal, setEditData}: Props) {
   const [page, setPage] = useState(0);
   const rowsPerPage = 10;
 
