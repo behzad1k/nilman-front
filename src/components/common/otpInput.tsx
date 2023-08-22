@@ -8,7 +8,6 @@ interface Props extends MuiOtpInputProps {
 
 export function OtpInput({name, control, ...props}: Props) {
   const validateChar = (value: string, index: number) => {
-    console.log(value, index);
     return value !== '' && !isNaN(Number(value));
   };
 
@@ -19,7 +18,7 @@ export function OtpInput({name, control, ...props}: Props) {
       render={({field, fieldState}) => (
         <MuiOtpInput
           {...field}
-          length={4}
+          length={6}
           dir="ltr"
           autoFocus
           TextFieldsProps={{placeholder: '-'}}

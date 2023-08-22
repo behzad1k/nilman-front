@@ -5,23 +5,53 @@ import {Typography, Container, Button, Box} from '@mui/material';
 import {useState} from 'react';
 import lock from '../../../../assets/img/lock.png';
 import {OtpInput} from '../../../../components';
+import {api} from '../../../../services/http';
+import {urls} from '../../../../services/endPoint';
+import {AppDispatch, useAppDispatch} from '../../../../services/redux/store';
+import {user} from '../../../../services/redux/reducers/userSlice';
+import Cookies from 'js-cookie';
 
 type LoginState = 'phoneNumber' | 'otp';
+type LoginForm = {
+  phoneNumber: string;
+  otp?: string;
+};
 
 export default function Login() {
-  const {reset, handleSubmit, control, getValues} = useForm();
+  const {reset, handleSubmit, control, getValues} = useForm<LoginForm>();
   const [loginState, setLoginState] = useState<LoginState>('phoneNumber');
   const formRef = useRef(null);
+  const tokenRef = useRef<null | string>(null);
+  const dispatch: AppDispatch = useAppDispatch();
 
-  const handleSubmitForm = (data: any) => {
+  const handleSubmitForm = async (data: LoginForm) => {
     if (loginState === 'phoneNumber') {
       // Send phonenumber here ...
-
-      setLoginState('otp');
+      const reqOptions = {
+        method: 'post',
+        body: data,
+      };
+      const res = await api(urls.login, reqOptions);
+      console.log(res);
+      if (res.code) {
+        tokenRef.current = res.token;
+        setLoginState('otp');
+      }
     } else {
       // Verify OTP Code here ...
+      const reqOptions = {
+        method: 'post',
+        body: {
+          code: data.otp,
+          token: tokenRef.current,
+        },
+      };
+      const res = await api(urls.check, reqOptions);
+      Cookies.set('token', res.token, {expires: 30 * 24 * 60 * 60, path: '/'});
+      if (res.user) {
+        dispatch(user());
+      }
     }
-    console.log(data);
   };
 
   return (

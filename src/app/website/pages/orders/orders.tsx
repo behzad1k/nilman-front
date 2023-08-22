@@ -4,20 +4,20 @@ import {IService} from '../../../../services/types.ts';
 import {Typography, Box, Container} from '@mui/material';
 
 export default function Orders() {
-  const service: IService = {
-    title: 'ناخن',
-    address: 'فرمانیه',
-    date: '۱۴۰۲/۰۵/۰۱',
-    details: ['لاک ژل'],
-    discount: 40000,
-    price: 400000,
-    employee: {
-      name: 'آیدا شهابی',
-      username: 'aida',
-      email: 'aida@gmail.com',
-      imageUrl: '/img/girl.png',
-    },
-  };
+  // const service: IService = {
+  //   title: 'ناخن',
+  //   address: 'فرمانیه',
+  //   date: '۱۴۰۲/۰۵/۰۱',
+  //   details: ['لاک ژل'],
+  //   discount: 40000,
+  //   price: 400000,
+  //   employee: {
+  //     name: 'آیدا شهابی',
+  //     username: 'aida',
+  //     email: 'aida@gmail.com',
+  //     imageUrl: '/img/girl.png',
+  //   },
+  // };
   return (
     <Box
       sx={{

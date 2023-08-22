@@ -2,6 +2,7 @@ import {FormControl, InputLabel, Select, MenuItem} from '@mui/material';
 import {Controller} from 'react-hook-form';
 
 type option = {
+  slug: string;
   value: string;
 };
 
@@ -22,8 +23,11 @@ export function SelectInput({name, label, control, defaultValue, options}: Props
         control={control}
         render={({field: {onChange, value = defaultValue}}) => (
           <Select size="small" onChange={onChange} value={value} variant="standard">
+            <MenuItem key={null} value="">
+              انتخاب نشده
+            </MenuItem>
             {options.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
+              <MenuItem key={option.slug} value={option.slug}>
                 {option.value}
               </MenuItem>
             ))}

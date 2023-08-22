@@ -1,22 +1,24 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {urls} from '../../endPoint.ts';
 import {IUserData} from '../../types.ts';
+import {api} from '../../http.ts';
 
 interface IUserSlice {
   data: IUserData;
-  // likes: ILike[],
-  token: string;
 }
 
 const initialState: IUserSlice = {
   data: {
     name: '',
-    username: '',
-    email: '',
-    imageUrl: ''
-
+    phoneNumber: '',
+    role: 'USER',
+    addresses: [],
+    orders: [],
   },
-  token: '',
 };
+export const user = createAsyncThunk('user/fetchUser', async () => {
+  return await api(urls.getUser, {}, true);
+});
 
 const userSlice = createSlice({
   name: 'userSlice',
@@ -25,13 +27,15 @@ const userSlice = createSlice({
     SET_DATA: (state, action: PayloadAction<IUserData>) => {
       state.data = action.payload;
     },
-    SET_TOKEN: (state, action: PayloadAction<string>) => {
-      state.token = action.payload;
-    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(user.fulfilled, (state, action) => {
+      if (action.payload.code == 200) state.data = action.payload.data;
+    });
   },
 });
 
-export const {SET_DATA, SET_TOKEN} = userSlice.actions;
+export const {SET_DATA} = userSlice.actions;
 
 const userReducer = userSlice.reducer;
 export default userReducer;

@@ -54,12 +54,15 @@ export function OrdersModalContent({editData, setEditData, setOpenModal}: Props)
           defaultValue=""
           options={[
             {
+              slug: '',
               value: 'محول نشده',
             },
             {
+              slug: '',
               value: 'ملیکا اژدری',
             },
             {
+              slug: '',
               value: 'درسا توانا',
             },
           ]}
