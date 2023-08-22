@@ -112,7 +112,7 @@ s {
 
 main {
   /* padding: 0 5px 70px; */
-  padding-block: 10px;
+  padding-block: 18px 78px;
 }
 /* appBar */
 .appBar {
@@ -216,54 +216,6 @@ main {
 
 /* orders page */
 
-.ordersMain {
-  padding: 0 20px 70px;
-}
-
-.ordersContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: flex-start;
-  justify-content: space-between;
-}
-.infoBox.orderRow {
-  padding-top: 5px;
-  align-items: center;
-}
-.orderItem {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 7px;
-}
-.orderItem > svg {
-  min-width: 20px;
-  min-height: 20px;
-}
-.orderRow > div {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-between;
-}
-.orderRowDetails {
-  display: flex;
-  width: 70%;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 10px;
-}
-.orderRowProfile {
-  width: 30%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
-
 .order-card-title {
   position: relative;
 }
@@ -277,14 +229,14 @@ main {
   border-top: 14px solid var(--mid-pink);
 }
 
-/* .order-card-title::after {
+.order-card-title::after {
   content: '';
   position: absolute;
   inset-inline-end: 0;
   bottom: -14px;
   border-left: 14px solid transparent;
   border-top: 14px solid var(--mid-pink);
-} */
+}
 
 /*
   ------------------------------------------------------max page---------------------------------------------------------

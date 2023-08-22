@@ -2,20 +2,13 @@ import {useState} from 'react';
 import {Modal} from '../../../../components';
 import {Article, Icon, Calendar, MapPinLine, Money, User} from '@phosphor-icons/react';
 import {Box, Typography, Paper, Button} from '@mui/material';
+import OrderItem from './orderItem';
 
-const OrderItem = ({Icon, value}: {Icon: Icon; value: string}) => {
-  return (
-    <Box display="flex" alignItems="flex-start" gap={0.75}>
-      <Icon size={20} />
-      <Typography variant="subtitle1" fontWeight={300} component="p">
-        {value}
-      </Typography>
-    </Box>
-  );
-};
+type UserType = 'worker' | 'user';
 
-export default function OrderRowWorker() {
+export default function OrderCard() {
   const [openModal, setOpenModal] = useState(false);
+  const [userType, setUserType] = useState<UserType>('user');
 
   return (
     <Paper
@@ -33,7 +26,7 @@ export default function OrderRowWorker() {
           placeItems: 'center',
           bgcolor: 'var(--light-pink)',
           height: '40px',
-          m: '10px 14px 0 -14px',
+          m: '10px -14px 0 -14px',
         }}
       >
         <Typography variant="body1" component="h2">
@@ -57,7 +50,7 @@ export default function OrderRowWorker() {
           variant="outlined"
           onClick={() => setOpenModal(true)}
           sx={{
-            borderColor: 'var(--mid-pink)',
+            borderColor: 'var(--light-grey)',
             color: 'var(--light-black)',
             mt: 1,
             ':hover': {bgcolor: 'var(--mid-pink)', borderColor: 'var(--mid-pink)'},
@@ -65,30 +58,32 @@ export default function OrderRowWorker() {
         >
           جزئیات
         </Button>
-        <Box display="flex" gap={1}>
-          <Button
-            fullWidth
-            variant="contained"
-            sx={{
-              bgcolor: 'var(--light-pink)',
-              color: 'var(--light-black)',
-              ':hover': {bgcolor: 'var(--mid-pink)'},
-            }}
-          >
-            پذیرفتن
-          </Button>
-          <Button
-            fullWidth
-            variant="contained"
-            sx={{
-              bgcolor: 'var(--light-grey)',
-              color: 'var(--light-black)',
-              ':hover': {bgcolor: 'var(--mid-pink)'},
-            }}
-          >
-            رد کردن
-          </Button>
-        </Box>
+        {userType === 'worker' && (
+          <Box display="flex" gap={1}>
+            <Button
+              fullWidth
+              variant="contained"
+              sx={{
+                bgcolor: 'var(--light-pink)',
+                color: 'var(--light-black)',
+                ':hover': {bgcolor: 'var(--mid-pink)'},
+              }}
+            >
+              پذیرفتن
+            </Button>
+            <Button
+              fullWidth
+              variant="contained"
+              sx={{
+                bgcolor: 'var(--light-grey)',
+                color: 'var(--light-black)',
+                ':hover': {bgcolor: 'var(--mid-pink)'},
+              }}
+            >
+              رد کردن
+            </Button>
+          </Box>
+        )}
       </Box>
       <Modal open={openModal} setOpen={setOpenModal}>
         عکس و توضیحات

@@ -1,9 +1,9 @@
-import OrderRow from './orderRow.tsx';
-import OrderRowWorker from './orderRowWorker.tsx';
+import OrderCard from './orderCard.tsx';
+import Cart from './cart.tsx';
 import {IService} from '../../../../services/types.ts';
-import {Typography, Container} from '@mui/material';
+import {Typography, Box, Container} from '@mui/material';
+
 export default function Orders() {
-  const userType: string = 'worker';
   const service: IService = {
     title: 'ناخن',
     address: 'فرمانیه',
@@ -19,24 +19,33 @@ export default function Orders() {
     },
   };
   return (
-    <main className="ordersMain">
-      <section className="ordersContainer">
-        {userType === 'worker' && (
-          <>
-            <Typography variant="h5" component="h1">
-              سفارش های جدید
-            </Typography>
-            <OrderRowWorker />
-            <OrderRowWorker />
-            <OrderRowWorker />
-          </>
-        )}
-        <Typography variant="h5" component="h1">
-          سفارش ها
-        </Typography>
-        <OrderRow service={service} />
-        <OrderRow service={service} />
-      </section>
-    </main>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 4,
+        alignItems: 'center',
+      }}
+    >
+      <Container sx={{px: '24px', display: 'flex', flexDirection: 'column', gap: 5}}>
+        <Cart />
+        <Box component="section" sx={{display: 'flex', flexDirection: 'column', gap: 4}}>
+          <Typography variant="h5" component="h1">
+            سفارش های جدید
+          </Typography>
+          <OrderCard />
+          <OrderCard />
+          <OrderCard />
+        </Box>
+        <Box component="section" sx={{display: 'flex', flexDirection: 'column', gap: 4}}>
+          <Typography variant="h5" component="h1">
+            سفارش ها پیشین
+          </Typography>
+          <OrderCard />
+          <OrderCard />
+          <OrderCard />
+        </Box>
+      </Container>
+    </Box>
   );
 }

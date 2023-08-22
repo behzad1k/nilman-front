@@ -6,7 +6,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
     <>
       <Box sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
         <WebsiteHeader />
-        <Box component="main" flexGrow={1} pb="60px">
+        <Box component="main" flexGrow={1}>
           {children}
           <AppBar />
         </Box>
