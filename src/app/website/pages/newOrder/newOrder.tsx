@@ -1,12 +1,15 @@
-import React, {useEffect, useState} from 'react';
-import {Button, FormControl, InputLabel, MenuItem, Select, Table} from '@mui/material';
-import {formatPrice} from '../../../../utils/utils.ts';
-import {Input} from '../../components';
 // @ts-nocheck
-// @ts-ignore
+import {useForm, FieldValues} from 'react-hook-form';
+import {useEffect, useState} from 'react';
+import {Button, Box} from '@mui/material';
+import {formatPrice} from '../../../../utils/utils.ts';
 import moment from 'moment-jalali';
-// @ts-ignore
 import {DatePicker} from 'react-persian-datepicker';
+import {useAppSelector} from '../../../../services/redux/store.ts';
+import {IService} from '../../../../services/types.ts';
+import {TextInput, SelectInput} from '../../../../components';
+import {api} from '../../../../services/http.ts';
+import {urls} from '../../../../services/endPoint.ts';
 
 const styles = {
   calendarContainer: 'calendarContainer',
@@ -22,27 +25,120 @@ const styles = {
 };
 
 export default function NewOrder() {
-  const [hasAttributes, setHasAttribute] = useState(false);
+  const [serviceChildren, setServiceChildren] = useState<IService[] | null>(null);
   const [date, setDate] = useState();
   const curDate = new Date();
   const minDate = curDate.setDate(curDate.getDate() - 1);
   const defaultDate = moment(new Date());
+  const services = useAppSelector((state) => state.serviceReducer.services);
+  const addresses = useAppSelector((state) => state.userReducer.data.addresses);
+  const servicesOptions = services.map((service) => {
+    const {title: value, slug} = service;
+    return {value, slug};
+  });
+  const addressOptions = addresses.map((address) => {
+    const {id: slug, title: value} = address;
+    return {slug, value};
+  });
+
+  const {register, handleSubmit, control, getValues, reset} = useForm();
 
   useEffect(() => {
     console.log(date);
   }, [date]);
 
+  const onSelectService = (e) => {
+    const children = services.filter((service) => service.slug === e.target.value)[0]
+      .attributes;
+    if (children.length) {
+      setServiceChildren(
+        children.map((child) => {
+          const {slug, title: value} = child;
+          return {slug, value};
+        }),
+      );
+    } else setServiceChildren(null);
+  };
+
+  const timeOptions = [
+    {
+      slug: '8_10',
+      value: '8 - 10',
+    },
+    {
+      slug: '10_12',
+      value: '10 - 12',
+    },
+    {
+      slug: '12_14',
+      value: '12 - 14',
+    },
+    {
+      slug: '14_16',
+      value: '14 - 16',
+    },
+    {
+      slug: '16_18',
+      value: '16 - 18',
+    },
+  ];
+
+  const onSubmit = async (data: FieldValues) => {
+    const reqOptions = {
+      method: 'post',
+      body: {
+        ...data,
+        date: Math.floor(new Date(date).getTime() / 1000),
+      },
+    };
+    const res = await api(urls.order, reqOptions, true);
+    console.log(res);
+    if (res.code === 201) reset();
+  };
+
   return (
     <main className="newOrderMain">
-      <form className="orderForm">
+      <form className="orderForm" onSubmit={handleSubmit(onSubmit)}>
         <h2>ثبت سفارش</h2>
-        <FormControl>
-          <InputLabel id="address">آدرس</InputLabel>
-          <Select
-            labelId="address"
-            id="address"
-            // value={age}
-            label="آدرس"
+        <SelectInput
+          name="addressId"
+          label="آدرس"
+          control={control}
+          defaultValue=""
+          options={addressOptions}
+          size="medium"
+          sx={{
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderColor: 'var(--mid-pink)',
+              backgroundColor: 'var(--white-pink)',
+              borderRadius: '10px',
+            },
+          }}
+        />
+        <SelectInput
+          name="service"
+          label="خدمات زیبایی"
+          control={control}
+          defaultValue=""
+          customOnChange={onSelectService}
+          options={servicesOptions}
+          size="medium"
+          sx={{
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderColor: 'var(--mid-pink)',
+              backgroundColor: 'var(--white-pink)',
+              borderRadius: '10px',
+            },
+          }}
+        />
+        {serviceChildren && (
+          <SelectInput
+            name="attribute"
+            label="نوع"
+            control={control}
+            defaultValue=""
+            options={serviceChildren}
+            size="medium"
             sx={{
               '& .MuiOutlinedInput-notchedOutline': {
                 borderColor: 'var(--mid-pink)',
@@ -50,61 +146,30 @@ export default function NewOrder() {
                 borderRadius: '10px',
               },
             }}
-            // onChange={handleChange}
-          >
-            <MenuItem value={10}>فرمانیه</MenuItem>
-            <MenuItem value={20}>الهیه</MenuItem>
-            <MenuItem value={30}>امیرآباد</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl>
-          <InputLabel id="service">خدمات زیبایی</InputLabel>
-          <Select
-            labelId="service"
-            id="service"
-            // value={age}
-            label="خدمات زیبایی"
-            sx={{
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'var(--mid-pink)',
-                backgroundColor: 'var(--white-pink)',
-                borderRadius: '10px',
-              },
-            }}
-            onChange={() => setHasAttribute(true)}
-          >
-            <MenuItem value={10}>ناخن</MenuItem>
-            <MenuItem value={20}>رنگ مو</MenuItem>
-            <MenuItem value={30}>ابرو</MenuItem>
-          </Select>
-        </FormControl>
-        {hasAttributes && (
-          <FormControl>
-            <InputLabel id="demo-simple-select-label">نوع ناخن</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              // value={age}
-              label="نوع ناخن"
-              sx={{
-                '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'var(--mid-pink)',
-                  backgroundColor: 'var(--white-pink)',
-                  borderRadius: '10px',
-                },
-              }}
-              className="orderSelect"
-              // onChange={handleChange}
-            >
-              <MenuItem value={10}>لاک ژل</MenuItem>
-              <MenuItem value={20}>طرح دار</MenuItem>
-            </Select>
-          </FormControl>
+          />
         )}
-        <div className="discount">
-          <input placeholder="کد تخفیف" className="discountInput" />
-          <Button className="discountButton">اعمال</Button>
-        </div>
+        <Box sx={{display: 'flex', gap: 1}}>
+          <TextInput
+            name="discount"
+            label="تخفیف"
+            control={control}
+            defaultValue=""
+            size="medium"
+            sx={{
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'var(--mid-pink)',
+                backgroundColor: 'var(--white-pink)',
+                borderRadius: '10px',
+              },
+            }}
+          />
+          <Button
+            variant="contained"
+            sx={{bgcolor: 'var(--mid-pink)', fontSize: 18, borderRadius: 2.5}}
+          >
+            اعمال
+          </Button>
+        </Box>
         <div className="app-date-picker">
           <DatePicker
             value={date}
@@ -114,28 +179,25 @@ export default function NewOrder() {
             onChange={(value) => setDate(value)}
             defaultValue={defaultDate}
           />
-          <FormControl fullWidth>
-            <InputLabel id="time">ساعت</InputLabel>
-            <Select
-              labelId="time"
-              id="time"
-              label="ساعت"
-              sx={{
-                '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'var(--mid-pink)',
-                  backgroundColor: 'var(--white-pink)',
-                  borderRadius: '10px',
-                },
-              }}
-            >
-              <MenuItem value={10}>۸-۱۰</MenuItem>
-              <MenuItem value={20}>۱۰-۱۲</MenuItem>
-              <MenuItem value={30}>۱۲-۱۴</MenuItem>
-              <MenuItem value={40}>۱۴-۱۶</MenuItem>
-              <MenuItem value={50}>۱۶-۱۸</MenuItem>
-            </Select>
-          </FormControl>
+          <SelectInput
+            name="time"
+            label="ساعت"
+            control={control}
+            defaultValue=""
+            options={timeOptions}
+            size="medium"
+            sx={{
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'var(--mid-pink)',
+                backgroundColor: 'var(--white-pink)',
+                borderRadius: '10px',
+              },
+            }}
+          />
         </div>
+        <Button variant="contained" type="submit">
+          ثبت
+        </Button>
       </form>
       <div className="infoBox">
         <h3>فاکتور</h3>
@@ -143,19 +205,19 @@ export default function NewOrder() {
           <tbody>
             <tr>
               <td>قیمت سرویس</td>
-              <td> {formatPrice(300000)} تومان</td>
+              <td> {formatPrice(230000)} تومان</td>
             </tr>
             <tr>
               <td>قیمت طرح دار</td>
-              <td> {formatPrice(300000)} تومان</td>
+              <td> {formatPrice(3200000)} تومان</td>
             </tr>
             <tr>
               <td>ایاب ذهاب</td>
-              <td> {formatPrice(300000)} تومان</td>
+              <td> {formatPrice(850000)} تومان</td>
             </tr>
             <tr>
               <td>جمع کل</td>
-              <td> {formatPrice(300000)} تومان</td>
+              <td> {formatPrice(1450000)} تومان</td>
             </tr>
           </tbody>
         </table>

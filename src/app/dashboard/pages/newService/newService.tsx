@@ -1,20 +1,44 @@
+import {useState} from 'react';
 import {Box, Button, Typography} from '@mui/material';
 import {useForm, FieldValues} from 'react-hook-form';
-import TextInput from '../../components/textInput';
-
-// type Data = {
-//   title: string;
-//   file: FileList;
-// };
+import {TextInput, SelectInput} from '../../../../components';
+import {api} from '../../../../services/http';
+import {urls} from '../../../../services/endPoint';
+import {useAppSelector} from '../../../../services/redux/store';
 
 export default function NewService() {
-  const {register, handleSubmit, control} = useForm();
+  const [imgs, setImgs] = useState<any>(null);
+  const {register, handleSubmit, control, getValues} = useForm();
+  const services = useAppSelector((state) => state.serviceReducer.services);
+  const options = services.map((service) => {
+    const {title: value, slug} = service;
+    return {value, slug};
+  });
+  console.log(options);
 
-  const onSubmit = (data: FieldValues) => {
+  // const onSubmit = (data: FieldValues) => {
+  //   console.log(data);
+  //   const formData = new FormData();
+  //   formData.append('file', data.file[0]);
+  // };
+
+  // const onChangeImg = (e: any) => {
+  //   setImgs(URL.createObjectURL(e.target.files[0]));
+  // };
+
+  const onSubmit = async (data: FieldValues) => {
     console.log(data);
-    const formData = new FormData();
-    formData.append('file', data.file[0]);
-    // ...
+    const reqOptions = {
+      method: 'post',
+      body: {
+        title: data.title,
+        description: data.description,
+        price: Number(data.price),
+        parent: data.parent,
+      },
+    };
+    const res = await api(urls.createService, reqOptions, true);
+    console.log(res);
   };
   return (
     <>
@@ -26,11 +50,20 @@ export default function NewService() {
         sx={{display: 'flex', flexDirection: 'column', gap: 3}}
         onSubmit={handleSubmit(onSubmit)}
       >
+        <SelectInput
+          name="parent"
+          label="پدر"
+          control={control}
+          defaultValue=""
+          options={options}
+        />
         <TextInput name="title" label="عنوان" control={control} defaultValue="" />
-        <Box display="flex" flexDirection="column" gap={1}>
-          <label htmlFor="file">آپلود تصویر</label>
-          <input id="file" type="file" {...register('file')} />
-        </Box>
+        <TextInput name="description" label="توضیحات" control={control} defaultValue="" />
+        <TextInput name="price" label="قیمت" control={control} defaultValue="" />
+        {/* <Box display="flex" flexDirection="column" gap={1}>
+          <label htmlFor="file">آپلود نمونه کار</label>
+          <input id="file" type="file" {...register('file')} onChange={onChangeImg} />
+        </Box> */}
         <Box display="flex" flexDirection="column" gap={1}>
           <Button variant="contained" color="success" type="submit" fullWidth>
             افزودن

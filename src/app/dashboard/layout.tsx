@@ -1,10 +1,10 @@
 import {Box, Container} from '@mui/material';
-import Header from './components/header';
+import {DashboardHeader} from '../../components';
 export default function Layout({children}: {children: React.ReactNode}) {
   const drawerWidth = 270;
   return (
     <Box sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
-      <Header drawerWidth={drawerWidth} />
+      <DashboardHeader drawerWidth={drawerWidth} />
       <Box
         component="main"
         p={0}

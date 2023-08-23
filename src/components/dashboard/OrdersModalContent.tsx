@@ -1,4 +1,4 @@
-import SelectInput from './selectInput';
+import {SelectInput} from '../common/selectInput';
 
 import {Box, Button, Typography} from '@mui/material';
 
@@ -22,7 +22,7 @@ type Props = {
   setOpenModal: (val: boolean) => void;
 };
 
-export default function OrdersModalContent({editData, setEditData, setOpenModal}: Props) {
+export function OrdersModalContent({editData, setEditData, setOpenModal}: Props) {
   const {reset, handleSubmit, control} = useForm({
     values: editData || undefined,
   });
@@ -54,12 +54,15 @@ export default function OrdersModalContent({editData, setEditData, setOpenModal}
           defaultValue=""
           options={[
             {
+              slug: '',
               value: 'محول نشده',
             },
             {
+              slug: '',
               value: 'ملیکا اژدری',
             },
             {
+              slug: '',
               value: 'درسا توانا',
             },
           ]}

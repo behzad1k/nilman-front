@@ -6,7 +6,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export default function Modal({open, setOpen, children}: Props) {
+export function Modal({open, setOpen, children}: Props) {
   return (
     <MUIModal
       open={open}

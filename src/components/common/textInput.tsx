@@ -1,15 +1,15 @@
 import {Controller} from 'react-hook-form';
 
-import {TextField} from '@mui/material';
+import {TextField, StandardTextFieldProps} from '@mui/material';
 
-type Props = {
+interface Props extends StandardTextFieldProps {
   name: string;
   label: string;
   control: any;
   defaultValue: string | number;
-};
+}
 
-export default function TextInput({name, label, control, defaultValue}: Props) {
+export function TextInput({name, label, control, defaultValue, ...props}: Props) {
   return (
     <Controller
       name={name}
@@ -28,6 +28,7 @@ export default function TextInput({name, label, control, defaultValue}: Props) {
           fullWidth
           label={label}
           variant="outlined"
+          {...props}
         />
       )}
     />

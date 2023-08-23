@@ -7,9 +7,7 @@ import {
   Drawer as MUIDrwaer,
 } from '@mui/material';
 
-import {People, Assignment, Category} from '@mui/icons-material';
-
-import {theme} from '../../../mui';
+import {People, Assignment, Category, PersonAdd} from '@mui/icons-material';
 
 import {Link} from 'react-router-dom';
 
@@ -29,6 +27,11 @@ const listItems = [
     text: 'خدمات',
     link: '/dashboard/new-service',
   },
+  {
+    icon: <PersonAdd />,
+    text: 'افزودن کاربر',
+    link: '/dashboard/add-user',
+  },
 ];
 
 type Props = {
@@ -37,7 +40,7 @@ type Props = {
   width: number;
 };
 
-export default function Drawer({open, setOpen, width}: Props) {
+export function Drawer({open, setOpen, width}: Props) {
   const drawer = (
     <nav>
       <List>
@@ -70,7 +73,7 @@ export default function Drawer({open, setOpen, width}: Props) {
         sx={{
           display: {xs: 'block', md: 'none'},
           '& .MuiDrawer-paper': {width: `${width}px`},
-          '& .MuiPaper-root': {backgroundColor: theme.palette.primary.main},
+          '& .MuiPaper-root': {backgroundColor: 'var(--dashboard-dark)'},
         }}
       >
         {drawer}
@@ -81,7 +84,7 @@ export default function Drawer({open, setOpen, width}: Props) {
         sx={{
           display: {xs: 'none', md: 'block'},
           '& .MuiDrawer-paper': {width: `${width}px`},
-          '& .MuiPaper-root': {backgroundColor: theme.palette.primary.main},
+          '& .MuiPaper-root': {backgroundColor: 'var(--dashboard-dark)'},
         }}
       >
         {drawer}

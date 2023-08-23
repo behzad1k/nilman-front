@@ -1,7 +1,5 @@
 import {useState} from 'react';
 
-import {theme} from '../../../mui';
-
 import {
   AppBar,
   Toolbar,
@@ -14,9 +12,9 @@ import {
 
 import {AccountCircle, Menu as MenuIcon} from '@mui/icons-material';
 
-import Drawer from './drawer';
+import {Drawer} from './drawer';
 
-export default function Header({drawerWidth}: {drawerWidth: number}) {
+export function Header({drawerWidth}: {drawerWidth: number}) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -34,10 +32,10 @@ export default function Header({drawerWidth}: {drawerWidth: number}) {
         elevation={1}
         position="relative"
         sx={{
-          backgroundColor: {xs: theme.palette.primary.main, md: 'white'},
+          backgroundColor: {xs: 'var(--dashboard-dark)', md: 'white'},
           width: {md: `calc(100% - ${drawerWidth}px)`},
           ml: {md: `${drawerWidth}px`},
-          color: {xs: 'white', md: theme.palette.primary.main},
+          color: {xs: 'white', md: 'var(--dashboard-dark)'},
         }}
       >
         <Toolbar>
