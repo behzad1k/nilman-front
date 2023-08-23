@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {urls} from '../../endPoint.ts';
-import {IUserData} from '../../types.ts';
+import {IUser} from '../../types.ts';
 import {api} from '../../http.ts';
 
 interface IOrderSlice {

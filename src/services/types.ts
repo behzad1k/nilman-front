@@ -15,9 +15,12 @@ export interface IService {
   description: string;
   price: number;
   slug: string;
+  attributes?: IService[]
 }
 
 export interface IAddress {
+  title: string;
+  phoneNumber?: string;
   longitude: string;
   latitude: string;
   description: string;
@@ -25,35 +28,21 @@ export interface IAddress {
 
 export interface IOrder {
   title: string;
-  attributes: [];
-  price: string;
+  price: number;
   date: string;
-  discount: string;
+  discount: number;
+  transportation: number;
+  status: 'PAID' | 'DONE' | 'CREATED' | 'ASSIGNED' | 'CANCELED';
+  worker: IUser,
+  service?: IService,
+  attribute?: IService
 }
-export interface IUserData {
+export interface IUser {
   name: string;
   lastName: string;
   nationalCode: string;
   phoneNumber: string;
   role: 'USER' | 'WORKER' | 'OPERATOR' | 'SUPERADMIN';
-  addresses: IAddress[];
-  orders: IOrder[];
-}
-
-export interface IUserCompact {
-  displayName: string;
-  username: string;
-}
-
-export interface IService {
-  title: string;
-  details: string[];
-  date: string;
-  discount: number;
-  price: number;
-  status?: number;
-  address: string;
-  employee: IUserData;
 }
 
 export interface ISliderCardInfo {

@@ -1,23 +1,17 @@
 import {Box, Typography, Button} from '@mui/material';
 import {X} from '@phosphor-icons/react';
+import { ReactElement } from "react";
+import { IOrder } from "../../../../services/types.ts";
 import {formatPrice} from '../../../../utils/utils';
 import {
   AppDispatch,
   useAppDispatch,
   useAppSelector,
 } from '../../../../services/redux/store.ts';
-import {useEffect} from 'react';
-import {cart} from '../../../../services/redux/reducers/cartSlice.ts';
 
 function CartItem() {
-  const dispatch: AppDispatch = useAppDispatch();
-  const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
 
-  useEffect(() => {
-    dispatch(cart());
-  }, []);
-
-  return cartItems.length ? (
+  return (
     <Box
       component="article"
       sx={{
@@ -57,10 +51,12 @@ function CartItem() {
         </Button>
       </Box>
     </Box>
-  ) : null;
+  )
 }
 
 export default function Cart() {
+  const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
+
   return (
     <Box component="section" width="100%">
       <Typography variant="h5" component="h1" mb={4}>
@@ -77,9 +73,9 @@ export default function Cart() {
           borderRadius: 1,
         }}
       >
-        <CartItem />
-        <CartItem />
-        <CartItem />
+        {cartItems.map((value: IOrder, index) =>
+          <CartItem />
+        )}
         <Button variant="contained">پرداخت</Button>
       </Box>
     </Box>

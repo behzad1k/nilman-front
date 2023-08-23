@@ -16,10 +16,6 @@ export default function Orders() {
   const dispatch: AppDispatch = useAppDispatch();
   const orders = useAppSelector((state) => state.orderReducer);
 
-  useEffect(() => {
-    dispatch(order());
-  }, []);
-
   // const service: IService = {
   //   title: 'ناخن',
   //   address: 'فرمانیه',

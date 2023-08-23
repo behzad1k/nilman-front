@@ -1,17 +1,11 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {urls} from '../../endPoint.ts';
 import {api} from '../../http.ts';
+import { IOrder } from "../../types.ts";
 
-interface ICart {
-  service: string;
-  attribute: string;
-  addressId: number;
-  time: string;
-  date: number;
-}
 
 interface ICartSlice {
-  cartItems: ICart[];
+  cartItems: IOrder[];
 }
 
 const initialState: ICartSlice = {
