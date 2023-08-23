@@ -7,7 +7,7 @@ import {
   Drawer as MUIDrwaer,
 } from '@mui/material';
 
-import {People, Assignment, Category} from '@mui/icons-material';
+import {People, Assignment, Category, PersonAdd} from '@mui/icons-material';
 
 import {Link} from 'react-router-dom';
 
@@ -26,6 +26,11 @@ const listItems = [
     icon: <Category />,
     text: 'خدمات',
     link: '/dashboard/new-service',
+  },
+  {
+    icon: <PersonAdd />,
+    text: 'افزودن کاربر',
+    link: '/dashboard/add-user',
   },
 ];
 

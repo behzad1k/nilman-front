@@ -1,9 +1,6 @@
-import {useState} from 'react';
-
+import {useState, useEffect} from 'react';
 import {Modal} from '../../../../components';
-
-import {TextInput} from '../../../../components';
-
+import {TextInput, SelectInput} from '../../../../components';
 import {
   Typography,
   Paper,
@@ -17,11 +14,12 @@ import {
   Box,
   Button,
 } from '@mui/material';
-
 import {useForm} from 'react-hook-form';
+import {api} from '../../../../services/http';
+import {urls} from '../../../../services/endPoint';
 
 interface Column {
-  id: 'fullName' | 'phoneNumber' | 'ordersCount' | 'address';
+  id: 'name' | 'lastName' | 'nationalCode' | 'phoneNumber' | 'addresses';
   label: string;
   minWidth?: number;
   align?: 'right' | 'center' | 'left';
@@ -29,100 +27,51 @@ interface Column {
 }
 
 const columns: readonly Column[] = [
-  {id: 'fullName', label: 'نام‌ و نام خانوادگی', minWidth: 170, align: 'center'},
+  {id: 'name', label: 'نام‌ ', minWidth: 170, align: 'center'},
+  {id: 'lastName', label: 'نام خانوادگی ', minWidth: 170, align: 'center'},
+  {id: 'nationalCode', label: 'کدملی', minWidth: 170, align: 'center'},
   {id: 'phoneNumber', label: 'تلفن همراه', minWidth: 100, align: 'center'},
-  {id: 'ordersCount', label: 'تعداد سفارشات', minWidth: 120, align: 'center'},
-  {id: 'address', label: 'آدرس', minWidth: 250, align: 'center'},
+  {id: 'addresses', label: 'آدرس', minWidth: 250, align: 'center'},
 ];
 
 interface Data {
-  fullName: string;
+  id: number;
+  name: string;
+  lastName: string;
+  nationalCode: string;
   phoneNumber: string;
-  ordersCount: number;
-  address: string;
+  role: string;
+  addresses: [];
+  orders: [];
 }
-
-function createData(
-  fullName: string,
-  phoneNumber: string,
-  ordersCount: number,
-  address: string,
-): Data {
-  return {fullName, phoneNumber, ordersCount, address};
-}
-
-const rows = [
-  createData('بهزاد کوهیانی', '09037101006', 4, 'خوزستان، اهواز، گستان، خیابان آذر'),
-  createData('مریم حیدری', '09918491212', 13, 'تهران، خیابان شریعتی، پلاک ۱۲'),
-  createData(
-    'قاسم عباسی',
-    '09122265115',
-    31,
-    'تهران، خیابان شریعتی، پایین تر از پل صدر، بن بست الهیه',
-  ),
-  createData('آوا صیدی زاده', '09107315462', 1, 'خوزستان، اهواز، گستان، خیابان آذر'),
-  createData('بهزاد کوهیانی', '09037101006', 4, 'تهران، خیابان شریعتی، پلاک ۱۲'),
-  createData(
-    'مریم حیدری',
-    '09918491212',
-    13,
-    'تهران، خیابان شریعتی، پایین تر از پل صدر، بن بست الهیه',
-  ),
-  createData('قاسم عباسی', '09122265115', 31, 'خوزستان، اهواز، گستان، خیابان آذر'),
-  createData('آوا صیدی زاده', '09107315462', 1, 'تهران، خیابان شریعتی، پلاک ۱۲'),
-  createData(
-    'بهزاد کوهیانی',
-    '09037101006',
-    4,
-    'تهران، خیابان شریعتی، پایین تر از پل صدر، بن بست الهیه',
-  ),
-  createData('مریم حیدری', '09918491212', 13, 'خوزستان، اهواز، گستان، خیابان آذر'),
-  createData('قاسم عباسی', '09122265115', 31, 'تهران، خیابان شریعتی، پلاک ۱۲'),
-  createData(
-    'آوا صیدی زاده',
-    '09107315462',
-    1,
-    'تهران، خیابان شریعتی، پایین تر از پل صدر، بن بست الهیه',
-  ),
-  createData('بهزاد کوهیانی', '09037101006', 4, 'خوزستان، اهواز، گستان، خیابان آذر'),
-  createData('مریم حیدری', '09918491212', 13, 'تهران، خیابان شریعتی، پلاک ۱۲'),
-  createData(
-    'قاسم عباسی',
-    '09122265115',
-    31,
-    'تهران، خیابان شریعتی، پایین تر از پل صدر، بن بست الهیه',
-  ),
-  createData('آوا صیدی زاده', '09107315462', 1, 'خوزستان، اهواز، گستان، خیابان آذر'),
-  createData('بهزاد کوهیانی', '09037101006', 4, 'تهران، خیابان شریعتی، پلاک ۱۲'),
-  createData(
-    'مریم حیدری',
-    '09918491212',
-    13,
-    'تهران، خیابان شریعتی، پایین تر از پل صدر، بن بست الهیه',
-  ),
-  createData('قاسم عباسی', '09122265115', 31, 'خوزستان، اهواز، گستان، خیابان آذر'),
-  createData('آوا صیدی زاده', '09107315462', 1, 'تهران، خیابان شریعتی، پلاک ۱۲'),
-  createData(
-    'بهزاد کوهیانی',
-    '09037101006',
-    4,
-    'تهران، خیابان شریعتی، پایین تر از پل صدر، بن بست الهیه',
-  ),
-  createData('مریم حیدری', '09918491212', 13, 'خوزستان، اهواز، گستان، خیابان آذر'),
-  createData('قاسم عباسی', '09122265115', 31, 'تهران، خیابان شریعتی، پلاک ۱۲'),
-  createData(
-    'آوا صیدی زاده',
-    '09107315462',
-    1,
-    'تهران، خیابان شریعتی، پایین تر از پل صدر، بن بست الهیه',
-  ),
-];
 
 export default function Users() {
   const [page, setPage] = useState(0);
   const [openModal, setOpenModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [editData, setEditData] = useState<null | Data>(null);
+  const [deleteData, setDeleteData] = useState<null | Data>(null);
+  const [users, setUsers] = useState<Data[]>([]);
   const rowsPerPage = 10;
+
+  const roleOptions = [
+    {
+      slug: 'USER',
+      value: 'USER',
+    },
+    {
+      slug: 'WORKER',
+      value: 'WORKER',
+    },
+    {
+      slug: 'OPERATOR',
+      value: 'OPERATOR',
+    },
+    {
+      slug: 'SUPER_ADMIN',
+      value: 'SUPER_ADMIN',
+    },
+  ];
 
   const {reset, handleSubmit, control} = useForm({
     values: editData || undefined,
@@ -143,9 +92,53 @@ export default function Users() {
     reset();
   };
 
-  const handleSubmitEditUser = (data: Data) => {
-    console.log(data);
+  const handleOpenDeleteModal = (data: Data) => {
+    setOpenDeleteModal(true);
+    setDeleteData(data);
   };
+
+  const handleCloseDeleteModal = () => {
+    setOpenDeleteModal(false);
+    setDeleteData(null);
+  };
+
+  const handleSubmitEditUser = async (data: Data) => {
+    if (!editData) return;
+    const reqOptions = {
+      method: 'put',
+      body: {...editData, ...data, userId: editData.id},
+    };
+    const res = await api(urls.updateUser, reqOptions, true);
+    console.log(res);
+    if (res.code === 200) {
+      setUsers((prev) => prev.map((user) => (user.id === editData.id ? res.data : user)));
+      handleCloseEditModal();
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    if (!deleteData) return;
+    const reqOptions = {
+      method: 'delete',
+      body: {userId: deleteData.id},
+    };
+    const res = await api(urls.deleteUser, reqOptions, true);
+    console.log(res);
+    if (res.code === 204) {
+      setUsers((prev) => prev.filter((user) => user.id !== deleteData.id));
+      handleCloseDeleteModal();
+    }
+  };
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const res = await api(urls.getUsers, {}, true);
+      console.log(res);
+      setUsers(res.data);
+    };
+    fetchUsers();
+  }, []);
+
   return (
     <>
       <Typography variant="h5" component="h1">
@@ -166,31 +159,39 @@ export default function Users() {
                   </TableCell>
                 ))}
                 <TableCell></TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows
+              {users
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, i) => {
+                .map((user, i) => {
                   return (
                     <TableRow hover role="checkbox" tabIndex={-1} key={i}>
                       {columns.map((column) => {
-                        const value = row[column.id];
+                        const value = user[column.id];
                         return (
                           <TableCell key={column.id} align={column.align}>
-                            {column.format && typeof value === 'number'
-                              ? column.format(value)
-                              : value}
+                            {value.length ? value : '-'}
                           </TableCell>
                         );
                       })}
                       <TableCell>
                         <Button
-                          onClick={() => handleOpenEditModal(row)}
+                          onClick={() => handleOpenEditModal(user)}
                           variant="contained"
                           color="primary"
                         >
                           ویرایش
+                        </Button>
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          onClick={() => handleOpenDeleteModal(user)}
+                          variant="contained"
+                          color="error"
+                        >
+                          حذف
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -202,7 +203,7 @@ export default function Users() {
         <TablePagination
           rowsPerPageOptions={[]}
           colSpan={3}
-          count={rows.length}
+          count={users.length}
           rowsPerPage={rowsPerPage}
           page={page}
           SelectProps={{
@@ -228,10 +229,22 @@ export default function Users() {
           onSubmit={handleSubmit(handleSubmitEditUser)}
         >
           <TextInput
-            label="نام و نام‌خانوادگی"
-            name="fullName"
+            label="نام"
+            name="name"
             control={control}
-            defaultValue={editData?.fullName || ''}
+            defaultValue={editData?.name || ''}
+          />
+          <TextInput
+            label="نام خانوادگی"
+            name="lastName"
+            control={control}
+            defaultValue={editData?.lastName || ''}
+          />
+          <TextInput
+            label="شماره ملی"
+            name="nationalCode"
+            control={control}
+            defaultValue={editData?.nationalCode || ''}
           />
           <TextInput
             label="تلفن همراه"
@@ -239,17 +252,12 @@ export default function Users() {
             control={control}
             defaultValue={editData?.phoneNumber || ''}
           />
-          <TextInput
-            label="تعداد سفارشات"
-            name="ordersCount"
+          <SelectInput
+            name="role"
+            label="نقش"
+            defaultValue={editData?.role || ''}
+            options={roleOptions}
             control={control}
-            defaultValue={editData?.ordersCount || ''}
-          />
-          <TextInput
-            label="آدرس"
-            name="address"
-            control={control}
-            defaultValue={editData?.address || ''}
           />
           <Box display="flex" flexDirection="column" gap={1}>
             <Button variant="contained" color="success" type="submit" fullWidth>
@@ -264,6 +272,24 @@ export default function Users() {
               بیخیال
             </Button>
           </Box>
+        </Box>
+      </Modal>
+      <Modal open={openDeleteModal} setOpen={setOpenDeleteModal}>
+        <Typography variant="h6" component="h2" marginBottom={4}>
+          آیا از حذف کاربر اطمینان دارید ؟
+        </Typography>
+        <Box display="flex" flexDirection="column" gap={1}>
+          <Button variant="contained" color="error" fullWidth onClick={handleDeleteUser}>
+            حذف
+          </Button>
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={handleCloseDeleteModal}
+            fullWidth
+          >
+            بیخیال
+          </Button>
         </Box>
       </Modal>
     </>

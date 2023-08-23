@@ -10,6 +10,8 @@ interface IUserSlice {
 const initialState: IUserSlice = {
   data: {
     name: '',
+    lastName: '',
+    nationalCode: '',
     phoneNumber: '',
     role: 'USER',
     addresses: [],
@@ -30,7 +32,11 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(user.fulfilled, (state, action) => {
-      if (action.payload.code == 200) state.data = action.payload.data;
+      if (action.payload.code == 200) {
+        console.log(action.payload.data);
+
+        state.data = action.payload.data;
+      }
     });
   },
 });

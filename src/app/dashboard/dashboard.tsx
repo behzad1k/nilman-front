@@ -5,6 +5,7 @@ import Home from './pages/home/home';
 import NewService from './pages/newService/newService';
 import Users from './pages/users/users';
 import Orders from './pages/orders/orders';
+import AddUser from './pages/addUser/addUser';
 import {AppDispatch, useAppDispatch} from '../../services/redux/store.ts';
 import {initialApis} from '../../services/apis/global.ts';
 
@@ -45,6 +46,14 @@ export default function Dashboard() {
         element={
           <Layout>
             <Orders />
+          </Layout>
+        }
+      />
+      <Route
+        path="/add-user"
+        element={
+          <Layout>
+            <AddUser />
           </Layout>
         }
       />

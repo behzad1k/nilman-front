@@ -172,13 +172,13 @@ main {
   max-width: 600px;
   gap: 20px;
 }
-.orderForm > * {
+/* .orderForm > * {
   width: 100%;
-}
+} */
 
-.orderSelect {
+/* .orderSelect {
   border: 1px solid var(--mid-pink) !important;
-}
+} */
 .table {
   border-collapse: collapse;
   padding: 40px 20px;

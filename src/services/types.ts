@@ -32,6 +32,8 @@ export interface IOrder {
 }
 export interface IUserData {
   name: string;
+  lastName: string;
+  nationalCode: string;
   phoneNumber: string;
   role: 'USER' | 'WORKER' | 'OPERATOR' | 'SUPERADMIN';
   addresses: IAddress[];

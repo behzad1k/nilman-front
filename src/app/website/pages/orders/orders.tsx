@@ -2,8 +2,24 @@ import OrderCard from './orderCard.tsx';
 import Cart from './cart.tsx';
 import {IService} from '../../../../services/types.ts';
 import {Typography, Box, Container} from '@mui/material';
+import {api} from '../../../../services/http.ts';
+import {urls} from '../../../../services/endPoint.ts';
+import {
+  useAppSelector,
+  useAppDispatch,
+  AppDispatch,
+} from '../../../../services/redux/store.ts';
+import {useEffect} from 'react';
+import {order} from '../../../../services/redux/reducers/orderSlice.ts';
 
 export default function Orders() {
+  const dispatch: AppDispatch = useAppDispatch();
+  const {role, orders} = useAppSelector((state) => state.userReducer.data);
+
+  useEffect(() => {
+    dispatch(order());
+  }, []);
+
   // const service: IService = {
   //   title: 'ناخن',
   //   address: 'فرمانیه',
@@ -37,14 +53,14 @@ export default function Orders() {
           <OrderCard />
           <OrderCard />
         </Box>
-        <Box component="section" sx={{display: 'flex', flexDirection: 'column', gap: 4}}>
+        {/* <Box component="section" sx={{display: 'flex', flexDirection: 'column', gap: 4}}>
           <Typography variant="h5" component="h1">
             سفارش ها پیشین
           </Typography>
           <OrderCard />
           <OrderCard />
           <OrderCard />
-        </Box>
+        </Box> */}
       </Container>
     </Box>
   );

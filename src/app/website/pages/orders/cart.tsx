@@ -1,8 +1,17 @@
 import {Box, Typography, Button} from '@mui/material';
 import {X} from '@phosphor-icons/react';
 import {formatPrice} from '../../../../utils/utils';
+import {AppDispatch, useAppDispatch} from '../../../../services/redux/store.ts';
+import {useEffect} from 'react';
+import {cart} from '../../../../services/redux/reducers/cartSlice.ts';
 
 function CartItem() {
+  const dispatch: AppDispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(cart());
+  }, []);
+
   return (
     <Box
       component="article"

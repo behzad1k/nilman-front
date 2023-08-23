@@ -10,6 +10,7 @@ import {urls} from '../../../../services/endPoint';
 import {AppDispatch, useAppDispatch} from '../../../../services/redux/store';
 import {user} from '../../../../services/redux/reducers/userSlice';
 import Cookies from 'js-cookie';
+import {useNavigate} from 'react-router-dom';
 
 type LoginState = 'phoneNumber' | 'otp';
 type LoginForm = {
@@ -23,6 +24,7 @@ export default function Login() {
   const formRef = useRef(null);
   const tokenRef = useRef<null | string>(null);
   const dispatch: AppDispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleSubmitForm = async (data: LoginForm) => {
     if (loginState === 'phoneNumber') {
@@ -50,6 +52,7 @@ export default function Login() {
       Cookies.set('token', res.token, {expires: 30 * 24 * 60 * 60, path: '/'});
       if (res.user) {
         dispatch(user());
+        navigate('/');
       }
     }
   };

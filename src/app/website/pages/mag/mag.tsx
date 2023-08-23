@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {Box, Typography, Drawer, Container, Paper, Stack} from '@mui/material';
 import {theme} from '../../../../mui';
 import {Swiper, SwiperSlide} from 'swiper/react';
@@ -8,6 +7,7 @@ import 'swiper/css/autoplay';
 import nail from '../../../../assets/img/category-nail.png';
 import eyebrow from '../../../../assets/img/category-eyebrow.png';
 import hair from '../../../../assets/img/category-hair.png';
+import {SwipeableDrawer} from '@mui/material';
 
 const categories = [
   {
@@ -17,7 +17,7 @@ const categories = [
 
 export default function Mag() {
   return (
-    <Box bgcolor={theme.palette.pink.main}>
+    <Box bgcolor="var(--mid-pink)">
       <Container component="section" sx={{py: 2}}>
         <Typography variant="h6" component="h1">
           مقالات و اخبار

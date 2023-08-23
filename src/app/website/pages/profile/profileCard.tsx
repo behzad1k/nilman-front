@@ -1,17 +1,25 @@
 import {ProfilePicture} from '../../../../components';
 import {PencilLine} from '@phosphor-icons/react';
 import {useEffect, useRef, useState} from 'react';
+import {api} from '../../../../services/http';
+import {urls} from '../../../../services/endPoint';
 
-export function ProfileCard() {
+type Props = {
+  initName: string;
+  initLastName: string;
+  initNationalCode: string;
+};
+
+export function ProfileCard({initName, initLastName, initNationalCode}: Props) {
   const [nameDisabled, setNameDisabled] = useState(true);
   const nameRef = useRef<HTMLInputElement>(null);
-  const [name, setName] = useState('');
+  const [name, setName] = useState(initName);
   const [lastNameDisabled, setLastNameDisabled] = useState(true);
   const lastNameRef = useRef<HTMLInputElement>(null);
-  const [lastName, setLastName] = useState('');
+  const [lastName, setLastName] = useState(initLastName);
   const [socialIdDisabled, setSocialIdDisabled] = useState(true);
   const socialIdRef = useRef<HTMLInputElement>(null);
-  const [socialId, setSocialId] = useState('');
+  const [socialId, setSocialId] = useState(initNationalCode);
 
   useEffect(() => {
     !nameDisabled && nameRef.current?.focus();
@@ -25,6 +33,22 @@ export function ProfileCard() {
     !socialIdDisabled && socialIdRef.current?.focus();
   }, [socialIdDisabled]);
 
+  useEffect(() => {
+    const updateUser = async () => {
+      const reqOptions = {
+        method: 'put',
+        body: {
+          name,
+          lastName,
+          nationalCode: socialId,
+        },
+      };
+      const res = await api(urls.updateSimpleUser, reqOptions, true);
+      console.log(res);
+    };
+    updateUser();
+  }, [name, lastName, socialId]);
+
   return (
     <section className="infoBox">
       <h4>پروفایل</h4>
@@ -32,7 +56,7 @@ export function ProfileCard() {
         <div className="profileCardDetails">
           <span className="iconInput">
             <input
-              placeholder={name == '' ? 'نام' : name}
+              placeholder={name ? name : 'نام'}
               className="profileCardInput"
               disabled={nameDisabled}
               ref={nameRef}
@@ -52,7 +76,7 @@ export function ProfileCard() {
           </span>
           <span className="iconInput">
             <input
-              placeholder={lastName == '' ? 'نام خانوادگی' : lastName}
+              placeholder={lastName ? lastName : 'نام خانوادگی'}
               className="profileCardInput"
               disabled={lastNameDisabled}
               ref={lastNameRef}
@@ -72,7 +96,7 @@ export function ProfileCard() {
           </span>
           <span className="iconInput">
             <input
-              placeholder={socialId == '' ? 'کد ملی' : socialId}
+              placeholder={socialId ? socialId : 'کد ملی'}
               className="profileCardInput"
               disabled={socialIdDisabled}
               ref={socialIdRef}

@@ -1,4 +1,11 @@
-import {FormControl, InputLabel, Select, MenuItem} from '@mui/material';
+// @ts-nocheck
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  StandardTextFieldProps,
+} from '@mui/material';
 import {Controller} from 'react-hook-form';
 
 type option = {
@@ -6,33 +13,56 @@ type option = {
   value: string;
 };
 
-type Props = {
+interface Props extends StandardTextFieldProps {
   name: string;
   label: string;
   defaultValue: string | number;
   control: any;
   options: option[];
-};
+  customOnChange?: (val: any) => void;
+}
 
-export function SelectInput({name, label, control, defaultValue, options}: Props) {
+export function SelectInput({
+  name,
+  label,
+  control,
+  defaultValue,
+  options,
+  customOnChange,
+  ...props
+}: Props) {
   return (
     <FormControl>
-      <InputLabel>{label}</InputLabel>
+      <InputLabel id={name}>{label}</InputLabel>
       <Controller
         name={name}
         control={control}
-        render={({field: {onChange, value = defaultValue}}) => (
-          <Select size="small" onChange={onChange} value={value} variant="standard">
-            <MenuItem key={null} value="">
-              انتخاب نشده
-            </MenuItem>
-            {options.map((option) => (
-              <MenuItem key={option.slug} value={option.slug}>
-                {option.value}
+        render={({field: {onChange, value = defaultValue}}) => {
+          const handleOnChange = (event) => {
+            if (customOnChange) customOnChange(event);
+            return onChange(event);
+          };
+          return (
+            <Select
+              labelId={name}
+              id={name}
+              size="small"
+              onChange={handleOnChange}
+              value={value}
+              label={label}
+              {...props}
+            >
+              <MenuItem key={null} value="">
+                انتخاب نشده
               </MenuItem>
-            ))}
-          </Select>
-        )}
+              {options.map((option) => (
+                <MenuItem key={option.slug} value={option.slug}>
+                  {option.value}
+                </MenuItem>
+              ))}
+            </Select>
+          );
+        }}
       />
     </FormControl>
   );
