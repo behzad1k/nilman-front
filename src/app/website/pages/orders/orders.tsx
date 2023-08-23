@@ -14,7 +14,7 @@ import {order} from '../../../../services/redux/reducers/orderSlice.ts';
 
 export default function Orders() {
   const dispatch: AppDispatch = useAppDispatch();
-  const {role, orders} = useAppSelector((state) => state.userReducer.data);
+  const orders = useAppSelector((state) => state.orderReducer);
 
   useEffect(() => {
     dispatch(order());

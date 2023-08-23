@@ -1,18 +1,23 @@
 import {Box, Typography, Button} from '@mui/material';
 import {X} from '@phosphor-icons/react';
 import {formatPrice} from '../../../../utils/utils';
-import {AppDispatch, useAppDispatch} from '../../../../services/redux/store.ts';
+import {
+  AppDispatch,
+  useAppDispatch,
+  useAppSelector,
+} from '../../../../services/redux/store.ts';
 import {useEffect} from 'react';
 import {cart} from '../../../../services/redux/reducers/cartSlice.ts';
 
 function CartItem() {
   const dispatch: AppDispatch = useAppDispatch();
+  const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
 
   useEffect(() => {
     dispatch(cart());
   }, []);
 
-  return (
+  return cartItems.length ? (
     <Box
       component="article"
       sx={{
@@ -52,7 +57,7 @@ function CartItem() {
         </Button>
       </Box>
     </Box>
-  );
+  ) : null;
 }
 
 export default function Cart() {
