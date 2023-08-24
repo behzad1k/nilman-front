@@ -14,7 +14,7 @@ type fetchType = {
 
 const api = async (url: string, request: fetchType = {}, useToken = false) => {
   // const baseUrl = config.baseUrl;
-  const baseUrl = 'http://nilman.sytes.net:9001';
+  const baseUrl = 'http://localhost:9001';
   const headers = request.headers || {};
   if (useToken) headers.Authorization = `Bearer ${Cookies.get('token')}`;
   if (!headers['content-type']) {

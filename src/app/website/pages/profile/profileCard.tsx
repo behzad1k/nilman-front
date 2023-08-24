@@ -34,7 +34,6 @@ export function ProfileCard({initName, initLastName, initNationalCode}: Props) {
   }, [socialIdDisabled]);
 
   useEffect(() => {
-    const updateUser = async () => {
       const reqOptions = {
         method: 'put',
         body: {
@@ -43,10 +42,7 @@ export function ProfileCard({initName, initLastName, initNationalCode}: Props) {
           nationalCode: socialId,
         },
       };
-      const res = await api(urls.updateSimpleUser, reqOptions, true);
-      console.log(res);
-    };
-    updateUser();
+      const res = api(urls.updateSimpleUser, reqOptions, true);
   }, [name, lastName, socialId]);
 
   return (

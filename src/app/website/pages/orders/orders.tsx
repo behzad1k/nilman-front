@@ -1,6 +1,6 @@
 import OrderCard from './orderCard.tsx';
 import Cart from './cart.tsx';
-import {IService} from '../../../../services/types.ts';
+import { IOrder, IService } from '../../../../services/types.ts';
 import {Typography, Box, Container} from '@mui/material';
 import {api} from '../../../../services/http.ts';
 import {urls} from '../../../../services/endPoint.ts';
@@ -14,8 +14,7 @@ import {order} from '../../../../services/redux/reducers/orderSlice.ts';
 
 export default function Orders() {
   const dispatch: AppDispatch = useAppDispatch();
-  const orders = useAppSelector((state) => state.orderReducer);
-
+  const orders = useAppSelector(state => state.orderReducer.orders);
   // const service: IService = {
   //   title: 'ناخن',
   //   address: 'فرمانیه',
@@ -45,9 +44,8 @@ export default function Orders() {
           <Typography variant="h5" component="h1">
             سفارش های جدید
           </Typography>
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
+          {orders.map((value: IOrder, index) => <OrderCard item={value} key={index}/>)}
+
         </Box>
         {/* <Box component="section" sx={{display: 'flex', flexDirection: 'column', gap: 4}}>
           <Typography variant="h5" component="h1">

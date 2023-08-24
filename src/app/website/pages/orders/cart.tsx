@@ -9,7 +9,10 @@ import {
   useAppSelector,
 } from '../../../../services/redux/store.ts';
 
-function CartItem() {
+interface ICartItemProps{
+  item: IOrder
+}
+const CartItem = ({item}: ICartItemProps) => {
 
   return (
     <Box
@@ -22,15 +25,15 @@ function CartItem() {
         p: 1,
       }}
     >
-      <Typography>ناخن، لاک ژل</Typography>
+      <Typography> {item.service?.title} ، {item.attribute?.title}</Typography>
       <Box display="flex" alignItems="center" gap={1}>
         <Typography
           variant="caption"
           sx={{textDecoration: 'line-through', color: 'crimson'}}
         >
-          {formatPrice(2400000)}
+          {item.discount > 0 && formatPrice(item.discount)}
         </Typography>
-        <Typography variant="subtitle2">{formatPrice(2100000)}</Typography>
+        <Typography variant="subtitle2">{formatPrice(item.price)}</Typography>
       </Box>
       <Box display="flex" gap={1}>
         <Button
@@ -74,7 +77,7 @@ export default function Cart() {
         }}
       >
         {cartItems.map((value: IOrder, index) =>
-          <CartItem />
+          <CartItem item={value} key={index}/>
         )}
         <Button variant="contained">پرداخت</Button>
       </Box>

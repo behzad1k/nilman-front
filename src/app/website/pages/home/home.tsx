@@ -1,9 +1,16 @@
 import {InstagramLogo, Percent} from '@phosphor-icons/react';
+import { useEffect } from "react";
+import { initialApis } from "../../../../services/apis/global.ts";
+import { useAppDispatch } from "../../../../services/redux/store.ts";
 import {ISliderCardInfo} from '../../../../services/types.ts';
 import {Slider} from '../../../../components';
 import {BannerCard} from '../../../../components';
 
 export default function Home() {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    initialApis(dispatch)
+  }, []);
   const cardInfos1: ISliderCardInfo[] = [
     {
       title: 'لاک ژل',

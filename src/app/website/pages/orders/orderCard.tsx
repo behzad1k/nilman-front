@@ -2,11 +2,15 @@ import {useState} from 'react';
 import {Modal} from '../../../../components';
 import {Article, Icon, Calendar, MapPinLine, Money, User} from '@phosphor-icons/react';
 import {Box, Typography, Paper, Button} from '@mui/material';
+import { IOrder } from "../../../../services/types.ts";
 import OrderItem from './orderItem';
-
+// @ts-ignore
+import moment from 'jalali-moment';
 type UserType = 'worker' | 'user';
-
-export default function OrderCard() {
+interface IOrderCardProps {
+  item: IOrder
+}
+export default function OrderCard({item} : IOrderCardProps) {
   const [openModal, setOpenModal] = useState(false);
   const [userType, setUserType] = useState<UserType>('user');
 
@@ -30,7 +34,7 @@ export default function OrderCard() {
         }}
       >
         <Typography variant="body1" component="h2">
-          ناخن
+          {item.service.title}
         </Typography>
       </Box>
       <Box
@@ -41,11 +45,11 @@ export default function OrderCard() {
           gap: 1,
         }}
       >
-        <OrderItem Icon={Article} value="لاک ژل" />
-        <OrderItem Icon={Calendar} value="۱۴۰۲/۰۵/۰۱" />
-        <OrderItem Icon={MapPinLine} value="فرمانیه، پاسداران، خیابان نارنجستان چهارم" />
-        <OrderItem Icon={Money} value={Intl.NumberFormat().format(1200000)} />
-        <OrderItem Icon={User} value="آیدا شهابی" />
+        {item.attribute &&<OrderItem Icon={Article} value={item.attribute?.title} /> }
+        <OrderItem Icon={Calendar} value={moment(item.date).locale('fa').format('DD MMM , HH:mm')} />
+        <OrderItem Icon={MapPinLine} value={item.address?.description ?? ''} />
+        <OrderItem Icon={Money} value={Intl.NumberFormat().format(item.price)} />
+        <OrderItem Icon={User} value={item.worker ? (item.worker.name + item.worker.lastName) : 'در حال جست و جو'} />
         <Button
           variant="outlined"
           onClick={() => setOpenModal(true)}

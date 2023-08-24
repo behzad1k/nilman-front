@@ -33,6 +33,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     SET_LOGGED_IN: (state, action: PayloadAction<boolean>) => {
+      console.log(action.payload)
       state.isLoggedIn = action.payload;
     },
   },

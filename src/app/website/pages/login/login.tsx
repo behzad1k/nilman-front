@@ -3,12 +3,12 @@ import {TextInput} from '../../../../components';
 import {useForm} from 'react-hook-form';
 import {Typography, Container, Button, Box} from '@mui/material';
 import {useState} from 'react';
-import lock from '../../../../assets/img/lock.png';
 import {OtpInput} from '../../../../components';
+import { userApis } from "../../../../services/apis/global.ts";
 import {api} from '../../../../services/http';
 import {urls} from '../../../../services/endPoint';
 import {AppDispatch, useAppDispatch} from '../../../../services/redux/store';
-import {user} from '../../../../services/redux/reducers/userSlice';
+import { SET_LOGGED_IN, user } from '../../../../services/redux/reducers/userSlice';
 import Cookies from 'js-cookie';
 import {useNavigate} from 'react-router-dom';
 
@@ -25,6 +25,7 @@ export default function Login() {
   const tokenRef = useRef<null | string>(null);
   const dispatch: AppDispatch = useAppDispatch();
   const navigate = useNavigate();
+
 
   const handleSubmitForm = async (data: LoginForm) => {
     if (loginState === 'phoneNumber') {
@@ -49,9 +50,10 @@ export default function Login() {
         },
       };
       const res = await api(urls.check, reqOptions);
-      Cookies.set('token', res.token, {expires: 30 * 24 * 60 * 60, path: '/'});
-      if (res.user) {
-        dispatch(user());
+      if (res.code == 200) {
+        Cookies.set('token', res.data.token, {expires: 30 * 24 * 60 * 60, path: '/'});
+        dispatch(SET_LOGGED_IN(true))
+        await userApis(dispatch)
         navigate('/');
       }
     }
@@ -86,7 +88,7 @@ export default function Login() {
             borderRadius={50}
             sx={{backgroundColor: 'var(--white-pink-opacity)'}}
           >
-            <Box width={110} height={110} component="img" src={lock} />
+            <Box width={110} height={110} component="img" src='./img/lock.png' />
           </Box>
         </Box>
       </Container>

@@ -1,22 +1,22 @@
 import {HouseLine, MapTrifold, PhoneDisconnect} from '@phosphor-icons/react';
+import { IAddress } from "../../../../services/types.ts";
 
-export function AddressRow() {
+export function AddressRow({address}: {address: IAddress}) {
   return (
     <article className="addressContainer">
       <div className="addressDetails">
-        <span className="orderItem">
+        <span className="addressItem">
           <HouseLine />
-          <p>خانه محمود</p>
+          <p>{address.title}</p>
         </span>
-        <span className="orderItem">
+        <span className="addressItem">
           <PhoneDisconnect />
-          <p>۰۲۱-۲۱۳۳۲۵۲</p>
+          <p>{address.phoneNumber}</p>
         </span>
-        <span className="orderItem">
+        <span className="addressItem">
           <MapTrifold />
           <p>
-            فرمانیه فرمانیه فرمانیه فرمانیه فرمانیه فرمانیه فرمانیه فرمانیه فرمانیه
-            فرمانیه{' '}
+            {address.description}
           </p>
         </span>
       </div>

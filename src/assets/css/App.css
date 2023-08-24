@@ -292,6 +292,13 @@ main {
   flex-direction: column;
   align-self: stretch;
 }
+.addressItem {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-direction: row;
+}
 .addressMap {
   width: 40%;
   display: flex;

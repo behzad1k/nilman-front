@@ -1,6 +1,6 @@
 import {useEffect} from 'react';
 import {Routes, Route} from 'react-router-dom';
-import {initialApis} from '../../services/apis/global.ts';
+import { initialApis } from '../../services/apis/global.ts';
 import {AppDispatch, useAppDispatch} from '../../services/redux/store.ts';
 import Layout from './layout';
 import Home from './pages/home/home';
@@ -16,6 +16,7 @@ export default function Website() {
   useEffect(() => {
     initialApis(dispatch);
   }, []);
+
   return (
     <Routes>
       <Route

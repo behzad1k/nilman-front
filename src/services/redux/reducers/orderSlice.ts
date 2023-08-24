@@ -1,22 +1,14 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {urls} from '../../endPoint.ts';
-import {IUser} from '../../types.ts';
+import { IOrder, IUser } from '../../types.ts';
 import {api} from '../../http.ts';
 
 interface IOrderSlice {
-  service: string;
-  attribute: string;
-  addressId: number;
-  time: string;
-  date: number;
+  orders: IOrder[]
 }
 
 const initialState: IOrderSlice = {
-  service: '',
-  attribute: '',
-  addressId: 0,
-  time: '',
-  date: 0,
+  orders: []
 };
 export const order = createAsyncThunk('order/fetchOrder', async () => {
   return await api(urls.order, {}, true);
@@ -32,9 +24,8 @@ const orderSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(order.fulfilled, (state, action) => {
-      console.log(action.payload);
       if (action.payload.code === 200) {
-        state = action.payload.data;
+        state.orders = action.payload.data;
       }
     });
   },

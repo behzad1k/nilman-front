@@ -34,15 +34,16 @@ export interface IOrder {
   transportation: number;
   status: 'PAID' | 'DONE' | 'CREATED' | 'ASSIGNED' | 'CANCELED';
   worker: IUser,
-  service?: IService,
-  attribute?: IService
+  service: IService,
+  attribute?: IService,
+  address?: IAddress
 }
 export interface IUser {
   name: string;
   lastName: string;
   nationalCode: string;
   phoneNumber: string;
-  role: 'USER' | 'WORKER' | 'OPERATOR' | 'SUPERADMIN';
+  role: 'USER' | 'WORKER' | 'OPERATOR' | 'SUPER_ADMIN';
 }
 
 export interface ISliderCardInfo {
