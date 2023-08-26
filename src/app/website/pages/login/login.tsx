@@ -49,8 +49,10 @@ export default function Login() {
         },
       };
       const res = await api(urls.check, reqOptions);
-      Cookies.set('token', res.token, {expires: 30 * 24 * 60 * 60, path: '/'});
-      if (res.user) {
+      console.log(res);
+
+      Cookies.set('token', res.data.token, {expires: 30 * 24 * 60 * 60, path: '/'});
+      if (res.data.user) {
         dispatch(user());
         navigate('/');
       }

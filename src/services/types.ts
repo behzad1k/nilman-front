@@ -11,11 +11,12 @@
 // }
 
 export interface IService {
+  id: number;
   title: string;
   description: string;
   price: number;
   slug: string;
-  attributes?: IService[]
+  attributes?: IService[];
 }
 
 export interface IAddress {
@@ -27,17 +28,20 @@ export interface IAddress {
 }
 
 export interface IOrder {
+  id: number;
   title: string;
   price: number;
   date: string;
+  time: string;
   discount: number;
   transportation: number;
   status: 'PAID' | 'DONE' | 'CREATED' | 'ASSIGNED' | 'CANCELED';
-  worker: IUser,
-  service?: IService,
-  attribute?: IService
+  worker: IUser;
+  service?: IService;
+  attribute?: IService;
 }
 export interface IUser {
+  id: number;
   name: string;
   lastName: string;
   nationalCode: string;

@@ -1,5 +1,4 @@
 import {useState} from 'react';
-
 import {
   Table,
   TableBody,
@@ -11,50 +10,42 @@ import {
   Button,
 } from '@mui/material';
 
+import {IOrder} from '../../services/types';
+// @ts-ignore
+import moment from 'moment-jalali';
+
 interface Column {
   id:
-    | 'registrationDate'
-    | 'requestedService'
-    | 'fullName'
-    | 'phoneNumber'
-    | 'executionDate'
-    | 'executionTime'
-    | 'address'
+    | 'price'
+    | 'date'
+    | 'time'
+    | 'discount'
+    | 'transportation'
     | 'status'
-    | 'handler';
+    | 'worker'
+    | 'service'
+    | 'attribute';
   label: string;
   minWidth?: number;
   align?: 'right' | 'center' | 'left';
 }
 
-interface Data {
-  registrationDate: string;
-  requestedService: string;
-  fullName: string;
-  phoneNumber: string;
-  executionDate: string;
-  executionTime: string;
-  address: string;
-  status: string;
-  handler: string;
-}
-
 const columns: readonly Column[] = [
-  {id: 'registrationDate', label: 'تاریخ درخواست', minWidth: 150, align: 'center'},
-  {id: 'requestedService', label: 'سرویس درخواستی', minWidth: 150, align: 'center'},
-  {id: 'fullName', label: 'نام‌ و نام خانوادگی', minWidth: 170, align: 'center'},
-  {id: 'phoneNumber', label: 'تلفن همراه', minWidth: 100, align: 'center'},
-  {id: 'executionDate', label: 'تاریخ انجام', minWidth: 150, align: 'center'},
-  {id: 'executionTime', label: 'زمان انجام', minWidth: 150, align: 'center'},
-  {id: 'address', label: 'آدرس', minWidth: 250, align: 'center'},
-  {id: 'status', label: 'وضعیت', minWidth: 150, align: 'center'},
-  {id: 'handler', label: 'اجرا کننده', minWidth: 200, align: 'center'},
+  {id: 'date', label: 'تاریخ', minWidth: 120, align: 'center'},
+  {id: 'time', label: 'زمان', minWidth: 80, align: 'center'},
+  {id: 'service', label: 'خدمات', minWidth: 150, align: 'center'},
+  {id: 'attribute', label: 'زیر دسته', minWidth: 150, align: 'center'},
+  {id: 'status', label: 'وضعیت', minWidth: 120, align: 'center'},
+  {id: 'worker', label: 'آرایشگر', minWidth: 150, align: 'center'},
+  {id: 'price', label: 'قیمت', minWidth: 100, align: 'center'},
+  {id: 'discount', label: 'تخفیف', minWidth: 80, align: 'center'},
+  {id: 'transportation', label: 'ایاب ذهاب', minWidth: 120, align: 'center'},
 ];
 
 type Props = {
-  rows: Data[];
+  rows: IOrder[];
   setOpenModal: (val: boolean) => void;
-  setEditData: (val: Data) => void;
+  setEditData: (val: IOrder) => void;
 };
 
 export function OrdersTable({rows, setOpenModal, setEditData}: Props) {
@@ -65,9 +56,29 @@ export function OrdersTable({rows, setOpenModal, setEditData}: Props) {
     setPage(newPage);
   };
 
-  const handleOpenEditModal = (data: Data) => {
+  const handleOpenEditModal = (data: IOrder) => {
     setOpenModal(true);
     setEditData(data);
+  };
+
+  const formatOrderData = (type: string, value: any) => {
+    switch (type) {
+      case 'address':
+        return value.description;
+      case 'attribute':
+        return value.title;
+      case 'date':
+        return moment.unix(value).format('jMM/jDD/jYYYY');
+      case 'service':
+        return value.title;
+      case 'time':
+        return value.split('_').join(' - ');
+      case 'worker':
+        console.log(value);
+        return `${value.name} ${value.lastName}`;
+      default:
+        return value;
+    }
   };
 
   return (
@@ -98,7 +109,7 @@ export function OrdersTable({rows, setOpenModal, setEditData}: Props) {
                       const value = row[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          {value}
+                          {value ? formatOrderData(column.id, value) : '-'}
                         </TableCell>
                       );
                     })}

@@ -1,16 +1,17 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {urls} from '../../endPoint.ts';
-import { IAddress, IUser } from '../../types.ts';
+import {IAddress, IUser} from '../../types.ts';
 import {api} from '../../http.ts';
 
 interface IUserSlice {
   data: IUser;
-  addresses: IAddress[]
+  addresses: IAddress[];
   isLoggedIn: boolean;
 }
 
 const initialState: IUserSlice = {
   data: {
+    id: 0,
     name: '',
     lastName: '',
     nationalCode: '',
@@ -18,7 +19,7 @@ const initialState: IUserSlice = {
     role: 'USER',
   },
   addresses: [],
-  isLoggedIn: false
+  isLoggedIn: false,
 };
 export const user = createAsyncThunk('user/fetchUser', async () => {
   return await api(urls.getUser, {}, true);
@@ -37,13 +38,15 @@ const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.
-      addCase(user.fulfilled, (state, action) => {
+    builder
+      .addCase(user.fulfilled, (state, action) => {
         if (action.payload.code == 200) {
+          console.log(action.payload);
+
           state.data = action.payload.data;
         }
       })
-    .addCase(addresses.fulfilled, (state, action) => {
+      .addCase(addresses.fulfilled, (state, action) => {
         if (action.payload.code == 200) {
           state.addresses = action.payload.data;
         }
