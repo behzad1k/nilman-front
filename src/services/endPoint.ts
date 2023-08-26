@@ -12,4 +12,5 @@ export const urls = {
   address: '/address',
   order: '/order',
   cart: '/order/cart',
+  pay: '/order/pay'
 };

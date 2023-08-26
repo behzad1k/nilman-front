@@ -7,9 +7,6 @@ export function Header() {
   return (
     <header className="header">
       <h2>nilman</h2>
-      <Link to="/dashboard" style={{position: 'absolute', right: '0'}}>
-        <Button variant="text">داشبورد (تست)</Button>
-      </Link>
     </header>
   );
 }

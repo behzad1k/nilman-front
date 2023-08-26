@@ -1,8 +1,10 @@
 // @ts-nocheck
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../../../services/redux/store.ts";
 import {ProfileCard} from './profileCard.tsx';
 import {Addresses} from './Addresses.tsx';
 import Mapir from 'mapir-react-component';
-import {useAppSelector} from '../../../../services/redux/store.ts';
 
 const Map = Mapir.setToken({
   transformRequest: (url) => {
@@ -18,15 +20,16 @@ const Map = Mapir.setToken({
 });
 
 export default function Profile() {
-  const user = useAppSelector((state) => state.userReducer.data);
-
+  const loggedIn = useAppSelector(state => state.userReducer.isLoggedIn)
+  const navigate = useNavigate();
+  useEffect(() => {
+    if(!loggedIn){
+      navigate('/login')
+    }
+  }, []);
   return (
     <main className="profileMain">
-      <ProfileCard
-        initName={user.name}
-        initLastName={user.lastName}
-        initNationalCode={user.nationalCode}
-      />
+      <ProfileCard />
       <h3>آدرس ها</h3>
       <Addresses />
 

@@ -35,8 +35,8 @@ export default function Login() {
         body: data,
       };
       const res = await api(urls.login, reqOptions);
-      console.log(res);
       if (res.code) {
+        alert(res.code)
         tokenRef.current = res.token;
         setLoginState('otp');
       }
@@ -53,8 +53,10 @@ export default function Login() {
       if (res.code == 200) {
         Cookies.set('token', res.data.token, {expires: 30 * 24 * 60 * 60, path: '/'});
         dispatch(SET_LOGGED_IN(true))
+        console.log(res.data.user.role)
         await userApis(dispatch)
-        navigate('/');
+        if (res.data.user.role === 'SUPER_ADMIN') navigate('/dashboard')
+        else navigate('/');
       }
     }
   };

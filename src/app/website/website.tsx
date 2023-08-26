@@ -1,5 +1,7 @@
 import {useEffect} from 'react';
 import {Routes, Route} from 'react-router-dom';
+import App from "../../App.tsx";
+import { AppBar } from "../../components";
 import { initialApis } from '../../services/apis/global.ts';
 import {AppDispatch, useAppDispatch} from '../../services/redux/store.ts';
 import Layout from './layout';
@@ -55,13 +57,18 @@ export default function Website() {
         path="/mag"
         element={
           <>
-            <Layout>
-              <Mag />
-            </Layout>
+            <Mag />
+            <AppBar/>
           </>
         }
       />
-      <Route path="/login" element={<Login />} />
+      <Route path="/login" element={
+        <>
+          <Login />
+        <AppBar/>
+        </>
+      }
+      />
     </Routes>
   );
 }

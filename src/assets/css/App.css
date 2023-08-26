@@ -348,6 +348,49 @@ main {
   align-items: center;
   justify-content: center;
 }
+
+
+.infoBox.orderRow{
+  padding-top: 5px;
+  align-items: center;
+}
+.orderItem{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+}
+.orderRow > div{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+}
+.orderRowDetails {
+  display: flex;
+  width: 70%;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+}
+.orderRowProfile {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.orderRowProfile > p{
+  font-size: 13px;
+}
+.itemRowDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
 /*
   -----------------------------------------------------components------------------------------------------------------
 */
@@ -483,6 +526,26 @@ main {
   border-radius: 45px;
   width: 100%;
   height: 100%;
+}
+.pfpButtons {
+  position: absolute;
+  z-index: 300;
+}
+
+.pfpButtons > * {
+  z-index: 300;
+  position: absolute;
+  background-color: rgba(224, 222, 222, 1);
+  border-radius: 20px;
+  padding: 5px;
+  top: 27px;
+
+}
+.pfpButtons > .logout {
+  right: 7vw;
+}
+.pfpButtons > .edit {
+  left: 7vw;
 }
 .profilePicture img {
   max-width: 100%;

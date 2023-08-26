@@ -1,6 +1,10 @@
 import {Box, Typography, Button} from '@mui/material';
 import {X} from '@phosphor-icons/react';
 import { ReactElement } from "react";
+import { urls } from "../../../../services/endPoint.ts";
+import { api } from "../../../../services/http.ts";
+import { cart } from "../../../../services/redux/reducers/cartSlice.ts";
+import { order } from "../../../../services/redux/reducers/orderSlice.ts";
 import { IOrder } from "../../../../services/types.ts";
 import {formatPrice} from '../../../../utils/utils';
 import {
@@ -13,6 +17,20 @@ interface ICartItemProps{
   item: IOrder
 }
 const CartItem = ({item}: ICartItemProps) => {
+  const dispatch = useAppDispatch();
+  const removeItem = async (itemId: number) => {
+    const res = await api(urls.order, {
+      method: 'DELETE',
+      body:{
+        orderId: itemId
+      }
+    },true)
+    console.log(res.code)
+    if (res.code == 200) {
+      dispatch(cart());
+      dispatch(order());
+    }
+  }
 
   return (
     <Box
@@ -50,7 +68,7 @@ const CartItem = ({item}: ICartItemProps) => {
           variant="contained"
           sx={{bgcolor: 'var(--light-pink)', ':hover': {bgcolor: 'var(--mid-pink)'}}}
         >
-          <X size={20} color="var(--light-black)" />
+          <X size={20} color="var(--light-black)" onClick={() => removeItem(item.id)} />
         </Button>
       </Box>
     </Box>
@@ -59,7 +77,18 @@ const CartItem = ({item}: ICartItemProps) => {
 
 export default function Cart() {
   const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
+  const dispatch = useAppDispatch();
 
+  const pay = async () => {
+    const res = await api(urls.pay, {
+      method: 'POST'
+    }, true)
+
+    if (res.code == 200){
+      dispatch(cart());
+      dispatch(order());
+    }
+  }
   return (
     <Box component="section" width="100%">
       <Typography variant="h5" component="h1" mb={4}>
@@ -76,10 +105,14 @@ export default function Cart() {
           borderRadius: 1,
         }}
       >
-        {cartItems.map((value: IOrder, index) =>
-          <CartItem item={value} key={index}/>
-        )}
-        <Button variant="contained">پرداخت</Button>
+        {cartItems.length < 1 ?
+          <Typography>سبد خرید شما خالی است</Typography> :
+          cartItems.map((value: IOrder, index) =>
+            <>
+              <CartItem item={value} key={index}/>
+              <Button variant="contained" onClick={pay}>پرداخت</Button>
+            </>
+          )}
       </Box>
     </Box>
   );

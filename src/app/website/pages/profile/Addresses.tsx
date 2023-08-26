@@ -1,5 +1,6 @@
 import {useState} from 'react';
-import { useAppSelector } from "../../../../services/redux/store.ts";
+import { addresses } from "../../../../services/redux/reducers/userSlice.ts";
+import { useAppDispatch, useAppSelector } from "../../../../services/redux/store.ts";
 import { IAddress } from "../../../../services/types.ts";
 import {AddressRow} from './addressRow.tsx';
 import {Button, Typography, Box} from '@mui/material';
@@ -10,9 +11,9 @@ import {urls} from '../../../../services/endPoint.ts';
 
 export const Addresses = () => {
   const [openModal, setOpenModal] = useState(false);
-  const addresses = useAppSelector(state => state.userReducer.addresses)
+  const userAddresses = useAppSelector(state => state.userReducer.addresses)
   const {reset, handleSubmit, control} = useForm();
-
+  const dispatch = useAppDispatch();
   const handleSubmitAddAddress = async (data: FieldValues) => {
     const reqOptions = {
       method: 'post',
@@ -23,12 +24,13 @@ export const Addresses = () => {
       },
     };
     const res = await api(urls.address, reqOptions, true);
-    console.log(res);
+    dispatch(addresses())
+    setOpenModal(false)
   };
 
   return (
     <section className="addressSection">
-      {addresses.map((value: IAddress, index) => <AddressRow address={value} key={index} />)}
+      {userAddresses.map((value: IAddress, index) => <AddressRow address={value} key={index} />)}
       <Button onClick={() => setOpenModal(true)}>افزودن آدرس</Button>
       <Modal open={openModal} setOpen={setOpenModal}>
         <Typography variant="h6" component="h2" marginBottom={4}>

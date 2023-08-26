@@ -2,10 +2,12 @@
 import {useForm, FieldValues} from 'react-hook-form';
 import {useEffect, useState} from 'react';
 import {Button, Box} from '@mui/material';
+import { cart } from "../../../../services/redux/reducers/cartSlice.ts";
+import { order } from "../../../../services/redux/reducers/orderSlice.ts";
 import {formatPrice} from '../../../../utils/utils.ts';
 import moment from 'moment-jalali';
 import {DatePicker} from 'react-persian-datepicker';
-import {useAppSelector} from '../../../../services/redux/store.ts';
+import { useAppDispatch, useAppSelector } from '../../../../services/redux/store.ts';
 import {IService} from '../../../../services/types.ts';
 import {TextInput, SelectInput} from '../../../../components';
 import {api} from '../../../../services/http.ts';
@@ -32,25 +34,22 @@ export default function NewOrder() {
   const defaultDate = moment(new Date());
   const services = useAppSelector((state) => state.serviceReducer.services);
   const addresses = useAppSelector((state) => state.userReducer.data.addresses);
+  const dispatch = useAppDispatch();
   const servicesOptions = services.map((service) => {
     const {title: value, slug} = service;
     return {value, slug};
   });
-  const addressOptions = addresses.map((address) => {
+  const addressOptions = addresses?.map((address) => {
     const {id: slug, title: value} = address;
     return {slug, value};
   });
 
   const {register, handleSubmit, control, getValues, reset} = useForm();
 
-  useEffect(() => {
-    console.log(date);
-  }, [date]);
-
   const onSelectService = (e) => {
-    const children = services.filter((service) => service.slug === e.target.value)[0]
-      .attributes;
-    if (children.length) {
+    const service = services.find((service) => service.slug === e.target.value)
+    const children = service?.attributes?.length ? service.attributes : []
+    if (children?.length) {
       setServiceChildren(
         children.map((child) => {
           const {slug, title: value} = child;
@@ -92,8 +91,11 @@ export default function NewOrder() {
       },
     };
     const res = await api(urls.order, reqOptions, true);
-    console.log(res);
-    if (res.code === 201) reset();
+    if (res.code === 201) {
+      reset()
+      dispatch(order())
+      dispatch(cart())
+    };
   };
 
   return (
@@ -105,7 +107,7 @@ export default function NewOrder() {
           label="آدرس"
           control={control}
           defaultValue=""
-          options={addressOptions}
+          options={addressOptions ?? []}
           size="medium"
           sx={{
             '& .MuiOutlinedInput-notchedOutline': {
@@ -121,7 +123,7 @@ export default function NewOrder() {
           control={control}
           defaultValue=""
           customOnChange={onSelectService}
-          options={servicesOptions}
+          options={servicesOptions ?? []}
           size="medium"
           sx={{
             '& .MuiOutlinedInput-notchedOutline': {
@@ -137,7 +139,7 @@ export default function NewOrder() {
             label="نوع"
             control={control}
             defaultValue=""
-            options={serviceChildren}
+            options={serviceChildren ?? []}
             size="medium"
             sx={{
               '& .MuiOutlinedInput-notchedOutline': {
@@ -196,7 +198,7 @@ export default function NewOrder() {
           />
         </div>
         <Button variant="contained" type="submit">
-          ثبت
+          افزودن به سبد خرید
         </Button>
       </form>
       <div className="infoBox">

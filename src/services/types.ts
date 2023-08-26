@@ -27,9 +27,11 @@ export interface IAddress {
 }
 
 export interface IOrder {
+  id: number;
   title: string;
   price: number;
   date: string;
+  time: string;
   discount: number;
   transportation: number;
   status: 'PAID' | 'DONE' | 'CREATED' | 'ASSIGNED' | 'CANCELED';

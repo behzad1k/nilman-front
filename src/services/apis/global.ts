@@ -1,18 +1,21 @@
+import Cookies from "js-cookie";
 import { urls } from "../endPoint.ts";
 import { api } from "../http.ts";
 import { cart } from "../redux/reducers/cartSlice.ts";
 import { order } from "../redux/reducers/orderSlice.ts";
 import { services } from "../redux/reducers/serviceSlice.ts";
 import { addresses, SET_LOGGED_IN, user } from "../redux/reducers/userSlice.ts";
-import store from "../redux/store.ts";
 
 export const initialApis = async (dispatch: any) => {
-  const isLoggedIn = await api(urls.getUser, {}, true)
-  dispatch(SET_LOGGED_IN(true))
+
   await Promise.all([
     dispatch(services())
   ])
-  if (isLoggedIn){
+
+  const res = await api(urls.getUser, {}, true)
+  console.log(res)
+  if (res.code == 200) {
+    dispatch(SET_LOGGED_IN(true))
     userApis(dispatch)
   }
 }
@@ -23,4 +26,10 @@ export const userApis = async (dispatch: any) => {
     dispatch(user()),
     dispatch(addresses())
   ])
+}
+
+export const logout = (dispatch: any) => {
+  dispatch(SET_LOGGED_IN(false))
+  Cookies.set('token','');
+  window.location.reload();
 }
