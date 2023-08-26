@@ -83,7 +83,7 @@ export default function OrderCard({item} : IOrderCardProps) {
         >
           جزئیات
         </Button>
-        {item.status === 'ASSIGNED' && (
+        {item.status !== 'ACCEPTED' && (
             <Box display="flex" gap={1}>
               <Button
                   fullWidth
