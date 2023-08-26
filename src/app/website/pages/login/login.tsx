@@ -3,7 +3,7 @@ import {TextInput} from '../../../../components';
 import {useForm} from 'react-hook-form';
 import {Typography, Container, Button, Box} from '@mui/material';
 import {useState} from 'react';
-import lock from '../../../../assets/img/lock.png';
+import lock from './public/img/lock.png';
 import {OtpInput} from '../../../../components';
 import { userApis } from "../../../../services/apis/global.ts";
 import {api} from '../../../../services/http';
@@ -91,7 +91,7 @@ export default function Login() {
             borderRadius={50}
             sx={{backgroundColor: 'var(--white-pink-opacity)'}}
           >
-            <Box width={110} height={110} component="img" src={lock} />
+            <Box width={110} height={110} component="img" src='./img/lock.png' />
           </Box>
         </Box>
       </Container>
