@@ -36,12 +36,13 @@ export interface IOrder {
   discount: number;
   transportation: number;
   status: 'PAID' | 'DONE' | 'CREATED' | 'ASSIGNED' | 'CANCELED';
-  worker: IUser,
-  service: IService,
-  attribute?: IService,
-  address?: IAddress
+  worker: IUser;
+  service: IService;
+  attribute?: IService;
+  address?: IAddress;
 }
 export interface IUser {
+  id: number;
   name: string;
   lastName: string;
   nationalCode: string;

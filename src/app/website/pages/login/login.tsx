@@ -5,11 +5,11 @@ import {Typography, Container, Button, Box} from '@mui/material';
 import {useState} from 'react';
 import lock from '../../../../assets/img/lock.png';
 import {OtpInput} from '../../../../components';
-import { userApis } from "../../../../services/apis/global.ts";
+import {userApis} from '../../../../services/apis/global.ts';
 import {api} from '../../../../services/http';
 import {urls} from '../../../../services/endPoint';
 import {AppDispatch, useAppDispatch} from '../../../../services/redux/store';
-import { SET_LOGGED_IN, user } from '../../../../services/redux/reducers/userSlice';
+import {SET_LOGGED_IN, user} from '../../../../services/redux/reducers/userSlice';
 import Cookies from 'js-cookie';
 import {useNavigate} from 'react-router-dom';
 
@@ -37,7 +37,7 @@ export default function Login() {
       const res = await api(urls.login, reqOptions);
       console.log(res);
       if (res.code) {
-        alert(res.code)
+        alert(res.code);
         tokenRef.current = res.token;
         setLoginState('otp');
       }
@@ -53,10 +53,10 @@ export default function Login() {
       const res = await api(urls.check, reqOptions);
       if (res.code == 200) {
         Cookies.set('token', res.data.token, {expires: 30 * 24 * 60 * 60, path: '/'});
-        dispatch(SET_LOGGED_IN(true))
-        console.log(res.data.user.role)
-        await userApis(dispatch)
-        if (res.data.user.role === 'SUPER_ADMIN') navigate('/dashboard')
+        dispatch(SET_LOGGED_IN(true));
+        console.log(res.data.user.role);
+        await userApis(dispatch);
+        if (res.data.user.role === 'SUPER_ADMIN') navigate('/dashboard');
         else navigate('/');
       }
     }

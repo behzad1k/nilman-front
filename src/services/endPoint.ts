@@ -4,7 +4,7 @@ export const urls = {
   check: '/check',
   getUser: '/user',
   updateSimpleUser: '/user',
-  createService: '/admin/service/create',
+  createService: '/admin/service',
   register: '/admin/user',
   getUsers: '/admin/user',
   updateUser: '/admin/user',
