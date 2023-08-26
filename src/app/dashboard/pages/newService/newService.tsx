@@ -37,7 +37,7 @@ export default function NewService() {
         parent: data.parent,
       },
     };
-    const res = await api(urls.createService, reqOptions, true);
+    const res = await api(urls.services, reqOptions, true);
     console.log(res);
   };
   return (
