@@ -110,9 +110,10 @@ export default function Cart() {
           cartItems.map((value: IOrder, index) =>
             <>
               <CartItem item={value} key={index}/>
-              <Button variant="contained" onClick={pay}>پرداخت</Button>
             </>
           )}
+        <Button variant="contained" onClick={pay}>پرداخت</Button>
+
       </Box>
     </Box>
   );
