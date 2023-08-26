@@ -12,5 +12,7 @@ export const urls = {
   address: '/address',
   order: '/order',
   cart: '/order/cart',
-  pay: '/order/pay'
+  pay: '/order/pay',
+  adminOrder: '/admin/order',
+  adminOrderUpdate: '/admin/order/update',
 };

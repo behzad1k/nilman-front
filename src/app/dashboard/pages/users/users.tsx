@@ -19,7 +19,7 @@ import {api} from '../../../../services/http';
 import {urls} from '../../../../services/endPoint';
 
 interface Column {
-  id: 'name' | 'lastName' | 'nationalCode' | 'phoneNumber' | 'addresses';
+  id: 'name' | 'lastName' | 'nationalCode' | 'phoneNumber';
   label: string;
   minWidth?: number;
   align?: 'right' | 'center' | 'left';
@@ -31,7 +31,7 @@ const columns: readonly Column[] = [
   {id: 'lastName', label: 'نام خانوادگی ', minWidth: 170, align: 'center'},
   {id: 'nationalCode', label: 'کدملی', minWidth: 170, align: 'center'},
   {id: 'phoneNumber', label: 'تلفن همراه', minWidth: 100, align: 'center'},
-  {id: 'addresses', label: 'آدرس', minWidth: 250, align: 'center'},
+  // {id: 'addresses', label: 'آدرس', minWidth: 250, align: 'center'},
 ];
 
 interface Data {
@@ -41,7 +41,7 @@ interface Data {
   nationalCode: string;
   phoneNumber: string;
   role: string;
-  addresses: [];
+  // addresses: [];
   orders: [];
 }
 
@@ -172,7 +172,7 @@ export default function Users() {
                         const value = user[column.id];
                         return (
                           <TableCell key={column.id} align={column.align}>
-                            {value.length ? value : '-'}
+                            {value ? value : '-'}
                           </TableCell>
                         );
                       })}

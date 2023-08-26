@@ -3,6 +3,7 @@ import {TextInput} from '../../../../components';
 import {useForm} from 'react-hook-form';
 import {Typography, Container, Button, Box} from '@mui/material';
 import {useState} from 'react';
+import lock from '../../../../assets/img/lock.png';
 import {OtpInput} from '../../../../components';
 import { userApis } from "../../../../services/apis/global.ts";
 import {api} from '../../../../services/http';
@@ -26,7 +27,6 @@ export default function Login() {
   const dispatch: AppDispatch = useAppDispatch();
   const navigate = useNavigate();
 
-
   const handleSubmitForm = async (data: LoginForm) => {
     if (loginState === 'phoneNumber') {
       // Send phonenumber here ...
@@ -35,6 +35,7 @@ export default function Login() {
         body: data,
       };
       const res = await api(urls.login, reqOptions);
+      console.log(res);
       if (res.code) {
         alert(res.code)
         tokenRef.current = res.token;
@@ -90,7 +91,7 @@ export default function Login() {
             borderRadius={50}
             sx={{backgroundColor: 'var(--white-pink-opacity)'}}
           >
-            <Box width={110} height={110} component="img" src='./img/lock.png' />
+            <Box width={110} height={110} component="img" src={lock} />
           </Box>
         </Box>
       </Container>

@@ -1,28 +1,25 @@
 import {SelectInput} from '../common/selectInput';
-
+import {useEffect, useState} from 'react';
 import {Box, Button, Typography} from '@mui/material';
-
+import {api} from '../../services/http';
+import {urls} from '../../services/endPoint';
 import {useForm} from 'react-hook-form';
-
-interface Data {
-  registrationDate: string;
-  requestedService: string;
-  fullName: string;
-  phoneNumber: string;
-  executionDate: string;
-  executionTime: string;
-  address: string;
-  status: string;
-  handler: string;
-}
+import {IOrder, IUser} from '../../services/types';
 
 type Props = {
-  editData: Data | null;
-  setEditData: (val: Data | null) => void;
+  editData: IOrder | null;
+  setEditData: (val: IOrder | null) => void;
   setOpenModal: (val: boolean) => void;
+  fetchOrders: () => void;
 };
 
-export function OrdersModalContent({editData, setEditData, setOpenModal}: Props) {
+export function OrdersModalContent({
+  editData,
+  setEditData,
+  setOpenModal,
+  fetchOrders,
+}: Props) {
+  const [workers, setWorkers] = useState([]);
   const {reset, handleSubmit, control} = useForm({
     values: editData || undefined,
   });
@@ -33,9 +30,39 @@ export function OrdersModalContent({editData, setEditData, setOpenModal}: Props)
     reset();
   };
 
-  const handleSubmitEditUser = (data: Data) => {
-    console.log(data);
+  const handleSubmitEditOrder = async (data: any) => {
+    const reqOptions = {
+      method: 'put',
+      body: {
+        orderId: data.id,
+        workerId: data.workerId,
+      },
+    };
+    const res = await api(urls.adminOrderUpdate, reqOptions, true);
+    if (res.code === 200) {
+      handleCloseEditModal();
+      fetchOrders();
+    }
   };
+  useEffect(() => {
+    const getWorkersList = async () => {
+      if (!editData?.service) return;
+      const params = new URLSearchParams({
+        type: 'worker',
+        service: editData.service.slug,
+      });
+      const res = await api(urls.getUsers + '?' + params, {}, true);
+      if (res.code === 200) {
+        setWorkers(
+          res.data.map((worker: IUser) => {
+            const {name, lastName, id} = worker;
+            return {slug: id, value: name + ' ' + lastName};
+          }),
+        );
+      }
+    };
+    getWorkersList();
+  }, []);
 
   return (
     <>
@@ -45,36 +72,31 @@ export function OrdersModalContent({editData, setEditData, setOpenModal}: Props)
       <Box
         component="form"
         sx={{display: 'flex', flexDirection: 'column', gap: 8}}
-        onSubmit={handleSubmit(handleSubmitEditUser)}
+        onSubmit={handleSubmit(handleSubmitEditOrder)}
       >
         <SelectInput
-          name="handler"
+          name="workerId"
           label="محول کردن به"
           control={control}
           defaultValue=""
-          options={[
-            {
-              slug: '',
-              value: 'محول نشده',
-            },
-            {
-              slug: '',
-              value: 'ملیکا اژدری',
-            },
-            {
-              slug: '',
-              value: 'درسا توانا',
-            },
-          ]}
+          size="medium"
+          options={workers}
         />
         <Box display="flex" flexDirection="column" gap={1}>
-          <Button variant="contained" color="success" type="submit" fullWidth>
+          <Button
+            variant="contained"
+            color="success"
+            type="submit"
+            size="large"
+            fullWidth
+          >
             ثبت
           </Button>
           <Button
             variant="outlined"
             color="error"
             onClick={handleCloseEditModal}
+            size="large"
             fullWidth
           >
             بیخیال

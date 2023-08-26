@@ -52,23 +52,48 @@ export default function NewService() {
       >
         <SelectInput
           name="parent"
-          label="پدر"
+          label="دسته بندی اصلی"
           control={control}
           defaultValue=""
           options={options}
+          size="medium"
         />
-        <TextInput name="title" label="عنوان" control={control} defaultValue="" />
-        <TextInput name="description" label="توضیحات" control={control} defaultValue="" />
-        <TextInput name="price" label="قیمت" control={control} defaultValue="" />
+        <TextInput
+          name="title"
+          label="عنوان"
+          control={control}
+          defaultValue=""
+          size="medium"
+        />
+        <TextInput
+          name="description"
+          label="توضیحات"
+          control={control}
+          defaultValue=""
+          size="medium"
+        />
+        <TextInput
+          name="price"
+          label="قیمت"
+          control={control}
+          defaultValue=""
+          size="medium"
+        />
         {/* <Box display="flex" flexDirection="column" gap={1}>
           <label htmlFor="file">آپلود نمونه کار</label>
           <input id="file" type="file" {...register('file')} onChange={onChangeImg} />
         </Box> */}
         <Box display="flex" flexDirection="column" gap={1}>
-          <Button variant="contained" color="success" type="submit" fullWidth>
+          <Button
+            variant="contained"
+            color="success"
+            type="submit"
+            fullWidth
+            size="large"
+          >
             افزودن
           </Button>
-          <Button variant="outlined" color="error" type="reset" fullWidth>
+          <Button variant="outlined" color="error" type="reset" fullWidth size="large">
             بیخیال
           </Button>
         </Box>

@@ -11,11 +11,12 @@
 // }
 
 export interface IService {
+  id: number;
   title: string;
   description: string;
   price: number;
   slug: string;
-  attributes?: IService[]
+  attributes?: IService[];
 }
 
 export interface IAddress {
