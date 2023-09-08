@@ -11,8 +11,7 @@ import {
 } from '@mui/material';
 
 import {IOrder} from '../../services/types';
-// @ts-ignore
-import moment from 'moment-jalali';
+import moment from 'jalali-moment';
 
 interface Column {
   id:

@@ -8,6 +8,7 @@ import nail from '../../../../assets/img/category-nail.png';
 import eyebrow from '../../../../assets/img/category-eyebrow.png';
 import hair from '../../../../assets/img/category-hair.png';
 import {SwipeableDrawer} from '@mui/material';
+import {Suspense} from 'react';
 
 const categories = [
   {

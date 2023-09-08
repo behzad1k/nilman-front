@@ -1,15 +1,3 @@
-// export interface SignUpParams {
-//   displayName: string;
-//   username: string;
-//   email: string;
-//   password: string;
-// }
-
-// export interface LoginParams {
-//   email: string;
-//   password: string;
-// }
-
 export interface IService {
   id: number;
   title: string;
