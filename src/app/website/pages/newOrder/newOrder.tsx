@@ -8,6 +8,7 @@ import WorkerStep from './workerStep.tsx';
 import {formatPrice} from '../../../../utils/utils.ts';
 import {urls} from '../../../../services/endPoint.ts';
 import {api} from '../../../../services/http.ts';
+import moment from 'jalali-moment';
 
 // Types
 type Step = {
@@ -57,12 +58,13 @@ export default function NewOrder() {
   // React
   const [selected, setSelected] = useState<Selected>(initialSelected);
   const [workers, setWorkers] = useState<IUser[] | []>([]);
+  const [nearest, setNearest] = useState<{date: string; workerId: number} | null>(null);
   const [isNextStepAllowed, setIsNextStepAllowed] = useState(false);
   const [step, setStep] = useState<Step>(steps[0]);
+  let section = 0;
 
   // Fns
   const getAreaWorkers = useCallback(async () => {
-    let section = 0;
     selected.attributes.forEach((attr) => (section += attr.section));
     const params = new URLSearchParams({
       addressId: String(selected.address?.id),
@@ -73,6 +75,7 @@ export default function NewOrder() {
     console.log(res);
     if (res.code === 200) {
       setWorkers(res.data.workers);
+      setNearest(res.data.nearest);
       console.log(res.data);
     }
   }, [selected.address, selected.service]);
@@ -180,6 +183,7 @@ export default function NewOrder() {
           selected={selected}
           setSelected={setSelected}
           workers={workers}
+          nearest={nearest}
           setIsNextStepAllowed={setIsNextStepAllowed}
         />
       )}
@@ -195,7 +199,18 @@ export default function NewOrder() {
             )}
             <div>
               {selected.worker ? (
-                <p className="worker">{selected.worker}</p>
+                <p className="worker">
+                  {
+                    // TODO FIX LATER
+                    workers.filter((worker) => worker.id === Number(selected.worker))[0]
+                      .name
+                  }{' '}
+                  {
+                    // TODO FIX LATER
+                    workers.filter((worker) => worker.id === Number(selected.worker))[0]
+                      .lastName
+                  }
+                </p>
               ) : (
                 <Skeleton variant="text" animation="pulse" width={50} />
               )}

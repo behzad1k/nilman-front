@@ -34,6 +34,7 @@ type Props = {
   setIsNextStepAllowed: (val: boolean) => void;
   workers: IUser[];
   section?: number;
+  nearest: any;
 };
 
 export default function WorkerStep({
@@ -41,11 +42,13 @@ export default function WorkerStep({
   setSelected,
   setIsNextStepAllowed,
   workers,
+  nearest,
   section = 3,
 }: Props) {
   // React
   const [schedules, setSchedules] = useState<ScheduleCard[] | []>([]);
   const [date, setDate] = useState();
+  const [mode, setMode] = useState('normal');
   const cardRef = useRef<Array<HTMLElement | null>>([]);
 
   // Vars
@@ -62,6 +65,7 @@ export default function WorkerStep({
     const {name, lastName, id} = worker;
     return {slug: id.toString(), value: name + ' ' + lastName};
   });
+  options.push({slug: 'asap', value: 'سریع ترین زمان'});
 
   // Handlers
   const handleSelectDay = (index: number, fromTime: number) => {
@@ -92,11 +96,27 @@ export default function WorkerStep({
         setSchedules(createSchedule(section, res.data));
       }
     };
+    if (watchWorker === 'asap') return setMode('asap');
+    else setMode('normal');
     if (watchWorker && date) {
       fetchWorkersOff();
     }
     console.log();
   }, [watchWorker, date]);
+
+  useEffect(() => {
+    if (mode === 'asap') {
+      const [date, time] = nearest.date.split(' ');
+      const fromTime = time.split('-')[0];
+      setSelected((prev: Selected) => ({
+        ...prev,
+        worker: nearest.workerId,
+        date: moment(date).unix(),
+        time: fromTime,
+      }));
+      setIsNextStepAllowed(true);
+    }
+  }, [mode]);
 
   return (
     <div className="service-step-container">
@@ -117,16 +137,24 @@ export default function WorkerStep({
             },
           }}
         />
-        <div className="app-date-picker">
-          <DatePicker
-            value={date}
-            min={minDate}
-            calendarStyles={styles}
-            // @ts-ignore
-            onChange={(value) => setDate(value)}
-            defaultValue={defaultDate}
-          />
-        </div>
+        {mode !== 'asap' ? (
+          <div className="app-date-picker">
+            <DatePicker
+              value={date}
+              min={minDate}
+              calendarStyles={styles}
+              // @ts-ignore
+              onChange={(value) => setDate(value)}
+              defaultValue={defaultDate}
+            />
+          </div>
+        ) : (
+          <div>
+            <h3>نزدیک ترین زمان ممکن :</h3>
+            <p>{nearest.date}</p>
+          </div>
+        )}
+
         {schedules.length > 0 && (
           <div className="workers-schedule">
             <div className="card">
