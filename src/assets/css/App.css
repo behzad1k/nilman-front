@@ -858,6 +858,7 @@ main {
   padding: 12px 6px;
   border-radius: 4px;
   font-weight: 400;
+  direction: ltr;
 }
 
 .workers-schedule .card .sections .section.selected {

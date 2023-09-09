@@ -1,11 +1,13 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useCallback} from 'react';
 import {Button, Skeleton} from '@mui/material';
-import {IAddress, IService} from '../../../../services/types.ts';
+import {IAddress, IService, IUser} from '../../../../services/types.ts';
 import ServiceStep from './serviceStep.tsx';
 import AttributeStep from './attributeStep.tsx';
 import AddressStep from './addressStep.tsx';
 import WorkerStep from './workerStep.tsx';
 import {formatPrice} from '../../../../utils/utils.ts';
+import {urls} from '../../../../services/endPoint.ts';
+import {api} from '../../../../services/http.ts';
 
 type Step = {
   index: number;
@@ -36,25 +38,53 @@ export default function NewOrder() {
   const [selectedAttributes, setSelectedAttributes] = useState<IService[] | []>([]);
   const [selectedAddress, setSelectedAddress] = useState<IAddress | null>(null);
   const [selectedWorkerDate, setSelectedWorkerDate] = useState<any>(null);
+  const [workers, setWorkers] = useState<IUser[] | []>([]);
   const [isNextStepAllowed, setIsNextStepAllowed] = useState(false);
   const [step, setStep] = useState<Step>(steps[0]);
 
-  const handleChangeStep = (action: 'next' | 'prev') => {
-    console.log(step, action);
+  const getAreaWorkers = useCallback(async () => {
+    console.log(selectedAddress, selectedService);
 
+    const params = new URLSearchParams({
+      addressId: String(selectedAddress?.id),
+      serviceId: String(selectedService?.id),
+      // attributeId: String(1),
+    });
+    const res = await api(urls.ariaWorker + '?' + params, {}, true);
+    console.log(res);
+    if (res.code === 200) {
+      setWorkers(res.data.workers);
+      console.log(res.data);
+    }
+  }, [selectedService, selectedAddress]);
+
+  const handleChangeStep = (action: 'next' | 'prev') => {
+    // handle next - prev logic
     if (action === 'next')
       setStep((prev) => (prev.index === steps.length - 1 ? prev : steps[prev.index + 1]));
     if (action === 'prev')
       setStep((prev) => (prev.index === 0 ? prev : steps[prev.index - 1]));
 
+    // set next btn disabled when we go to a new step
     setIsNextStepAllowed(false);
   };
 
   const handleSubmitOrder = () => {};
 
   useEffect(() => {
-    console.log(isNextStepAllowed);
-  }, [isNextStepAllowed]);
+    // Fetch needed data based on step
+    console.log('here1');
+
+    if (step.name === 'worker') {
+      console.log('here2');
+
+      getAreaWorkers();
+    }
+  }, [step]);
+
+  useEffect(() => {
+    console.log(selectedAddress);
+  }, [selectedAddress]);
 
   // const {register, handleSubmit, control, getValues, reset} = useForm();
 
@@ -104,6 +134,7 @@ export default function NewOrder() {
       {step.name === 'worker' && (
         <WorkerStep
           selectedService={selectedService}
+          workers={workers}
           setSelectedWorkerDate={setSelectedWorkerDate}
           setIsNextStepAllowed={setIsNextStepAllowed}
         />

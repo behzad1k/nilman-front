@@ -4,10 +4,12 @@ export interface IService {
   description: string;
   price: number;
   slug: string;
+  section: number;
   attributes?: IService[];
 }
 
 export interface IAddress {
+  id: number;
   title: string;
   phoneNumber?: string;
   longitude: string;

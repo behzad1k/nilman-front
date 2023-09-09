@@ -1,4 +1,4 @@
-import {useEffect, useState, useRef} from 'react';
+import {useEffect, useState, useRef, useCallback} from 'react';
 import {useForm} from 'react-hook-form';
 import moment from 'jalali-moment';
 // @ts-ignore
@@ -7,8 +7,7 @@ import {api} from '../../../../services/http';
 import {urls} from '../../../../services/endPoint';
 import {SelectInput} from '../../../../components';
 import {IService, IUser} from '../../../../services/types';
-
-const fakeSchedule = ['۸ - ۱۰', '۱۰ - ۱۲', '۱۴ - ۱۶', '۱۶ - ۱۸'];
+import {createSchedule} from '../../../../utils/utils';
 
 const styles = {
   calendarContainer: 'calendarContainer',
@@ -27,21 +26,38 @@ type Props = {
   selectedService: IService | null;
   setIsNextStepAllowed: (val: boolean) => void;
   setSelectedWorkerDate: any;
+  workers: IUser[];
+  section?: number;
 };
 
 export default function WorkerStep({
   selectedService,
   setIsNextStepAllowed,
   setSelectedWorkerDate,
+  workers,
+  section = 3,
 }: Props) {
-  const [workers, setWorkers] = useState([]);
+  // React
+  const [schedules, setSchedules] = useState<string[] | []>([]);
   const [date, setDate] = useState();
+  const cardRef = useRef<Array<HTMLElement | null>>([]);
+
+  // Vars
   const curDate = new Date();
   const minDate = curDate.setDate(curDate.getDate() - 1);
   const defaultDate = moment(new Date());
-  const cardRef = useRef<Array<HTMLElement | null>>([]);
-  const {control} = useForm();
+  const {control, watch} = useForm();
+  const watchWorker = watch('worker') as string;
+  // @ts-ignore
+  const m = moment(date?._d).locale('fa');
 
+  // Todo: Remove later
+  const options = workers.map((worker) => {
+    const {name, lastName, id} = worker;
+    return {slug: id.toString(), value: name + ' ' + lastName};
+  });
+
+  // Handlers
   const handleSelectDay = (index: number) => {
     cardRef.current.map((el, i) =>
       i === index ? el?.classList.add('selected') : el?.classList.remove('selected'),
@@ -52,24 +68,23 @@ export default function WorkerStep({
   };
 
   useEffect(() => {
-    const getWorkersList = async () => {
-      if (!selectedService) return;
-      const params = new URLSearchParams({
-        type: 'worker',
-        service: selectedService.slug,
+    const fetchWorkersOff = async () => {
+      const query = new URLSearchParams({
+        workerId: watchWorker,
+        // @ts-ignore
+        // date: String(moment(date._d).unix()),
+        date: '1694216688000',
       });
-      const res = await api(urls.getUsers + '?' + params, {}, true);
+      const res = await api(urls.workersOffs + '?' + query, {}, true);
       if (res.code === 200) {
-        setWorkers(
-          res.data.map((worker: IUser) => {
-            const {name, lastName, id} = worker;
-            return {slug: id, value: name + ' ' + lastName};
-          }),
-        );
+        console.log(res.data);
+        setSchedules(createSchedule(section, res.data));
       }
     };
-    getWorkersList();
-  }, [selectedService]);
+    if (watchWorker && date) {
+      fetchWorkersOff();
+    }
+  }, [watchWorker, date]);
 
   return (
     <div className="service-step-container">
@@ -80,7 +95,7 @@ export default function WorkerStep({
           label="آرایشگر"
           control={control}
           defaultValue=""
-          options={workers}
+          options={options}
           size="medium"
           sx={{
             '& .MuiOutlinedInput-notchedOutline': {
@@ -100,15 +115,16 @@ export default function WorkerStep({
             defaultValue={defaultDate}
           />
         </div>
-        <div className="workers-schedule">
-          <div className="card">
-            <p className="day">
-              <span>۱۲</span>
-              سه شنبه
-            </p>
-            <div className="sections">
-              {fakeSchedule.map((section, index) => {
-                return (
+        {schedules.length > 0 && (
+          <div className="workers-schedule">
+            <div className="card">
+              <p className="day">
+                <span>{m.format('dddd')}</span>
+                <span>{m.format('D')}</span>
+                <span>{m.format('MMMM')}</span>
+              </p>
+              <div className="sections">
+                {schedules.map((section, index) => (
                   <div
                     key={index}
                     ref={(el) => (cardRef.current[index] = el)}
@@ -117,11 +133,11 @@ export default function WorkerStep({
                   >
                     {section}
                   </div>
-                );
-              })}
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
