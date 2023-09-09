@@ -43,11 +43,11 @@ function SearchField() {
 // Add Marker Component on click
 function LocationMarker({position, setPosition}: Props) {
   const map = useMapEvents({
-    locationfound(e) {
+    locationfound(e: any) {
       setPosition(e.latlng);
       map.flyTo(e.latlng, map.getZoom());
     },
-    click(e) {
+    click(e: any) {
       console.log(e);
       setPosition(e.latlng);
       map.flyTo(e.latlng, map.getZoom());
