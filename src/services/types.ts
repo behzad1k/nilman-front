@@ -37,7 +37,7 @@ export interface IOrder {
   time: string;
   discount: number;
   transportation: number;
-  status: 'PAID' | 'DONE' | 'CREATED' | 'ASSIGNED' | 'CANCELED';
+  status: 'ACCEPTED' | 'PAID' | 'DONE' | 'CREATED' | 'ASSIGNED' | 'CANCELED';
   worker: IUser;
   service: IService;
   attribute?: IService;
