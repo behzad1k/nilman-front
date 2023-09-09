@@ -8,6 +8,7 @@ import {urls} from '../../../../services/endPoint';
 import {SelectInput} from '../../../../components';
 import {IService, IUser} from '../../../../services/types';
 import {createSchedule} from '../../../../utils/utils';
+import {Selected} from './newOrder';
 
 const styles = {
   calendarContainer: 'calendarContainer',
@@ -22,23 +23,28 @@ const styles = {
   title: 'title',
 };
 
+type ScheduleCard = {
+  fromTime: number;
+  toTime: number;
+};
+
 type Props = {
-  selectedService: IService | null;
+  selected: Selected;
+  setSelected: (val: (prev: Selected) => Selected) => void;
   setIsNextStepAllowed: (val: boolean) => void;
-  setSelectedWorkerDate: any;
   workers: IUser[];
   section?: number;
 };
 
 export default function WorkerStep({
-  selectedService,
+  selected,
+  setSelected,
   setIsNextStepAllowed,
-  setSelectedWorkerDate,
   workers,
   section = 3,
 }: Props) {
   // React
-  const [schedules, setSchedules] = useState<string[] | []>([]);
+  const [schedules, setSchedules] = useState<ScheduleCard[] | []>([]);
   const [date, setDate] = useState();
   const cardRef = useRef<Array<HTMLElement | null>>([]);
 
@@ -58,12 +64,17 @@ export default function WorkerStep({
   });
 
   // Handlers
-  const handleSelectDay = (index: number) => {
+  const handleSelectDay = (index: number, fromTime: number) => {
     cardRef.current.map((el, i) =>
       i === index ? el?.classList.add('selected') : el?.classList.remove('selected'),
     );
 
-    setSelectedWorkerDate({worker: 'ملیکا ارشادی', date: '۱۴۰۲/۰۶/۲۳', time: '۱۰ - ۱۲'});
+    setSelected((prev: Selected) => ({
+      ...prev,
+      worker: watchWorker,
+      date: m.unix(),
+      time: fromTime,
+    }));
     setIsNextStepAllowed(true);
   };
 
@@ -84,6 +95,7 @@ export default function WorkerStep({
     if (watchWorker && date) {
       fetchWorkersOff();
     }
+    console.log();
   }, [watchWorker, date]);
 
   return (
@@ -128,10 +140,10 @@ export default function WorkerStep({
                   <div
                     key={index}
                     ref={(el) => (cardRef.current[index] = el)}
-                    onClick={() => handleSelectDay(index)}
+                    onClick={() => handleSelectDay(index, section.fromTime)}
                     className="section"
                   >
-                    {section}
+                    {`${section.fromTime} - ${section.toTime}`}
                   </div>
                 ))}
               </div>

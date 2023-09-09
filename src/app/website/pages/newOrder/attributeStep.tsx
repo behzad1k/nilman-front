@@ -2,24 +2,29 @@ import {useRef} from 'react';
 import {DeleteOutline} from '@mui/icons-material';
 import {useAppSelector} from '../../../../services/redux/store';
 import {IService} from '../../../../services/types';
+import {Selected} from './newOrder';
 
 type Props = {
-  attributes: IService[];
-  setSelectedAttributes: (value: (prev: IService[]) => IService[] | []) => void;
+  selected: Selected;
+  setSelected: (value: (prev: Selected) => Selected) => void;
   setIsNextStepAllowed: (val: boolean) => void;
 };
 
 export default function AttributeStep({
-  attributes,
-  setSelectedAttributes,
+  selected,
+  setSelected,
   setIsNextStepAllowed,
 }: Props) {
   const cardRef = useRef<Array<HTMLElement | null>>([]);
+  console.log(selected.service?.attributes);
 
   const handleSelectAttribute = (index: number, attribute: IService) => {
     cardRef.current[index]?.classList.add('selected');
 
-    setSelectedAttributes((prev: IService[]) => [...prev, attribute]);
+    setSelected((prev: Selected) => ({
+      ...prev,
+      attributes: [...prev.attributes, attribute],
+    }));
     setIsNextStepAllowed(true);
   };
 
@@ -31,12 +36,12 @@ export default function AttributeStep({
     e.stopPropagation();
     cardRef.current[index]?.classList.remove('selected');
 
-    setSelectedAttributes((prev: IService[]) => {
-      const newSelectedAttrs = prev.filter(
+    setSelected((prev: Selected) => {
+      const newSelectedAttrs = prev.attributes.filter(
         (selected) => selected.slug !== attribute.slug,
       );
       if (newSelectedAttrs.length === 0) setIsNextStepAllowed(false);
-      return newSelectedAttrs;
+      return {...prev, attributes: newSelectedAttrs};
     });
   };
 
@@ -44,7 +49,7 @@ export default function AttributeStep({
     <div className="service-step-container">
       <p className="hint-text">لطفا از لیست خدمات یک مورد را انتخاب کنید.</p>
       <section className="cards">
-        {attributes.map((attribute, index) => (
+        {selected.service?.attributes?.map((attribute, index) => (
           <div
             key={attribute.slug}
             ref={(el) => (cardRef.current[index] = el)}

@@ -2,13 +2,14 @@ import {useAppSelector} from '../../../../services/redux/store';
 import {IAddress} from '../../../../services/types';
 import {AddressRow} from '../profile/addressRow';
 import {useRef} from 'react';
+import {Selected} from './newOrder';
 
 type Props = {
-  setSelectedAddress: (val: IAddress) => void;
+  setSelected: (val: (prev: Selected) => Selected) => void;
   setIsNextStepAllowed: (val: boolean) => void;
 };
 
-export default function AddressStep({setSelectedAddress, setIsNextStepAllowed}: Props) {
+export default function AddressStep({setSelected, setIsNextStepAllowed}: Props) {
   const addresses = useAppSelector((state) => state.userReducer.addresses);
 
   const cardRef = useRef<Array<HTMLElement | null>>([]);
@@ -18,7 +19,7 @@ export default function AddressStep({setSelectedAddress, setIsNextStepAllowed}: 
       index === i ? el?.classList.add('selected') : el?.classList.remove('selected'),
     );
 
-    setSelectedAddress(address);
+    setSelected((prev: Selected) => ({...prev, address: address}));
     setIsNextStepAllowed(true);
   };
 

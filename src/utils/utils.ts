@@ -7,6 +7,11 @@ type WorkerOff = {
   workerId: number;
 };
 
+type ScheduleCard = {
+  fromTime: number;
+  toTime: number;
+};
+
 export const formatPrice = (value: number | string) =>
   Intl.NumberFormat().format(value as number);
 
@@ -31,9 +36,10 @@ export function createSchedule(length: number, workerOff: WorkerOff[]) {
   const freeHours: number[] = allHours.filter((hour) => !busySet.has(hour));
   const freeHoursSet = new Set(freeHours);
 
-  const scheduleCards: string[] = [];
+  const scheduleCards: ScheduleCard[] = [];
   freeHours.forEach((hour) => {
-    if (freeHoursSet.has(hour + length)) scheduleCards.push(`${hour} - ${hour + length}`);
+    if (freeHoursSet.has(hour + length))
+      scheduleCards.push({fromTime: hour, toTime: hour + length});
   });
 
   return scheduleCards;

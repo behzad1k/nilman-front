@@ -9,6 +9,7 @@ import {formatPrice} from '../../../../utils/utils.ts';
 import {urls} from '../../../../services/endPoint.ts';
 import {api} from '../../../../services/http.ts';
 
+// Types
 type Step = {
   index: number;
   name: 'service' | 'attribute' | 'address' | 'worker';
@@ -33,22 +34,40 @@ const steps: Step[] = [
   },
 ];
 
+export type Selected = {
+  service: IService | null;
+  attributes: IService[] | [];
+  address: IAddress | null;
+  worker: string | null;
+  date: number | null;
+  time: number | null;
+};
+
+// Initial
+const initialSelected: Selected = {
+  service: null,
+  attributes: [],
+  address: null,
+  worker: null,
+  date: null,
+  time: null,
+};
+
 export default function NewOrder() {
-  const [selectedService, setSelectedService] = useState<IService | null>(null);
-  const [selectedAttributes, setSelectedAttributes] = useState<IService[] | []>([]);
-  const [selectedAddress, setSelectedAddress] = useState<IAddress | null>(null);
-  const [selectedWorkerDate, setSelectedWorkerDate] = useState<any>(null);
+  // React
+  const [selected, setSelected] = useState<Selected>(initialSelected);
   const [workers, setWorkers] = useState<IUser[] | []>([]);
   const [isNextStepAllowed, setIsNextStepAllowed] = useState(false);
   const [step, setStep] = useState<Step>(steps[0]);
 
+  // Fns
   const getAreaWorkers = useCallback(async () => {
-    console.log(selectedAddress, selectedService);
-
+    let section = 0;
+    selected.attributes.forEach((attr) => (section += attr.section));
     const params = new URLSearchParams({
-      addressId: String(selectedAddress?.id),
-      serviceId: String(selectedService?.id),
-      // attributeId: String(1),
+      addressId: String(selected.address?.id),
+      serviceId: String(selected.service?.id),
+      section: String(section),
     });
     const res = await api(urls.ariaWorker + '?' + params, {}, true);
     console.log(res);
@@ -56,8 +75,9 @@ export default function NewOrder() {
       setWorkers(res.data.workers);
       console.log(res.data);
     }
-  }, [selectedService, selectedAddress]);
+  }, [selected.address, selected.service]);
 
+  // Handlers
   const handleChangeStep = (action: 'next' | 'prev') => {
     // handle next - prev logic
     if (action === 'next')
@@ -69,7 +89,27 @@ export default function NewOrder() {
     setIsNextStepAllowed(false);
   };
 
-  const handleSubmitOrder = () => {};
+  const handleSubmitOrder = async () => {
+    const reqOptions = {
+      method: 'post',
+      body: {
+        service: selected.service?.slug,
+        attributes: selected.attributes.map((attr) => attr.slug),
+        addressId: selected.address?.id,
+        time: selected.time,
+        date: selected.date,
+        workerId: Number(selected.worker),
+      },
+    };
+    const res = await api(urls.order, reqOptions, true);
+    console.log('res is: ', res);
+
+    if (res.code === 201) {
+      // console.log(res);
+      // dispatch(order());
+      // dispatch(cart());
+    }
+  };
 
   useEffect(() => {
     // Fetch needed data based on step
@@ -83,8 +123,12 @@ export default function NewOrder() {
   }, [step]);
 
   useEffect(() => {
-    console.log(selectedAddress);
-  }, [selectedAddress]);
+    console.log(selected.service);
+  }, [selected.service]);
+
+  useEffect(() => {
+    console.log(selected);
+  }, [selected]);
 
   // const {register, handleSubmit, control, getValues, reset} = useForm();
 
@@ -114,51 +158,51 @@ export default function NewOrder() {
       </div>
       {step.name === 'service' && (
         <ServiceStep
-          setSelectedService={setSelectedService}
+          setSelected={setSelected}
           setIsNextStepAllowed={setIsNextStepAllowed}
         />
       )}
-      {step.name === 'attribute' && selectedService?.attributes && (
+      {step.name === 'attribute' && (
         <AttributeStep
-          attributes={selectedService.attributes}
-          setSelectedAttributes={setSelectedAttributes}
+          selected={selected}
+          setSelected={setSelected}
           setIsNextStepAllowed={setIsNextStepAllowed}
         />
       )}
       {step.name === 'address' && (
         <AddressStep
-          setSelectedAddress={setSelectedAddress}
+          setSelected={setSelected}
           setIsNextStepAllowed={setIsNextStepAllowed}
         />
       )}
       {step.name === 'worker' && (
         <WorkerStep
-          selectedService={selectedService}
+          selected={selected}
+          setSelected={setSelected}
           workers={workers}
-          setSelectedWorkerDate={setSelectedWorkerDate}
           setIsNextStepAllowed={setIsNextStepAllowed}
         />
       )}
       <div className="bottom-section">
         <div className="cart-section">
           <div className="info">
-            {selectedAttributes[0]?.title ? (
+            {selected.attributes[0]?.title ? (
               <h1>
-                {selectedService?.title}, {selectedAttributes[0]?.title}
+                {selected.service?.title}, {selected.attributes[0]?.title}
               </h1>
             ) : (
               <Skeleton variant="text" animation="pulse" width={200} />
             )}
             <div>
-              {selectedWorkerDate?.worker ? (
-                <p className="worker">{selectedWorkerDate.worker}</p>
+              {selected.worker ? (
+                <p className="worker">{selected.worker}</p>
               ) : (
                 <Skeleton variant="text" animation="pulse" width={50} />
               )}
               <span className="circle"></span>
-              {selectedWorkerDate?.date ? (
+              {selected.time ? (
                 <time className="date-time">
-                  {selectedWorkerDate.time} | {selectedWorkerDate.date}
+                  {selected.time} | {selected.date}
                 </time>
               ) : (
                 <Skeleton variant="text" animation="pulse" width={80} />

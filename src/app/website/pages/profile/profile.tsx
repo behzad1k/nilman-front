@@ -1,5 +1,4 @@
-// @ts-nocheck
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useAppSelector} from '../../../../services/redux/store.ts';
 import {ProfileCard} from './profileCard.tsx';

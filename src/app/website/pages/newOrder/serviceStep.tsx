@@ -1,14 +1,14 @@
 import {useRef} from 'react';
-import {DeleteOutline} from '@mui/icons-material';
 import {useAppSelector} from '../../../../services/redux/store';
 import {IService} from '../../../../services/types';
+import {Selected} from './newOrder';
 
 type Props = {
-  setSelectedService: (val: IService | null) => void;
+  setSelected: (val: (prev: Selected) => Selected) => void;
   setIsNextStepAllowed: (val: boolean) => void;
 };
 
-export default function ServiceStep({setSelectedService, setIsNextStepAllowed}: Props) {
+export default function ServiceStep({setSelected, setIsNextStepAllowed}: Props) {
   const services = useAppSelector((state) => state.serviceReducer.services);
 
   const cardRef = useRef<Array<HTMLElement | null>>([]);
@@ -18,7 +18,7 @@ export default function ServiceStep({setSelectedService, setIsNextStepAllowed}: 
       index === i ? el?.classList.add('selected') : el?.classList.remove('selected'),
     );
 
-    setSelectedService(service);
+    setSelected((prev: Selected) => ({...prev, service}));
     setIsNextStepAllowed(true);
   };
 

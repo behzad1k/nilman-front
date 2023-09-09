@@ -1,17 +1,24 @@
 import {useState} from 'react';
-import { addresses } from "../../../../services/redux/reducers/userSlice.ts";
-import { useAppDispatch, useAppSelector } from "../../../../services/redux/store.ts";
-import { IAddress } from "../../../../services/types.ts";
+import {addresses} from '../../../../services/redux/reducers/userSlice.ts';
+import {useAppDispatch, useAppSelector} from '../../../../services/redux/store.ts';
+import {IAddress} from '../../../../services/types.ts';
 import {AddressRow} from './addressRow.tsx';
 import {Button, Typography, Box} from '@mui/material';
 import {Modal, TextInput} from '../../../../components';
 import {useForm, FieldValues} from 'react-hook-form';
 import {api} from '../../../../services/http.ts';
 import {urls} from '../../../../services/endPoint.ts';
+import {Map} from '../../../../components';
+
+type Position = {
+  lat: number;
+  lng: number;
+};
 
 export const Addresses = () => {
   const [openModal, setOpenModal] = useState(false);
-  const userAddresses = useAppSelector(state => state.userReducer.addresses)
+  const [position, setPosition] = useState<Position | null>(null);
+  const userAddresses = useAppSelector((state) => state.userReducer.addresses);
   const {reset, handleSubmit, control} = useForm();
   const dispatch = useAppDispatch();
   const handleSubmitAddAddress = async (data: FieldValues) => {
@@ -19,18 +26,21 @@ export const Addresses = () => {
       method: 'post',
       body: {
         ...data,
-        longitude: '20',
-        latitude: '20',
+        longitude: position?.lng.toString(),
+        latitude: position?.lng.toString(),
       },
     };
     const res = await api(urls.address, reqOptions, true);
-    dispatch(addresses())
-    setOpenModal(false)
+    console.log(res);
+    dispatch(addresses());
+    setOpenModal(false);
   };
 
   return (
     <section className="addressSection">
-      {userAddresses.map((value: IAddress, index) => <AddressRow address={value} key={index} />)}
+      {userAddresses.map((value: IAddress, index) => (
+        <AddressRow address={value} key={index} />
+      ))}
       <Button onClick={() => setOpenModal(true)}>افزودن آدرس</Button>
       <Modal open={openModal} setOpen={setOpenModal}>
         <Typography variant="h6" component="h2" marginBottom={4}>
@@ -50,6 +60,7 @@ export const Addresses = () => {
             type="number"
           />
           <TextInput name="description" label="آدرس" control={control} defaultValue="" />
+          <Map position={position} setPosition={setPosition} />
           <Box display="flex" flexDirection="column" gap={1}>
             <Button variant="contained" color="primary" fullWidth type="submit">
               افزودن
