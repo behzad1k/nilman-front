@@ -4,6 +4,10 @@ export const urls = {
   check: '/check',
   getUser: '/user',
   updateSimpleUser: '/user',
+  'admin/service': '/admin/service',
+  createService: '/admin/service',
+  updateService: '/admin/service',
+  deleteService: '/admin/service',
   register: '/admin/user',
   getUsers: '/admin/user',
   updateUser: '/admin/user',
@@ -14,4 +18,6 @@ export const urls = {
   pay: '/order/pay',
   adminOrder: '/admin/order',
   adminOrderUpdate: '/admin/order/update',
+  ariaWorker: '/order/workers',
+  workersOffs: '/user/workerOffs',
 };

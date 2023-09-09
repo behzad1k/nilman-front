@@ -5,18 +5,21 @@ import {Typography, Container, Button, Box} from '@mui/material';
 import {useState} from 'react';
 import lock from './public/img/lock.png';
 import {OtpInput} from '../../../../components';
-import { userApis } from "../../../../services/apis/global.ts";
+import {userApis} from '../../../../services/apis/global.ts';
 import {api} from '../../../../services/http';
 import {urls} from '../../../../services/endPoint';
 import {AppDispatch, useAppDispatch} from '../../../../services/redux/store';
-import { SET_LOGGED_IN, user } from '../../../../services/redux/reducers/userSlice';
+import {SET_LOGGED_IN, user} from '../../../../services/redux/reducers/userSlice';
 import Cookies from 'js-cookie';
 import {useNavigate} from 'react-router-dom';
 
-type LoginState = 'phoneNumber' | 'otp';
+type LoginState = 'phoneNumber' | 'otp' | 'complete-profile';
 type LoginForm = {
   phoneNumber: string;
   otp?: string;
+  name?: string;
+  lastName?: string;
+  nationalCode?: string;
 };
 
 export default function Login() {
@@ -37,11 +40,11 @@ export default function Login() {
       const res = await api(urls.login, reqOptions);
       console.log(res);
       if (res.code) {
-        alert(res.code)
+        alert(res.code);
         tokenRef.current = res.token;
         setLoginState('otp');
       }
-    } else {
+    } else if (loginState === 'otp') {
       // Verify OTP Code here ...
       const reqOptions = {
         method: 'post',
@@ -51,14 +54,29 @@ export default function Login() {
         },
       };
       const res = await api(urls.check, reqOptions);
+      console.log(res.data.user.nationalCode);
+
       if (res.code == 200) {
         Cookies.set('token', res.data.token, {expires: 30 * 24 * 60 * 60, path: '/'});
-        dispatch(SET_LOGGED_IN(true))
-        console.log(res.data.user.role)
-        await userApis(dispatch)
-        if (res.data.user.role === 'SUPER_ADMIN') navigate('/dashboard')
+        dispatch(SET_LOGGED_IN(true));
+        console.log(res.data.user.role);
+        await userApis(dispatch);
+        if (res.data.user.role === 'SUPER_ADMIN') navigate('/dashboard');
+        else if (!res.data.user.nationalCode) setLoginState('complete-profile');
         else navigate('/');
       }
+    } else {
+      // Complete Profile Code here ...
+      const reqOptions = {
+        method: 'put',
+        body: {
+          name: data.name,
+          lastName: data.lastName,
+          nationalCode: data.nationalCode,
+        },
+      };
+      const res = await api(urls.updateSimpleUser, reqOptions, true);
+      if (res.code === 200) navigate('/');
     }
   };
 
@@ -148,7 +166,7 @@ export default function Login() {
                 ارسال کد
               </Button>
             </Box>
-          ) : (
+          ) : loginState === 'otp' ? (
             <Box
               sx={{
                 display: 'flex',
@@ -192,6 +210,74 @@ export default function Login() {
                   ارسال مجدد کد
                 </Button>
               </Box>
+            </Box>
+          ) : (
+            <Box display="flex" flexDirection="column" gap={4}>
+              <TextInput
+                label="نام"
+                name="name"
+                control={control}
+                defaultValue=""
+                size="medium"
+                sx={{
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'var(--mid-pink)',
+                    backgroundColor: 'var(--white-pink)',
+                    borderRadius: '10px',
+                  },
+                  '& .MuiOutlinedInput-input': {
+                    zIndex: 1,
+                  },
+                }}
+              />
+              <TextInput
+                label="نام خانوادگی"
+                name="lastName"
+                control={control}
+                defaultValue=""
+                size="medium"
+                sx={{
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'var(--mid-pink)',
+                    backgroundColor: 'var(--white-pink)',
+                    borderRadius: '10px',
+                  },
+                  '& .MuiOutlinedInput-input': {
+                    zIndex: 1,
+                  },
+                }}
+              />
+              <TextInput
+                label="کد ملی"
+                name="nationalCode"
+                control={control}
+                defaultValue=""
+                size="medium"
+                sx={{
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'var(--mid-pink)',
+                    backgroundColor: 'var(--white-pink)',
+                    borderRadius: '10px',
+                  },
+                  '& .MuiOutlinedInput-input': {
+                    zIndex: 1,
+                  },
+                }}
+              />
+              <Button
+                variant="contained"
+                type="submit"
+                sx={{
+                  bgcolor: 'var(--light-pink)',
+                  py: 1,
+                  fontSize: 18,
+                  color: 'var(--light-black)',
+                  ':hover': {color: '#fff'},
+                }}
+                fullWidth
+              >
+                ثبت
+              </Button>
             </Box>
           )}
         </Box>

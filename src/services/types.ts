@@ -16,10 +16,12 @@ export interface IService {
   description: string;
   price: number;
   slug: string;
+  section: number;
   attributes?: IService[];
 }
 
 export interface IAddress {
+  id: number;
   title: string;
   phoneNumber?: string;
   longitude: string;
@@ -35,15 +37,15 @@ export interface IOrder {
   time: string;
   discount: number;
   transportation: number;
-  status: 'PAID' | 'DONE' | 'CREATED' | 'ASSIGNED' | 'CANCELED' | 'ACCEPTED';
-  worker: IUser,
-  service: IService,
-  attribute?: IService,
-  address?: IAddress
+  status: 'PAID' | 'DONE' | 'CREATED' | 'ASSIGNED' | 'CANCELED';
+  worker: IUser;
+  service: IService;
+  attribute?: IService;
+  address?: IAddress;
 }
 export interface IUser {
-  name: string;
   id: number;
+  name: string;
   lastName: string;
   nationalCode: string;
   phoneNumber: string;

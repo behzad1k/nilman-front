@@ -32,6 +32,7 @@ export default function NewService() {
       method: 'post',
       body: {
         title: data.title,
+        section: data.section,
         description: data.description,
         price: Number(data.price),
         parent: data.parent,
@@ -61,6 +62,13 @@ export default function NewService() {
         <TextInput
           name="title"
           label="عنوان"
+          control={control}
+          defaultValue=""
+          size="medium"
+        />
+        <TextInput
+          name="section"
+          label="سانس انجام"
           control={control}
           defaultValue=""
           size="medium"

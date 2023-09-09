@@ -3,6 +3,7 @@ export {TextInput} from './common/textInput';
 export {SelectInput} from './common/selectInput';
 export {Modal} from './common/modal';
 export {OtpInput} from './common/otpInput';
+export {Map} from './common/map';
 
 // ** Dashboard
 export {OrdersModalContent} from './dashboard/OrdersModalContent';

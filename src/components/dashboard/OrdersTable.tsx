@@ -11,8 +11,7 @@ import {
 } from '@mui/material';
 
 import {IOrder} from '../../services/types';
-// @ts-ignore
-import moment from 'moment-jalali';
+import moment from 'jalali-moment';
 
 interface Column {
   id:
@@ -76,6 +75,20 @@ export function OrdersTable({rows, setOpenModal, setEditData}: Props) {
       case 'worker':
         console.log(value);
         return `${value.name} ${value.lastName}`;
+      case 'status':
+        return value === 'CREATED'
+          ? 'در سبد خرید'
+          : value === 'PAID'
+          ? 'پرداخت شده'
+          : value === 'ASSIGNED'
+          ? 'محول شده'
+          : value === 'DONE'
+          ? 'انجام شده'
+          : value === 'CANCELED'
+          ? 'لغو شده'
+          : value === 'ACCEPTED'
+          ? 'تایید شده توسط آرایشگر'
+          : 'unknown';
       default:
         return value;
     }

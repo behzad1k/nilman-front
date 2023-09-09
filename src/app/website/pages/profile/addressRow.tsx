@@ -1,5 +1,5 @@
 import {HouseLine, MapTrifold, PhoneDisconnect} from '@phosphor-icons/react';
-import { IAddress } from "../../../../services/types.ts";
+import {IAddress} from '../../../../services/types.ts';
 
 export function AddressRow({address}: {address: IAddress}) {
   return (
@@ -15,9 +15,7 @@ export function AddressRow({address}: {address: IAddress}) {
         </span>
         <span className="addressItem">
           <MapTrifold />
-          <p>
-            {address.description}
-          </p>
+          <p>{address.description}</p>
         </span>
       </div>
       <div className="addressMap">
