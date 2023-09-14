@@ -9,7 +9,7 @@ type IProps = {
   bgColor2?: string,
   // style?: Style
 }
-export function BannerCard({title,description,button,icon,bgColor1 = "rgb(198, 8, 148)",bgColor2 = "rgb(33, 76, 206)"}: IProps) {
+export function BannerCard({title,description,button,icon,bgColor1 = "#6D678E",bgColor2 = "#F6B5CC"}: IProps) {
     return (
         <article className="bannerCard" style={{background: `linear-gradient(282deg, ${bgColor1}, ${bgColor2})`}}>
           {icon}

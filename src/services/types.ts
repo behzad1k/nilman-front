@@ -18,6 +18,7 @@ export interface IAddress {
 }
 
 export interface IOrder {
+  attributes: IService[];
   id: number;
   title: string;
   price: number;
@@ -30,6 +31,8 @@ export interface IOrder {
   service: IService;
   attribute?: IService;
   address?: IAddress;
+  fromTime: number;
+  toTime: number
 }
 export interface IUser {
   id: number;

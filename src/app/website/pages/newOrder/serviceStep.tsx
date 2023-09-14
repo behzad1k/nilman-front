@@ -33,6 +33,7 @@ export default function ServiceStep({setSelected, setIsNextStepAllowed}: Props) 
             onClick={() => handleSelectService(index, service)}
             className="card"
           >
+            <img src={'/img/' + service.slug + '.png'} />
             <h2>{service.title}</h2>
           </div>
         ))}

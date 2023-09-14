@@ -56,6 +56,7 @@ export default function AttributeStep({
             onClick={() => handleSelectAttribute(index, attribute)}
             className="card"
           >
+            <img src={'/img/' + attribute.slug + '.png'} />
             <h2>{attribute.title}</h2>
             <DeleteOutline
               className="delete-btn"

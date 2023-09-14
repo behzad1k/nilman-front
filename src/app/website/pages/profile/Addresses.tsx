@@ -9,6 +9,7 @@ import {useForm, FieldValues} from 'react-hook-form';
 import {api} from '../../../../services/http.ts';
 import {urls} from '../../../../services/endPoint.ts';
 import {Map} from '../../../../components';
+import { PlusCircle } from "@phosphor-icons/react";
 
 type Position = {
   lat: number;
@@ -41,7 +42,13 @@ export const Addresses = () => {
       {userAddresses.map((value: IAddress, index) => (
         <AddressRow address={value} key={index} />
       ))}
-      <Button onClick={() => setOpenModal(true)}>افزودن آدرس</Button>
+      <div className="addressContainer add" onClick={() => setOpenModal(true)}>
+        <PlusCircle weight={'fill'} color="green" size={20}/>
+        <Button >
+          افزودن آدرس
+        </Button>
+      </div>
+      
       <Modal open={openModal} setOpen={setOpenModal}>
         <Typography variant="h6" component="h2" marginBottom={4}>
           افزودن آدرس
