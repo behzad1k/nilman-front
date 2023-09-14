@@ -111,7 +111,7 @@ export default function WorkerStep({
       setSelected((prev: Selected) => ({
         ...prev,
         worker: nearest.workerId,
-        date: moment(date).unix(),
+        date: moment(date, 'jYYYY/jMM/jDD').unix(),
         time: fromTime,
       }));
       setIsNextStepAllowed(true);

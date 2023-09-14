@@ -1,14 +1,11 @@
-import {Box, Typography, Button} from '@mui/material';
-import {X} from '@phosphor-icons/react';
-import { ReactElement } from "react";
-import { urls } from "../../../../services/endPoint.ts";
+import { Calendar, MapPin, X } from '@phosphor-icons/react';
+import moment from 'jalali-moment';
+import { urls } from '../../../../services/endPoint.ts';
 import { api } from "../../../../services/http.ts";
 import { cart } from "../../../../services/redux/reducers/cartSlice.ts";
 import { order } from "../../../../services/redux/reducers/orderSlice.ts";
 import { IOrder } from "../../../../services/types.ts";
-import {formatPrice} from '../../../../utils/utils';
 import {
-  AppDispatch,
   useAppDispatch,
   useAppSelector,
 } from '../../../../services/redux/store.ts';
@@ -18,60 +15,48 @@ interface ICartItemProps{
 }
 const CartItem = ({item}: ICartItemProps) => {
   const dispatch = useAppDispatch();
-  const removeItem = async (itemId: number) => {
-    const res = await api(urls.order, {
-      method: 'DELETE',
-      body:{
-        orderId: itemId
+  const deleteCartItem = async (id: number) => {
+    const res = await api(urls.order,{
+      method: "DELETE",
+      body: {
+        orderId: id
       }
-    },true)
-    console.log(res.code)
-    if (res.code == 200) {
-      dispatch(cart());
-      dispatch(order());
-    }
+    }, true);
+
   }
 
+
   return (
-    <Box
-      component="article"
-      sx={{
-        bgcolor: 'var(--white-pink)',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 1.5,
-        p: 1,
-      }}
-    >
-      <Typography> {item.service?.title} ، {item.attribute?.title}</Typography>
-      <Box display="flex" alignItems="center" gap={1}>
-        <Typography
-          variant="caption"
-          sx={{textDecoration: 'line-through', color: 'crimson'}}
-        >
-          {item.discount > 0 && formatPrice(item.discount)}
-        </Typography>
-        <Typography variant="subtitle2">{formatPrice(item.price)}</Typography>
-      </Box>
-      <Box display="flex" gap={1}>
-        <Button
-          variant="outlined"
-          sx={{
-            flex: 1,
-            borderColor: 'var(--dashboard-dark)',
-            color: 'var(--light-black)',
-          }}
-        >
-          جزئیات
-        </Button>
-        <Button
-          variant="contained"
-          sx={{bgcolor: 'var(--light-pink)', ':hover': {bgcolor: 'var(--mid-pink)'}}}
-        >
-          <X size={20} color="var(--light-black)" onClick={() => removeItem(item.id)} />
-        </Button>
-      </Box>
-    </Box>
+    <article className="cartItemContainer">
+      <span className="orderInfo">
+        <p></p>
+      <h3>{item.service.title}</h3>
+        <X size="20" onClick={() => deleteCartItem(item.id)}/>
+        </span>
+      {item.attributes.map((attribute,index) =>
+        <span className="orderInfo" key={index}>
+          <p>{attribute.title}</p>
+          <p>{attribute.price} تومان</p>
+      </span>
+      )}
+
+
+      <span className="orderInfo dashedBottom">
+      <h4>جمع کل</h4>
+      <h4>  {item.price} تومان</h4>
+    </span>
+      <span className="orderInfo">
+        <span className="orderInfoIcon">
+          <MapPin size={20}/>
+          {item.address?.title}
+        </span>
+        <span className="orderInfoIcon">
+          {item.fromTime + ' - ' + item.toTime} {moment(parseInt(item.date) * 1000).format('jYYYY/jMM/jDD')}
+        <Calendar size={20}/>
+        </span>
+
+      </span>
+    </article>
   )
 }
 
@@ -89,32 +74,14 @@ export default function Cart() {
       dispatch(order());
     }
   }
-  return (
-    <Box component="section" width="100%">
-      <Typography variant="h5" component="h1" mb={4}>
-        سبد خرید
-      </Typography>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-          bgcolor: 'var(--light-grey)',
-          py: 1,
-          px: 1,
-          borderRadius: 1,
-        }}
-      >
-        {cartItems.length < 1 ?
-          <Typography>سبد خرید شما خالی است</Typography> :
-          cartItems.map((value: IOrder, index) =>
-            <>
-              <CartItem item={value} key={index}/>
-            </>
-          )}
-        <Button variant="contained" onClick={pay}>پرداخت</Button>
 
-      </Box>
-    </Box>
+  return (
+    <section className="cartContainer">
+      {cartItems.length ? cartItems.map((order, index) => <CartItem key={index} item={order}/>):''}
+      <span className="payButtom" onClick={pay}>
+        پرداخت
+      </span>
+    </section>
+
   );
 }
