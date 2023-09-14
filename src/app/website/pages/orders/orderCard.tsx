@@ -17,7 +17,6 @@ interface IOrderCardProps {
 export default function OrderCard({item} : IOrderCardProps) {
   const [openModal, setOpenModal] = useState(false);
   const userType = useAppSelector(state => state.userReducer.data.role)
-  const user = useAppSelector(state => state.userReducer.data)
   const dispatch = useAppDispatch();
 
   const updateOrder = async (orderId: number,accept: boolean) => {
@@ -83,7 +82,7 @@ export default function OrderCard({item} : IOrderCardProps) {
         >
           جزئیات
         </Button>
-        {item.status !== 'ACCEPTED' && (
+        {userType === 'WORKER' && (
             <Box display="flex" gap={1}>
               <Button
                   fullWidth

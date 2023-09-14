@@ -1,5 +1,6 @@
 import {useAppSelector} from '../../../../services/redux/store';
 import {IAddress} from '../../../../services/types';
+import { Addresses } from '../profile/Addresses.tsx';
 import {AddressRow} from '../profile/addressRow';
 import {useRef} from 'react';
 import {Selected} from './newOrder';
@@ -25,17 +26,9 @@ export default function AddressStep({setSelected, setIsNextStepAllowed}: Props) 
 
   return (
     <div className="service-step-container">
-      <p className="hint-text">لطفا از لیست خدمات یک مورد را انتخاب کنید.</p>
+      <p className="hint-text">لطفا از لیست آدرس ها یک مورد را انتخاب کنید و یا اضافه کنید.</p>
       <section className="cards">
-        {addresses.map((address, index) => (
-          <div
-            ref={(el) => (cardRef.current[index] = el)}
-            onClick={() => handleSelectAddress(index, address)}
-            className="address-step-cardcontainer"
-          >
-            <AddressRow key={index} address={address} />
-          </div>
-        ))}
+        <Addresses/>
       </section>
     </div>
   );

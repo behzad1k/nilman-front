@@ -25,6 +25,11 @@ const listItems = [
   {
     icon: <Category />,
     text: 'خدمات',
+    link: '/dashboard/services',
+  },
+  {
+    icon: <Category />,
+    text: 'افزودن خدمات',
     link: '/dashboard/new-service',
   },
   {

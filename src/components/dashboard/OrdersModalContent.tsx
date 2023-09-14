@@ -51,7 +51,7 @@ export function OrdersModalContent({
         type: 'worker',
         service: editData.service.slug,
       });
-      const res = await api(urls.getUsers + '?' + params, {}, true);
+      const res = await api(urls.adminUser + '?' + params, {}, true);
       if (res.code === 200) {
         setWorkers(
           res.data.map((worker: IUser) => {

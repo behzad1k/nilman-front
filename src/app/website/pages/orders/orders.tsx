@@ -19,10 +19,13 @@ export default function Orders() {
           }}
       >
         <Container sx={{px: '24px', display: 'flex', flexDirection: 'column', gap: 5}}>
+          <Typography variant="h5" component="h1">
+            سبد خرید
+          </Typography>
           {userData?.role == "USER" && <Cart />}
           <Box component="section" sx={{display: 'flex', flexDirection: 'column', gap: 4}}>
             <Typography variant="h5" component="h1">
-              سفارش ها
+              سفارش های پیشین
             </Typography>
             {orders.length ? orders.map((value: IOrder, index) => <OrderCard item={value} key={index}/>) : ''}
 

@@ -1,4 +1,4 @@
-import {useEffect, useState, useCallback} from 'react';
+import { useEffect, useState } from 'react';
 import {useAppSelector} from '../../../../services/redux/store';
 import {FieldValues, useForm} from 'react-hook-form';
 import {Box, Button, Paper, Typography} from '@mui/material';
@@ -10,7 +10,7 @@ import {api} from '../../../../services/http';
 export default function Services() {
   const [open, setOpen] = useState(false);
   const [editData, setEditData] = useState<IService | null>(null);
-  const services = useAppSelector((state) => state.serviceReducer.services);
+  const [services, setServices] = useState<IService[]>([]);
   const servicesOptions = services.map((service) => {
     const {title: value, slug} = service;
     return {value, slug};
@@ -31,7 +31,7 @@ export default function Services() {
         service: service.slug,
       },
     };
-    const res = await api(urls.deleteService, reqOptions, true);
+    const res = await api(urls.adminService, reqOptions, true);
     console.log(res);
   };
 
@@ -48,16 +48,20 @@ export default function Services() {
     };
     // console.log(reqOptions);
 
-    const res = await api(urls.updateService, reqOptions, true);
+    const res = await api(urls.adminService, reqOptions, true);
     console.log(res);
   };
 
-  // useEffect(() => {
-  //   const fetchServices = async () => {
-  //     const res = api(urls['admin/service'])
-  //   }
-  // }, [])
+  const fetchData = async () => {
+    const res = await api(urls.adminService, {}, true);
+    console.log(res.data);
+    setServices(res.data);
+  }
+  useEffect(() => {
+    fetchData();
+  }, [])
 
+  console.log(services);
   return (
     <Box sx={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2}}>
       {services.map((service) => (
@@ -95,7 +99,7 @@ export default function Services() {
               name="parent"
               label="دسته بندی اصلی"
               control={control}
-              defaultValue={editData.slug}
+              defaultValue={editData.parent?.slug || ''}
               options={servicesOptions}
               size="medium"
             />

@@ -1,5 +1,5 @@
 import {InstagramLogo, Percent} from '@phosphor-icons/react';
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { initialApis } from "../../../../services/apis/global.ts";
 import { useAppDispatch } from "../../../../services/redux/store.ts";
 import {ISliderCardInfo} from '../../../../services/types.ts';
@@ -97,8 +97,8 @@ export default function Home() {
           description={' برای مشاهده نمونه خدمات بیشتر به وبسایت نیلمان مراجعه کنید '}
           button={'مشاهده'}
           icon={<Percent />}
-          bgColor1="rgb(253, 114, 114)"
-          bgColor2="rgb(239, 79, 79)"
+          bgColor1="#FF0078"
+          bgColor2="#F6EFA7"
         />
       </section>
       <section>
@@ -123,5 +123,6 @@ export default function Home() {
         />
       </section>
     </main>
+
   );
 }

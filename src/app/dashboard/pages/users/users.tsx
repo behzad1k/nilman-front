@@ -108,7 +108,7 @@ export default function Users() {
       method: 'put',
       body: {...editData, ...data, userId: editData.id},
     };
-    const res = await api(urls.updateUser, reqOptions, true);
+    const res = await api(urls.adminUser, reqOptions, true);
     console.log(res);
     if (res.code === 200) {
       setUsers((prev) => prev.map((user) => (user.id === editData.id ? res.data : user)));
@@ -122,7 +122,7 @@ export default function Users() {
       method: 'delete',
       body: {userId: deleteData.id},
     };
-    const res = await api(urls.deleteUser, reqOptions, true);
+    const res = await api(urls.adminUser, reqOptions, true);
     console.log(res);
     if (res.code === 204) {
       setUsers((prev) => prev.filter((user) => user.id !== deleteData.id));
@@ -132,7 +132,7 @@ export default function Users() {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const res = await api(urls.getUsers, {}, true);
+      const res = await api(urls.adminUser, {}, true);
       console.log(res);
       setUsers(res.data);
     };

@@ -117,7 +117,7 @@ export default function NewOrder() {
   useEffect(() => {
     // Fetch needed data based on step
     console.log('here1');
-
+    console.log(step.name)
     if (step.name === 'worker') {
       console.log('here2');
 
