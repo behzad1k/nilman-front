@@ -37,7 +37,7 @@ export default function AddUser() {
         ...data,
       },
     };
-    const res = await api(urls.register, reqOptions, true);
+    const res = await api(urls.adminUser, reqOptions, true);
     console.log(res);
   };
 

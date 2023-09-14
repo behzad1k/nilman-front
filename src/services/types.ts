@@ -17,6 +17,7 @@ export interface IService {
   price: number;
   slug: string;
   section: number;
+  parent?: IService;
   attributes?: IService[];
 }
 

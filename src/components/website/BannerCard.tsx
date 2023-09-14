@@ -1,4 +1,5 @@
 import { ReactElement } from "react";
+import { toast } from 'react-toastify';
 
 type IProps = {
   title: string,
@@ -15,7 +16,7 @@ export function BannerCard({title,description,button,icon,bgColor1 = "rgb(198, 8
           {icon}
             <h2>{title}</h2>
             <p>{description}</p>
-            <button>
+            <button onClick={() => toast('بزودی',{type: 'info'})}>
               {button}
               <i></i>
             </button>

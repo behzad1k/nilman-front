@@ -65,7 +65,7 @@ function LocationMarker({position, setPosition}: Props) {
 // Leaflet Map Component
 export function Map({position, setPosition}: Props) {
   return (
-    <MapContainer center={[31.318327, 48.67062]} zoom={12} scrollWheelZoom={false}>
+    <MapContainer center={[35.80693981523168,51.42884194850922]} zoom={14} scrollWheelZoom={false}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

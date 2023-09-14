@@ -27,7 +27,7 @@ export const Addresses = () => {
       body: {
         ...data,
         longitude: position?.lng.toString(),
-        latitude: position?.lng.toString(),
+        latitude: position?.lat.toString(),
       },
     };
     const res = await api(urls.address, reqOptions, true);
@@ -35,7 +35,8 @@ export const Addresses = () => {
     dispatch(addresses());
     setOpenModal(false);
   };
-
+  console.log(position?.lng.toString());
+  console.log(position?.lat.toString());
   return (
     <section className="addressSection">
       {userAddresses.map((value: IAddress, index) => (

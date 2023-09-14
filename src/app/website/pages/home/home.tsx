@@ -1,5 +1,5 @@
 import {InstagramLogo, Percent} from '@phosphor-icons/react';
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { initialApis } from "../../../../services/apis/global.ts";
 import { useAppDispatch } from "../../../../services/redux/store.ts";
 import {ISliderCardInfo} from '../../../../services/types.ts';
@@ -123,5 +123,6 @@ export default function Home() {
         />
       </section>
     </main>
+
   );
 }
