@@ -92,7 +92,6 @@ export default function WorkerStep({
       });
       const res = await api(urls.workersOffs + '?' + query, {}, true);
       if (res.code === 200) {
-        console.log(res.data);
         setSchedules(createSchedule(section, res.data));
       }
     };
@@ -101,7 +100,6 @@ export default function WorkerStep({
     if (watchWorker && date) {
       fetchWorkersOff();
     }
-    console.log();
   }, [watchWorker, date]);
 
   useEffect(() => {

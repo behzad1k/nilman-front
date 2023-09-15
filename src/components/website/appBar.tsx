@@ -3,13 +3,12 @@ import { House, PlusCircle, Clipboard, Newspaper, User } from '@phosphor-icons/r
 import { useAppSelector } from "../../services/redux/store.ts";
 
 export function AppBar() {
-  const isLoggedIn = useAppSelector(state => state.userReducer.isLoggedIn)
-  const userRole = useAppSelector(state => state.userReducer.data.role)
+  const userReducer = useAppSelector(state => state.userReducer)
   const location = useLocation();
 
   return (
     <nav className="appBar plusHighlight">
-      {userRole === "USER" &&
+      {userReducer.data.role === "USER" &&
         <NavLink to="/" className="appBarIconContainer">
           <House className="appBarIcon" weight={location.pathname === '/' ? 'fill' : 'regular'} color={location.pathname === '/' ? 'rgb(236, 170, 151)' : '#000'}/>
           <p>خانه</p>
@@ -19,7 +18,7 @@ export function AppBar() {
         <Clipboard className="appBarIcon" weight={location.pathname === '/orders' ? 'fill' : 'regular'} color={location.pathname === '/orders' ? 'rgb(236, 170, 151)' : '#000'}/>
         <p>سفارش ها</p>
       </NavLink>
-      {userRole === "USER" &&
+      {userReducer.data.role === "USER" &&
           <>
               <NavLink to="/newOrder" className="appBarIconContainer">
                   <PlusCircle className="appBarIcon" weight={location.pathname === '/newOrder' ? 'fill' : 'regular'} color={location.pathname === '/newOrder' ? 'rgb(236, 170, 151)' : '#000'}/>
@@ -31,9 +30,9 @@ export function AppBar() {
               </NavLink>
           </>
       }
-      <NavLink to={isLoggedIn ? "/profile" : '/login'} className="appBarIconContainer">
+      <NavLink to={userReducer.isLoggedIn ? "/profile" : '/login'} className="appBarIconContainer">
         <User className="appBarIcon" weight={location.pathname === '/profile' || location.pathname === '/login' ? 'fill' : 'regular'} color={location.pathname === '/profile' || location.pathname === '/login' ? 'rgb(236, 170, 151)' : '#000'}/>
-        <p>{location.pathname === '/profile' ? 'پروفایل' : 'ورود'}</p>
+        <p>{userReducer.isLoggedIn ? 'پروفایل' : 'ورود'}</p>
       </NavLink>
     </nav>
   );

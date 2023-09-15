@@ -259,7 +259,8 @@ main {
   flex-direction: column;
   align-items: center;
   border-radius: 40px;
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
   background-color: var(--light-pink);
   box-shadow: 0 9px 15px #c2c1c1;
   padding: 20px;
@@ -283,10 +284,13 @@ main {
 .cartContainer{
   display: flex;
   flex-direction: column;
+  /*justify-content: center;*/
+  align-items: center;
   gap: 10px;
 }
 .payButtom{
   width: 100%;
+  max-width: 400px;
   height: 50px;
   border-radius: 18px;
   background-color: #93ee93;
@@ -979,7 +983,7 @@ main {
   font-size: 12px;
 }
 
-.address-step-cardcontainer.selected {
+.addressContainer.selected {
   border-radius: 12px;
   background-color: var(--mid-pink);
 }

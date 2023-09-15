@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useRef, useState } from 'react';
 import {addresses} from '../../../../services/redux/reducers/userSlice.ts';
 import {useAppDispatch, useAppSelector} from '../../../../services/redux/store.ts';
 import {IAddress} from '../../../../services/types.ts';
@@ -16,12 +16,13 @@ type Position = {
   lng: number;
 };
 
-export const Addresses = () => {
+export const Addresses = ({ onClick }: { onClick?: (address: IAddress) => void }) => {
   const [openModal, setOpenModal] = useState(false);
   const [position, setPosition] = useState<Position | null>(null);
   const userAddresses = useAppSelector((state) => state.userReducer.addresses);
   const {reset, handleSubmit, control} = useForm();
   const dispatch = useAppDispatch();
+  const [selected, setSelected] = useState<IAddress>();
   const handleSubmitAddAddress = async (data: FieldValues) => {
     const reqOptions = {
       method: 'post',
@@ -32,16 +33,14 @@ export const Addresses = () => {
       },
     };
     const res = await api(urls.address, reqOptions, true);
-    console.log(res);
     dispatch(addresses());
     setOpenModal(false);
   };
-  console.log(position?.lng.toString());
-  console.log(position?.lat.toString());
+
   return (
     <section className="addressSection">
       {userAddresses.map((value: IAddress, index) => (
-        <AddressRow address={value} key={index} />
+        <AddressRow isSelected={(selected == value && onClick != undefined)} address={value} key={index} setSelected={setSelected} onClick={onClick}/>
       ))}
       <div className="addressContainer add" onClick={() => setOpenModal(true)}>
         <PlusCircle weight={'fill'} color="green" size={20}/>

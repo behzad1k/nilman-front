@@ -16,12 +16,10 @@ export default function AttributeStep({
   setIsNextStepAllowed,
 }: Props) {
   const cardRef = useRef<Array<HTMLElement | null>>([]);
-  console.log(selected.service?.attributes);
 
   const handleSelectAttribute = (index: number, attribute: IService) => {
     cardRef.current[index]?.classList.add('selected');
-
-    setSelected((prev: Selected) => ({
+    !selected.attributes.includes(attribute) && setSelected((prev: Selected) => ({
       ...prev,
       attributes: [...prev.attributes, attribute],
     }));

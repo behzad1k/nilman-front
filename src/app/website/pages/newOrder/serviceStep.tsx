@@ -18,7 +18,7 @@ export default function ServiceStep({setSelected, setIsNextStepAllowed}: Props) 
       index === i ? el?.classList.add('selected') : el?.classList.remove('selected'),
     );
 
-    setSelected((prev: Selected) => ({...prev, service}));
+    setSelected((prev: Selected) => ({...prev, service:service}));
     setIsNextStepAllowed(true);
   };
 

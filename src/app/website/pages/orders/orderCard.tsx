@@ -64,7 +64,7 @@ export default function OrderCard({item} : IOrderCardProps) {
           }}
       >
         {item.attribute && <OrderItem Icon={Article} value={item.attribute?.title}/>}
-        <OrderItem Icon={Calendar} value={moment(item.date).locale('fa').format('DD MMM')}/>
+        {/* <OrderItem Icon={Calendar} value={moment(item.date).locale('fa').format('DD MMM')}/> */}
         <OrderItem Icon={Clock} value={item.time}/>
         <OrderItem Icon={MapPinLine} value={item.address?.description ?? ''}/>
         <OrderItem Icon={Money} value={Intl.NumberFormat().format(item.price)}/>

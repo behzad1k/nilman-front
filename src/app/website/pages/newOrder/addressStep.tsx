@@ -11,24 +11,15 @@ type Props = {
 };
 
 export default function AddressStep({setSelected, setIsNextStepAllowed}: Props) {
-  const addresses = useAppSelector((state) => state.userReducer.addresses);
-
-  const cardRef = useRef<Array<HTMLElement | null>>([]);
-
-  const handleSelectAddress = (index: number, address: IAddress) => {
-    cardRef.current.map((el, i) =>
-      index === i ? el?.classList.add('selected') : el?.classList.remove('selected'),
-    );
-
+  const handleSelectAddress = (address: IAddress) => {
     setSelected((prev: Selected) => ({...prev, address: address}));
     setIsNextStepAllowed(true);
   };
-
   return (
     <div className="service-step-container">
       <p className="hint-text">لطفا از لیست آدرس ها یک مورد را انتخاب کنید و یا اضافه کنید.</p>
       <section className="cards">
-        <Addresses/>
+        <Addresses onClick={handleSelectAddress}/>
       </section>
     </div>
   );
