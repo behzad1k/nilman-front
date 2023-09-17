@@ -1,5 +1,5 @@
 import {Provider} from 'react-redux';
-import { ToastContainer } from 'react-toastify';
+import {ToastContainer} from 'react-toastify';
 import store from './services/redux/store.ts';
 import './assets/css/App.css';
 import Website from './app/website/website.tsx';
@@ -17,8 +17,11 @@ function App() {
           <Route path="/dashboard/*" element={<Dashboard />} />
         </Routes>
         <ToastContainer
-          progressStyle={{background: 'linear-gradient( to right, rgb(255, 177, 177), rgb(255, 60, 60))'}}
-          style={{marginTop: '50px',padding: '20px', right: 0}}
+          progressStyle={{
+            background:
+              'linear-gradient( to right, rgb(255, 177, 177), rgb(255, 60, 60))',
+          }}
+          style={{marginTop: '50px', padding: '20px', right: 0}}
         />
       </Mui>
     </Provider>

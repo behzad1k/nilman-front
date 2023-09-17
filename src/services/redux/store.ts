@@ -5,12 +5,14 @@ import serviceReducer from './reducers/serviceSlice.ts';
 import userReducer from './reducers/userSlice.ts';
 import orderReducer from './reducers/orderSlice.ts';
 import cartReducer from './reducers/cartSlice.ts';
+import loadingReducer from './reducers/loadingSlice.ts';
 
 const rootReducer = combineReducers({
   userReducer,
   serviceReducer,
   orderReducer,
   cartReducer,
+  loadingReducer,
 });
 
 const store = configureStore({

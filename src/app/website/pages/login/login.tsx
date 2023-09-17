@@ -1,5 +1,5 @@
 import {useRef} from 'react';
-import {TextInput} from '../../../../components';
+import {Loading, TextInput} from '../../../../components';
 import {useForm} from 'react-hook-form';
 import {Typography, Container, Button, Box} from '@mui/material';
 import {useState} from 'react';
@@ -12,6 +12,7 @@ import {AppDispatch, useAppDispatch} from '../../../../services/redux/store';
 import {SET_LOGGED_IN, user} from '../../../../services/redux/reducers/userSlice';
 import Cookies from 'js-cookie';
 import {useNavigate} from 'react-router-dom';
+import {SET_LOADING} from '../../../../services/redux/reducers/loadingSlice.ts';
 
 type LoginState = 'phoneNumber' | 'otp' | 'complete-profile';
 type LoginForm = {
@@ -37,7 +38,9 @@ export default function Login() {
         method: 'post',
         body: data,
       };
+      dispatch(SET_LOADING(true));
       const res = await api(urls.login, reqOptions);
+      dispatch(SET_LOADING(false));
       console.log(res);
       if (res.code) {
         alert(res.code);
@@ -53,7 +56,9 @@ export default function Login() {
           token: tokenRef.current,
         },
       };
+      dispatch(SET_LOADING(true));
       const res = await api(urls.check, reqOptions);
+      dispatch(SET_LOADING(false));
       console.log(res.data.user.nationalCode);
 
       if (res.code == 200) {
@@ -75,11 +80,12 @@ export default function Login() {
           nationalCode: data.nationalCode,
         },
       };
+      dispatch(SET_LOADING(true));
       const res = await api(urls.updateSimpleUser, reqOptions, true);
+      dispatch(SET_LOADING(false));
       if (res.code === 200) navigate('/');
     }
   };
-
   return (
     <Box component="main" bgcolor="var(--light-pink)">
       <Container
@@ -109,7 +115,7 @@ export default function Login() {
             borderRadius={50}
             sx={{backgroundColor: 'var(--white-pink-opacity)'}}
           >
-            <Box width={110} height={110} component="img" src='./img/lock.png' />
+            <Box width={110} height={110} component="img" src="./img/lock.png" />
           </Box>
         </Box>
       </Container>
@@ -282,6 +288,7 @@ export default function Login() {
           )}
         </Box>
       </Container>
+      <Loading />
     </Box>
   );
 }

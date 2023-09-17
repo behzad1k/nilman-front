@@ -1,10 +1,10 @@
 import {useEffect, useState, useCallback} from 'react';
 import {Button, Skeleton} from '@mui/material';
-import { useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
-import { cart } from '../../../../services/redux/reducers/cartSlice.ts';
-import { order } from '../../../../services/redux/reducers/orderSlice.ts';
-import { useAppDispatch } from '../../../../services/redux/store.ts';
+import {useDispatch} from 'react-redux';
+import {toast} from 'react-toastify';
+import {cart} from '../../../../services/redux/reducers/cartSlice.ts';
+import {order} from '../../../../services/redux/reducers/orderSlice.ts';
+import {useAppDispatch} from '../../../../services/redux/store.ts';
 import {IAddress, IService, IUser} from '../../../../services/types.ts';
 import ServiceStep from './serviceStep.tsx';
 import AttributeStep from './attributeStep.tsx';
@@ -14,6 +14,7 @@ import {formatPrice} from '../../../../utils/utils.ts';
 import {urls} from '../../../../services/endPoint.ts';
 import {api} from '../../../../services/http.ts';
 import moment from 'jalali-moment';
+import {SET_LOADING} from '../../../../services/redux/reducers/loadingSlice.ts';
 
 // Types
 type Step = {
@@ -79,7 +80,9 @@ export default function NewOrder() {
       serviceId: String(selected.service?.id),
       section: String(section),
     });
+    dispatch(SET_LOADING(true));
     const res = await api(urls.ariaWorker + '?' + params, {}, true);
+    dispatch(SET_LOADING(false));
     console.log(res);
     if (res.code === 200) {
       setWorkers(res.data.workers);
@@ -112,26 +115,28 @@ export default function NewOrder() {
         workerId: Number(selected.worker),
       },
     };
+    dispatch(SET_LOADING(true));
     const res = await api(urls.order, reqOptions, true);
+    dispatch(SET_LOADING(false));
+
     console.log('res is: ', res);
 
     if (res.code === 201) {
-      toast('سفارش شما با موفقیت ثبت شد',{type: 'success'})
+      toast('سفارش شما با موفقیت ثبت شد', {type: 'success'});
       // window.location.reload();
       // console.log(res);
       dispatch(order());
       dispatch(cart());
-    }
-    else{
-      toast('سفارش شما ثبت نشد, لطفا مجددا تلاش کنید.',{type: 'error'})
+    } else {
+      toast('سفارش شما ثبت نشد, لطفا مجددا تلاش کنید.', {type: 'error'});
     }
   };
 
   const getPrice = () => {
     let final = 0;
-    selected.attributes.map((attr) => final += attr.price);
+    selected.attributes.map((attr) => (final += attr.price));
     return final;
-  }
+  };
 
   useEffect(() => {
     // Fetch needed data based on step
@@ -140,33 +145,14 @@ export default function NewOrder() {
     }
   }, [step]);
 
-  useEffect(() => {
-  }, [selected.service]);
+  useEffect(() => {}, [selected.service]);
+
+  useEffect(() => {}, [selected]);
 
   useEffect(() => {
-  }, [selected]);
-
-  useEffect(() => {
-    setSelected((prev) => ({...prev, price: getPrice() }))
+    setSelected((prev) => ({...prev, price: getPrice()}));
   }, [selected.attributes]);
 
-  // const {register, handleSubmit, control, getValues, reset} = useForm();
-
-  // const onSubmit = async (data: FieldValues) => {
-  //   const reqOptions = {
-  //     method: 'post',
-  //     body: {
-  //       ...data,
-  //       date: Math.floor(new Date(date).getTime() / 1000),
-  //     },
-  //   };
-  //   const res = await api(urls.order, reqOptions, true);
-  //   if (res.code === 201) {
-  //     reset();
-  //     dispatch(order());
-  //     dispatch(cart());
-  //   }
-  // };
   return (
     <main className="newOrderMain">
       <div className="progress">
@@ -208,25 +194,23 @@ export default function NewOrder() {
           <div className="info">
             {selected.service ? (
               <h1>
-                {selected.service?.title} {`>`}{selected.attributes.map((attr, index) =>
-                (index === 0 ? ' ' : ', ') + attr.title
-              )}
+                {selected.service?.title} {`>`}
+                {selected.attributes.map(
+                  (attr, index) => (index === 0 ? ' ' : ', ') + attr.title,
+                )}
               </h1>
-            ) :
+            ) : (
               'در حال انتخاب...'
-            }
+            )}
             <div>
-              {selected.address && (
-                <p className="worker">
-                  {selected.address.title}
-                </p>
-              )}
+              {selected.address && <p className="worker">{selected.address.title}</p>}
               <span className="circle"></span>
-              {selected.time &&
+              {selected.time && (
                 <time className="date-time">
-                  {selected.time} | {selected.date && moment(selected.date).format('jYYYY/jMM/jDD')}
+                  {selected.time} |{' '}
+                  {selected.date && moment.unix(selected.date).format('jYYYY/jMM/jDD')}
                 </time>
-              }
+              )}
             </div>
           </div>
           <div className="price">
