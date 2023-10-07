@@ -105,13 +105,15 @@ export default function WorkerStep({
         tab?.classList.remove('selected');
       }
     });
+    setSchedules([])
   };
 
   const fetchWorkersOff = async () => {
-    // Asap mode -> early return
-    if (selectedTab.index === 0) return;
-
     let query;
+    // Asap mode
+    if (selectedTab.index === 0) {
+      return;
+    }
     if (selectedTab.index === 1) {
       // only date
       query = new URLSearchParams({
@@ -129,12 +131,13 @@ export default function WorkerStep({
 
     const res = await api(urls.workersOffs + '?' + query, {}, true);
     if (res.code === 200) {
+      console.log(createSchedule(section, res.data));
+
       setSchedules(createSchedule(section, res.data));
     }
   };
 
-  useEffect(() => {
-    // Asap mode
+  const handleSetAsapModeData = () => {
     if (selectedTab.index === 0 && nearest) {
       const [date, time] = nearest.date.split(' ');
       const fromTime = time.split('-')[0];
@@ -146,11 +149,11 @@ export default function WorkerStep({
       }));
       setIsNextStepAllowed(true);
     }
-  }, [selectedTab]);
+  }
 
   useEffect(() => {
-    console.log(date);
-  }, [date]);
+    handleSetAsapModeData()
+  }, [nearest, selectedTab]);
 
   return (
     <div className="service-step-container">

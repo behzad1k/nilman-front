@@ -1,15 +1,23 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {Box, Button, Typography} from '@mui/material';
 import {useForm, FieldValues} from 'react-hook-form';
 import {TextInput, SelectInput} from '../../../../components';
+import {IService} from '../../../../services/types';
 import {api} from '../../../../services/http';
 import {urls} from '../../../../services/endPoint';
 import {useAppSelector} from '../../../../services/redux/store';
 import {MenuItem} from '@mui/material';
 
 export default function NewService() {
+  const [services, setServices] = useState<IService[]>([]);
   const {register, handleSubmit, control, getValues} = useForm();
-  const services = useAppSelector((state) => state.serviceReducer.services);
+  // const services = useAppSelector((state) => state.serviceReducer.services);
+  // console.log(services);
+  const fetchData = async () => {
+    const res = await api(urls.adminService, {}, true);
+    console.log(res.data);
+    setServices(res.data);
+  };
 
   const onSubmit = async (data: FieldValues) => {
     console.log(data);
@@ -26,6 +34,11 @@ export default function NewService() {
     const res = await api(urls.adminService, reqOptions, true);
     console.log(res);
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <>
       <Typography variant="h5" component="h1">

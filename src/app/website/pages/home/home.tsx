@@ -110,9 +110,9 @@ export default function Home() {
             کنید.{' '}
           </p>
         </div>
-        <Slider title={'نمونه کار خدمات ناخن'} cardInfos={cardInfos1} />
-        <Slider title={'نمونه کار خدمات مو'} cardInfos={cardInfos2} />
-        <Slider title={'نمونه کار خدمات ابرو'} cardInfos={cardInfos3} />
+        <Slider title={'خدمات ناخن'} cardInfos={cardInfos1} />
+        <Slider title={'خدمات مو'} cardInfos={cardInfos2} />
+        <Slider title={'خدمات ابرو'} cardInfos={cardInfos3} />
       </section>
       <section className="banners">
         <BannerCard

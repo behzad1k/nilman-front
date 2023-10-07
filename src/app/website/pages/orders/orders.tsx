@@ -6,8 +6,10 @@ import {useAppSelector} from '../../../../services/redux/store.ts';
 import emptyList from '../../../../assets/img/svg/emptylist.svg';
 
 export default function Orders() {
-  const orders = useAppSelector((state) => state.orderReducer.orders);
+  const orders = [...useAppSelector((state) => state.orderReducer.orders)];
   const userData = useAppSelector((state) => state.userReducer.data);
+  console.log(orders);
+
   return (
     <Box
       sx={{
@@ -32,7 +34,7 @@ export default function Orders() {
           </Typography>
           {orders.length > 0 ? (
             <>
-              {orders.map((value: IOrder, index) => (
+              {orders.reverse().map((value: IOrder, index) => (
                 <OrderCard item={value} key={index} />
               ))}
             </>

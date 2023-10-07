@@ -10,6 +10,7 @@ import ServiceStep from './serviceStep.tsx';
 import AttributeStep from './attributeStep.tsx';
 import AddressStep from './addressStep.tsx';
 import WorkerStep from './workerStep.tsx';
+import SecAttrDrawer from "./secAttrDrawer";
 import {formatPrice} from '../../../../utils/utils.ts';
 import {urls} from '../../../../services/endPoint.ts';
 import {api} from '../../../../services/http.ts';
@@ -96,8 +97,9 @@ export default function NewOrder() {
     // handle next - prev logic
     if (action === 'next')
       setStep((prev) => (prev.index === steps.length - 1 ? prev : steps[prev.index + 1]));
-    if (action === 'prev')
+    if (action === 'prev') {
       setStep((prev) => (prev.index === 0 ? prev : steps[prev.index - 1]));
+    }
 
     // set next btn disabled when we go to a new step
     setIsNextStepAllowed(false);
@@ -115,6 +117,8 @@ export default function NewOrder() {
         workerId: Number(selected.worker),
       },
     };
+    console.log(reqOptions);
+
     dispatch(SET_LOADING(true));
     const res = await api(urls.order, reqOptions, true);
     dispatch(SET_LOADING(false));
@@ -145,9 +149,10 @@ export default function NewOrder() {
     }
   }, [step]);
 
-  useEffect(() => {}, [selected.service]);
+  useEffect(() => {
+    console.log(selected);
 
-  useEffect(() => {}, [selected]);
+  }, [selected]);
 
   useEffect(() => {
     setSelected((prev) => ({...prev, price: getPrice()}));
@@ -163,6 +168,7 @@ export default function NewOrder() {
       </div>
       {step.name === 'service' && (
         <ServiceStep
+          selected={selected}
           setSelected={setSelected}
           setIsNextStepAllowed={setIsNextStepAllowed}
         />
@@ -176,6 +182,7 @@ export default function NewOrder() {
       )}
       {step.name === 'address' && (
         <AddressStep
+          selected={selected}
           setSelected={setSelected}
           setIsNextStepAllowed={setIsNextStepAllowed}
         />

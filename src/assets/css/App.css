@@ -904,6 +904,7 @@ main {
   height: 80px;
 }
 .service-step-container .card .delete-btn {
+  margin-right: auto;
   display: none;
 }
 
@@ -1109,4 +1110,9 @@ main {
 }
 .loading div {
   box-sizing: content-box;
+}
+
+
+.attr-box.selected {
+  background-color: var(--light-pink)
 }

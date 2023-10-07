@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {Modal, ProfilePicture} from '../../../../components';
+import {Modal, ProfilePicture, Map} from '../../../../components';
 import {
   Article,
   Icon,
@@ -21,6 +21,12 @@ interface IOrderCardProps {
 export default function OrderCard({item}: IOrderCardProps) {
   const [openModal, setOpenModal] = useState(false);
   const userType = useAppSelector((state) => state.userReducer.data.role);
+  const date = moment.unix(Number(item.date)).locale('fa').format('DD MMMM yy');
+  const time = `${item.fromTime} - ${item.toTime}`;
+  const attributes = item.attributes.reduce((acc, atr, index) => {
+    if (index !== 0) return acc += ', ' + atr.title;
+    else return acc += atr.title
+  },'')
 
   if (userType === 'WORKER') {
     return (
@@ -54,17 +60,14 @@ export default function OrderCard({item}: IOrderCardProps) {
             gap: 1,
           }}
         >
-          {item.attribute && <OrderItem Icon={Article} value={item.attribute?.title} />}
-          {/* <OrderItem Icon={Calendar} value={moment(item.date).locale('fa').format('DD MMM')}/> */}
-          <OrderItem Icon={Clock} value={item.fromTime + '-' + item.toTime} />
+          {attributes && <OrderItem Icon={Article} value={attributes} />}
+          <OrderItem Icon={Clock} value={time} />
           <OrderItem
             Icon={Calendar}
-            value={moment.unix(Number(item.date)).locale('fa').format('DD MMMM yy')}
+            value={date}
           />
           <OrderItem Icon={MapPinLine} value={item.address?.description ?? ''} />
           <OrderItem Icon={Money} value={Intl.NumberFormat().format(item.price)} />
-          {/* <OrderItem Icon={User} */}
-          {/*            value={item.worker ? (item.worker.name + item.worker.lastName) : 'در حال جست و جو'}/> */}
           <Button
             variant="outlined"
             onClick={() => setOpenModal(true)}
@@ -102,20 +105,18 @@ export default function OrderCard({item}: IOrderCardProps) {
   return (
     <article
       className="infoBox orderRow"
-      // style={{backgroundColor: service.status == 1 ? 'green' : 'red'}}
     >
       <h4>{item.service.title} </h4>
       <div>
         <div className="itemRowDetails">
           <span className="orderItem">
             <Article size={22} />
-            <p>{item.attribute?.title}</p>
+            <p>{attributes}</p>
           </span>
           <span className="orderItem">
             <Calendar size={22} />
             <p>
-              {moment(item.date).isValid() &&
-                moment(item.date).locale('fa').format('DD MMM , HH:mm')}{' '}
+              {date} , {time}
             </p>
           </span>
           <span className="orderItem">
