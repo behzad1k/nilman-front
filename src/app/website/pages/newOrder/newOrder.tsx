@@ -120,20 +120,20 @@ export default function NewOrder() {
     console.log(reqOptions);
 
     dispatch(SET_LOADING(true));
-    const res = await api(urls.order, reqOptions, true);
+    // const res = await api(urls.order, reqOptions, true);
     dispatch(SET_LOADING(false));
 
-    console.log('res is: ', res);
+    console.log('res is: ', reqOptions);
 
-    if (res.code === 201) {
-      toast('سفارش شما با موفقیت ثبت شد', {type: 'success'});
-      // window.location.reload();
-      // console.log(res);
-      dispatch(order());
-      dispatch(cart());
-    } else {
-      toast('سفارش شما ثبت نشد, لطفا مجددا تلاش کنید.', {type: 'error'});
-    }
+    // if (res.code === 201) {
+    //   toast('سفارش شما با موفقیت ثبت شد', {type: 'success'});
+    //   // window.location.reload();
+    //   // console.log(res);
+    //   dispatch(order());
+    //   dispatch(cart());
+    // } else {
+    //   toast('سفارش شما ثبت نشد, لطفا مجددا تلاش کنید.', {type: 'error'});
+    // }
   };
 
   const getPrice = () => {
