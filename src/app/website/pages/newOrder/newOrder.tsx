@@ -1,5 +1,5 @@
 import {useEffect, useState, useCallback} from 'react';
-import {Button, Skeleton} from '@mui/material';
+import {Button, Skeleton, Typography} from '@mui/material';
 import {useDispatch} from 'react-redux';
 import {toast} from 'react-toastify';
 import {cart} from '../../../../services/redux/reducers/cartSlice.ts';
@@ -10,7 +10,7 @@ import ServiceStep from './serviceStep.tsx';
 import AttributeStep from './attributeStep.tsx';
 import AddressStep from './addressStep.tsx';
 import WorkerStep from './workerStep.tsx';
-import SecAttrDrawer from "./secAttrDrawer";
+import SecAttrDrawer from './secAttrDrawer';
 import {formatPrice} from '../../../../utils/utils.ts';
 import {urls} from '../../../../services/endPoint.ts';
 import {api} from '../../../../services/http.ts';
@@ -117,7 +117,6 @@ export default function NewOrder() {
         workerId: Number(selected.worker),
       },
     };
-    console.log(reqOptions);
 
     dispatch(SET_LOADING(true));
     const res = await api(urls.order, reqOptions, true);
@@ -151,7 +150,6 @@ export default function NewOrder() {
 
   useEffect(() => {
     console.log(selected);
-
   }, [selected]);
 
   useEffect(() => {
@@ -166,6 +164,9 @@ export default function NewOrder() {
           style={{width: `${((step.index + 1) / 4) * 100}%`}}
         ></span>
       </div>
+      <Typography component="span" variant="subtitle2" fontWeight="400" mt={-1} mb={1}>
+        مرحله {Intl.NumberFormat('fa').format(step.index + 1)}
+      </Typography>
       {step.name === 'service' && (
         <ServiceStep
           selected={selected}

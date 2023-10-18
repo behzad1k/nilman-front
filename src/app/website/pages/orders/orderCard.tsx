@@ -1,32 +1,45 @@
 import {useState} from 'react';
-import {Modal, ProfilePicture, Map} from '../../../../components';
-import {
-  Article,
-  Icon,
-  Calendar,
-  MapPinLine,
-  Money,
-  User,
-  Clock,
-} from '@phosphor-icons/react';
+import {Modal, ProfilePicture} from '../../../../components';
+import {Article, Calendar, MapPinLine, Money, Clock} from '@phosphor-icons/react';
 import {Box, Typography, Paper, Button} from '@mui/material';
-import {useAppSelector} from '../../../../services/redux/store.ts';
 import {IOrder} from '../../../../services/types.ts';
 import {formatPrice} from '../../../../utils/utils.ts';
 import OrderItem from './orderItem';
 import moment from 'jalali-moment';
+import {urls} from '../../../../services/endPoint.ts';
+import {api} from '../../../../services/http.ts';
+import {order} from '../../../../services/redux/reducers/orderSlice.ts';
+import {useAppDispatch, useAppSelector} from '../../../../services/redux/store.ts';
 interface IOrderCardProps {
   item: IOrder;
 }
+
 export default function OrderCard({item}: IOrderCardProps) {
+  const dispatch = useAppDispatch();
   const [openModal, setOpenModal] = useState(false);
   const userType = useAppSelector((state) => state.userReducer.data.role);
+
   const date = moment.unix(Number(item.date)).locale('fa').format('DD MMMM yy');
   const time = `${item.fromTime} - ${item.toTime}`;
   const attributes = item.attributes.reduce((acc, atr, index) => {
-    if (index !== 0) return acc += ', ' + atr.title;
-    else return acc += atr.title
-  },'')
+    if (index !== 0) return (acc += ', ' + atr.title);
+    else return (acc += atr.title);
+  }, '');
+
+  const updateOrder = async () => {
+    const reqOptions = {
+      method: 'PUT',
+      body: {
+        orderId: item.id,
+        done: true,
+      },
+    };
+    const res = await api(urls.order, reqOptions, true);
+    if (res.code == 200) {
+      // dispatch(cart());
+      dispatch(order());
+    }
+  };
 
   if (userType === 'WORKER') {
     return (
@@ -62,10 +75,7 @@ export default function OrderCard({item}: IOrderCardProps) {
         >
           {attributes && <OrderItem Icon={Article} value={attributes} />}
           <OrderItem Icon={Clock} value={time} />
-          <OrderItem
-            Icon={Calendar}
-            value={date}
-          />
+          <OrderItem Icon={Calendar} value={date} />
           <OrderItem Icon={MapPinLine} value={item.address?.description ?? ''} />
           <OrderItem Icon={Money} value={Intl.NumberFormat().format(item.price)} />
           <Button
@@ -93,6 +103,18 @@ export default function OrderCard({item}: IOrderCardProps) {
               >
                 <a href="tel:09037131808">تماس با پشتیبانی</a>
               </Button>
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{
+                  bgcolor: 'var(--light-pink)',
+                  color: 'var(--light-black)',
+                  ':hover': {bgcolor: 'var(--mid-pink)'},
+                }}
+                onClick={updateOrder}
+              >
+                انجام شده
+              </Button>
             </Box>
           )}
         </Box>
@@ -103,9 +125,7 @@ export default function OrderCard({item}: IOrderCardProps) {
     );
   }
   return (
-    <article
-      className="infoBox orderRow"
-    >
+    <article className="infoBox orderRow">
       <h4>{item.service.title} </h4>
       <div>
         <div className="itemRowDetails">

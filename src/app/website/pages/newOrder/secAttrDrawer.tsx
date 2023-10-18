@@ -1,10 +1,8 @@
-
-
-import {useRef, useState} from 'react';
-import { Global } from '@emotion/react';
+import {useEffect, useRef, useState} from 'react';
+import {Global} from '@emotion/react';
 import {Selected} from './newOrder';
 import {IService} from '../../../../services/types';
-import { Button, Box, Skeleton, Typography, SwipeableDrawer } from '@mui/material'
+import {Button, Box, Skeleton, Typography, SwipeableDrawer} from '@mui/material';
 
 type Props = {
   open: boolean;
@@ -12,37 +10,48 @@ type Props = {
   parentId: number | null;
   selected: Selected;
   setSelected: (value: (prev: Selected) => Selected) => void;
-}
+};
 
-export default function SecAttrDrawer({open, setOpen, parentId, selected, setSelected}: Props) {
+export default function SecAttrDrawer({
+  open,
+  setOpen,
+  parentId,
+  selected,
+  setSelected,
+}: Props) {
   const boxEl = useRef<Array<HTMLElement | null>>([]);
 
+  const curParent = selected.service?.attributes?.filter(
+    (attribute) => attribute.id === parentId,
+  )[0];
+
   const toggleDrawer = (newOpen: boolean) => () => {
-    const cond = curParent?.attributes?.some((secAttr) => selected.attributes.includes(secAttr))
+    const cond = curParent?.attributes?.some((secAttr) =>
+      selected.attributes.includes(secAttr),
+    );
+    console.log('cond', cond);
     if (!cond) return;
     setOpen(newOpen);
   };
 
   const handleClickCard = (index: number, secAttr: IService) => {
-    if (selected.attributes.includes(secAttr)) {
-      // Remove from Selected
-      setSelected((prev: Selected) => {
-        const newSelectedAttrs = prev.attributes.filter(
-          (selected) => selected.slug !== secAttr.slug,
-        );
-        return {...prev, attributes: newSelectedAttrs};
-      });
-    } else {
-      // Add to selected
-      setSelected((prev: Selected) => ({
-        ...prev,
-        attributes: [...prev.attributes, secAttr],
-      }));
-    }
-    boxEl.current[index]?.classList.toggle('selected')
-  }
+    boxEl.current.map((el, i) =>
+      index === i ? el?.classList.add('selected') : el?.classList.remove('selected'),
+    );
 
-  const curParent = selected.service?.attributes?.filter((attribute) => attribute.id === parentId)[0];
+    setSelected((prev: Selected) => {
+      const newSelectedAttrs = prev.attributes.filter((selected) => {
+        return (
+          curParent?.attributes?.findIndex(
+            (curSecAttr) => curSecAttr.slug === selected.slug,
+          ) === -1
+        );
+      });
+      return {...prev, attributes: [...newSelectedAttrs, secAttr]};
+    });
+
+    setOpen(false);
+  };
 
   if (curParent) {
     return (
@@ -50,9 +59,11 @@ export default function SecAttrDrawer({open, setOpen, parentId, selected, setSel
         <Global
           styles={{
             '.MuiDrawer-root > .MuiPaper-root': {
-              height: '100%',
+              height: 'max-content',
               overflow: 'visible',
-              maxHeight: `calc(100% - 140px)`
+              minHeight: `60vh`,
+              background:
+                'linear-gradient(360deg, rgba(252, 197, 218, 1), rgba(252, 228, 198, 1))',
             },
           }}
         />
@@ -66,22 +77,58 @@ export default function SecAttrDrawer({open, setOpen, parentId, selected, setSel
             keepMounted: true,
           }}
         >
-          <Box display='flex' flexDirection='column' gap={0.75} p={2} overflow='auto' className='attr-drawer-content'>
-            <Box display='flex' alignItems='center' justifyContent='space-between'>
-              <Typography variant='body1' component='h3' mb={1}>{curParent.title}</Typography>
-              <Button onClick={toggleDrawer(false)} variant='contained' sx={{backgroundColor: 'var(--light-pink)', color: 'var(--light-black)'}}>ادامه</Button>
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap={0.75}
+            p={2}
+            overflow="auto"
+            className="attr-drawer-content"
+          >
+            <Box display="flex" alignItems="center" justifyContent="space-between">
+              <Typography variant="body1" component="h3" mb={1}>
+                {curParent.title}
+              </Typography>
             </Box>
-            <Typography variant='caption' component='p' mb={1}>یک یا چند مورد را انتخاب کنید</Typography>
+            <Typography variant="caption" component="p" mb={1}>
+              یک یا چند مورد را انتخاب کنید
+            </Typography>
             {curParent?.attributes?.map((secAttr, index) => (
-              <Box key={secAttr.slug} className={`attr-box ${selected.attributes.includes(secAttr) ? 'selected' : null}`} ref={(el: HTMLElement) => (boxEl.current[index] = el)} onClick={() => handleClickCard(index, secAttr)} sx={{backgroundColor: 'var(--white-pink)', borderRadius: '6px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 1.5, px: 1}}>
-                <Typography variant='body1' component='h4' sx={{color: 'var(--light-black)'}}>{secAttr.title}</Typography>
-                <Box component='span' sx={{fontWeight: '800', ml: 'auto'}}>{secAttr.price}</Box>
-                <Box component='span' ml={0.5} sx={{fontWeight: '300'}}>هزارتومان</Box>
+              <Box
+                key={secAttr.slug}
+                className={`attr-box ${
+                  selected.attributes.includes(secAttr) ? 'selected' : null
+                }`}
+                ref={(el: HTMLElement) => (boxEl.current[index] = el)}
+                onClick={() => handleClickCard(index, secAttr)}
+                sx={{
+                  backgroundColor: 'var(--white-pink)',
+                  borderRadius: '6px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  py: 1.5,
+                  px: 1,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  component="h4"
+                  sx={{color: 'var(--light-black)'}}
+                >
+                  {secAttr.title}
+                </Typography>
+                <Box component="span" sx={{fontWeight: '800', ml: 'auto'}}>
+                  {secAttr.price}
+                </Box>
+                <Box component="span" ml={0.5} sx={{fontWeight: '300'}}>
+                  هزارتومان
+                </Box>
               </Box>
             ))}
           </Box>
         </SwipeableDrawer>
       </>
     );
-  } else return null
+  } else return null;
 }

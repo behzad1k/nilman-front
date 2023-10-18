@@ -49,11 +49,11 @@ const tabs: Tab[] = [
     index: 0,
   },
   {
-    name: 'فقط انتخاب تاریخ',
+    name: 'فقط تاریخ',
     index: 1,
   },
   {
-    name: 'انتخاب تاریخ و آرایشگر',
+    name: 'تاریخ و آرایشگر',
     index: 2,
   },
 ];
@@ -105,7 +105,7 @@ export default function WorkerStep({
         tab?.classList.remove('selected');
       }
     });
-    setSchedules([])
+    setSchedules([]);
   };
 
   const fetchWorkersOff = async () => {
@@ -149,10 +149,10 @@ export default function WorkerStep({
       }));
       setIsNextStepAllowed(true);
     }
-  }
+  };
 
   useEffect(() => {
-    handleSetAsapModeData()
+    handleSetAsapModeData();
   }, [nearest, selectedTab]);
 
   return (

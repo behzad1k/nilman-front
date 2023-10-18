@@ -29,6 +29,7 @@ export default function NewService() {
         description: data.description,
         price: Number(data.price),
         parent: data.parent,
+        hasColor: Boolean(data.hasColor),
       },
     };
     const res = await api(urls.adminService, reqOptions, true);
@@ -69,6 +70,16 @@ export default function NewService() {
           defaultValue=""
           size="medium"
         />
+        <SelectInput
+          name="hasColor"
+          label="انتخاب رنگ"
+          control={control}
+          defaultValue={0}
+          size="medium"
+        >
+          <MenuItem value={0}>غیر فعال</MenuItem>
+          <MenuItem value={1}>فعال</MenuItem>
+        </SelectInput>
         <TextInput
           name="section"
           label="سانس انجام"

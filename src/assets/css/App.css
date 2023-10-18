@@ -555,9 +555,10 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 8px;
   max-width: 500px;
-  max-height: 200px;
-  height: 30vh;
+  height: max-content;
+  min-height: 200px;
   width: 95vw;
   color: #fff;
   border-radius: 10px;
@@ -896,7 +897,7 @@ main {
   padding: 50px 24px;
   gap: 20px;
   border-radius: 6px;
-  height: 130px;
+  height: 110px;
 }
 
 .service-step-container .card img {
@@ -1112,7 +1113,21 @@ main {
   box-sizing: content-box;
 }
 
+.attr-box {
+  border: 2px dotted transparent;
+}
 
 .attr-box.selected {
-  background-color: var(--light-pink)
+  border-color: rgb(245, 150, 165);
+  background-color: var(--light-pink);
+}
+
+.banner-row {
+  display: flex;
+  gap: 4px;
+}
+
+.banner-row svg {
+  width: 24px;
+  height: 24px;
 }

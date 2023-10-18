@@ -77,19 +77,32 @@ export default function AddUser() {
           ))}
         </SelectInput>
         {role === 'WORKER' && (
-          <SelectInput
-            name="service"
-            label="نوع خدمت"
-            control={control}
-            defaultValue=""
-            size="medium"
-          >
-            {services.map((service: IService) => (
-              <MenuItem key={service.slug} value={service.slug}>
-                {service.title}
-              </MenuItem>
-            ))}
-          </SelectInput>
+          <>
+            <SelectInput
+              name="service"
+              label="نوع خدمت"
+              control={control}
+              defaultValue=""
+              size="medium"
+            >
+              {services.map((service: IService) => (
+                <MenuItem key={service.slug} value={service.slug}>
+                  {service.title}
+                </MenuItem>
+              ))}
+            </SelectInput>
+            <SelectInput
+              name="district"
+              label="منطقه"
+              control={control}
+              defaultValue=""
+              size="medium"
+            >
+              <MenuItem value={1}>منطقه ۱</MenuItem>
+              <MenuItem value={2}>منطقه ۲</MenuItem>
+              <MenuItem value={3}>منطقه ۳</MenuItem>
+            </SelectInput>
+          </>
         )}
         <TextInput
           name="name"

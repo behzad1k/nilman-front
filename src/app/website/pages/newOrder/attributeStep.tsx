@@ -22,13 +22,9 @@ export default function AttributeStep({
 
   const handleSelectAttribute = (index: number, attribute: IService) => {
     cardRef.current[index]?.classList.add('selected');
-    // !selected.attributes.includes(attribute) && setSelected((prev: Selected) => ({
-    //   ...prev,
-    //   attributes: [...prev.attributes, attribute],
-    // }));
     if (attribute.attributes && attribute.attributes.length > 0) {
-      setDrawerOpen(true)
-      setCurId(attribute.id)
+      setDrawerOpen(true);
+      setCurId(attribute.id);
     }
     setIsNextStepAllowed(true);
   };
@@ -48,7 +44,7 @@ export default function AttributeStep({
     console.log(slugsToRemove);
     setSelected((prev: Selected) => {
       const newSelectedAttrs = prev.attributes.filter(
-        (selected) => !slugsToRemove.includes(selected.slug)
+        (selected) => !slugsToRemove.includes(selected.slug),
       );
       if (newSelectedAttrs.length === 0) setIsNextStepAllowed(false);
       return {...prev, attributes: newSelectedAttrs};
@@ -56,24 +52,26 @@ export default function AttributeStep({
   };
 
   useEffect(() => {
-    if (!drawerOpen) setCurId(null)
-  }, [drawerOpen])
+    if (!drawerOpen) setCurId(null);
+  }, [drawerOpen]);
 
   useEffect(() => {
-    if (selected.attributes?.length > 0) setIsNextStepAllowed(true)
-    else setIsNextStepAllowed(false)
-  }, [])
+    if (selected.attributes?.length > 0) setIsNextStepAllowed(true);
+    else setIsNextStepAllowed(false);
+  }, []);
 
   return (
     <div className="service-step-container">
-      <p className="hint-text">لطفا از لیست خدمات یک مورد را انتخاب کنید.</p>
+      <p className="hint-text">لطفا از لیست خدمات یک یا چند مورد را انتخاب کنید.</p>
       <section className="cards">
         {selected.service?.attributes?.map((attribute, index) => (
           <div
             key={attribute.slug}
             ref={(el) => (cardRef.current[index] = el)}
             onClick={() => handleSelectAttribute(index, attribute)}
-            className={`card ${selected.attributes.includes(attribute) ? 'selected' : null}`}
+            className={`card ${
+              selected.attributes.includes(attribute) ? 'selected' : null
+            }`}
           >
             <img src={'/img/' + attribute.slug + '.png'} />
             <h2>{attribute.title}</h2>
@@ -84,7 +82,13 @@ export default function AttributeStep({
           </div>
         ))}
       </section>
-      <SecAttrDrawer selected={selected} setSelected={setSelected} parentId={curId} open={drawerOpen} setOpen={setDrawerOpen} />
+      <SecAttrDrawer
+        selected={selected}
+        setSelected={setSelected}
+        parentId={curId}
+        open={drawerOpen}
+        setOpen={setDrawerOpen}
+      />
     </div>
   );
 }

@@ -112,6 +112,16 @@ export default function Services() {
               defaultValue={editData.title}
               size="medium"
             />
+            <SelectInput
+              name="hasColor"
+              label="انتخاب رنگ"
+              control={control}
+              defaultValue={editData.hasColor ? 1 : 0}
+              size="medium"
+            >
+              <MenuItem value={0}>غیر فعال</MenuItem>
+              <MenuItem value={1}>فعال</MenuItem>
+            </SelectInput>
             <TextInput
               name="section"
               label="سانس انجام"
