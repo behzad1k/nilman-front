@@ -1,14 +1,21 @@
 import {useEffect, useState, useCallback} from 'react';
-import {Button, Skeleton} from '@mui/material';
+import {Button, Skeleton, Typography} from '@mui/material';
+import {useDispatch} from 'react-redux';
+import {toast} from 'react-toastify';
+import {cart} from '../../../../services/redux/reducers/cartSlice.ts';
+import {order} from '../../../../services/redux/reducers/orderSlice.ts';
+import {useAppDispatch} from '../../../../services/redux/store.ts';
 import {IAddress, IService, IUser} from '../../../../services/types.ts';
 import ServiceStep from './serviceStep.tsx';
 import AttributeStep from './attributeStep.tsx';
 import AddressStep from './addressStep.tsx';
 import WorkerStep from './workerStep.tsx';
+import SecAttrDrawer from './secAttrDrawer';
 import {formatPrice} from '../../../../utils/utils.ts';
 import {urls} from '../../../../services/endPoint.ts';
 import {api} from '../../../../services/http.ts';
 import moment from 'jalali-moment';
+import {SET_LOADING} from '../../../../services/redux/reducers/loadingSlice.ts';
 
 // Types
 type Step = {
@@ -37,8 +44,9 @@ const steps: Step[] = [
 
 export type Selected = {
   service: IService | null;
-  attributes: IService[] | [];
+  attributes: IService[];
   address: IAddress | null;
+  price: number;
   worker: string | null;
   date: number | null;
   time: number | null;
@@ -49,6 +57,7 @@ const initialSelected: Selected = {
   service: null,
   attributes: [],
   address: null,
+  price: 0,
   worker: null,
   date: null,
   time: null,
@@ -61,6 +70,7 @@ export default function NewOrder() {
   const [nearest, setNearest] = useState<{date: string; workerId: number} | null>(null);
   const [isNextStepAllowed, setIsNextStepAllowed] = useState(false);
   const [step, setStep] = useState<Step>(steps[0]);
+  const dispatch = useAppDispatch();
   let section = 0;
 
   // Fns
@@ -71,7 +81,9 @@ export default function NewOrder() {
       serviceId: String(selected.service?.id),
       section: String(section),
     });
+    dispatch(SET_LOADING(true));
     const res = await api(urls.ariaWorker + '?' + params, {}, true);
+    dispatch(SET_LOADING(false));
     console.log(res);
     if (res.code === 200) {
       setWorkers(res.data.workers);
@@ -85,8 +97,9 @@ export default function NewOrder() {
     // handle next - prev logic
     if (action === 'next')
       setStep((prev) => (prev.index === steps.length - 1 ? prev : steps[prev.index + 1]));
-    if (action === 'prev')
+    if (action === 'prev') {
       setStep((prev) => (prev.index === 0 ? prev : steps[prev.index - 1]));
+    }
 
     // set next btn disabled when we go to a new step
     setIsNextStepAllowed(false);
@@ -104,52 +117,44 @@ export default function NewOrder() {
         workerId: Number(selected.worker),
       },
     };
+
+    dispatch(SET_LOADING(true));
     const res = await api(urls.order, reqOptions, true);
+    dispatch(SET_LOADING(false));
+
     console.log('res is: ', res);
 
     if (res.code === 201) {
+      toast('سفارش شما با موفقیت ثبت شد', {type: 'success'});
+      // window.location.reload();
       // console.log(res);
-      // dispatch(order());
-      // dispatch(cart());
+      dispatch(order());
+      dispatch(cart());
+    } else {
+      toast('سفارش شما ثبت نشد, لطفا مجددا تلاش کنید.', {type: 'error'});
     }
+  };
+
+  const getPrice = () => {
+    let final = 0;
+    selected.attributes.map((attr) => (final += attr.price));
+    return final;
   };
 
   useEffect(() => {
     // Fetch needed data based on step
-    console.log('here1');
-    console.log(step.name)
     if (step.name === 'worker') {
-      console.log('here2');
-
       getAreaWorkers();
     }
   }, [step]);
 
   useEffect(() => {
-    console.log(selected.service);
-  }, [selected.service]);
-
-  useEffect(() => {
     console.log(selected);
   }, [selected]);
 
-  // const {register, handleSubmit, control, getValues, reset} = useForm();
-
-  // const onSubmit = async (data: FieldValues) => {
-  //   const reqOptions = {
-  //     method: 'post',
-  //     body: {
-  //       ...data,
-  //       date: Math.floor(new Date(date).getTime() / 1000),
-  //     },
-  //   };
-  //   const res = await api(urls.order, reqOptions, true);
-  //   if (res.code === 201) {
-  //     reset();
-  //     dispatch(order());
-  //     dispatch(cart());
-  //   }
-  // };
+  useEffect(() => {
+    setSelected((prev) => ({...prev, price: getPrice()}));
+  }, [selected.attributes]);
 
   return (
     <main className="newOrderMain">
@@ -159,8 +164,12 @@ export default function NewOrder() {
           style={{width: `${((step.index + 1) / 4) * 100}%`}}
         ></span>
       </div>
+      <Typography component="span" variant="subtitle2" fontWeight="400" mt={-1} mb={1}>
+        مرحله {Intl.NumberFormat('fa').format(step.index + 1)}
+      </Typography>
       {step.name === 'service' && (
         <ServiceStep
+          selected={selected}
           setSelected={setSelected}
           setIsNextStepAllowed={setIsNextStepAllowed}
         />
@@ -174,6 +183,7 @@ export default function NewOrder() {
       )}
       {step.name === 'address' && (
         <AddressStep
+          selected={selected}
           setSelected={setSelected}
           setIsNextStepAllowed={setIsNextStepAllowed}
         />
@@ -190,42 +200,29 @@ export default function NewOrder() {
       <div className="bottom-section">
         <div className="cart-section">
           <div className="info">
-            {selected.attributes[0]?.title ? (
+            {selected.service ? (
               <h1>
-                {selected.service?.title}, {selected.attributes[0]?.title}
+                {selected.service?.title} {`>`}
+                {selected.attributes.map(
+                  (attr, index) => (index === 0 ? ' ' : ', ') + attr.title,
+                )}
               </h1>
             ) : (
-              <Skeleton variant="text" animation="pulse" width={200} />
+              'در حال انتخاب...'
             )}
             <div>
-              {selected.worker ? (
-                <p className="worker">
-                  {
-                    // TODO FIX LATER
-                    workers.filter((worker) => worker.id === Number(selected.worker))[0]
-                      .name
-                  }{' '}
-                  {
-                    // TODO FIX LATER
-                    workers.filter((worker) => worker.id === Number(selected.worker))[0]
-                      .lastName
-                  }
-                </p>
-              ) : (
-                <Skeleton variant="text" animation="pulse" width={50} />
-              )}
+              {selected.address && <p className="worker">{selected.address.title}</p>}
               <span className="circle"></span>
-              {selected.time ? (
+              {selected.time && (
                 <time className="date-time">
-                  {selected.time} | {selected.date}
+                  {selected.time} |{' '}
+                  {selected.date && moment.unix(selected.date).format('jYYYY/jMM/jDD')}
                 </time>
-              ) : (
-                <Skeleton variant="text" animation="pulse" width={80} />
               )}
             </div>
           </div>
           <div className="price">
-            <p>{formatPrice(540000)}</p>
+            <p>{formatPrice(selected.price)} تومان</p>
           </div>
         </div>
         <div className="btn-section">

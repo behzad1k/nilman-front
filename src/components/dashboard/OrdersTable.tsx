@@ -60,6 +60,23 @@ export function OrdersTable({rows, setOpenModal, setEditData}: Props) {
     setEditData(data);
   };
 
+  const handleCopyRow = (row: IOrder) => {
+    const attributes = row.attributes.reduce((acc, attr, index) => {
+      if (index === row.attributes.length - 1) return (acc += attr.title);
+      else return (acc += attr.title + ', ');
+    }, '');
+
+    const information = `
+    تاریخ: ${moment.unix(Number(row.date)).format('jDD/jMM/jYYYY')}
+    زمان: ${row.fromTime} تا ${row.toTime}
+    خدمات: ${row.service.title} - ${attributes}
+    آرایشگر: ${row.worker.name} ${row.worker.lastName} - ${row.worker.phoneNumber}
+    هزینه: ${row.price}
+    `;
+
+    navigator.clipboard.writeText(information);
+  };
+
   const formatOrderData = (type: string, value: any) => {
     switch (type) {
       case 'address':
@@ -67,7 +84,7 @@ export function OrdersTable({rows, setOpenModal, setEditData}: Props) {
       case 'attribute':
         return value.title;
       case 'date':
-        return moment.unix(value).format('jMM/jDD/jYYYY');
+        return moment.unix(value).format('jDD/jMM/jYYYY');
       case 'service':
         return value.title;
       case 'time':
@@ -110,6 +127,7 @@ export function OrdersTable({rows, setOpenModal, setEditData}: Props) {
                 </TableCell>
               ))}
               <TableCell></TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -133,6 +151,15 @@ export function OrdersTable({rows, setOpenModal, setEditData}: Props) {
                         color="primary"
                       >
                         مدیریت
+                      </Button>
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        onClick={() => handleCopyRow(row)}
+                        variant="contained"
+                        color="primary"
+                      >
+                        کپی
                       </Button>
                     </TableCell>
                   </TableRow>

@@ -19,6 +19,7 @@ export interface IService {
   section: number;
   parent?: IService;
   attributes?: IService[];
+  hasColor: boolean;
 }
 
 export interface IAddress {
@@ -45,7 +46,7 @@ export interface IOrder {
   attribute?: IService;
   address?: IAddress;
   fromTime: number;
-  toTime: number
+  toTime: number;
 }
 export interface IUser {
   id: number;

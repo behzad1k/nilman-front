@@ -6,29 +6,26 @@ import {
   MenuItem,
   StandardTextFieldProps,
 } from '@mui/material';
+import {forwardRef} from 'react';
 import {Controller} from 'react-hook-form';
-
-type option = {
-  slug: string;
-  value: string;
-};
-
+import {ForwardRef} from 'react-is';
 interface Props extends StandardTextFieldProps {
   name: string;
   label: string;
   defaultValue: string | number;
   control: any;
-  options: option[];
   customOnChange?: (val: any) => void;
+  children: any;
 }
 
-export function SelectInput({
+export const SelectInput = forwardRef(function SelectInput({
   name,
   label,
   control,
   defaultValue,
-  options,
   customOnChange,
+  children,
+  ref,
   ...props
 }: Props) {
   return (
@@ -50,20 +47,14 @@ export function SelectInput({
               onChange={handleOnChange}
               value={value}
               label={label}
+              ref={ref}
               {...props}
             >
-              <MenuItem key={null} value="">
-                انتخاب نشده
-              </MenuItem>
-              {options.map((option) => (
-                <MenuItem key={option.slug} value={option.slug}>
-                  {option.value}
-                </MenuItem>
-              ))}
+              {children}
             </Select>
           );
         }}
       />
     </FormControl>
   );
-}
+});

@@ -8,7 +8,7 @@ import nail from '../../../../assets/img/category-nail.png';
 import eyebrow from '../../../../assets/img/category-eyebrow.png';
 import hair from '../../../../assets/img/category-hair.png';
 import {SwipeableDrawer} from '@mui/material';
-import {Suspense} from 'react';
+import {useRef, useEffect} from 'react';
 
 const categories = [
   {
@@ -17,6 +17,15 @@ const categories = [
 ];
 
 export default function Mag() {
+  const drawerEl = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const element = drawerEl.current;
+    if (element) {
+      element.style.height = element.scrollHeight + 50 + 'px';
+    }
+  }, [])
+
   return (
     <Box bgcolor="var(--mid-pink)">
       <Container component="section" sx={{py: 2}}>
@@ -60,12 +69,13 @@ export default function Mag() {
         </Swiper>
       </Container>
       <Box
-        height="65vh"
+        minHeight="65vh"
         pt={8}
         pb={2}
         bgcolor="#fff"
         sx={{borderRadius: '40px 40px 0 0'}}
         component="section"
+        ref={drawerEl}
       >
         <Container sx={{display: 'flex', flexDirection: 'column', gap: 2}}>
           <Box sx={{display: 'flex', gap: 1}}>

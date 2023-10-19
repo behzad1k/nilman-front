@@ -13,7 +13,8 @@ type fetchType = {
 };
 
 const api = async (url: string, request: fetchType = {}, useToken = false) => {
-  const baseUrl = config.baseUrl;
+  // const baseUrl = config.baseUrl;
+  const baseUrl = 'http://45.159.150.107:9001'
   const headers = request.headers || {};
   if (useToken) headers.Authorization = `Bearer ${Cookies.get('token')}`;
   if (!headers['content-type']) {

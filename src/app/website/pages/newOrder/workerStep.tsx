@@ -9,6 +9,7 @@ import {SelectInput} from '../../../../components';
 import {IService, IUser} from '../../../../services/types';
 import {createSchedule} from '../../../../utils/utils';
 import {Selected} from './newOrder';
+import {Button, MenuItem} from '@mui/material';
 
 const styles = {
   calendarContainer: 'calendarContainer',
@@ -37,8 +38,27 @@ type Props = {
   nearest: any;
 };
 
+type Tab = {
+  name: string;
+  index: number;
+};
+
+const tabs: Tab[] = [
+  {
+    name: 'سریع‌ترین زمان ممکن',
+    index: 0,
+  },
+  {
+    name: 'فقط تاریخ',
+    index: 1,
+  },
+  {
+    name: 'تاریخ و آرایشگر',
+    index: 2,
+  },
+];
+
 export default function WorkerStep({
-  selected,
   setSelected,
   setIsNextStepAllowed,
   workers,
@@ -48,8 +68,9 @@ export default function WorkerStep({
   // React
   const [schedules, setSchedules] = useState<ScheduleCard[] | []>([]);
   const [date, setDate] = useState();
-  const [mode, setMode] = useState('normal');
+  const [selectedTab, setSelectedTab] = useState<Tab>(tabs[0]);
   const cardRef = useRef<Array<HTMLElement | null>>([]);
+  const tabsRef = useRef<Array<HTMLElement | null>>([]);
 
   // Vars
   const curDate = new Date();
@@ -60,13 +81,6 @@ export default function WorkerStep({
   // @ts-ignore
   const m = moment(date?._d).locale('fa');
 
-  // Todo: Remove later
-  const options = workers.map((worker) => {
-    const {name, lastName, id} = worker;
-    return {slug: id.toString(), value: name + ' ' + lastName};
-  });
-  options.push({slug: 'asap', value: 'سریع ترین زمان'});
-
   // Handlers
   const handleSelectDay = (index: number, fromTime: number) => {
     cardRef.current.map((el, i) =>
@@ -76,36 +90,55 @@ export default function WorkerStep({
     setSelected((prev: Selected) => ({
       ...prev,
       worker: watchWorker,
-      date: m.unix(),
+      date: moment(Intl.DateTimeFormat().format(date)).unix(),
       time: fromTime,
     }));
     setIsNextStepAllowed(true);
   };
 
-  useEffect(() => {
-    const fetchWorkersOff = async () => {
-      const query = new URLSearchParams({
+  const handleChangeTab = (clickedTab: Tab) => {
+    tabsRef.current.forEach((tab, i) => {
+      if (clickedTab.index === i) {
+        tab?.classList.add('selected');
+        setSelectedTab(clickedTab);
+      } else {
+        tab?.classList.remove('selected');
+      }
+    });
+    setSchedules([]);
+  };
+
+  const fetchWorkersOff = async () => {
+    let query;
+    // Asap mode
+    if (selectedTab.index === 0) {
+      return;
+    }
+    if (selectedTab.index === 1) {
+      // only date
+      query = new URLSearchParams({
+        // @ts-ignore
+        date: String(moment(Intl.DateTimeFormat().format(date)).unix()),
+      });
+    } else {
+      // Date and worker
+      query = new URLSearchParams({
         workerId: watchWorker,
         // @ts-ignore
-        // date: String(moment(date._d).unix()),
-        date: '1694216688000',
+        date: String(moment(Intl.DateTimeFormat().format(date)).unix()),
       });
-      const res = await api(urls.workersOffs + '?' + query, {}, true);
-      if (res.code === 200) {
-        console.log(res.data);
-        setSchedules(createSchedule(section, res.data));
-      }
-    };
-    if (watchWorker === 'asap') return setMode('asap');
-    else setMode('normal');
-    if (watchWorker && date) {
-      fetchWorkersOff();
     }
-    console.log();
-  }, [watchWorker, date]);
 
-  useEffect(() => {
-    if (mode === 'asap') {
+    const res = await api(urls.workersOffs + '?' + query, {}, true);
+    if (res.code === 200) {
+      console.log(createSchedule(section, res.data));
+
+      setSchedules(createSchedule(section, res.data));
+    }
+  };
+
+  const handleSetAsapModeData = () => {
+    if (selectedTab.index === 0 && nearest) {
       const [date, time] = nearest.date.split(' ');
       const fromTime = time.split('-')[0];
       setSelected((prev: Selected) => ({
@@ -116,43 +149,71 @@ export default function WorkerStep({
       }));
       setIsNextStepAllowed(true);
     }
-  }, [mode]);
+  };
+
+  useEffect(() => {
+    handleSetAsapModeData();
+  }, [nearest, selectedTab]);
 
   return (
     <div className="service-step-container">
+      <p className="hint-text">یکی از حالت های زیر را برای ادامه انتخاب کنید</p>
+      <div className="tabs">
+        {tabs.map((tab) => (
+          <div
+            className={`tab ${tab.index === 0 && 'selected'}`}
+            ref={(el) => (tabsRef.current[tab.index] = el)}
+            onClick={() => handleChangeTab(tab)}
+          >
+            {tab.name}
+          </div>
+        ))}
+      </div>
       <p className="hint-text">لطفا آرایشگر مورد نظر خود را انتخاب کنید</p>
       <div className="content">
-        <SelectInput
-          name="worker"
-          label="آرایشگر"
-          control={control}
-          defaultValue=""
-          options={options}
-          size="medium"
-          sx={{
-            '& .MuiOutlinedInput-notchedOutline': {
-              borderColor: 'var(--mid-pink)',
-              backgroundColor: 'var(--white-pink)',
-              borderRadius: '10px',
-            },
-          }}
-        />
-        {mode !== 'asap' ? (
-          <div className="app-date-picker">
-            <DatePicker
-              value={date}
-              min={minDate}
-              calendarStyles={styles}
-              // @ts-ignore
-              onChange={(value) => setDate(value)}
-              defaultValue={defaultDate}
-            />
-          </div>
-        ) : (
+        {selectedTab.index === 0 ? (
           <div>
             <h3>نزدیک ترین زمان ممکن :</h3>
-            <p>{nearest.date}</p>
+            <p>{nearest?.date}</p>
           </div>
+        ) : (
+          <>
+            <div className="app-date-picker">
+              <DatePicker
+                value={date}
+                min={minDate}
+                calendarStyles={styles}
+                // @ts-ignore
+                onChange={(value) => setDate(value)}
+                defaultValue={defaultDate}
+              />
+            </div>
+            {selectedTab.index === 2 && (
+              <SelectInput
+                name="worker"
+                label="آرایشگر"
+                control={control}
+                defaultValue=""
+                size="medium"
+                sx={{
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'var(--mid-pink)',
+                    backgroundColor: 'var(--white-pink)',
+                    borderRadius: '10px',
+                  },
+                }}
+              >
+                {workers.map((worker) => (
+                  <MenuItem key={worker.id} value={worker.id}>
+                    {worker.name} {worker.lastName}
+                  </MenuItem>
+                ))}
+              </SelectInput>
+            )}
+            <Button variant="contained" size="large" onClick={() => fetchWorkersOff()}>
+              دریافت برنامه زمانی
+            </Button>
+          </>
         )}
 
         {schedules.length > 0 && (
