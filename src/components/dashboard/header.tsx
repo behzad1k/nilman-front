@@ -33,7 +33,7 @@ export function Header({drawerWidth}: {drawerWidth: number}) {
 
   const handleLogout = () => {
     logout(dispatch);
-    navigate('/');
+    navigate('/login');
   };
 
   return (

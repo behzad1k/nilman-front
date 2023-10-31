@@ -23,7 +23,7 @@ export function ProfileCard() {
 
   const handleLogout = () => {
     logout(dispatch);
-    navigate('/');
+    navigate('/login');
   };
 
   useEffect(() => {
