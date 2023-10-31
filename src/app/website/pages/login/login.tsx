@@ -87,10 +87,13 @@ export default function Login() {
     }
   };
   return (
-    <Box component="main" bgcolor="var(--light-pink)">
+    <Box
+      component="main"
+      bgcolor="var(--light-pink)"
+      sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}
+    >
       <Container
         sx={{
-          flex: 1,
           height: '50vh',
           py: 4,
           display: 'flex',
@@ -127,7 +130,8 @@ export default function Login() {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          height: '50vh',
+          pt: 8,
+          pb: 4,
         }}
       >
         <Box
