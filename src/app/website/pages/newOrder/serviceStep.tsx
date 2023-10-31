@@ -9,7 +9,11 @@ type Props = {
   setIsNextStepAllowed: (val: boolean) => void;
 };
 
-export default function ServiceStep({selected, setSelected, setIsNextStepAllowed}: Props) {
+export default function ServiceStep({
+  selected,
+  setSelected,
+  setIsNextStepAllowed,
+}: Props) {
   const services = useAppSelector((state) => state.serviceReducer.services);
 
   const cardRef = useRef<Array<HTMLElement | null>>([]);
@@ -19,13 +23,13 @@ export default function ServiceStep({selected, setSelected, setIsNextStepAllowed
       index === i ? el?.classList.add('selected') : el?.classList.remove('selected'),
     );
 
-    setSelected((prev: Selected) => ({...prev, service:service, attributes: []}));
+    setSelected((prev: Selected) => ({...prev, service: service, attributes: []}));
     setIsNextStepAllowed(true);
   };
 
   useEffect(() => {
-    selected.service ? setIsNextStepAllowed(true) : setIsNextStepAllowed(false)
-  }, [])
+    selected.service ? setIsNextStepAllowed(true) : setIsNextStepAllowed(false);
+  }, []);
 
   return (
     <div className="service-step-container">

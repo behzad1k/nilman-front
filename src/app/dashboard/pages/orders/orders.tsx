@@ -26,7 +26,7 @@ export default function Orders() {
   const fetchOrders = useCallback(async () => {
     const res = await api(urls.adminOrder, {}, true);
     setOrders(res.data);
-    console.log(res);
+    console.log('ORDERS:', res);
   }, []);
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export default function Orders() {
             rows={
               showType === 'ALL'
                 ? orders
-                : orders?.filter((order) => order.status === showType)
+                : orders?.filter((order) => order.status.toLocaleUpperCase() === showType)
             }
             setOpenModal={setOpenModal}
             setEditData={setEditData}

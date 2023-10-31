@@ -13,10 +13,15 @@ import {
 import {AccountCircle, Menu as MenuIcon} from '@mui/icons-material';
 
 import {Drawer} from './drawer';
+import {logout} from '../../services/apis/global';
+import {useAppDispatch} from '../../services/redux/store';
+import {useNavigate} from 'react-router-dom';
 
 export function Header({drawerWidth}: {drawerWidth: number}) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -24,6 +29,11 @@ export function Header({drawerWidth}: {drawerWidth: number}) {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    logout(dispatch);
+    navigate('/');
   };
 
   return (
@@ -72,7 +82,7 @@ export function Header({drawerWidth}: {drawerWidth: number}) {
               onClose={handleClose}
             >
               <MenuItem onClick={handleClose}>پروفایل</MenuItem>
-              <MenuItem onClick={handleClose}>خروج</MenuItem>
+              <MenuItem onClick={handleLogout}>خروج</MenuItem>
             </Menu>
           </Box>
         </Toolbar>

@@ -50,6 +50,7 @@ export type Selected = {
   worker: string | null;
   date: number | null;
   time: number | null;
+  discount: string | null;
 };
 
 // Initial
@@ -61,6 +62,7 @@ const initialSelected: Selected = {
   worker: null,
   date: null,
   time: null,
+  discount: null,
 };
 
 export default function NewOrder() {
@@ -115,6 +117,7 @@ export default function NewOrder() {
         time: selected.time,
         date: selected.date,
         workerId: Number(selected.worker),
+        discount: selected.discount,
       },
     };
 

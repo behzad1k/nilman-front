@@ -5,6 +5,7 @@ import {api} from '../../../../services/http';
 import {urls} from '../../../../services/endPoint';
 import {useAppDispatch, useAppSelector} from '../../../../services/redux/store.ts';
 import {SET_LOADING} from '../../../../services/redux/reducers/loadingSlice.ts';
+import {useNavigate} from 'react-router-dom';
 
 export function ProfileCard() {
   const profile = useAppSelector((state) => state.userReducer.data);
@@ -18,6 +19,12 @@ export function ProfileCard() {
   const socialIdRef = useRef<HTMLInputElement>(null);
   const [socialId, setSocialId] = useState(profile.nationalCode);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout(dispatch);
+    navigate('/');
+  };
 
   useEffect(() => {
     !nameDisabled && nameRef.current?.focus();
@@ -117,7 +124,7 @@ export function ProfileCard() {
             <span className="pfpButtons">
               <SignOut
                 weight={'bold'}
-                onClick={() => logout(dispatch)}
+                onClick={handleLogout}
                 className="logout"
                 size={32}
                 color={'#e85959'}

@@ -11,6 +11,7 @@ import Mag from './pages/mag/mag.tsx';
 import NewOrder from './pages/newOrder/newOrder.tsx';
 import Orders from './pages/orders/orders.tsx';
 import Profile from './pages/profile/profile.tsx';
+import Feedback from './pages/feedback/feedback.tsx';
 
 export default function Website() {
   const dispatch: AppDispatch = useAppDispatch();
@@ -63,6 +64,7 @@ export default function Website() {
           </>
         }
       />
+      <Route path="/feedback/:id" element={<Feedback />} />
       <Route
         path="/login"
         element={

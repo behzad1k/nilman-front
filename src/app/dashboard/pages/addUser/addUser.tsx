@@ -1,11 +1,12 @@
 import {Box, Typography, Container, Button} from '@mui/material';
 import {TextInput, SelectInput} from '../../../../components';
-import {useForm, FieldValues} from 'react-hook-form';
+import {useForm, FieldValues, Controller} from 'react-hook-form';
 import {useEffect, useState} from 'react';
 import {api} from '../../../../services/http';
 import {urls} from '../../../../services/endPoint';
 import {IService} from '../../../../services/types';
 import {MenuItem} from '@mui/material';
+import {MuiFileInput} from 'mui-file-input';
 
 export default function AddUser() {
   const {register, handleSubmit, control, getValues} = useForm();
@@ -31,13 +32,13 @@ export default function AddUser() {
   ];
 
   const onSubmit = async (data: FieldValues) => {
-    console.log(data);
     const reqOptions = {
       method: 'post',
       body: {
         ...data,
       },
     };
+    console.log(reqOptions);
     const res = await api(urls.adminUser, reqOptions, true);
     console.log(res);
   };
@@ -131,6 +132,13 @@ export default function AddUser() {
           control={control}
           defaultValue=""
           size="medium"
+        />
+        <Controller
+          control={control}
+          name="profilePicture"
+          render={({field}) => {
+            return <MuiFileInput {...field} label="عکس پروفایل" size="medium" />;
+          }}
         />
         <Button variant="contained" color="success" type="submit" size="large" fullWidth>
           افزودن

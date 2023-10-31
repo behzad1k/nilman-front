@@ -44,6 +44,10 @@ const CartItem = ({item}: ICartItemProps) => {
           <p>{attribute.price} تومان</p>
         </span>
       ))}
+      <span className="orderInfo">
+        <p>هزینه ایاب ذهاب</p>
+        <p>100000 تومان</p>
+      </span>
 
       <span className="orderInfo dashedBottom">
         <h4>جمع کل</h4>

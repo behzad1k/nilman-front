@@ -28,6 +28,8 @@ export const SelectInput = forwardRef(function SelectInput({
   ref,
   ...props
 }: Props) {
+  console.log('defaults:', defaultValue);
+
   return (
     <FormControl>
       <InputLabel id={name}>{label}</InputLabel>
@@ -35,8 +37,12 @@ export const SelectInput = forwardRef(function SelectInput({
         name={name}
         control={control}
         render={({field: {onChange, value = defaultValue}}) => {
+          console.log('value is:', value);
+
           const handleOnChange = (event) => {
             if (customOnChange) customOnChange(event);
+            console.log('here');
+
             return onChange(event);
           };
           return (

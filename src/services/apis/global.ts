@@ -34,5 +34,5 @@ export const userApis = async (dispatch: any) => {
 export const logout = (dispatch: any) => {
   dispatch(SET_LOGGED_IN(false));
   Cookies.set('token', '');
-  window.location.reload();
+  // window.location.reload();
 };

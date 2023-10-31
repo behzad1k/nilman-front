@@ -16,6 +16,8 @@ interface IOrderCardProps {
 
 export default function OrderCard({item}: IOrderCardProps) {
   const dispatch = useAppDispatch();
+  console.log(item);
+
   const [openModal, setOpenModal] = useState(false);
   const userType = useAppSelector((state) => state.userReducer.data.role);
 
@@ -27,6 +29,8 @@ export default function OrderCard({item}: IOrderCardProps) {
   }, '');
 
   const updateOrder = async () => {
+    console.log('here', item);
+
     const reqOptions = {
       method: 'PUT',
       body: {
@@ -103,18 +107,20 @@ export default function OrderCard({item}: IOrderCardProps) {
               >
                 <a href="tel:09037131808">تماس با پشتیبانی</a>
               </Button>
-              <Button
-                fullWidth
-                variant="contained"
-                sx={{
-                  bgcolor: 'var(--light-pink)',
-                  color: 'var(--light-black)',
-                  ':hover': {bgcolor: 'var(--mid-pink)'},
-                }}
-                onClick={updateOrder}
-              >
-                انجام شده
-              </Button>
+              {item.status !== 'Done' && (
+                <Button
+                  fullWidth
+                  variant="contained"
+                  sx={{
+                    bgcolor: 'var(--light-pink)',
+                    color: 'var(--light-black)',
+                    ':hover': {bgcolor: 'var(--mid-pink)'},
+                  }}
+                  onClick={updateOrder}
+                >
+                  انجام شده
+                </Button>
+              )}
             </Box>
           )}
         </Box>

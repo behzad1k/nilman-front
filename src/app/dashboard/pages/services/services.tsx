@@ -14,10 +14,17 @@ export default function Services() {
   const [services, setServices] = useState<IService[]>([]);
 
   const {register, handleSubmit, control, getValues} = useForm({
-    values: editData || undefined,
+    values:
+      {
+        ...editData,
+        parent: editData?.parent?.slug,
+        hasColor: editData?.hasColor ? 1 : 0,
+      } || undefined,
   });
 
   const handleClickEdit = (service: IService) => {
+    console.log('edit data', service);
+
     setEditData(service);
     setOpen(true);
   };
@@ -30,7 +37,7 @@ export default function Services() {
       },
     };
     const res = await api(urls.adminService, reqOptions, true);
-    console.log(res);
+    console.log('delete res:', res);
   };
 
   const handleCloseModal = () => {
@@ -39,14 +46,22 @@ export default function Services() {
   };
 
   const onSubmit = async (data: FieldValues) => {
-    console.log(data);
     const reqOptions = {
       method: 'put',
-      body: {...data, service: data.slug},
+      body: {
+        title: data.title,
+        section: data.section,
+        description: data.description,
+        price: Number(data.price),
+        parent: data.parent,
+        hasColor: Boolean(data.hasColor),
+        service: data.slug,
+      },
     };
+    console.log(reqOptions);
 
     const res = await api(urls.adminService, reqOptions, true);
-    console.log(res);
+    console.log('submit res', res);
   };
 
   const fetchData = async () => {
@@ -58,7 +73,6 @@ export default function Services() {
     fetchData();
   }, []);
 
-  console.log(services);
   return (
     <Box sx={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2}}>
       {services.map((service) => (

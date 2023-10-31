@@ -1,12 +1,12 @@
 import {InstagramLogo, Percent, Phone, MapPin} from '@phosphor-icons/react';
-import {ContactPhone} from '@mui/icons-material';
+import {ContactPhone, WhatsApp} from '@mui/icons-material';
 import React, {useEffect} from 'react';
 import {initialApis} from '../../../../services/apis/global.ts';
 import {useAppDispatch} from '../../../../services/redux/store.ts';
 import {ISliderCardInfo} from '../../../../services/types.ts';
 import {Slider} from '../../../../components';
 import {BannerCard} from '../../../../components';
-import {Box} from '@mui/material';
+import {Box, Stack, Typography} from '@mui/material';
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -139,22 +139,25 @@ export default function Home() {
           icon={<InstagramLogo />}
         />
       </section>
-      <Box component="section" className="banners" mt={2.5}>
-        <BannerCard
-          title="ارتباط با ما"
-          icon={<ContactPhone />}
-          bgColor1="rgb(255, 135, 177)"
-          bgColor2="rgba(255, 163, 195, 0.2)"
-        >
-          <span className="banner-row">
-            <Phone />
-            شماره تماس : <a href="tel:02133332563">۰۲۱۳۳۳۳۲۵۶۳</a>
-          </span>
-          <span className="banner-row">
-            <MapPin />
-            <span>آدرس : تهران ...</span>
-          </span>
-        </BannerCard>
+      <Box component="section" className="banners contact-us" mt={2.5}>
+        <Box display="flex" gap={2} alignItems="center">
+          <ContactPhone className="section-logo" />
+          <Typography variant="h6" fontWeight={300}>
+            ارتباط با ما
+          </Typography>
+        </Box>
+        <span className="banner-row">
+          <Phone />
+          شماره تماس : <a href="tel:02133332563">۰۲۱۳۳۳۳۲۵۶۳</a>
+        </span>
+        <span className="banner-row">
+          <MapPin />
+          <span>آدرس : تهران ...</span>
+        </span>
+        <a className="whatsapp-btn" href="https://wa.me/09037131808">
+          <WhatsApp />
+          <span>واتساپ</span>
+        </a>
       </Box>
     </main>
   );

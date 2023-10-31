@@ -20,6 +20,7 @@ export interface IService {
   parent?: IService;
   attributes?: IService[];
   hasColor: boolean;
+  color?: string;
 }
 
 export interface IAddress {
@@ -39,14 +40,15 @@ export interface IOrder {
   date: string;
   time: string;
   discount: number;
-  transportation: number;
-  status: 'ACCEPTED' | 'PAID' | 'DONE' | 'CREATED' | 'ASSIGNED' | 'CANCELED';
+  transportation: number | string;
+  status: 'ACCEPTED' | 'PAID' | 'Done' | 'CREATED' | 'ASSIGNED' | 'CANCELED';
   worker: IUser;
   service: IService;
   attribute?: IService;
   address?: IAddress;
   fromTime: number;
   toTime: number;
+  done: boolean;
 }
 export interface IUser {
   id: number;

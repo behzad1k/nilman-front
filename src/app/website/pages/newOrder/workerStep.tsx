@@ -5,7 +5,7 @@ import moment from 'jalali-moment';
 import {DatePicker} from 'react-persian-datepicker';
 import {api} from '../../../../services/http';
 import {urls} from '../../../../services/endPoint';
-import {SelectInput} from '../../../../components';
+import {SelectInput, TextInput} from '../../../../components';
 import {IService, IUser} from '../../../../services/types';
 import {createSchedule} from '../../../../utils/utils';
 import {Selected} from './newOrder';
@@ -45,15 +45,15 @@ type Tab = {
 
 const tabs: Tab[] = [
   {
-    name: 'سریع‌ترین زمان ممکن',
+    name: 'اولین نوبت خالی',
     index: 0,
   },
   {
-    name: 'فقط تاریخ',
+    name: 'انتخاب تاریخ',
     index: 1,
   },
   {
-    name: 'تاریخ و آرایشگر',
+    name: 'آرایشگر منتخب',
     index: 2,
   },
 ];
@@ -78,6 +78,7 @@ export default function WorkerStep({
   const defaultDate = moment(new Date());
   const {control, watch} = useForm();
   const watchWorker = watch('worker') as string;
+  const watchDiscount = watch('discount') as string;
   // @ts-ignore
   const m = moment(date?._d).locale('fa');
 
@@ -155,6 +156,10 @@ export default function WorkerStep({
     handleSetAsapModeData();
   }, [nearest, selectedTab]);
 
+  useEffect(() => {
+    setSelected((prev) => ({...prev, discount: watchDiscount}));
+  }, [watchDiscount]);
+
   return (
     <div className="service-step-container">
       <p className="hint-text">یکی از حالت های زیر را برای ادامه انتخاب کنید</p>
@@ -169,7 +174,10 @@ export default function WorkerStep({
           </div>
         ))}
       </div>
-      <p className="hint-text">لطفا آرایشگر مورد نظر خود را انتخاب کنید</p>
+      <p className="hint-text">
+        {selectedTab.index === 1 && 'لطفا تاریخ مورد نظر خود را انتخاب کنید'}
+        {selectedTab.index === 2 && 'لطفا تاریخ و آرایشگر مورد نظر خود را انتخاب کنید'}
+      </p>
       <div className="content">
         {selectedTab.index === 0 ? (
           <div>
@@ -211,7 +219,7 @@ export default function WorkerStep({
               </SelectInput>
             )}
             <Button variant="contained" size="large" onClick={() => fetchWorkersOff()}>
-              دریافت برنامه زمانی
+              برنامه زمانی
             </Button>
           </>
         )}
@@ -240,6 +248,25 @@ export default function WorkerStep({
           </div>
         )}
       </div>
+      <TextInput
+        name="discount"
+        label="کد تخفیف"
+        defaultValue=""
+        control={control}
+        size="medium"
+        sx={{
+          mt: 4,
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'var(--mid-pink)',
+            backgroundColor: 'var(--white-pink)',
+            borderRadius: '10px',
+            zIndex: -1,
+          },
+          '& .MuiInputBase-input': {
+            color: 'var(--dashboard-dark)',
+          },
+        }}
+      />
     </div>
   );
 }
