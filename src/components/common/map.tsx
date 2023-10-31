@@ -25,12 +25,8 @@ type Props = {
 function SearchField() {
   const map = useMap();
   const provider = new OpenStreetMapProvider();
-  const searchControl = new GeoSearchControl({
-    provider,
-    showMarker: false,
-    searchLabel: 'جستجو ...',
-    style: 'bar',
-  });
+  // @ts-ignore
+  const searchControl = new GeoSearchControl({ provider, showMarker: false, searchLabel: 'جستجو ...', style: 'bar', });
 
   useEffect(() => {
     map.addControl(searchControl);
