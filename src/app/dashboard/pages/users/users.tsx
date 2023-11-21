@@ -105,7 +105,7 @@ export default function Users() {
     if (!editData) return;
     const reqOptions = {
       method: 'put',
-      body: {...editData, ...data, userId: editData.id},
+      body: {...editData, ...data, userId: editData.id, service: 'ناخن', district: 1},
     };
     const res = await api(urls.adminUser, reqOptions, true);
     console.log(res);
