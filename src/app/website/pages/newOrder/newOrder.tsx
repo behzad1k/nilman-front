@@ -1,6 +1,5 @@
-import {useEffect, useState, useCallback} from 'react';
-import {Button, Skeleton, Typography} from '@mui/material';
-import {useDispatch} from 'react-redux';
+import {useEffect, useState, useCallback, useRef} from 'react';
+import {Button, Typography} from '@mui/material';
 import {toast} from 'react-toastify';
 import {cart} from '../../../../services/redux/reducers/cartSlice.ts';
 import {order} from '../../../../services/redux/reducers/orderSlice.ts';
@@ -10,7 +9,6 @@ import ServiceStep from './serviceStep.tsx';
 import AttributeStep from './attributeStep.tsx';
 import AddressStep from './addressStep.tsx';
 import WorkerStep from './workerStep.tsx';
-import SecAttrDrawer from './secAttrDrawer';
 import {formatPrice} from '../../../../utils/utils.ts';
 import {urls} from '../../../../services/endPoint.ts';
 import {api} from '../../../../services/http.ts';
@@ -67,13 +65,17 @@ const initialSelected: Selected = {
 
 export default function NewOrder() {
   // React
-  const [selected, setSelected] = useState<Selected>(initialSelected);
+  const prevData = JSON.parse(sessionStorage.getItem('new-order') as string);
+  const prevStep = JSON.parse(sessionStorage.getItem('step') as string);
+  const [selected, setSelected] = useState<Selected>(prevData || initialSelected);
   const [workers, setWorkers] = useState<IUser[] | []>([]);
   const [nearest, setNearest] = useState<{date: string; workerId: number} | null>(null);
   const [isNextStepAllowed, setIsNextStepAllowed] = useState(false);
-  const [step, setStep] = useState<Step>(steps[0]);
+  const [step, setStep] = useState<Step>(prevStep || steps[0]);
   const dispatch = useAppDispatch();
   let section = 0;
+  let selectedRef = useRef(selected);
+  let stepRef = useRef(step);
 
   // Fns
   const getAreaWorkers = useCallback(async () => {
@@ -152,8 +154,19 @@ export default function NewOrder() {
   }, [step]);
 
   useEffect(() => {
-    console.log(selected);
+    selectedRef.current = selected;
   }, [selected]);
+
+  useEffect(() => {
+    stepRef.current = step;
+  }, [step]);
+
+  useEffect(() => {
+    return () => {
+      sessionStorage.setItem('new-order', JSON.stringify(selectedRef.current));
+      sessionStorage.setItem('step', JSON.stringify(stepRef.current));
+    };
+  }, []);
 
   useEffect(() => {
     setSelected((prev) => ({...prev, price: getPrice()}));
