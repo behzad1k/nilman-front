@@ -65,8 +65,8 @@ body {
   font-weight: 300;
   background: linear-gradient(
     180deg,
-    rgba(252, 197, 218, 0.65),
-    rgba(252, 228, 198, 0.65)
+    rgba(255, 249, 252, 0.68),
+    rgba(250, 234, 214, 0.65)
   );
 }
 a {
@@ -76,7 +76,7 @@ a {
 :root {
   --light-pink: rgb(250, 224, 216);
   --mid-pink: rgb(236, 170, 151);
-  --light-black: rgb(51, 51, 51);
+  --light-black: rgb(66, 66, 66);
   --white-pink: rgba(248, 243, 243, 0.74);
   --light-grey: rgba(224, 222, 222, 1);
   --white-pink-opacity: rgba(236, 170, 151, 0.5);
@@ -91,7 +91,7 @@ s {
   color: #f16969;
 }
 .header {
-  background-color: #fff;
+  background-color: var(--mid-pink);
   width: 100%;
   padding: 0;
   height: 70px;
@@ -101,10 +101,10 @@ s {
   font-weight: 700;
   font-size: 22px;
   font-family: poppins, serif;
-  color: var(--light-black);
+  color: white;
   z-index: 20;
-  border-bottom-left-radius: 40px;
-  border-bottom-right-radius: 40px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
   /*background:linear-gradient(282deg,#c82471,#d09192);*/
 
   /*border-bottom: var(--light-black) 1px solid;*/
@@ -135,7 +135,7 @@ main {
   justify-content: space-around;
   position: fixed;
   bottom: 0;
-  background-color: #fff;
+  background-color: var(--mid-pink);
   /*border-top: var(--light-black) 1px solid;*/
   /*shadow-bar px-5 py-4 flex gap-2 justify-between fixed bottom-0 inset-x-0 z-10*/
 }
@@ -156,6 +156,7 @@ main {
 }
 .appBarIconContainer > p {
   font-size: small;
+  color: white;
 }
 
 /* .center-circle {
@@ -895,20 +896,20 @@ main {
   background: linear-gradient(
     225deg,
     rgb(253, 190, 172) 20%,
-    rgba(252, 238, 238, 0.74) 80%,
-    rgba(231, 230, 230, 0.3) 100%
+    rgba(252, 242, 242, 0.74) 80%,
+    rgba(245, 245, 245, 0.3) 100%
   );
   display: flex;
   align-items: center;
-  padding: 50px 24px;
+  padding: 20px 24px;
   gap: 20px;
   border-radius: 6px;
-  height: 90px;
+  height: 70px;
 }
 
 .service-step-container .card img {
-  width: 80px;
-  height: 80px;
+  width: 40px;
+  height: 40px;
 }
 .service-step-container .card .delete-btn {
   margin-right: auto;

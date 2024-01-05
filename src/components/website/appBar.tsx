@@ -13,7 +13,7 @@ export function AppBar() {
           <House
             className="appBarIcon"
             weight={location.pathname === '/' ? 'fill' : 'regular'}
-            color={location.pathname === '/' ? 'rgb(236, 170, 151)' : '#000'}
+            color={location.pathname === '/' ? 'rgb(255,255,255)' : '#ffffff'}
           />
           <p>خانه</p>
         </NavLink>
@@ -22,7 +22,7 @@ export function AppBar() {
         <Clipboard
           className="appBarIcon"
           weight={location.pathname === '/orders' ? 'fill' : 'regular'}
-          color={location.pathname === '/orders' ? 'rgb(236, 170, 151)' : '#000'}
+          color={location.pathname === '/orders' ? 'rgb(255,255,255)' : '#ffffff'}
         />
         <p>سفارش ها</p>
       </NavLink>
@@ -32,7 +32,7 @@ export function AppBar() {
             <PlusCircle
               className="appBarIcon"
               weight={location.pathname === '/newOrder' ? 'fill' : 'regular'}
-              color={location.pathname === '/newOrder' ? 'rgb(236, 170, 151)' : '#000'}
+              color={location.pathname === '/newOrder' ? 'rgb(255,255,255)' : '#ffffff'}
             />
             <p>ثبت </p>
           </NavLink>
@@ -40,7 +40,7 @@ export function AppBar() {
             <Newspaper
               className="appBarIcon"
               weight={location.pathname === '/mag' ? 'fill' : 'regular'}
-              color={location.pathname === '/mag' ? 'rgb(236, 170, 151)' : '#000'}
+              color={location.pathname === '/mag' ? 'rgb(255,255,255)' : '#ffffff'}
             />
             <p>مجله</p>
           </NavLink>
@@ -59,8 +59,8 @@ export function AppBar() {
           }
           color={
             location.pathname === '/profile' || location.pathname === '/login'
-              ? 'rgb(236, 170, 151)'
-              : '#000'
+              ? 'rgb(255,255,255)'
+              : '#ffffff'
           }
         />
         <p>{userReducer.isLoggedIn ? 'پروفایل' : 'ورود'}</p>
