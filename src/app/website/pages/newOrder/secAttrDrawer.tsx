@@ -4,6 +4,7 @@ import {Selected} from './newOrder';
 import {IService} from '../../../../services/types';
 import {Button, Box, Skeleton, Typography, SwipeableDrawer} from '@mui/material';
 import {HexColorPicker} from 'react-colorful';
+import { Close } from '@mui/icons-material';
 
 type Props = {
   open: boolean;
@@ -84,6 +85,11 @@ export default function SecAttrDrawer({
     setPickingColor({attr: null, open: false});
   };
 
+  const handleCloseDrawer = () => {
+    setOpen(false)
+    
+  }
+
   if (curParent) {
     return (
       <>
@@ -116,6 +122,9 @@ export default function SecAttrDrawer({
             overflow="auto"
             className="attr-drawer-content"
           >
+            <Box sx={{position: 'absolute', right: 14}}>
+              <Close onClick={handleCloseDrawer} />
+            </Box>
             {pickingColor.open ? (
               <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
                 <HexColorPicker

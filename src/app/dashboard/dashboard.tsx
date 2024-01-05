@@ -9,6 +9,7 @@ import AddUser from './pages/addUser/addUser';
 import Services from './pages/services/services.tsx';
 import {AppDispatch, useAppDispatch} from '../../services/redux/store.ts';
 import {initialApis} from '../../services/apis/global.ts';
+import Login from './pages/login/login.tsx';
 
 export default function Dashboard() {
   const dispatch: AppDispatch = useAppDispatch();
@@ -64,6 +65,12 @@ export default function Dashboard() {
           <Layout>
             <AddUser />
           </Layout>
+        }
+      />
+      <Route
+        path='/login'
+        element={
+          <Login />
         }
       />
     </Routes>

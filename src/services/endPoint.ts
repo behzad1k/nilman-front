@@ -14,4 +14,5 @@ export const urls = {
   adminOrderUpdate: '/admin/order/update',
   ariaWorker: '/order/workers',
   workersOffs: '/user/workerOffs',
+  adminLogin: '/admin/login'
 };

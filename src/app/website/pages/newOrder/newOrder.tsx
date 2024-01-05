@@ -154,7 +154,7 @@ export default function NewOrder() {
   }, [step]);
 
   useEffect(() => {
-    selectedRef.current = selected;
+    selectedRef.current = selected;    
   }, [selected]);
 
   useEffect(() => {
