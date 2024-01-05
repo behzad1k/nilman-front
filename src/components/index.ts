@@ -4,6 +4,7 @@ export {SelectInput} from './common/selectInput';
 export {Modal} from './common/modal';
 export {OtpInput} from './common/otpInput';
 export {Map} from './common/map';
+export {Loading} from './common/loading';
 
 // ** Dashboard
 export {OrdersModalContent} from './dashboard/OrdersModalContent';

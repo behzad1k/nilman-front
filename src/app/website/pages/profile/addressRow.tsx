@@ -1,9 +1,14 @@
 import {HouseLine, MapTrifold, PhoneDisconnect} from '@phosphor-icons/react';
+import React from 'react';
 import {IAddress} from '../../../../services/types.ts';
 
-export function AddressRow({address}: {address: IAddress}) {
+export function AddressRow({address, isSelected, onClick , setSelected}: {address: IAddress, isSelected: boolean, onClick?: (address: IAddress) => void, setSelected: React.Dispatch<React.SetStateAction<IAddress | undefined>>}) {
+
   return (
-    <article className="addressContainer">
+    <article className={'addressContainer' + (isSelected ? ' selected' : '')} onClick={() => {
+      setSelected(address);
+      onClick && onClick(address);
+    }}>
       <div className="addressDetails">
         <span className="addressItem">
           <HouseLine />

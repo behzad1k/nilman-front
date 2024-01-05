@@ -5,7 +5,7 @@ type WorkerOff = {
   orderId: null | number;
   toTime: number;
   workerId: number;
-};
+} | any;
 
 type ScheduleCard = {
   fromTime: number;

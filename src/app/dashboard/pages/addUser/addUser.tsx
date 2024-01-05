@@ -1,10 +1,12 @@
 import {Box, Typography, Container, Button} from '@mui/material';
 import {TextInput, SelectInput} from '../../../../components';
-import {useForm, FieldValues} from 'react-hook-form';
+import {useForm, FieldValues, Controller} from 'react-hook-form';
 import {useEffect, useState} from 'react';
 import {api} from '../../../../services/http';
 import {urls} from '../../../../services/endPoint';
 import {IService} from '../../../../services/types';
+import {MenuItem} from '@mui/material';
+import {MuiFileInput} from 'mui-file-input';
 
 export default function AddUser() {
   const {register, handleSubmit, control, getValues} = useForm();
@@ -30,13 +32,13 @@ export default function AddUser() {
   ];
 
   const onSubmit = async (data: FieldValues) => {
-    console.log(data);
     const reqOptions = {
       method: 'post',
       body: {
         ...data,
       },
     };
+    console.log(reqOptions);
     const res = await api(urls.adminUser, reqOptions, true);
     console.log(res);
   };
@@ -46,12 +48,7 @@ export default function AddUser() {
       const res = await api(urls.services);
       console.log(res);
 
-      setServices(
-        res.data.map((service: IService) => {
-          const {title: value, slug} = service;
-          return {value, slug};
-        }),
-      );
+      setServices(res.data);
     };
     getServices();
   }, []);
@@ -71,19 +68,42 @@ export default function AddUser() {
           label="نقش کاربر"
           control={control}
           defaultValue=""
-          options={roleOptions}
           size="medium"
           customOnChange={(e) => setRole(e.target.value)}
-        />
+        >
+          {roleOptions.map((role) => (
+            <MenuItem key={role.slug} value={role.slug}>
+              {role.value}
+            </MenuItem>
+          ))}
+        </SelectInput>
         {role === 'WORKER' && (
-          <SelectInput
-            name="service"
-            label="نوع خدمت"
-            control={control}
-            defaultValue=""
-            options={services}
-            size="medium"
-          />
+          <>
+            <SelectInput
+              name="service"
+              label="نوع خدمت"
+              control={control}
+              defaultValue=""
+              size="medium"
+            >
+              {services.map((service: IService) => (
+                <MenuItem key={service.slug} value={service.slug}>
+                  {service.title}
+                </MenuItem>
+              ))}
+            </SelectInput>
+            <SelectInput
+              name="district"
+              label="منطقه"
+              control={control}
+              defaultValue=""
+              size="medium"
+            >
+              <MenuItem value={1}>منطقه ۱</MenuItem>
+              <MenuItem value={2}>منطقه ۲</MenuItem>
+              <MenuItem value={3}>منطقه ۳</MenuItem>
+            </SelectInput>
+          </>
         )}
         <TextInput
           name="name"
@@ -112,6 +132,13 @@ export default function AddUser() {
           control={control}
           defaultValue=""
           size="medium"
+        />
+        <Controller
+          control={control}
+          name="profilePicture"
+          render={({field}) => {
+            return <MuiFileInput {...field} label="عکس پروفایل" size="medium" />;
+          }}
         />
         <Button variant="contained" color="success" type="submit" size="large" fullWidth>
           افزودن

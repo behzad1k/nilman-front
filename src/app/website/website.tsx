@@ -3,7 +3,7 @@ import {Routes, Route} from 'react-router-dom';
 import App from '../../App.tsx';
 import {AppBar} from '../../components';
 import {initialApis} from '../../services/apis/global.ts';
-import {AppDispatch, useAppDispatch} from '../../services/redux/store.ts';
+import {AppDispatch, useAppDispatch, useAppSelector} from '../../services/redux/store.ts';
 import Layout from './layout';
 import Home from './pages/home/home';
 import Login from './pages/login/login';
@@ -11,9 +11,11 @@ import Mag from './pages/mag/mag.tsx';
 import NewOrder from './pages/newOrder/newOrder.tsx';
 import Orders from './pages/orders/orders.tsx';
 import Profile from './pages/profile/profile.tsx';
+import Feedback from './pages/feedback/feedback.tsx';
 
 export default function Website() {
   const dispatch: AppDispatch = useAppDispatch();
+  const loading = useAppSelector((state) => state.loadingReducer.loading);
 
   useEffect(() => {
     initialApis(dispatch);
@@ -62,6 +64,7 @@ export default function Website() {
           </>
         }
       />
+      <Route path="/feedback/:id" element={<Feedback />} />
       <Route
         path="/login"
         element={

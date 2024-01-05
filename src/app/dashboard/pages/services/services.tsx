@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import {useAppSelector} from '../../../../services/redux/store';
 import {FieldValues, useForm} from 'react-hook-form';
 import {Box, Button, Paper, Typography} from '@mui/material';
@@ -6,20 +6,25 @@ import {Modal, SelectInput, TextInput} from '../../../../components';
 import {IService} from '../../../../services/types';
 import {urls} from '../../../../services/endPoint';
 import {api} from '../../../../services/http';
+import {MenuItem} from '@mui/material';
 
 export default function Services() {
   const [open, setOpen] = useState(false);
   const [editData, setEditData] = useState<IService | null>(null);
   const [services, setServices] = useState<IService[]>([]);
-  const servicesOptions = services.map((service) => {
-    const {title: value, slug} = service;
-    return {value, slug};
-  });
+
   const {register, handleSubmit, control, getValues} = useForm({
-    values: editData || undefined,
+    values:
+      {
+        ...editData,
+        parent: editData?.parent?.slug,
+        hasColor: editData?.hasColor ? 1 : 0,
+      } || undefined,
   });
 
   const handleClickEdit = (service: IService) => {
+    console.log('edit data', service);
+
     setEditData(service);
     setOpen(true);
   };
@@ -32,7 +37,7 @@ export default function Services() {
       },
     };
     const res = await api(urls.adminService, reqOptions, true);
-    console.log(res);
+    console.log('delete res:', res);
   };
 
   const handleCloseModal = () => {
@@ -41,27 +46,33 @@ export default function Services() {
   };
 
   const onSubmit = async (data: FieldValues) => {
-    console.log(data);
     const reqOptions = {
       method: 'put',
-      body: {...data, service: data.slug},
+      body: {
+        title: data.title,
+        section: data.section,
+        description: data.description,
+        price: Number(data.price),
+        parent: data.parent,
+        hasColor: Boolean(data.hasColor),
+        service: data.slug,
+      },
     };
-    // console.log(reqOptions);
+    console.log(reqOptions);
 
     const res = await api(urls.adminService, reqOptions, true);
-    console.log(res);
+    console.log('submit res', res);
   };
 
   const fetchData = async () => {
     const res = await api(urls.adminService, {}, true);
     console.log(res.data);
     setServices(res.data);
-  }
+  };
   useEffect(() => {
     fetchData();
-  }, [])
+  }, []);
 
-  console.log(services);
   return (
     <Box sx={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2}}>
       {services.map((service) => (
@@ -100,9 +111,14 @@ export default function Services() {
               label="دسته بندی اصلی"
               control={control}
               defaultValue={editData.parent?.slug || ''}
-              options={servicesOptions}
               size="medium"
-            />
+            >
+              {services.map((service) => (
+                <MenuItem key={service.slug} value={service.slug}>
+                  {service.title}
+                </MenuItem>
+              ))}
+            </SelectInput>
             <TextInput
               name="title"
               label="عنوان"
@@ -110,6 +126,16 @@ export default function Services() {
               defaultValue={editData.title}
               size="medium"
             />
+            <SelectInput
+              name="hasColor"
+              label="انتخاب رنگ"
+              control={control}
+              defaultValue={editData.hasColor ? 1 : 0}
+              size="medium"
+            >
+              <MenuItem value={0}>غیر فعال</MenuItem>
+              <MenuItem value={1}>فعال</MenuItem>
+            </SelectInput>
             <TextInput
               name="section"
               label="سانس انجام"

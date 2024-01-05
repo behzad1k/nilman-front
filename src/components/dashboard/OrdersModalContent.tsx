@@ -5,6 +5,7 @@ import {api} from '../../services/http';
 import {urls} from '../../services/endPoint';
 import {useForm} from 'react-hook-form';
 import {IOrder, IUser} from '../../services/types';
+import {MenuItem} from '@mui/material';
 
 type Props = {
   editData: IOrder | null;
@@ -53,12 +54,7 @@ export function OrdersModalContent({
       });
       const res = await api(urls.adminUser + '?' + params, {}, true);
       if (res.code === 200) {
-        setWorkers(
-          res.data.map((worker: IUser) => {
-            const {name, lastName, id} = worker;
-            return {slug: id, value: name + ' ' + lastName};
-          }),
-        );
+        setWorkers(res.data);
       }
     };
     getWorkersList();
@@ -80,8 +76,13 @@ export function OrdersModalContent({
           control={control}
           defaultValue=""
           size="medium"
-          options={workers}
-        />
+        >
+          {workers.map((worker: IUser) => (
+            <MenuItem key={worker.id} value={worker.id}>
+              {worker.name} {worker.lastName}
+            </MenuItem>
+          ))}
+        </SelectInput>
         <Box display="flex" flexDirection="column" gap={1}>
           <Button
             variant="contained"

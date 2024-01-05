@@ -1,14 +1,19 @@
-import {useRef} from 'react';
+import {useRef, useEffect} from 'react';
 import {useAppSelector} from '../../../../services/redux/store';
 import {IService} from '../../../../services/types';
 import {Selected} from './newOrder';
 
 type Props = {
+  selected: Selected;
   setSelected: (val: (prev: Selected) => Selected) => void;
   setIsNextStepAllowed: (val: boolean) => void;
 };
 
-export default function ServiceStep({setSelected, setIsNextStepAllowed}: Props) {
+export default function ServiceStep({
+  selected,
+  setSelected,
+  setIsNextStepAllowed,
+}: Props) {
   const services = useAppSelector((state) => state.serviceReducer.services);
 
   const cardRef = useRef<Array<HTMLElement | null>>([]);
@@ -18,9 +23,13 @@ export default function ServiceStep({setSelected, setIsNextStepAllowed}: Props) 
       index === i ? el?.classList.add('selected') : el?.classList.remove('selected'),
     );
 
-    setSelected((prev: Selected) => ({...prev, service}));
+    setSelected((prev: Selected) => ({...prev, service: service, attributes: []}));
     setIsNextStepAllowed(true);
   };
+
+  useEffect(() => {
+    selected.service ? setIsNextStepAllowed(true) : setIsNextStepAllowed(false);
+  }, []);
 
   return (
     <div className="service-step-container">
@@ -31,7 +40,7 @@ export default function ServiceStep({setSelected, setIsNextStepAllowed}: Props) 
             key={service.slug}
             ref={(el) => (cardRef.current[index] = el)}
             onClick={() => handleSelectService(index, service)}
-            className="card"
+            className={`card ${selected.service === service ? 'selected' : null}`}
           >
             <img src={'/img/' + service.slug + '.png'} />
             <h2>{service.title}</h2>

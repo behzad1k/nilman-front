@@ -25,12 +25,8 @@ type Props = {
 function SearchField() {
   const map = useMap();
   const provider = new OpenStreetMapProvider();
-  const searchControl = new GeoSearchControl({
-    provider,
-    showMarker: false,
-    searchLabel: 'جستجو ...',
-    style: 'bar',
-  });
+  // @ts-ignore
+  const searchControl = new GeoSearchControl({ provider, showMarker: false, searchLabel: 'جستجو ...', style: 'bar', });
 
   useEffect(() => {
     map.addControl(searchControl);
@@ -43,10 +39,10 @@ function SearchField() {
 // Add Marker Component on click
 function LocationMarker({position, setPosition}: Props) {
   const map = useMapEvents({
-    locationfound(e: any) {
-      setPosition(e.latlng);
-      map.flyTo(e.latlng, map.getZoom());
-    },
+    // locationfound(e: any) {
+    //   setPosition(e.latlng);
+    //   map.flyTo(e.latlng, map.getZoom());
+    // },
     click(e: any) {
       console.log(e);
       setPosition(e.latlng);
@@ -65,7 +61,11 @@ function LocationMarker({position, setPosition}: Props) {
 // Leaflet Map Component
 export function Map({position, setPosition}: Props) {
   return (
-    <MapContainer center={[35.80693981523168,51.42884194850922]} zoom={14} scrollWheelZoom={false}>
+    <MapContainer
+      center={[35.80693981523168, 51.42884194850922]}
+      zoom={14}
+      scrollWheelZoom={false}
+    >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

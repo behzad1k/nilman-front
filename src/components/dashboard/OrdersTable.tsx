@@ -10,8 +10,9 @@ import {
   Button,
 } from '@mui/material';
 
-import {IOrder} from '../../services/types';
+import {IOrder, IService} from '../../services/types';
 import moment from 'jalali-moment';
+import {formatPrice} from '../../utils/utils';
 
 interface Column {
   id:
@@ -19,11 +20,10 @@ interface Column {
     | 'date'
     | 'time'
     | 'discount'
-    | 'transportation'
     | 'status'
     | 'worker'
     | 'service'
-    | 'attribute';
+    | 'attributes';
   label: string;
   minWidth?: number;
   align?: 'right' | 'center' | 'left';
@@ -33,12 +33,11 @@ const columns: readonly Column[] = [
   {id: 'date', label: 'تاریخ', minWidth: 120, align: 'center'},
   {id: 'time', label: 'زمان', minWidth: 80, align: 'center'},
   {id: 'service', label: 'خدمات', minWidth: 150, align: 'center'},
-  {id: 'attribute', label: 'زیر دسته', minWidth: 150, align: 'center'},
+  {id: 'attributes', label: 'زیر دسته', minWidth: 150, align: 'center'},
   {id: 'status', label: 'وضعیت', minWidth: 120, align: 'center'},
   {id: 'worker', label: 'آرایشگر', minWidth: 150, align: 'center'},
   {id: 'price', label: 'قیمت', minWidth: 100, align: 'center'},
   {id: 'discount', label: 'تخفیف', minWidth: 80, align: 'center'},
-  {id: 'transportation', label: 'ایاب ذهاب', minWidth: 120, align: 'center'},
 ];
 
 type Props = {
@@ -60,33 +59,65 @@ export function OrdersTable({rows, setOpenModal, setEditData}: Props) {
     setEditData(data);
   };
 
+  const handleCopyRow = (row: IOrder) => {
+    const attributes = row.attributes.reduce((acc, attr, index) => {
+      if (index === row.attributes.length - 1) return (acc += attr.title);
+      else return (acc += attr.title + ', ');
+    }, '');
+
+    const information = `
+    تاریخ: ${moment.unix(Number(row.date)).format('jDD/jMM/jYYYY')}
+    زمان: ${row.fromTime} تا ${row.toTime}
+    خدمات: ${row.service.title} - ${attributes}
+    آرایشگر: ${row.worker.name} ${row.worker.lastName} - ${row.worker.phoneNumber}
+    هزینه: ${row.price}
+    `;
+
+    navigator.clipboard.writeText(information);
+  };
+
   const formatOrderData = (type: string, value: any) => {
+    const parsAttr = (attributes: IService[]) => {
+      console.log('ATTTTTTR:', attributes);
+
+      return attributes.reduce((acc, attribute, index) => {
+        if (index !== attributes.length - 1) {
+          return (acc += attribute.title + '، ');
+        } else {
+          return (acc += attribute.title);
+        }
+      }, '');
+    };
+
     switch (type) {
       case 'address':
         return value.description;
-      case 'attribute':
-        return value.title;
+      case 'attributes':
+        console.log(parsAttr(value));
+
+        return parsAttr(value);
       case 'date':
-        return moment.unix(value).format('jMM/jDD/jYYYY');
+        return moment.unix(value).format('jDD/jMM/jYYYY');
       case 'service':
         return value.title;
       case 'time':
         return value.split('_').join(' - ');
       case 'worker':
-        console.log(value);
         return `${value.name} ${value.lastName}`;
+      case 'price':
+        return formatPrice(value);
       case 'status':
-        return value === 'CREATED'
+        return value.toLocaleUpperCase() === 'CREATED'
           ? 'در سبد خرید'
-          : value === 'PAID'
+          : value.toLocaleUpperCase() === 'PAID'
           ? 'پرداخت شده'
-          : value === 'ASSIGNED'
+          : value.toLocaleUpperCase() === 'ASSIGNED'
           ? 'محول شده'
-          : value === 'DONE'
+          : value.toLocaleUpperCase() === 'DONE'
           ? 'انجام شده'
-          : value === 'CANCELED'
+          : value.toLocaleUpperCase() === 'CANCELED'
           ? 'لغو شده'
-          : value === 'ACCEPTED'
+          : value.toLocaleUpperCase() === 'ACCEPTED'
           ? 'تایید شده توسط آرایشگر'
           : 'unknown';
       default:
@@ -110,6 +141,7 @@ export function OrdersTable({rows, setOpenModal, setEditData}: Props) {
                 </TableCell>
               ))}
               <TableCell></TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -120,6 +152,7 @@ export function OrdersTable({rows, setOpenModal, setEditData}: Props) {
                   <TableRow hover role="checkbox" tabIndex={-1} key={i}>
                     {columns.map((column) => {
                       const value = row[column.id];
+
                       return (
                         <TableCell key={column.id} align={column.align}>
                           {value ? formatOrderData(column.id, value) : '-'}
@@ -133,6 +166,15 @@ export function OrdersTable({rows, setOpenModal, setEditData}: Props) {
                         color="primary"
                       >
                         مدیریت
+                      </Button>
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        onClick={() => handleCopyRow(row)}
+                        variant="contained"
+                        color="primary"
+                      >
+                        کپی
                       </Button>
                     </TableCell>
                   </TableRow>

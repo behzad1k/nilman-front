@@ -1,30 +1,23 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {Box, Button, Typography} from '@mui/material';
 import {useForm, FieldValues} from 'react-hook-form';
 import {TextInput, SelectInput} from '../../../../components';
+import {IService} from '../../../../services/types';
 import {api} from '../../../../services/http';
 import {urls} from '../../../../services/endPoint';
 import {useAppSelector} from '../../../../services/redux/store';
+import {MenuItem} from '@mui/material';
 
 export default function NewService() {
-  const [imgs, setImgs] = useState<any>(null);
+  const [services, setServices] = useState<IService[]>([]);
   const {register, handleSubmit, control, getValues} = useForm();
-  const services = useAppSelector((state) => state.serviceReducer.services);
-  const options = services.map((service) => {
-    const {title: value, slug} = service;
-    return {value, slug};
-  });
-  console.log(options);
-
-  // const onSubmit = (data: FieldValues) => {
-  //   console.log(data);
-  //   const formData = new FormData();
-  //   formData.append('file', data.file[0]);
-  // };
-
-  // const onChangeImg = (e: any) => {
-  //   setImgs(URL.createObjectURL(e.target.files[0]));
-  // };
+  // const services = useAppSelector((state) => state.serviceReducer.services);
+  // console.log(services);
+  const fetchData = async () => {
+    const res = await api(urls.adminService, {}, true);
+    console.log(res.data);
+    setServices(res.data);
+  };
 
   const onSubmit = async (data: FieldValues) => {
     console.log(data);
@@ -36,11 +29,17 @@ export default function NewService() {
         description: data.description,
         price: Number(data.price),
         parent: data.parent,
+        hasColor: Boolean(data.hasColor),
       },
     };
     const res = await api(urls.adminService, reqOptions, true);
     console.log(res);
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <>
       <Typography variant="h5" component="h1">
@@ -56,9 +55,14 @@ export default function NewService() {
           label="دسته بندی اصلی"
           control={control}
           defaultValue=""
-          options={options}
           size="medium"
-        />
+        >
+          {services.map((service) => (
+            <MenuItem key={service.slug} value={service.slug}>
+              {service.title}
+            </MenuItem>
+          ))}
+        </SelectInput>
         <TextInput
           name="title"
           label="عنوان"
@@ -66,6 +70,16 @@ export default function NewService() {
           defaultValue=""
           size="medium"
         />
+        <SelectInput
+          name="hasColor"
+          label="انتخاب رنگ"
+          control={control}
+          defaultValue={0}
+          size="medium"
+        >
+          <MenuItem value={0}>غیر فعال</MenuItem>
+          <MenuItem value={1}>فعال</MenuItem>
+        </SelectInput>
         <TextInput
           name="section"
           label="سانس انجام"
@@ -87,10 +101,6 @@ export default function NewService() {
           defaultValue=""
           size="medium"
         />
-        {/* <Box display="flex" flexDirection="column" gap={1}>
-          <label htmlFor="file">آپلود نمونه کار</label>
-          <input id="file" type="file" {...register('file')} onChange={onChangeImg} />
-        </Box> */}
         <Box display="flex" flexDirection="column" gap={1}>
           <Button
             variant="contained"

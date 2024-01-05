@@ -1,15 +1,17 @@
-import {InstagramLogo, Percent} from '@phosphor-icons/react';
-import React, { useEffect } from "react";
-import { initialApis } from "../../../../services/apis/global.ts";
-import { useAppDispatch } from "../../../../services/redux/store.ts";
+import {InstagramLogo, Percent, Phone, MapPin} from '@phosphor-icons/react';
+import {ContactPhone, WhatsApp} from '@mui/icons-material';
+import React, {useEffect} from 'react';
+import {initialApis} from '../../../../services/apis/global.ts';
+import {useAppDispatch} from '../../../../services/redux/store.ts';
 import {ISliderCardInfo} from '../../../../services/types.ts';
 import {Slider} from '../../../../components';
 import {BannerCard} from '../../../../components';
+import {Box, Stack, Typography} from '@mui/material';
 
 export default function Home() {
   const dispatch = useAppDispatch();
   useEffect(() => {
-    initialApis(dispatch)
+    initialApis(dispatch);
   }, []);
   const cardInfos1: ISliderCardInfo[] = [
     {
@@ -89,6 +91,20 @@ export default function Home() {
       imgSrc: './img/eyebrows6.jpg',
     },
   ];
+  const cardInfos4: ISliderCardInfo[] = [
+    {
+      title: 'لمینت مژه',
+      imgSrc: './img/eyelash1.jpg',
+    },
+    {
+      title: 'اکستنشن مژه',
+      imgSrc: './img/eyelash2.jpg',
+    },
+    {
+      title: 'کاشت مژه',
+      imgSrc: './img/eyelash3.jpg',
+    },
+  ];
   return (
     <main>
       <section className="banners">
@@ -110,9 +126,10 @@ export default function Home() {
             کنید.{' '}
           </p>
         </div>
-        <Slider title={'نمونه کار خدمات ناخن'} cardInfos={cardInfos1} />
-        <Slider title={'نمونه کار خدمات مو'} cardInfos={cardInfos2} />
-        <Slider title={'نمونه کار خدمات ابرو'} cardInfos={cardInfos3} />
+        <Slider title={'خدمات ناخن'} cardInfos={cardInfos1} />
+        <Slider title={'خدمات مو'} cardInfos={cardInfos2} />
+        <Slider title={'خدمات ابرو'} cardInfos={cardInfos3} />
+        <Slider title={'خدمات مژه'} cardInfos={cardInfos4} />
       </section>
       <section className="banners">
         <BannerCard
@@ -122,7 +139,26 @@ export default function Home() {
           icon={<InstagramLogo />}
         />
       </section>
+      <Box component="section" className="banners contact-us" mt={2.5}>
+        <Box display="flex" gap={2} alignItems="center">
+          <ContactPhone className="section-logo" />
+          <Typography variant="h6" fontWeight={300}>
+            ارتباط با ما
+          </Typography>
+        </Box>
+        <span className="banner-row">
+          <Phone />
+          شماره تماس : <a href="tel:02133332563">۰۲۱۳۳۳۳۲۵۶۳</a>
+        </span>
+        <span className="banner-row">
+          <MapPin />
+          <span>آدرس : تهران ...</span>
+        </span>
+        <a className="whatsapp-btn" href="https://wa.me/09037131808">
+          <WhatsApp />
+          <span>واتساپ</span>
+        </a>
+      </Box>
     </main>
-
   );
 }

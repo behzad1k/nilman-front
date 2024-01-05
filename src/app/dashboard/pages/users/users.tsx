@@ -17,6 +17,7 @@ import {
 import {useForm} from 'react-hook-form';
 import {api} from '../../../../services/http';
 import {urls} from '../../../../services/endPoint';
+import {MenuItem} from '@mui/material';
 
 interface Column {
   id: 'name' | 'lastName' | 'nationalCode' | 'phoneNumber';
@@ -31,7 +32,6 @@ const columns: readonly Column[] = [
   {id: 'lastName', label: 'نام خانوادگی ', minWidth: 170, align: 'center'},
   {id: 'nationalCode', label: 'کدملی', minWidth: 170, align: 'center'},
   {id: 'phoneNumber', label: 'تلفن همراه', minWidth: 100, align: 'center'},
-  // {id: 'addresses', label: 'آدرس', minWidth: 250, align: 'center'},
 ];
 
 interface Data {
@@ -41,7 +41,6 @@ interface Data {
   nationalCode: string;
   phoneNumber: string;
   role: string;
-  // addresses: [];
   orders: [];
 }
 
@@ -256,9 +255,14 @@ export default function Users() {
             name="role"
             label="نقش"
             defaultValue={editData?.role || ''}
-            options={roleOptions}
             control={control}
-          />
+          >
+            {roleOptions.map((role) => (
+              <MenuItem key={role.slug} value={role.slug}>
+                {role.value}
+              </MenuItem>
+            ))}
+          </SelectInput>
           <Box display="flex" flexDirection="column" gap={1}>
             <Button variant="contained" color="success" type="submit" fullWidth>
               ویرایش
