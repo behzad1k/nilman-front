@@ -1,7 +1,15 @@
 import {Box, Container} from '@mui/material';
 import {DashboardHeader} from '../../components';
+import {useAppSelector} from '../../services/redux/store';
+import {useNavigate} from 'react-router-dom';
+
 export default function Layout({children}: {children: React.ReactNode}) {
+  const navigate = useNavigate();
+  const user = useAppSelector((state) => state.userReducer.data);
   const drawerWidth = 270;
+
+  if (user.role !== 'SUPER_ADMIN') navigate('/login');
+
   return (
     <Box sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
       <DashboardHeader drawerWidth={drawerWidth} />

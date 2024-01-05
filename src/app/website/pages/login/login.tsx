@@ -89,7 +89,7 @@ export default function Login() {
   return (
     <Box
       component="main"
-      bgcolor="var(--light-pink)"
+      bgcolor="white"
       sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}
     >
       <Container
@@ -106,26 +106,27 @@ export default function Login() {
           variant="h3"
           component="h1"
           textAlign="center"
+          color="var(--mid-pink)"
           sx={{
-            filter: 'drop-shadow(0px 10px 5px rgb(51, 51, 51))',
+            filter: 'drop-shadow(0px 4px 2px rgb(201, 182, 182))',
           }}
         >
-          نیلمان
+          nilman
         </Typography>
         <Box sx={{display: 'grid', placeItems: 'center'}}>
-          <Box
-            p={2}
-            borderRadius={50}
-            sx={{backgroundColor: 'var(--white-pink-opacity)'}}
-          >
-            <Box width={110} height={110} component="img" src="./img/lock.png" />
-          </Box>
+          {/*<Box*/}
+          {/*  p={2}*/}
+          {/*  borderRadius={50}*/}
+          {/*  sx={{backgroundColor: 'white'}}*/}
+          {/*>*/}
+            <Box width={180} height={180} component="img" src="./img/nilmanLogo.png" />
+          {/*</Box>*/}
         </Box>
       </Container>
       <Container
         sx={{
           flex: 1,
-          bgcolor: '#fff',
+          bgcolor: "var(--mid-pink)",
           borderTopRightRadius: '80px',
           display: 'flex',
           justifyContent: 'center',
