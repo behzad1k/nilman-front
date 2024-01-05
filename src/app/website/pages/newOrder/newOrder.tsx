@@ -1,4 +1,4 @@
-import {useEffect, useState, useCallback} from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import {Button, Skeleton, Typography} from '@mui/material';
 import {useDispatch} from 'react-redux';
 import {toast} from 'react-toastify';
@@ -67,11 +67,13 @@ const initialSelected: Selected = {
 
 export default function NewOrder() {
   // React
-  const [selected, setSelected] = useState<Selected>(initialSelected);
+  const sessionData = JSON.parse(sessionStorage.getItem('new-order'));
+  const [selected, setSelected] = useState<Selected>(sessionData?.selected || initialSelected);
   const [workers, setWorkers] = useState<IUser[] | []>([]);
   const [nearest, setNearest] = useState<{date: string; workerId: number} | null>(null);
   const [isNextStepAllowed, setIsNextStepAllowed] = useState(false);
-  const [step, setStep] = useState<Step>(steps[0]);
+  const [step, setStep] = useState<Step>(sessionData?.step || steps[0]);
+  const prevDataRef = useRef({ selected, step });
   const dispatch = useAppDispatch();
   let section = 0;
 
@@ -149,11 +151,18 @@ export default function NewOrder() {
     if (step.name === 'worker') {
       getAreaWorkers();
     }
+    prevDataRef.current.step = step
   }, [step]);
 
   useEffect(() => {
-    console.log(selected);
+    prevDataRef.current.selected = selected;
   }, [selected]);
+
+  useEffect(() => {
+    return () => {
+      sessionStorage.setItem('new-order', JSON.stringify(prevDataRef.current))
+    }
+  }, []);
 
   useEffect(() => {
     setSelected((prev) => ({...prev, price: getPrice()}));

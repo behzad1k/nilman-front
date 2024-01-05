@@ -34,4 +34,4 @@ const api = async (url: string, request: fetchType = {}, useToken = false) => {
     });
 };
 
-export {api};
+export { api };
