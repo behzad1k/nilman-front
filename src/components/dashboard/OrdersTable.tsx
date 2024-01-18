@@ -23,7 +23,8 @@ interface Column {
     | 'status'
     | 'worker'
     | 'service'
-    | 'attributes';
+    | 'attributes'
+    | 'user';
   label: string;
   minWidth?: number;
   align?: 'right' | 'center' | 'left';
@@ -34,6 +35,7 @@ const columns: readonly Column[] = [
   {id: 'time', label: 'زمان', minWidth: 80, align: 'center'},
   {id: 'service', label: 'خدمات', minWidth: 150, align: 'center'},
   {id: 'attributes', label: 'زیر دسته', minWidth: 150, align: 'center'},
+  {id: 'user', label: 'شماره مشتری', minWidth: 150, align: 'center'},
   {id: 'status', label: 'وضعیت', minWidth: 120, align: 'center'},
   {id: 'worker', label: 'آرایشگر', minWidth: 150, align: 'center'},
   {id: 'price', label: 'قیمت', minWidth: 100, align: 'center'},
@@ -104,6 +106,8 @@ export function OrdersTable({rows, setOpenModal, setEditData}: Props) {
         return value.split('_').join(' - ');
       case 'worker':
         return `${value.name} ${value.lastName}`;
+      case 'user':
+        return value.phoneNumber;
       case 'price':
         return formatPrice(value);
       case 'status':

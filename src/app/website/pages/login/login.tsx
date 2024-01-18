@@ -187,7 +187,7 @@ export default function Login() {
             >
               <Typography component="p" variant="body2" textAlign="center">
                 رمز یکبار مصرف به شماره
-                <Box component="span" fontSize={14} mx={0.75} color="var(--mid-pink)">
+                <Box component="span" fontSize={14} mx={0.75}>
                   {getValues().phoneNumber}
                 </Box>
                 ارسال شد

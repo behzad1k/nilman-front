@@ -10,6 +10,7 @@ import {urls} from '../../../../services/endPoint.ts';
 import {api} from '../../../../services/http.ts';
 import {order} from '../../../../services/redux/reducers/orderSlice.ts';
 import {useAppDispatch, useAppSelector} from '../../../../services/redux/store.ts';
+import { MapView } from '../../../../components/common/map.tsx';
 interface IOrderCardProps {
   item: IOrder;
 }
@@ -125,7 +126,7 @@ export default function OrderCard({item}: IOrderCardProps) {
           )}
         </Box>
         <Modal open={openModal} setOpen={setOpenModal}>
-          عکس و توضیحات
+          <MapView position={{lat: +item.address.latitude, lng: +item.address.longitude}}></MapView>
         </Modal>
       </Paper>
     );
