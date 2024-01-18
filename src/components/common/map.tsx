@@ -75,3 +75,30 @@ export function Map({position, setPosition}: Props) {
     </MapContainer>
   );
 }
+
+export function MapView({position}: {position: Position}) {
+  if (position.lng === 0 && position.lat === 0) {
+    return (
+      <div>
+        مختصاتی دریافت نشد
+      </div>
+    )
+  }
+  return (
+    <MapContainer
+      center={position}
+      zoom={14}
+      scrollWheelZoom={false}
+    >
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      />
+      {position === null ? null : (
+        <Marker position={position}>
+          <Popup>You are here</Popup>
+        </Marker>
+      )}
+    </MapContainer>
+  )
+}

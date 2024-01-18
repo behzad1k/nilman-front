@@ -21,7 +21,14 @@ export function OtpInput({name, control, ...props}: Props) {
           length={6}
           dir="ltr"
           autoFocus
-          TextFieldsProps={{placeholder: '-'}}
+          TextFieldsProps={{
+            placeholder: '-',
+            type: 'number',
+            inputProps: {
+              inputMode: 'numeric',
+              pattern: '[0-9]*'
+            }
+          }}
           validateChar={validateChar}
           {...props}
         />

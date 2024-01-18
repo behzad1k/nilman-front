@@ -135,6 +135,8 @@ export default function NewOrder() {
       // console.log(res);
       dispatch(order());
       dispatch(cart());
+      sessionStorage.removeItem('new-order');
+      sessionStorage.removeItem('step');
     } else {
       toast('سفارش شما ثبت نشد, لطفا مجددا تلاش کنید.', {type: 'error'});
     }

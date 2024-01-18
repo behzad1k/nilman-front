@@ -105,6 +105,25 @@ export default function AddUser() {
             </SelectInput>
           </>
         )}
+        {role !== '' && role !== 'WORKER' && role !== 'USER' && (
+          <>
+                  <TextInput
+                  name="username"
+                  label="نام کاربری"
+                  control={control}
+                  defaultValue=""
+                  size="medium"
+                />
+                <TextInput
+                  name="password"
+                  label="رمز عبور"
+                  control={control}
+                  defaultValue=""
+                  size="medium"
+                  type='password'
+                />
+          </>
+        )}
         <TextInput
           name="name"
           label="نام"

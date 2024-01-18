@@ -109,8 +109,8 @@ export default function Home() {
     <main>
       <section className="banners">
         <BannerCard
-          title={'تخفیف تابستانی'}
-          description={' برای مشاهده نمونه خدمات بیشتر به وبسایت نیلمان مراجعه کنید '}
+          title={'مناطق سرویس‌دهی'}
+          description={'منطقه‌های ۱، ۲، ۳، ۴ و ۵'}
           button={'مشاهده'}
           icon={<Percent />}
           bgColor1="#FF0078"
@@ -154,7 +154,7 @@ export default function Home() {
           <MapPin />
           <span>آدرس : تهران ...</span>
         </span>
-        <a className="whatsapp-btn" href="https://wa.me/09037131808">
+        <a className="whatsapp-btn" href="https://wa.me/09351007201">
           <WhatsApp />
           <span>واتساپ</span>
         </a>
