@@ -41,9 +41,7 @@ export default function Login() {
       dispatch(SET_LOADING(true));
       const res = await api(urls.login, reqOptions);
       dispatch(SET_LOADING(false));
-      console.log(res);
       if (res.code) {
-        alert(res.code);
         tokenRef.current = res.token;
         setLoginState('otp');
       }
