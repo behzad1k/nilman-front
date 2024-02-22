@@ -133,7 +133,7 @@ export default function Home() {
       </section>
       <section className="banners">
         <BannerCard
-          title={'اینستاگرام زیب'}
+          title={'اینستاگرام نیلمان'}
           description={' برای مشاهده نمونه خدمات بیشتر به اینستاگرام نیلمان مراجعه کنید '}
           button={'مشاهده'}
           icon={<InstagramLogo />}
@@ -148,11 +148,11 @@ export default function Home() {
         </Box>
         <span className="banner-row">
           <Phone />
-          شماره تماس : <a href="tel:02133332563">۰۲۱۳۳۳۳۲۵۶۳</a>
+          شماره تماس : <a href="tel:02133332563">۰۲۱۲۶۹۱۷۳۵۶-۷</a>
         </span>
         <span className="banner-row">
           <MapPin />
-          <span>آدرس : تهران ...</span>
+          <span>آدرس : تهران - زعفرانیه - خیابان مقدس اردبیلی - پلاک ۳۱ - طبقه ۶</span>
         </span>
         <a className="whatsapp-btn" href="https://wa.me/09351007201">
           <WhatsApp />

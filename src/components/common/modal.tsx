@@ -2,7 +2,7 @@ import {Modal as MUIModal, Backdrop, Fade, Box} from '@mui/material';
 
 type Props = {
   open: boolean;
-  setOpen: (val: boolean) => void;
+  setOpen: any
   children: React.ReactNode;
 };
 
