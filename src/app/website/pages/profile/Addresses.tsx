@@ -1,4 +1,6 @@
 import {useRef, useState} from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import {addresses} from '../../../../services/redux/reducers/userSlice.ts';
 import {useAppDispatch, useAppSelector} from '../../../../services/redux/store.ts';
 import {IAddress} from '../../../../services/types.ts';
@@ -20,10 +22,13 @@ type Position = {
 export const Addresses = ({onClick}: {onClick?: (address: IAddress) => void}) => {
   const [openModal, setOpenModal] = useState(false);
   const [position, setPosition] = useState<Position | null>(null);
-  const userAddresses = useAppSelector((state) => state.userReducer.addresses);
+  const userReducer = useAppSelector((state) => state.userReducer);
+  const userAddresses = userReducer.addresses
+  const navigate = useNavigate();
   const {reset, handleSubmit, control} = useForm();
   const dispatch = useAppDispatch();
   const [selected, setSelected] = useState<IAddress>();
+
   const handleSubmitAddAddress = async (data: FieldValues) => {
     const reqOptions = {
       method: 'post',
@@ -51,7 +56,7 @@ export const Addresses = ({onClick}: {onClick?: (address: IAddress) => void}) =>
           onClick={onClick}
         />
       ))}
-      <div className="addressContainer add" onClick={() => setOpenModal(true)}>
+      <div className="addressContainer add" onClick={() => userReducer.isLoggedIn ? setOpenModal(true) : toast('لطفا ابتدا وارد شوید!', { onClose: () => navigate('/login'), type: 'error' })}>
         <PlusCircle weight={'fill'} color="green" size={20} />
         <Button>افزودن آدرس</Button>
       </div>

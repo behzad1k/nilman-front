@@ -41,8 +41,6 @@ const userSlice = createSlice({
     builder
       .addCase(user.fulfilled, (state, action) => {
         if (action.payload.code == 200) {
-          console.log(action.payload);
-
           state.data = action.payload.data;
         }
       })

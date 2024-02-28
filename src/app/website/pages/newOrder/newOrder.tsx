@@ -1,5 +1,6 @@
 import {useEffect, useState, useCallback, useRef} from 'react';
 import {Button, Typography} from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import {toast} from 'react-toastify';
 import {cart} from '../../../../services/redux/reducers/cartSlice.ts';
 import {order} from '../../../../services/redux/reducers/orderSlice.ts';
@@ -73,10 +74,10 @@ export default function NewOrder() {
   const [isNextStepAllowed, setIsNextStepAllowed] = useState(false);
   const [step, setStep] = useState<Step>(prevStep || steps[0]);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   let section = 0;
   let selectedRef = useRef(selected);
   let stepRef = useRef(step);
-
   // Fns
   const getAreaWorkers = useCallback(async () => {
     selected.attributes.forEach((attr) => (section += attr.section));
@@ -88,11 +89,9 @@ export default function NewOrder() {
     dispatch(SET_LOADING(true));
     const res = await api(urls.ariaWorker + '?' + params, {}, true);
     dispatch(SET_LOADING(false));
-    console.log(res);
     if (res.code === 200) {
       setWorkers(res.data.workers);
       setNearest(res.data.nearest);
-      console.log(res.data);
     }
   }, [selected.address, selected.service]);
 
@@ -127,8 +126,6 @@ export default function NewOrder() {
     const res = await api(urls.order, reqOptions, true);
     dispatch(SET_LOADING(false));
 
-    console.log('res is: ', res);
-
     if (res.code === 201) {
       toast('سفارش شما با موفقیت ثبت شد', {type: 'success'});
       // window.location.reload();
@@ -137,6 +134,7 @@ export default function NewOrder() {
       dispatch(cart());
       sessionStorage.removeItem('new-order');
       sessionStorage.removeItem('step');
+      navigate('/orders')
     } else {
       toast('سفارش شما ثبت نشد, لطفا مجددا تلاش کنید.', {type: 'error'});
     }

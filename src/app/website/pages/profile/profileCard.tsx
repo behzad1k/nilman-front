@@ -22,8 +22,24 @@ export function ProfileCard() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    sessionStorage.removeItem('new-order');
+    sessionStorage.removeItem('step');
     logout(dispatch);
     navigate('/login');
+  };
+
+  const send = () => {
+    const reqOptions = {
+      method: 'put',
+      body: {
+        name,
+        lastName,
+        nationalCode: socialId,
+      },
+    };
+    dispatch(SET_LOADING(true));
+    const res = api(urls.updateSimpleUser, reqOptions, true);
+    dispatch(SET_LOADING(false));
   };
 
   useEffect(() => {
@@ -39,17 +55,9 @@ export function ProfileCard() {
   }, [socialIdDisabled]);
 
   useEffect(() => {
-    const reqOptions = {
-      method: 'put',
-      body: {
-        name,
-        lastName,
-        nationalCode: socialId,
-      },
-    };
-    dispatch(SET_LOADING(true));
-    const res = api(urls.updateSimpleUser, reqOptions, true);
-    dispatch(SET_LOADING(false));
+    if ((name != '' && name != profile.name) || (lastName != '' && lastName != profile.lastName) || (socialId != '' && socialId != profile.nationalCode)) {
+      send();
+    }
   }, [name, lastName, socialId]);
 
   return (

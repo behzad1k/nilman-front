@@ -1,4 +1,5 @@
-import {useRef} from 'react';
+import { useEffect, useRef } from 'react';
+import { toast } from 'react-toastify';
 import {Loading, TextInput} from '../../../../components';
 import {useForm} from 'react-hook-form';
 import {Typography, Container, Button, Box} from '@mui/material';
@@ -8,7 +9,7 @@ import {OtpInput} from '../../../../components';
 import {userApis} from '../../../../services/apis/global.ts';
 import {api} from '../../../../services/http';
 import {urls} from '../../../../services/endPoint';
-import {AppDispatch, useAppDispatch} from '../../../../services/redux/store';
+import { AppDispatch, useAppDispatch, useAppSelector } from '../../../../services/redux/store';
 import {SET_LOGGED_IN, user} from '../../../../services/redux/reducers/userSlice';
 import Cookies from 'js-cookie';
 import {useNavigate} from 'react-router-dom';
@@ -26,6 +27,7 @@ type LoginForm = {
 export default function Login() {
   const {reset, handleSubmit, control, getValues} = useForm<LoginForm>();
   const [loginState, setLoginState] = useState<LoginState>('phoneNumber');
+  const userReducer = useAppSelector(state => state.userReducer)
   const formRef = useRef(null);
   const tokenRef = useRef<null | string>(null);
   const dispatch: AppDispatch = useAppDispatch();
@@ -38,13 +40,12 @@ export default function Login() {
         method: 'post',
         body: data,
       };
+
       dispatch(SET_LOADING(true));
       const res = await api(urls.login, reqOptions);
       dispatch(SET_LOADING(false));
-      if (res.code) {
-        tokenRef.current = res.token;
-        setLoginState('otp');
-      }
+      tokenRef.current = res.token;
+      setLoginState('otp');
     } else if (loginState === 'otp') {
       // Verify OTP Code here ...
       const reqOptions = {
@@ -57,16 +58,19 @@ export default function Login() {
       dispatch(SET_LOADING(true));
       const res = await api(urls.check, reqOptions);
       dispatch(SET_LOADING(false));
-      console.log(res.data.user.nationalCode);
 
       if (res.code == 200) {
         Cookies.set('token', res.data.token, {expires: 30 * 24 * 60 * 60, path: '/'});
         dispatch(SET_LOGGED_IN(true));
-        console.log(res.data.user.role);
         await userApis(dispatch);
-        if (res.data.user.role === 'SUPER_ADMIN') navigate('/dashboard');
-        else if (!res.data.user.nationalCode) setLoginState('complete-profile');
-        else navigate('/');
+        console.log(res.data);
+        if (!res.data?.user?.name) setLoginState('complete-profile');
+        else {
+          toast('خوش آمدید', { type: 'success' })
+          navigate('/');
+        }
+      } else {
+        toast('کد وارد شده صحیح نیست', { type: 'error' })
       }
     } else {
       // Complete Profile Code here ...
@@ -81,9 +85,13 @@ export default function Login() {
       dispatch(SET_LOADING(true));
       const res = await api(urls.updateSimpleUser, reqOptions, true);
       dispatch(SET_LOADING(false));
-      if (res.code === 200) navigate('/');
+      if (res.code === 200) {
+        toast('اطلاعات شما با موفقیت ثبت شد، خوش آمدید', { type: 'success' })
+        navigate('/');
+      }
     }
   };
+
   return (
     <Box
       component="main"
