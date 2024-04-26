@@ -1,4 +1,5 @@
 import {Box, Typography, Container, Button} from '@mui/material';
+import Cookies from 'js-cookie';
 import {TextInput, SelectInput} from '../../../../components';
 import {useForm, FieldValues, Controller} from 'react-hook-form';
 import {useEffect, useState} from 'react';
@@ -12,6 +13,7 @@ export default function AddUser() {
   const {register, handleSubmit, control, getValues} = useForm();
   const [role, setRole] = useState('');
   const [services, setServices] = useState([]);
+  const [image, setImage] = useState<any>({});
   const roleOptions = [
     {
       slug: 'USER',
@@ -38,8 +40,11 @@ export default function AddUser() {
         ...data,
       },
     };
-    console.log(reqOptions);
-    const res = await api(urls.adminUser, reqOptions, true);
+    const formData = new FormData()
+    Object.entries(data).map(([key, value]) => formData.append(key, value))
+    formData.append('file', image.data)
+    console.log(formData);
+    const res = await fetch('http://localhost:9001/admin/user', { method: 'post', body: formData, headers: {'Content-Type': 'application/json', authorization: `Bearer ${Cookies.get('token')}`} });
     console.log(res);
   };
 
@@ -156,7 +161,10 @@ export default function AddUser() {
           control={control}
           name="profilePicture"
           render={({field}) => {
-            return <MuiFileInput {...field} label="عکس پروفایل" size="medium" />;
+            return <MuiFileInput {...field} label="عکس پروفایل" size="medium" onChange={(input) => setImage({
+              data: input,
+              preview: URL.createObjectURL(input),
+            })}/>;
           }}
         />
         <Button variant="contained" color="success" type="submit" size="large" fullWidth>

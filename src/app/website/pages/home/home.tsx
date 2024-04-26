@@ -109,12 +109,10 @@ export default function Home() {
     <main>
       <section className="banners">
         <BannerCard
-          title={'مناطق سرویس‌دهی'}
-          description={'منطقه‌های ۱، ۲، ۳، ۴ و ۵'}
+          title={'اینستاگرام نیلمان'}
+          description={' برای مشاهده نمونه خدمات بیشتر به اینستاگرام نیلمان مراجعه کنید '}
           button={'مشاهده'}
-          icon={<Percent />}
-          bgColor1="#FF0078"
-          bgColor2="#F6EFA7"
+          icon={<InstagramLogo />}
         />
       </section>
       <section>
@@ -133,10 +131,12 @@ export default function Home() {
       </section>
       <section className="banners">
         <BannerCard
-          title={'اینستاگرام نیلمان'}
-          description={' برای مشاهده نمونه خدمات بیشتر به اینستاگرام نیلمان مراجعه کنید '}
+          title={'مناطق سرویس‌دهی'}
+          description={'منطقه‌های ۱، ۲، ۳، ۴ و ۵'}
           button={'مشاهده'}
-          icon={<InstagramLogo />}
+          icon={<Percent />}
+          bgColor1="#FF0078"
+          bgColor2="#F6EFA7"
         />
       </section>
       <Box component="section" className="banners contact-us" mt={2.5}>

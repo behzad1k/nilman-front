@@ -1,9 +1,11 @@
-import {FormEvent, SyntheticEvent, useState} from 'react';
-import {useParams} from 'react-router-dom';
+import { FormEvent, SyntheticEvent, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import {Box, Button, Container, Rating, Typography} from '@mui/material';
 import {TextareaAutosize} from '@mui/base/TextareaAutosize';
 import {urls} from '../../../../services/endPoint.ts';
 import {api} from '../../../../services/http.ts';
+import { useAppSelector } from '../../../../services/redux/store.ts';
+import { IOrder } from '../../../../services/types.ts';
 import Success from './success.tsx';
 import {toast} from 'react-toastify';
 
@@ -11,7 +13,9 @@ export default function Feedback() {
   const [rate, setRate] = useState(0);
   const [comment, setComment] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [order, setOrder] = useState<IOrder>();
   const params = useParams();
+  const navigate = useNavigate();
 
   const handleRate = (e: SyntheticEvent, newRate: number | null) => {
     if (newRate) setRate(newRate);
@@ -26,18 +30,31 @@ export default function Feedback() {
       return toast('ابتدا امتیاز بدهید');
     }
     const reqBody = {
-      orderId: Number(params.id),
+      orderId: order.id,
       rate,
       comment,
     };
-    console.log(reqBody);
 
-    const res = {code: 201};
-    // const res = await api(urls.feedback, reqBody, true);
-    if (res.code === 201) {
+    const res = await api(urls.feedback, { method: 'post', body: reqBody}, true);
+    if (res.code === 200) {
       setIsSubmitted(true);
     }
   };
+
+  const fetchData = async () => {
+    const res = await api(urls.orderSingle + '/' + params.id, {}, true)
+    if (!res.data){
+      navigate('/')
+    } else if (res.data?.feedback){
+      toast('نظرسنجی این سفارش قبلا ثبت شده است.', { type: 'error', onClose: () => navigate('/') })
+    } else {
+      setOrder(res.data)
+    }
+  };
+
+  useEffect(() => {
+    fetchData()
+  }, []);
 
   return (
     <Box component="main" minHeight="100vh">
@@ -67,10 +84,10 @@ export default function Feedback() {
                 name="rating"
                 size="large"
                 value={rate}
+                // dir={'ltr'}
                 onChange={handleRate}
                 sx={{
                   marginInline: 'auto',
-                  flexDirection: 'row-reverse',
                   '& .muirtl-1vooibu-MuiSvgIcon-root': {width: 42, height: 42},
                   '& .MuiRating-iconFilled': {color: 'var(--mid-pink)'},
                 }}

@@ -8,11 +8,13 @@ export const urls = {
   adminUser: '/admin/user',
   address: '/address',
   order: '/order',
+  orderSingle: '/order/single',
   cart: '/order/cart',
   pay: '/order/pay',
   adminOrder: '/admin/order',
   adminOrderUpdate: '/admin/order/update',
   ariaWorker: '/order/workers',
   workersOffs: '/user/workerOffs',
-  adminLogin: '/admin/login'
+  adminLogin: '/admin/login',
+  feedback: '/feedback'
 };

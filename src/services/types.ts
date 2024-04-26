@@ -39,6 +39,7 @@ export interface IOrder {
   price: number;
   date: string;
   time: string;
+  code: string;
   discount: number;
   transportation: number | string;
   status: 'ACCEPTED' | 'PAID' | 'Done' | 'CREATED' | 'ASSIGNED' | 'CANCELED';
