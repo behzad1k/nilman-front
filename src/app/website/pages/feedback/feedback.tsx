@@ -54,9 +54,9 @@ export default function Feedback() {
   };
 
   useEffect(() => {
-    console.log(Cookies.get('token'));
     if (Cookies.get('token') == undefined){
-      navigate(`/login?from="/feedback/${params.id}"`)
+      toast('لطفا ابتدا وارد شوید', { type: 'error' })
+      navigate(`/login?from=/feedback/${params.id}`)
     } else {
       fetchData()
     }
