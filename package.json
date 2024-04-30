@@ -1,11 +1,12 @@
 {
   "name": "nilman",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "npx react-scripts start",
     "build": "npx react-scripts build",
+    "prod": "npx react-scripts build && npx serve -s build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {

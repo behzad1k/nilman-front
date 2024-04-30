@@ -9,7 +9,9 @@ import {SET_LOADING} from '../redux/reducers/loadingSlice.ts';
 
 export const initialApis = async (dispatch: any) => {
   dispatch(SET_LOADING(true));
-  await Promise.all([dispatch(services())]);
+  await Promise.all([
+    dispatch(services())
+  ]);
 
   if (Cookies.get('token')) {
     const res = await api(urls.getUser, {}, true);
