@@ -71,7 +71,7 @@ export default function Login() {
         if (!res.data?.user?.name) setLoginState('complete-profile');
         else {
           toast('خوش آمدید', { type: 'success' })
-          navigate(Cookies.get('from') || '/');
+          navigate(urlParams.get('from') || '/');
         }
       } else {
         toast('کد وارد شده صحیح نیست', { type: 'error' })
