@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import { FormEvent, SyntheticEvent, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {Box, Button, Container, Rating, Typography} from '@mui/material';
@@ -53,6 +54,9 @@ export default function Feedback() {
   };
 
   useEffect(() => {
+    if (!Cookies.get('token')){
+      navigate(`/login?from="feedback/${params.id}`)
+    }
     fetchData()
   }, []);
 

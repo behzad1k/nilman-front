@@ -13,7 +13,6 @@ export const initialApis = async (dispatch: any) => {
 
   const res = await api(urls.getUser, {}, true);
 
-  console.log(res);
   if (res.code == 200) {
     dispatch(SET_LOGGED_IN(true));
     userApis(dispatch);
@@ -33,6 +32,6 @@ export const userApis = async (dispatch: any) => {
 
 export const logout = (dispatch: any) => {
   dispatch(SET_LOGGED_IN(false));
-  Cookies.set('token', '');
+  Cookies.remove('token');
   // window.location.reload();
 };

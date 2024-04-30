@@ -12,7 +12,7 @@ import {urls} from '../../../../services/endPoint';
 import { AppDispatch, useAppDispatch, useAppSelector } from '../../../../services/redux/store';
 import {SET_LOGGED_IN, user} from '../../../../services/redux/reducers/userSlice';
 import Cookies from 'js-cookie';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import {SET_LOADING} from '../../../../services/redux/reducers/loadingSlice.ts';
 
 type LoginState = 'phoneNumber' | 'otp' | 'complete-profile';
@@ -32,9 +32,13 @@ export default function Login() {
   const tokenRef = useRef<null | string>(null);
   const dispatch: AppDispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  const [urlParams] = useSearchParams()
   const handleSubmitForm = async (data: LoginForm) => {
     if (loginState === 'phoneNumber') {
+      if (data.phoneNumber.length != 11 || data.phoneNumber.at(0) != '0' || data.phoneNumber.at(1) != '9'){
+        toast('لطفا شماره تلفن خود را به درستی وارد کنید', { type: 'warning' })
+        return;
+      }
       // Send phonenumber here ...
       const reqOptions = {
         method: 'post',
@@ -55,6 +59,7 @@ export default function Login() {
           token: tokenRef.current,
         },
       };
+
       dispatch(SET_LOADING(true));
       const res = await api(urls.check, reqOptions);
       dispatch(SET_LOADING(false));
@@ -63,17 +68,29 @@ export default function Login() {
         Cookies.set('token', res.data.token, {expires: 30 * 24 * 60 * 60, path: '/'});
         dispatch(SET_LOGGED_IN(true));
         await userApis(dispatch);
-        console.log(res.data);
         if (!res.data?.user?.name) setLoginState('complete-profile');
         else {
           toast('خوش آمدید', { type: 'success' })
-          navigate('/');
+          navigate(Cookies.get('from') || '/');
         }
       } else {
         toast('کد وارد شده صحیح نیست', { type: 'error' })
       }
     } else {
       // Complete Profile Code here ...
+      if (!data.name || data.name?.length < 3){
+        toast('لطفا نام خود را به درستی وارد کنید', { type: 'warning' })
+        return;
+      }
+      if (!data.lastName || data.lastName?.length < 3){
+        toast('لطفا نام خانوادگی خود را به درستی وارد کنید', { type: 'warning' })
+        return;
+      }
+      if (!data.nationalCode || data.nationalCode?.length != 10){
+        toast('لطفا کد ملی خود را به درستی وارد کنید', { type: 'warning' })
+        return;
+      }
+
       const reqOptions = {
         method: 'put',
         body: {
@@ -88,6 +105,8 @@ export default function Login() {
       if (res.code === 200) {
         toast('اطلاعات شما با موفقیت ثبت شد، خوش آمدید', { type: 'success' })
         navigate('/');
+      } else if(res.code == 1005){
+        toast('کد ملی با شماره تلفن تطابق ندارد', { type: 'error' })
       }
     }
   };
@@ -153,6 +172,7 @@ export default function Login() {
                 label="تلفن همراه"
                 name="phoneNumber"
                 control={control}
+                placeholder={'09121234567'}
                 defaultValue=""
                 size="medium"
                 autoComplete="off"

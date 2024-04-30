@@ -174,6 +174,25 @@ export default function WorkerStep({
           </div>
         ))}
       </div>
+      <TextInput
+        name="discount"
+        label="کد تخفیف"
+        defaultValue=""
+        control={control}
+        size="medium"
+        sx={{
+          mt: 4,
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'var(--mid-pink)',
+            backgroundColor: 'var(--white-pink)',
+            borderRadius: '10px',
+            zIndex: -1,
+          },
+          '& .MuiInputBase-input': {
+            color: 'var(--dashboard-dark)',
+          },
+        }}
+      />
       <p className="hint-text">
         {selectedTab.index === 1 && 'لطفا تاریخ مورد نظر خود را انتخاب کنید'}
         {selectedTab.index === 2 && 'لطفا تاریخ و آرایشگر مورد نظر خود را انتخاب کنید'}
@@ -248,25 +267,6 @@ export default function WorkerStep({
           </div>
         )}
       </div>
-      <TextInput
-        name="discount"
-        label="کد تخفیف"
-        defaultValue=""
-        control={control}
-        size="medium"
-        sx={{
-          mt: 4,
-          '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'var(--mid-pink)',
-            backgroundColor: 'var(--white-pink)',
-            borderRadius: '10px',
-            zIndex: -1,
-          },
-          '& .MuiInputBase-input': {
-            color: 'var(--dashboard-dark)',
-          },
-        }}
-      />
     </div>
   );
 }

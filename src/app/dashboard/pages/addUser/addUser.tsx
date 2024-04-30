@@ -51,7 +51,6 @@ export default function AddUser() {
   useEffect(() => {
     const getServices = async () => {
       const res = await api(urls.services);
-      console.log(res);
 
       setServices(res.data);
     };

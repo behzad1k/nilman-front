@@ -1,5 +1,6 @@
 import {Calendar, MapPin, X} from '@phosphor-icons/react';
 import moment from 'jalali-moment';
+import { toast } from 'react-toastify';
 import {urls} from '../../../../services/endPoint.ts';
 import {api} from '../../../../services/http.ts';
 import {cart} from '../../../../services/redux/reducers/cartSlice.ts';
@@ -10,6 +11,7 @@ import {SET_LOADING} from '../../../../services/redux/reducers/loadingSlice.ts';
 import {Typography} from '@mui/material';
 import {Box} from '@mui/system';
 import emptyCart from '../../../../assets/img/empty-cart.png';
+import { formatPrice } from '../../../../utils/utils.ts';
 
 interface ICartItemProps {
   item: IOrder;
@@ -41,17 +43,22 @@ const CartItem = ({item}: ICartItemProps) => {
       {item.attributes.map((attribute, index) => (
         <span className="orderInfo" key={index}>
           <p>{attribute.title}</p>
-          <p>{attribute.price} تومان</p>
+          <p>{formatPrice(attribute.price)} تومان</p>
         </span>
       ))}
       <span className="orderInfo">
         <p>هزینه ایاب ذهاب</p>
-        <p>100000 تومان</p>
+        <p>{formatPrice(100000)} تومان</p>
       </span>
-
+      {item.discountAmount &&
+        <span className="orderInfo">
+        <p>تخفیف</p>
+        <p>{formatPrice(item.discountAmount)}- تومان</p>
+      </span>
+      }
       <span className="orderInfo dashedBottom">
         <h4>جمع کل</h4>
-        <h4> {item.price} تومان</h4>
+        <h4> {formatPrice(item.price)} تومان</h4>
       </span>
       <span className="orderInfo">
         <span className="orderInfoIcon">
@@ -82,6 +89,9 @@ export default function Cart() {
     );
 
     if (res.code == 200) {
+      toast('پرداخت با موفقیت انجام شد.', { type: 'success'});
+      sessionStorage.removeItem('new-order')
+      sessionStorage.removeItem('step')
       dispatch(cart());
       dispatch(order());
     }

@@ -41,6 +41,7 @@ export interface IOrder {
   time: string;
   code: string;
   discount: number;
+  discountAmount: number;
   transportation: number | string;
   status: 'ACCEPTED' | 'PAID' | 'Done' | 'CREATED' | 'ASSIGNED' | 'CANCELED';
   worker: IUser;

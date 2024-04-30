@@ -883,6 +883,7 @@ main {
 .service-step-container .hint-text {
   color: var(--light-black);
   font-size: 14px;
+  margin-top: 1.5rem;
   margin-bottom: 1.5rem;
 }
 
