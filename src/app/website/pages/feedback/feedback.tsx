@@ -56,8 +56,9 @@ export default function Feedback() {
   useEffect(() => {
     if (!Cookies.get('token')){
       navigate(`/login?from="/feedback/${params.id}`)
+    } else {
+      fetchData()
     }
-    fetchData()
   }, []);
 
   return (
