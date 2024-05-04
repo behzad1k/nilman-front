@@ -118,7 +118,6 @@ export default function Login() {
   };
 
   useEffect(() => {
-    alert("OTPCredential" in window);
     if ("OTPCredential" in window) {
       const ac = new AbortController();
         navigator.credentials
@@ -128,15 +127,11 @@ export default function Login() {
           signal: ac.signal
         })
         .then((otp) => {
-          console.log(otp);
           // @ts-ignore
           setValue('otp', otp.code);
-          alert(otp);
           ac.abort();
         })
         .catch((err) => {
-          console.log(err);
-          alert(err);
           ac.abort();
         });
     }
