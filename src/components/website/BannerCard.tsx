@@ -9,6 +9,7 @@ type IProps = {
   bgColor1?: string;
   bgColor2?: string;
   children?: React.ReactNode;
+  onClick?: () => void
 };
 export function BannerCard({
   title,
@@ -18,18 +19,21 @@ export function BannerCard({
   bgColor1 = '#6D678E',
   bgColor2 = '#F6B5CC',
   children,
+  onClick = () => toast('بزودی', {type: 'info'})
 }: IProps) {
   return (
     <article
       className="bannerCard"
       style={{background: `linear-gradient(282deg, ${bgColor1}, ${bgColor2})`}}
     >
+      <div className="bannerCardRow">
       {icon}
       {title && <h2>{title}</h2>}
+      </div>
       {description && <p>{description}</p>}
       {children}
       {button && (
-        <button onClick={() => toast('بزودی', {type: 'info'})}>
+        <button onClick={onClick}>
           {button}
           <i></i>
         </button>

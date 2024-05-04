@@ -1,6 +1,7 @@
-import {InstagramLogo, Percent, Phone, MapPin} from '@phosphor-icons/react';
+import { InstagramLogo, Percent, Phone, MapPin, PlusCircle } from '@phosphor-icons/react';
 import {ContactPhone, WhatsApp} from '@mui/icons-material';
 import React, {useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import {initialApis} from '../../../../services/apis/global.ts';
 import {useAppDispatch} from '../../../../services/redux/store.ts';
 import {ISliderCardInfo} from '../../../../services/types.ts';
@@ -9,10 +10,11 @@ import {BannerCard} from '../../../../components';
 import {Box, Stack, Typography} from '@mui/material';
 
 export default function Home() {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    initialApis(dispatch);
-  }, []);
+  // useEffect(() => {
+  //   initialApis(dispatch);
+  // }, []);
   const cardInfos1: ISliderCardInfo[] = [
     {
       title: 'لاک ژل',
@@ -109,10 +111,11 @@ export default function Home() {
     <main>
       <section className="banners">
         <BannerCard
-          title={'اینستاگرام نیلمان'}
-          description={' برای مشاهده نمونه خدمات بیشتر به اینستاگرام نیلمان مراجعه کنید '}
-          button={'مشاهده'}
-          icon={<InstagramLogo />}
+          title={'ثبت سفارش'}
+          description={'همین حالا سفارش خود را ثبت کنید!'}
+          button={'ثبت'}
+          icon={<PlusCircle />}
+          onClick={() => navigate('/newOrder')}
         />
       </section>
       <section>
@@ -154,10 +157,16 @@ export default function Home() {
           <MapPin />
           <span>آدرس : تهران - زعفرانیه - خیابان مقدس اردبیلی - پلاک ۳۱ - طبقه ۶</span>
         </span>
-        <a className="whatsapp-btn" href="https://wa.me/09351007201">
-          <WhatsApp />
-          <span>واتساپ</span>
-        </a>
+        <div className="banner-row">
+          <a className="whatsapp-btn" href="https://wa.me/09351007201">
+            <WhatsApp />
+            <span>واتس اپ</span>
+          </a>
+          <a className="whatsapp-btn" href="https://wa.me/09351007201">
+            <InstagramLogo width={25} height={25} />
+            <span>اینستاگرام</span>
+          </a>
+        </div>
       </Box>
     </main>
   );

@@ -13,7 +13,7 @@ function App() {
     <Provider store={store}>
       <Mui>
         <Routes>
-          <Route path="/*" element={<Website />} />
+          <Route path="*" element={<Website />} />
           <Route path="/dashboard/*" element={<Dashboard />} />
         </Routes>
         <ToastContainer

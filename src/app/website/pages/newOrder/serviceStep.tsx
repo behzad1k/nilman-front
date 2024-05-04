@@ -6,13 +6,13 @@ import {Selected} from './newOrder';
 type Props = {
   selected: Selected;
   setSelected: (val: (prev: Selected) => Selected) => void;
-  setIsNextStepAllowed: (val: boolean) => void;
+  setStep: (val: any) => void;
 };
 
 export default function ServiceStep({
   selected,
   setSelected,
-  setIsNextStepAllowed,
+  setStep,
 }: Props) {
   const services = useAppSelector((state) => state.serviceReducer.services);
 
@@ -23,13 +23,9 @@ export default function ServiceStep({
       index === i ? el?.classList.add('selected') : el?.classList.remove('selected'),
     );
 
+    setStep({ index: 1, name: 'attribute'})
     setSelected((prev: Selected) => ({...prev, service: service, attributes: []}));
-    setIsNextStepAllowed(true);
   };
-
-  useEffect(() => {
-    selected.service ? setIsNextStepAllowed(true) : setIsNextStepAllowed(false);
-  }, []);
 
   return (
     <div className="service-step-container">
@@ -40,7 +36,7 @@ export default function ServiceStep({
             key={service.slug}
             ref={(el) => (cardRef.current[index] = el)}
             onClick={() => handleSelectService(index, service)}
-            className={`card ${selected.service === service ? 'selected' : null}`}
+            className={`card ${selected.service === service ? 'selected' : ''}`}
           >
             <img src={'/img/' + service.slug + '.png'} />
             <h2>{service.title}</h2>

@@ -187,7 +187,7 @@ export default function NewOrder() {
         <ServiceStep
           selected={selected}
           setSelected={setSelected}
-          setIsNextStepAllowed={setIsNextStepAllowed}
+          setStep={setStep}
         />
       )}
       {step.name === 'attribute' && (
