@@ -34,7 +34,7 @@ export function AppBar() {
               weight={location.pathname === '/newOrder' ? 'fill' : 'regular'}
               color={location.pathname === '/newOrder' ? 'rgb(255,255,255)' : '#ffffff'}
             />
-            <p>ثبت </p>
+            <p>ثبت سفارش</p>
           </NavLink>
           <NavLink to="/mag" className="appBarIconContainer">
             <Newspaper

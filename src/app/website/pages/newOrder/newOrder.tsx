@@ -128,7 +128,7 @@ export default function NewOrder() {
 
     if (res.code === 201) {
       toast('سفارش شما با موفقیت ثبت شد', {type: 'success'});
-      // window.location.reload();
+      // window.lo cation.reload();
       // console.log(res);
       dispatch(order());
       dispatch(cart());
