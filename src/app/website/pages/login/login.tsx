@@ -1,19 +1,16 @@
-import { useEffect, useRef } from 'react';
-import { toast } from 'react-toastify';
-import {Loading, TextInput} from '../../../../components';
-import {useForm} from 'react-hook-form';
-import {Typography, Container, Button, Box} from '@mui/material';
-import {useState} from 'react';
-import lock from './public/img/lock.png';
-import {OtpInput} from '../../../../components';
-import {userApis} from '../../../../services/apis/global.ts';
-import {api} from '../../../../services/http';
-import {urls} from '../../../../services/endPoint';
-import { AppDispatch, useAppDispatch, useAppSelector } from '../../../../services/redux/store';
-import {SET_LOGGED_IN, user} from '../../../../services/redux/reducers/userSlice';
+import { Box, Button, Container, Typography } from '@mui/material';
 import Cookies from 'js-cookie';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import {SET_LOADING} from '../../../../services/redux/reducers/loadingSlice.ts';
+import { useEffect, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { Loading, OtpInput, TextInput } from '../../../../components';
+import { userApis } from '../../../../services/apis/global.ts';
+import { urls } from '../../../../services/endPoint';
+import { api } from '../../../../services/http';
+import { SET_LOADING } from '../../../../services/redux/reducers/loadingSlice.ts';
+import { SET_LOGGED_IN } from '../../../../services/redux/reducers/userSlice';
+import { AppDispatch, useAppDispatch, useAppSelector } from '../../../../services/redux/store';
 
 type LoginState = 'phoneNumber' | 'otp' | 'complete-profile';
 type LoginForm = {
@@ -25,18 +22,24 @@ type LoginForm = {
 };
 
 export default function Login() {
-  const {reset, handleSubmit, control, getValues} = useForm<LoginForm>();
+  const {
+    reset,
+    handleSubmit,
+    control,
+    getValues,
+    setValue
+  } = useForm<LoginForm>();
   const [loginState, setLoginState] = useState<LoginState>('phoneNumber');
-  const userReducer = useAppSelector(state => state.userReducer)
+  const userReducer = useAppSelector(state => state.userReducer);
   const formRef = useRef(null);
   const tokenRef = useRef<null | string>(null);
   const dispatch: AppDispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [urlParams] = useSearchParams()
+  const [urlParams] = useSearchParams();
   const handleSubmitForm = async (data: LoginForm) => {
     if (loginState === 'phoneNumber') {
-      if (data.phoneNumber.length != 11 || data.phoneNumber.at(0) != '0' || data.phoneNumber.at(1) != '9'){
-        toast('لطفا شماره تلفن خود را به درستی وارد کنید', { type: 'warning' })
+      if (data.phoneNumber.length != 11 || data.phoneNumber.at(0) != '0' || data.phoneNumber.at(1) != '9') {
+        toast('لطفا شماره تلفن خود را به درستی وارد کنید', { type: 'warning' });
         return;
       }
       // Send phonenumber here ...
@@ -65,29 +68,32 @@ export default function Login() {
       dispatch(SET_LOADING(false));
 
       if (res.code == 200) {
-        Cookies.set('token', res.data.token, {expires: 30 * 24 * 60 * 60, path: '/'});
+        Cookies.set('token', res.data.token, {
+          expires: 30 * 24 * 60 * 60,
+          path: '/'
+        });
         dispatch(SET_LOGGED_IN(true));
         await userApis(dispatch);
         if (!res.data?.user?.name) setLoginState('complete-profile');
         else {
-          toast('خوش آمدید', { type: 'success' })
+          toast('خوش آمدید', { type: 'success' });
           navigate(urlParams.get('from') || '/');
         }
       } else {
-        toast('کد وارد شده صحیح نیست', { type: 'error' })
+        toast('کد وارد شده صحیح نیست', { type: 'error' });
       }
     } else {
       // Complete Profile Code here ...
-      if (!data.name || data.name?.length < 3){
-        toast('لطفا نام خود را به درستی وارد کنید', { type: 'warning' })
+      if (!data.name || data.name?.length < 3) {
+        toast('لطفا نام خود را به درستی وارد کنید', { type: 'warning' });
         return;
       }
-      if (!data.lastName || data.lastName?.length < 3){
-        toast('لطفا نام خانوادگی خود را به درستی وارد کنید', { type: 'warning' })
+      if (!data.lastName || data.lastName?.length < 3) {
+        toast('لطفا نام خانوادگی خود را به درستی وارد کنید', { type: 'warning' });
         return;
       }
-      if (!data.nationalCode || data.nationalCode?.length != 10){
-        toast('لطفا کد ملی خود را به درستی وارد کنید', { type: 'warning' })
+      if (!data.nationalCode || data.nationalCode?.length != 10) {
+        toast('لطفا کد ملی خود را به درستی وارد کنید', { type: 'warning' });
         return;
       }
 
@@ -103,40 +109,49 @@ export default function Login() {
       const res = await api(urls.updateSimpleUser, reqOptions, true);
       dispatch(SET_LOADING(false));
       if (res.code === 200) {
-        toast('اطلاعات شما با موفقیت ثبت شد، خوش آمدید', { type: 'success' })
+        toast('اطلاعات شما با موفقیت ثبت شد، خوش آمدید', { type: 'success' });
         navigate('/');
-      } else if(res.code == 1005){
-        toast('کد ملی با شماره تلفن تطابق ندارد', { type: 'error' })
+      } else if (res.code == 1005) {
+        toast('کد ملی با شماره تلفن تطابق ندارد', { type: 'error' });
       }
     }
   };
 
   useEffect(() => {
     const ac = new AbortController();
-
-    navigator.credentials
-    .get({
-      // @ts-ignore
-      otp: { transport: ["sms"] },
-      signal: ac.signal
-    })
-    .then((otp) => {
-      console.log(otp);
-      alert(otp)
-      ac.abort();
-    })
-    .catch((err) => {
-      ac.abort();
-      alert(err)
-      console.log(err);
-    });
+    try {
+      navigator.credentials
+      .get({
+        // @ts-ignore
+        otp: { transport: ['sms'] },
+        signal: ac.signal
+      })
+      .then((otp) => {
+        console.log(otp);
+        // @ts-ignore
+        setValue('otp', otp.code)
+        alert(otp);
+        ac.abort();
+      })
+      .catch((err) => {
+        console.log(err);
+        ac.abort();
+        alert(err);
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }, []);
 
   return (
     <Box
       component="main"
       bgcolor="white"
-      sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh'
+      }}
     >
       <Container
         sx={{
@@ -159,20 +174,23 @@ export default function Login() {
         >
           nilman
         </Typography>
-        <Box sx={{display: 'grid', placeItems: 'center'}}>
+        <Box sx={{
+          display: 'grid',
+          placeItems: 'center'
+        }}>
           {/*<Box*/}
           {/*  p={2}*/}
           {/*  borderRadius={50}*/}
           {/*  sx={{backgroundColor: 'white'}}*/}
           {/*>*/}
-            <Box width={180} height={180} component="img" src="./img/nilmanLogo.png" />
+          <Box width={180} height={180} component="img" src="./img/nilmanLogo.png"/>
           {/*</Box>*/}
         </Box>
       </Container>
       <Container
         sx={{
           flex: 1,
-          bgcolor: "var(--mid-pink)",
+          bgcolor: 'var(--mid-pink)',
           borderTopRightRadius: '80px',
           display: 'flex',
           justifyContent: 'center',
@@ -217,7 +235,7 @@ export default function Login() {
                   py: 1,
                   fontSize: 18,
                   color: 'var(--light-black)',
-                  ':hover': {color: '#fff'},
+                  ':hover': { color: '#fff' },
                 }}
                 fullWidth
               >
@@ -264,7 +282,7 @@ export default function Login() {
                 >
                   کد را دریافت نکردید ؟
                 </Typography>
-                <Button fullWidth variant="text" sx={{fontSize: 16}}>
+                <Button fullWidth variant="text" sx={{ fontSize: 16 }}>
                   ارسال مجدد کد
                 </Button>
               </Box>
@@ -330,7 +348,7 @@ export default function Login() {
                   py: 1,
                   fontSize: 18,
                   color: 'var(--light-black)',
-                  ':hover': {color: '#fff'},
+                  ':hover': { color: '#fff' },
                 }}
                 fullWidth
               >
@@ -340,7 +358,7 @@ export default function Login() {
           )}
         </Box>
       </Container>
-      <Loading />
+      <Loading/>
     </Box>
   );
 }
