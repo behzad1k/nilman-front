@@ -111,6 +111,27 @@ export default function Login() {
     }
   };
 
+  useEffect(() => {
+    const ac = new AbortController();
+
+    navigator.credentials
+    .get({
+      // @ts-ignore
+      otp: { transport: ["sms"] },
+      signal: ac.signal
+    })
+    .then((otp) => {
+      console.log(otp);
+      alert(otp)
+      ac.abort();
+    })
+    .catch((err) => {
+      ac.abort();
+      alert(err)
+      console.log(err);
+    });
+  }, []);
+
   return (
     <Box
       component="main"
