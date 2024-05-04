@@ -120,7 +120,6 @@ export default function Login() {
   useEffect(() => {
     if ("OTPCredential" in window) {
       const ac = new AbortController();
-      try {
         navigator.credentials
         .get({
           // @ts-ignore
@@ -139,9 +138,6 @@ export default function Login() {
           ac.abort();
           alert(err);
         });
-      } catch (e) {
-        console.log(e);
-      }
     }
   }, []);
 
