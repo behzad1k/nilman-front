@@ -118,28 +118,30 @@ export default function Login() {
   };
 
   useEffect(() => {
-    const ac = new AbortController();
-    try {
-      navigator.credentials
-      .get({
-        // @ts-ignore
-        otp: { transport: ['sms'] },
-        signal: ac.signal
-      })
-      .then((otp) => {
-        console.log(otp);
-        // @ts-ignore
-        setValue('otp', otp.code)
-        alert(otp);
-        ac.abort();
-      })
-      .catch((err) => {
-        console.log(err);
-        ac.abort();
-        alert(err);
-      });
-    } catch (e) {
-      console.log(e);
+    if ("OTPCredential" in window) {
+      const ac = new AbortController();
+      try {
+        navigator.credentials
+        .get({
+          // @ts-ignore
+          otp: { transport: ['sms'] },
+          signal: ac.signal
+        })
+        .then((otp) => {
+          console.log(otp);
+          // @ts-ignore
+          setValue('otp', otp.code);
+          alert(otp);
+          ac.abort();
+        })
+        .catch((err) => {
+          console.log(err);
+          ac.abort();
+          alert(err);
+        });
+      } catch (e) {
+        console.log(e);
+      }
     }
   }, []);
 
