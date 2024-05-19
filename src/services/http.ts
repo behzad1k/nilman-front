@@ -1,3 +1,4 @@
+import { isEmpty } from '../utils/utils.ts';
 import {config} from './config.tsx';
 import Cookies from 'js-cookie';
 
@@ -14,13 +15,14 @@ type fetchType = {
 
 const api = async (url: string, request: fetchType = {}, useToken = false) => {
   const baseUrl = config.baseUrl;
-  // const baseUrl = 'http://api.nilman.co';
-  const headers = request.headers || {};
-  if (useToken) headers.Authorization = `Bearer ${Cookies.get('token')}`;
-  if (!headers['content-type']) {
+  const headers: any = request.headers || {};
+  if (isEmpty(headers)) {
     headers['content-type'] = 'application/json';
     request = {...request, headers};
   }
+
+  if (useToken) headers.Authorization = `Bearer ${Cookies.get('token')}`;
+
   if (headers['content-type'] === 'application/json' && request.body) {
     request.body = JSON.stringify(request.body);
   }

@@ -16,5 +16,6 @@ export const urls = {
   ariaWorker: '/order/workers',
   workersOffs: '/user/workerOffs',
   adminLogin: '/admin/login',
+  adminDashboard: '/admin/login',
   feedback: '/feedback'
 };

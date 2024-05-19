@@ -43,8 +43,7 @@ export default function AddUser() {
     const formData = new FormData()
     Object.entries(data).map(([key, value]) => formData.append(key, value))
     formData.append('file', image.data)
-    console.log(formData);
-    const res = await fetch('http://localhost:9001/admin/user', { method: 'post', body: formData, headers: {'Content-Type': 'application/json', authorization: `Bearer ${Cookies.get('token')}`} });
+    const res = await api(urls.adminUser, { method: 'POST', body: formData, headers: {}});
     console.log(res);
   };
 

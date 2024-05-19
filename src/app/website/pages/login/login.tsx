@@ -36,7 +36,7 @@ export default function Login() {
   const dispatch: AppDispatch = useAppDispatch();
   const navigate = useNavigate();
   const [urlParams] = useSearchParams();
-  const handleSubmitForm = async (data: LoginForm) => {
+  const handleSubmitForm = async (data: LoginForm = null) => {
     if (loginState === 'phoneNumber') {
       if (data.phoneNumber.length != 11 || data.phoneNumber.at(0) != '0' || data.phoneNumber.at(1) != '9') {
         toast('لطفا شماره تلفن خود را به درستی وارد کنید', { type: 'warning' });
@@ -276,9 +276,21 @@ export default function Login() {
                 >
                   کد را دریافت نکردید ؟
                 </Typography>
-                <Button fullWidth variant="text" sx={{ fontSize: 16 }}>
+                <Button fullWidth variant="text" sx={{ fontSize: 16 }} onClick={() => handleSubmitForm()}>
                   ارسال مجدد کد
                 </Button>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  sx={{
+                    bgcolor: 'var(--light-pink)',
+                    py: 1,
+                    fontSize: 18,
+                    color: 'var(--light-black)',
+                    ':hover': { color: '#fff' },
+                  }}
+                  fullWidth
+                >ثبت</Button>
               </Box>
             </Box>
           ) : (
