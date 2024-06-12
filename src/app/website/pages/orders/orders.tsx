@@ -44,9 +44,7 @@ export default function Orders() {
       <Container sx={{px: '24px', display: 'flex', flexDirection: 'column', gap: 5}}>
         {userData?.role == 'USER' && (
           <>
-            <Typography variant="h5" component="h1">
-              سبد خرید
-            </Typography>
+            <Typography variant="h5" component="h1">لیست سفارشات</Typography>
             <Cart />
           </>
         )}

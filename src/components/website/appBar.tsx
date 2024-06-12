@@ -1,14 +1,15 @@
-import {NavLink, useLocation} from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {House, PlusCircle, Clipboard, Newspaper, User} from '@phosphor-icons/react';
+import { toast } from 'react-toastify';
 import {useAppSelector} from '../../services/redux/store.ts';
 
 export function AppBar() {
   const userReducer = useAppSelector((state) => state.userReducer);
   const location = useLocation();
+  const navigate = useNavigate();
 
   return (
     <nav className="appBar plusHighlight">
-      {userReducer.data.role === 'USER' && (
         <NavLink to="/" className="appBarIconContainer">
           <House
             className="appBarIcon"
@@ -17,7 +18,6 @@ export function AppBar() {
           />
           <p>خانه</p>
         </NavLink>
-      )}
       <NavLink to="/orders" className="appBarIconContainer">
         <Clipboard
           className="appBarIcon"
@@ -28,7 +28,16 @@ export function AppBar() {
       </NavLink>
       {userReducer.data.role === 'USER' && (
         <>
-          <NavLink to="/newOrder" className="appBarIconContainer">
+          <NavLink to="/newOrder" className="appBarIconContainer" onClick={(e) => {
+            e.preventDefault();
+
+            if (!userReducer.isLoggedIn) {
+              toast('لطفا ابتدا لاگین کنید', { type: 'warning', onClick: () => navigate('/login')});
+              return
+            }
+
+            navigate('/newOrder')
+          }}>
             <PlusCircle
               className="appBarIcon"
               weight={location.pathname === '/newOrder' ? 'fill' : 'regular'}

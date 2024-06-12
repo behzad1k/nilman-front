@@ -27,10 +27,17 @@ export interface IAddress {
   id: number;
   title: string;
   phoneNumber?: string;
-  longitude: string;
-  latitude: string;
+  longitude: number;
+  latitude: number;
   description: string;
 }
+
+
+export type Position = {
+  lat: number;
+  lng: number;
+};
+
 
 export interface IOrder {
   attributes: IService[];
@@ -59,6 +66,7 @@ export interface IUser {
   nationalCode: string;
   phoneNumber: string;
   role: 'USER' | 'WORKER' | 'OPERATOR' | 'SUPER_ADMIN';
+  media: { url: string}
 }
 
 export interface ISliderCardInfo {

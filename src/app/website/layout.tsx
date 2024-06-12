@@ -18,7 +18,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
           </Box>
         </Box>
       </PullToRefresh>
-      <Loading />
+      {loading && <Loading/>}
     </>
   );
 }

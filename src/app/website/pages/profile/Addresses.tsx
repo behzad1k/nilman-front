@@ -20,13 +20,13 @@ type Position = {
 };
 
 export const Addresses = ({onClick}: {onClick?: (address: IAddress) => void}) => {
-  const [openModal, setOpenModal] = useState(false);
-  const [position, setPosition] = useState<Position | null>(null);
   const userReducer = useAppSelector((state) => state.userReducer);
   const userAddresses = userReducer.addresses
   const navigate = useNavigate();
   const {reset, handleSubmit, control} = useForm();
   const dispatch = useAppDispatch();
+  const [openModal, setOpenModal] = useState(false);
+  const [position, setPosition] = useState<Position | null>({ lat: 35.80761631591913, lng: 51.4319429449887});
   const [selected, setSelected] = useState<IAddress>();
 
   const handleSubmitAddAddress = async (data: FieldValues) => {

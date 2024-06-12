@@ -13,6 +13,11 @@ import {Link} from 'react-router-dom';
 
 const listItems = [
   {
+    icon: <Category />,
+    text: 'داشبورد',
+    link: '/dashboard',
+  },
+  {
     icon: <People />,
     text: 'کاربران',
     link: '/dashboard/users',

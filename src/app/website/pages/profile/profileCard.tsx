@@ -21,12 +21,6 @@ export function ProfileCard() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    sessionStorage.removeItem('new-order');
-    sessionStorage.removeItem('step');
-    logout(dispatch);
-    navigate('/login');
-  };
 
   const send = () => {
     const reqOptions = {
@@ -128,17 +122,7 @@ export function ProfileCard() {
         </div>
         <div className="profileCardPicture">
           <span className="profilePicture">
-            <img src="/img/girl.png" />
-            <span className="pfpButtons">
-              <SignOut
-                weight={'bold'}
-                onClick={handleLogout}
-                className="logout"
-                size={32}
-                color={'#e85959'}
-              />
-              <PencilLine className="edit" size={32} />
-            </span>
+            <img src={profile?.media?.url} />
           </span>
         </div>
       </div>

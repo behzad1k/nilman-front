@@ -17,14 +17,11 @@ const initialState: IUserSlice = {
     nationalCode: '',
     phoneNumber: '',
     role: 'USER',
+    media: { url: ''}
   },
   addresses: [],
   isLoggedIn: false,
 };
-export const user = createAsyncThunk('user/fetchUser', async () => {
-  return await api(urls.getUser, {}, true);
-});
-
 export const addresses = createAsyncThunk('address/fetchAddress', async () => {
   return await api(urls.address, {}, true);
 });
@@ -36,14 +33,12 @@ const userSlice = createSlice({
     SET_LOGGED_IN: (state, action: PayloadAction<boolean>) => {
       state.isLoggedIn = action.payload;
     },
+    user: (state, action: PayloadAction<any>) => {
+      state.data = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(user.fulfilled, (state, action) => {
-        if (action.payload.code == 200) {
-          state.data = action.payload.data;
-        }
-      })
       .addCase(addresses.fulfilled, (state, action) => {
         if (action.payload.code == 200) {
           state.addresses = action.payload.data;
@@ -52,7 +47,7 @@ const userSlice = createSlice({
   },
 });
 
-export const {SET_LOGGED_IN} = userSlice.actions;
+export const {SET_LOGGED_IN, user} = userSlice.actions;
 
 const userReducer = userSlice.reducer;
 export default userReducer;

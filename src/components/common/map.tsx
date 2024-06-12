@@ -62,9 +62,10 @@ function LocationMarker({position, setPosition}: Props) {
 export function Map({position, setPosition}: Props) {
   return (
     <MapContainer
-      center={[35.80693981523168, 51.42884194850922]}
+      center={[position?.lat, position?.lng]}
       zoom={14}
       scrollWheelZoom={false}
+
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -86,16 +87,18 @@ export function MapView({position}: {position: Position}) {
   }
   return (
     <MapContainer
-      center={position}
+      center={[position.lat, position.lng]}
       zoom={14}
+      style={{ width: '100%', height: 200}}
       scrollWheelZoom={false}
+
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
-      {position === null ? null : (
-        <Marker position={position}>
+      {position == null ? null : (
+        <Marker position={position} draggable={false} interactive={false} >
           <Popup>You are here</Popup>
         </Marker>
       )}

@@ -71,7 +71,7 @@ export function OrdersTable({rows, setOpenModal, setEditData}: Props) {
     تاریخ: ${moment.unix(Number(row.date)).format('jDD/jMM/jYYYY')}
     زمان: ${row.fromTime} تا ${row.toTime}
     خدمات: ${row.service.title} - ${attributes}
-    آرایشگر: ${row.worker.name} ${row.worker.lastName} - ${row.worker.phoneNumber}
+    آرایشگر: ${row.worker?.name} ${row.worker?.lastName} - ${row.worker?.phoneNumber}
     هزینه: ${row.price}
     `;
 

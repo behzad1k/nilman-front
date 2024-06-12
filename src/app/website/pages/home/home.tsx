@@ -2,14 +2,17 @@ import { InstagramLogo, Percent, Phone, MapPin, PlusCircle } from '@phosphor-ico
 import {ContactPhone, WhatsApp} from '@mui/icons-material';
 import React, {useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import {initialApis} from '../../../../services/apis/global.ts';
-import {useAppDispatch} from '../../../../services/redux/store.ts';
+import { useAppDispatch, useAppSelector } from '../../../../services/redux/store.ts';
 import {ISliderCardInfo} from '../../../../services/types.ts';
 import {Slider} from '../../../../components';
 import {BannerCard} from '../../../../components';
 import {Box, Stack, Typography} from '@mui/material';
+import WorkerDashboard from './WorkerDashboard.tsx';
 
 export default function Home() {
+  const userReducer = useAppSelector((state) => state.userReducer);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   // useEffect(() => {
@@ -107,6 +110,11 @@ export default function Home() {
       imgSrc: './img/eyelash3.jpg',
     },
   ];
+
+  if (userReducer.data.role != 'USER'){
+    return <WorkerDashboard />
+  }
+
   return (
     <main>
       <section className="banners">
@@ -115,7 +123,13 @@ export default function Home() {
           description={'همین حالا سفارش خود را ثبت کنید!'}
           button={'ثبت'}
           icon={<PlusCircle />}
-          onClick={() => navigate('/newOrder')}
+          onClick={() =>{
+            if (userReducer.isLoggedIn) {
+              navigate('/newOrder')
+            } else {
+              toast('لطفا ابتدا لاگین کنید', { type: 'warning', onClick: () => navigate('/login')});
+            }
+          }}
         />
       </section>
       <section>

@@ -1,4 +1,5 @@
 import {Box, Typography, Container, Button} from '@mui/material';
+import axios from 'axios';
 import Cookies from 'js-cookie';
 import {TextInput, SelectInput} from '../../../../components';
 import {useForm, FieldValues, Controller} from 'react-hook-form';
@@ -43,7 +44,8 @@ export default function AddUser() {
     const formData = new FormData()
     Object.entries(data).map(([key, value]) => formData.append(key, value))
     formData.append('file', image.data)
-    const res = await api(urls.adminUser, { method: 'POST', body: formData, headers: {}});
+    // const res = await api(urls.adminUser, { method: 'POST', body: formData, headers: {}}, true);
+    const res = await axios(process.env.REACT_APP_BASE_URL + urls.adminUser, { method: 'POST', data: formData, headers: { Authorization: `Bearer ${Cookies.get('token')}`}});
     console.log(res);
   };
 

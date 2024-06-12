@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 type fetchType = {
   method?: string;
   body?: any;
+  query?: any;
   headers?: {
     'content-type'?: string;
     accessToken?: string;
@@ -26,6 +27,7 @@ const api = async (url: string, request: fetchType = {}, useToken = false) => {
   if (headers['content-type'] === 'application/json' && request.body) {
     request.body = JSON.stringify(request.body);
   }
+
   return await fetch(baseUrl + url, request)
     .then(async (response: any) => {
       return await response.json();

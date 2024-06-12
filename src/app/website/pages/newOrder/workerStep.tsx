@@ -151,7 +151,6 @@ export default function WorkerStep({
       setIsNextStepAllowed(true);
     }
   };
-
   useEffect(() => {
     handleSetAsapModeData();
   }, [nearest, selectedTab]);
@@ -211,7 +210,7 @@ export default function WorkerStep({
                 min={minDate}
                 calendarStyles={styles}
                 // @ts-ignore
-                onChange={(value) => setDate(value)}
+                onChange={(value) => setSelected(prev => ({...prev, date: moment(value).unix()}))}
                 defaultValue={defaultDate}
               />
             </div>

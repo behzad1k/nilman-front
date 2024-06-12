@@ -6,6 +6,7 @@ import userReducer from './reducers/userSlice.ts';
 import orderReducer from './reducers/orderSlice.ts';
 import cartReducer from './reducers/cartSlice.ts';
 import loadingReducer from './reducers/loadingSlice.ts';
+import globalReducer from './reducers/globalSlice.ts';
 
 const rootReducer = combineReducers({
   userReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   orderReducer,
   cartReducer,
   loadingReducer,
+  globalReducer,
 });
 
 const store = configureStore({

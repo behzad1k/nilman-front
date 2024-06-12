@@ -36,6 +36,7 @@ export default function Login() {
   const dispatch: AppDispatch = useAppDispatch();
   const navigate = useNavigate();
   const [urlParams] = useSearchParams();
+
   const handleSubmitForm = async (data: LoginForm = null) => {
     if (loginState === 'phoneNumber') {
       if (data.phoneNumber.length != 11 || data.phoneNumber.at(0) != '0' || data.phoneNumber.at(1) != '9') {
@@ -364,7 +365,6 @@ export default function Login() {
           )}
         </Box>
       </Container>
-      <Loading/>
     </Box>
   );
 }

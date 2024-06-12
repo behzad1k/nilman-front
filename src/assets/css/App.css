@@ -93,7 +93,7 @@ s {
 .header {
   background-color: var(--mid-pink);
   width: 100%;
-  padding: 0;
+  padding: 0 30px;
   height: 70px;
   display: flex;
   justify-content: center;
@@ -109,7 +109,11 @@ s {
 
   /*border-bottom: var(--light-black) 1px solid;*/
 }
-
+.backIcon{
+  width: 20px;
+  height: 20px;
+  content: url('/public/img/svg/arrow.svg');
+}
 .header a {
   margin: 7px 0 0 7px;
 }
@@ -152,7 +156,7 @@ main {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex: 1;
+  text-align: center;
 }
 .appBarIconContainer > p {
   font-size: small;
@@ -427,7 +431,7 @@ main {
   height: auto;
   max-width: 600px;
   gap: 10px;
-  justify-content: stretch;
+  justify-content: center;
   align-items: flex-start;
   background-color: var(--light-pink);
 }
@@ -439,12 +443,28 @@ main {
   align-items: center;
   justify-content: space-between;
 }
+.profileButton{
+  display: flex;
+  gap: 10px;
+  background-color: #e0dede;
+  padding: 8px;
+  align-items: center;
+  width: 95%;
+  border-radius: 8px;
+  height: 40px;
+  margin: auto
+}
 .profileCardDetails {
   width: 50%;
   display: flex;
   justify-content: space-evenly;
   flex-direction: column;
   align-self: stretch;
+}
+.profileEditPic{
+  width: 50vw;
+  align-self: center;
+  height: 20vh;
 }
 .profileCardPicture {
   width: 40%;
@@ -558,6 +578,15 @@ main {
   justify-content: center;
   align-items: center;
 }
+.dashCard{
+  padding: 16px;
+  width: 90%;
+  border-radius: 8px;
+  margin-top: 16px;
+  background-color: #dbdbdb;
+  display: flex;
+  justify-content: space-between;
+}
 .bannerCard {
   display: flex;
   flex-direction: column;
@@ -610,6 +639,9 @@ main {
   gap: 10px;
   align-items: center;
 }
+.justifyCenter{
+  justify-content: center;
+}
 
 /* info box component*/
 .infoBox {
@@ -651,13 +683,15 @@ main {
   background-color: rgba(224, 222, 222, 1);
   border-radius: 20px;
   padding: 5px;
-  top: 27px;
+  margin-top: 27px;
 }
 .pfpButtons > .logout {
   right: 7vw;
 }
 .pfpButtons > .edit {
-  left: 7vw;
+  width: 40px;
+  height: 40px;
+  left: 16vw;
 }
 .profilePicture img {
   max-width: 100%;
@@ -699,8 +733,13 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   gap: 8px;
   width: 95px;
+  height: 80px;
+  border-radius: 16px;
+  background-color: #FFF;
 }
 .categories-swiper .swiper-slide > img {
   width: 95px;
@@ -1030,6 +1069,14 @@ main {
   font-size: 12px;
 }
 
+.tick{
+  content: url("/public/img/checked.png");
+  margin-right: 160px;
+  opacity: .5;
+  z-index: 0;
+  position: absolute;
+  width: 60px;
+}
 .addressContainer.selected {
   border-radius: 12px;
   background-color: var(--mid-pink);
@@ -1208,4 +1255,30 @@ main {
   margin-top: -30px;
   left: 1px;
   padding: 5px;
+}
+
+.editProfile{
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px 16px;
+}
+.confirmButton{
+  width: 90%;
+  position: absolute;
+  margin: auto;
+  background: #4b794b;
+  border-radius: 16px;
+  height: 6vh;
+  font-size: 18px;
+  font-family: inherit;
+  bottom: -40px;
+  color: #fff;
+  border: 0
+
+}
+.textInput{
+  width: 90%;
+  height: 60px;
 }

@@ -10,6 +10,7 @@ import Login from './pages/login/login';
 import Mag from './pages/mag/mag.tsx';
 import NewOrder from './pages/newOrder/newOrder.tsx';
 import Orders from './pages/orders/orders.tsx';
+import EditProfile from './pages/profile/EditProfile';
 import Profile from './pages/profile/profile.tsx';
 import Feedback from './pages/feedback/feedback.tsx';
 
@@ -65,6 +66,7 @@ export default function Website() {
         }
       />
       <Route path="/feedback/:id" element={<Feedback />} />
+      <Route path="/profile/edit" element={<EditProfile />} />
       <Route
         path="/login"
         element={
