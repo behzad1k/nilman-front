@@ -204,7 +204,7 @@ export default function Home() {
             <WhatsApp />
             <span>واتس اپ</span>
           </a>
-          <a className="whatsapp-btn" href="https://wa.me/09351007201">
+          <a className="whatsapp-btn" href="https://instagram.com/nilmanbeauty">
             <InstagramLogo width={25} height={25} />
             <span>اینستاگرام</span>
           </a>
