@@ -33,6 +33,7 @@ export function AppBar() {
 
             if (!userReducer.isLoggedIn) {
               toast('لطفا ابتدا لاگین کنید', { type: 'warning', onClick: () => navigate('/login')});
+              navigate('/login')
               return
             }
 

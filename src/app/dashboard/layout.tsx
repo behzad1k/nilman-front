@@ -7,7 +7,6 @@ export default function Layout({children}: {children: React.ReactNode}) {
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.userReducer.data);
   const drawerWidth = 270;
-
   if (user.role !== 'SUPER_ADMIN') navigate('/login');
 
   return (

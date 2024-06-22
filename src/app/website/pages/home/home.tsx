@@ -1,6 +1,6 @@
 import { InstagramLogo, Percent, Phone, MapPin, PlusCircle } from '@phosphor-icons/react';
 import {ContactPhone, WhatsApp} from '@mui/icons-material';
-import React, {useEffect} from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import {initialApis} from '../../../../services/apis/global.ts';
@@ -13,6 +13,7 @@ import WorkerDashboard from './WorkerDashboard.tsx';
 
 export default function Home() {
   const userReducer = useAppSelector((state) => state.userReducer);
+  const services = useAppSelector(state => state.serviceReducer.services)
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   // useEffect(() => {
@@ -111,6 +112,31 @@ export default function Home() {
     },
   ];
 
+  const sliderList = () => {
+    const rows: ReactElement[] = []
+
+    const childExtractor = (arr, item, org) => {
+      if (!Array.isArray(arr[org])){
+        arr[org] = []
+      }
+      if (item.media) {
+        arr[org].push(item.media);
+      }
+      if (item.attributes){
+        item.attributes.map(e => childExtractor(arr, e, org))
+      }
+    }
+
+    const rawArr = {};
+
+    services?.map(e => childExtractor(rawArr, e, e.title))
+
+
+    Object.entries(rawArr).filter(([key, value]) => (value as any)?.length > 0).map(([key,value]: [key: string, value: any], index) => rows.push(<Slider title={key} cardInfos={value} />))
+
+    return rows;
+  };
+
   if (userReducer.data.role != 'USER'){
     return <WorkerDashboard />
   }
@@ -123,11 +149,12 @@ export default function Home() {
           description={'همین حالا سفارش خود را ثبت کنید!'}
           button={'ثبت'}
           icon={<PlusCircle />}
-          onClick={() =>{
+          onClick={() => {
             if (userReducer.isLoggedIn) {
               navigate('/newOrder')
             } else {
               toast('لطفا ابتدا لاگین کنید', { type: 'warning', onClick: () => navigate('/login')});
+              navigate('/login')
             }
           }}
         />
@@ -141,10 +168,11 @@ export default function Home() {
             کنید.{' '}
           </p>
         </div>
-        <Slider title={'خدمات ناخن'} cardInfos={cardInfos1} />
-        <Slider title={'خدمات مو'} cardInfos={cardInfos2} />
-        <Slider title={'خدمات ابرو'} cardInfos={cardInfos3} />
-        <Slider title={'خدمات مژه'} cardInfos={cardInfos4} />
+        {sliderList()}
+        {/* <Slider title={'خدمات ناخن'} cardInfos={cardInfos1} /> */}
+        {/* <Slider title={'خدمات مو'} cardInfos={cardInfos2} /> */}
+        {/* <Slider title={'خدمات ابرو'} cardInfos={cardInfos3} /> */}
+        {/* <Slider title={'خدمات مژه'} cardInfos={cardInfos4} /> */}
       </section>
       <section className="banners">
         <BannerCard

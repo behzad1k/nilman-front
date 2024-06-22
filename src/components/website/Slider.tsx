@@ -9,8 +9,9 @@ type IProps = {
 export function Slider({title, cardInfos}: IProps) {
   const renderSliderCards = () => {
     const rows: ReactElement[] = [];
+
     cardInfos.map((value: ISliderCardInfo, index) => {
-      rows.push(<SliderCard imgSrc={value.imgSrc} title={value.title} key={index}/>);
+      rows.push(<SliderCard url={value.url} title={value.title} key={index}/>);
     });
     return rows;
   };

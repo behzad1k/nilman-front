@@ -1,6 +1,7 @@
 import {useEffect} from 'react';
 import {Routes, Route} from 'react-router-dom';
 import Layout from './layout';
+import Feedbacks from './pages/feedbacks';
 import Home from './pages/home/home';
 import NewService from './pages/newService/newService';
 import Users from './pages/users/users';
@@ -71,6 +72,14 @@ export default function Dashboard() {
         path='/login'
         element={
           <Login />
+        }
+      />
+      <Route
+        path='/feedbacks'
+        element={
+          <Layout>
+            <Feedbacks />
+          </Layout>
         }
       />
     </Routes>

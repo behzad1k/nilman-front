@@ -90,9 +90,13 @@ img {
 s {
   color: #f16969;
 }
+.header.spaceBetween{
+  justify-content: space-between;
+}
 .header {
   background-color: var(--mid-pink);
   width: 100%;
+  gap: 40px;
   padding: 0 30px;
   height: 70px;
   display: flex;
@@ -131,9 +135,10 @@ main {
 .appBar {
   z-index: 10;
   display: flex;
+  padding-bottom: 10px;
   flex-direction: row-reverse;
   width: 100%;
-  height: 60px;
+  height: 70px;
   gap: 20px;
   align-items: center;
   justify-content: space-around;
@@ -412,6 +417,8 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 0;
+  height: 200px;
 }
 
 .addressMap > span {
@@ -626,6 +633,9 @@ main {
   border-radius: 12px;
   border: 0;
   align-self: end;
+  font-family: inherit;
+}
+.profileCardInput{
   font-family: inherit;
 }
 .bannerCard button > i {
@@ -914,7 +924,7 @@ main {
 .tether-element {
   z-index: 1;
 }
-.app-date-picker > div input {
+.app-date-picker input {
   border: 1px solid var(--mid-pink);
   padding: 16.5px 14px;
   border-radius: 10px;
@@ -1076,6 +1086,16 @@ main {
   z-index: 0;
   position: absolute;
   width: 60px;
+}
+.pencil{
+  background: #d2d1d1;
+  display: flex;
+  padding: 4px 8px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  z-index: 0;
+  /*width: 40px;*/
 }
 .addressContainer.selected {
   border-radius: 12px;
@@ -1264,6 +1284,26 @@ main {
   gap: 20px;
   padding: 10px 16px;
 }
+.addressManage{
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.addressManage h3{
+  padding: 0 20px;
+}
+.addressManage h5{
+  padding: 0 20px;
+  font-weight: 300;
+}
+.largeMap{
+  width: 100%;
+  height: 85%;
+}
+.confirmButton.marginRight20{
+  margin-right: 20px;
+}
 .confirmButton{
   width: 90%;
   position: absolute;
@@ -1278,7 +1318,16 @@ main {
   border: 0
 
 }
+.addressManageRow{
+  margin-top: 110px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
 .textInput{
   width: 90%;
   height: 60px;
+}
+.textInput.half{
+  width: 45%
 }

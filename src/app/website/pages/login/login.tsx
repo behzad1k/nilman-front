@@ -37,6 +37,28 @@ export default function Login() {
   const navigate = useNavigate();
   const [urlParams] = useSearchParams();
 
+  const handleResendCode = async (data: LoginForm = null) => {
+    if (getValues().phoneNumber.length != 11 || getValues().phoneNumber.at(0) != '0' || getValues().phoneNumber.at(1) != '9') {
+      toast('لطفا شماره تلفن خود را به درستی وارد کنید', { type: 'warning' });
+      return;
+    }
+    // Send phonenumber here ...
+    const reqOptions = {
+      method: 'post',
+      body: {
+        phoneNumber: getValues().phoneNumber
+      },
+    };
+    toast('کد مجددا برای شما ارسال شد', { type: 'success' });
+
+
+    dispatch(SET_LOADING(true));
+    const res = await api(urls.login, reqOptions);
+    dispatch(SET_LOADING(false));
+    tokenRef.current = res.token;
+    setLoginState('otp');
+  };
+
   const handleSubmitForm = async (data: LoginForm = null) => {
     if (loginState === 'phoneNumber') {
       if (data.phoneNumber.length != 11 || data.phoneNumber.at(0) != '0' || data.phoneNumber.at(1) != '9') {
@@ -59,7 +81,7 @@ export default function Login() {
       const reqOptions = {
         method: 'post',
         body: {
-          code: data.otp,
+          code: data?.otp,
           token: tokenRef.current,
         },
       };
@@ -277,7 +299,7 @@ export default function Login() {
                 >
                   کد را دریافت نکردید ؟
                 </Typography>
-                <Button fullWidth variant="text" sx={{ fontSize: 16 }} onClick={() => handleSubmitForm()}>
+                <Button fullWidth variant="text" sx={{ fontSize: 16 }} onClick={() => setLoginState('phoneNumber')}>
                   ارسال مجدد کد
                 </Button>
                 <Button

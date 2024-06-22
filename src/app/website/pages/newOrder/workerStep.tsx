@@ -1,8 +1,9 @@
 import {useEffect, useState, useRef, useCallback} from 'react';
+import { MobileTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import {useForm} from 'react-hook-form';
 import moment from 'jalali-moment';
-// @ts-ignore
-import {DatePicker} from 'react-persian-datepicker';
+import { DatePicker, TimePicker } from 'zaman';
 import {api} from '../../../../services/http';
 import {urls} from '../../../../services/endPoint';
 import {SelectInput, TextInput} from '../../../../components';
@@ -10,20 +11,6 @@ import {IService, IUser} from '../../../../services/types';
 import {createSchedule} from '../../../../utils/utils';
 import {Selected} from './newOrder';
 import {Button, MenuItem} from '@mui/material';
-
-const styles = {
-  calendarContainer: 'calendarContainer',
-  dayPickerContainer: 'dayPickerContainer',
-  monthsList: 'monthsList',
-  daysOfWeek: 'daysOfWeek',
-  dayWrapper: 'dayWrapper',
-  selected: 'selected',
-  heading: 'heading',
-  next: 'next',
-  prev: 'prev',
-  title: 'title',
-};
-
 type ScheduleCard = {
   fromTime: number;
   toTime: number;
@@ -206,14 +193,32 @@ export default function WorkerStep({
           <>
             <div className="app-date-picker">
               <DatePicker
-                value={date}
+                value={(date as any)}
                 min={minDate}
-                calendarStyles={styles}
-                // @ts-ignore
-                onChange={(value) => setSelected(prev => ({...prev, date: moment(value).unix()}))}
-                defaultValue={defaultDate}
+                onChange={(value) => {
+                  setSelected(prev => ({
+                    ...prev,
+                    date: Math.floor(new Date(value.value).getTime() / 1000)
+                  }));
+
+                }}
+                defaultValue={(defaultDate as any)}
               />
             </div>
+              {/* <TimePicker direction="rtl" clockTime={12} accentColor="#ecaa97" onChange={(value) => console.log(value)}/> */}
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <MobileTimePicker
+                label={'ساعت'}
+                openTo="hours"
+                views={['hours']}
+                format="HH"
+                ampm={false}
+                onChange={(value, context) => setSelected(prev => ({
+                  ...prev,
+                  time: Number(value.format('HH'))
+                }))}
+              />
+              </LocalizationProvider>
             {selectedTab.index === 2 && (
               <SelectInput
                 name="worker"
@@ -236,35 +241,35 @@ export default function WorkerStep({
                 ))}
               </SelectInput>
             )}
-            <Button variant="contained" size="large" onClick={() => fetchWorkersOff()}>
-              برنامه زمانی
-            </Button>
+            {/* <Button variant="contained" size="large" onClick={() => fetchWorkersOff()}> */}
+            {/*   برنامه زمانی */}
+            {/* </Button> */}
           </>
         )}
 
-        {schedules.length > 0 && (
-          <div className="workers-schedule">
-            <div className="card">
-              <p className="day">
-                <span>{m.format('dddd')}</span>
-                <span>{m.format('D')}</span>
-                <span>{m.format('MMMM')}</span>
-              </p>
-              <div className="sections">
-                {schedules.map((section, index) => (
-                  <div
-                    key={index}
-                    ref={(el) => (cardRef.current[index] = el)}
-                    onClick={() => handleSelectDay(index, section.fromTime)}
-                    className="section"
-                  >
-                    {`${section.fromTime} - ${section.toTime}`}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
+        {/* {schedules.length > 0 && ( */}
+        {/*   <div className="workers-schedule"> */}
+        {/*     <div className="card"> */}
+        {/*       <p className="day"> */}
+        {/*         <span>{m.format('dddd')}</span> */}
+        {/*         <span>{m.format('D')}</span> */}
+        {/*         <span>{m.format('MMMM')}</span> */}
+        {/*       </p> */}
+        {/*       <div className="sections"> */}
+        {/*         {schedules.map((section, index) => ( */}
+        {/*           <div */}
+        {/*             key={index} */}
+        {/*             ref={(el) => (cardRef.current[index] = el)} */}
+        {/*             onClick={() => handleSelectDay(index, section.fromTime)} */}
+        {/*             className="section" */}
+        {/*           > */}
+        {/*             {`${section.fromTime} - ${section.toTime}`} */}
+        {/*           </div> */}
+        {/*         ))} */}
+        {/*       </div> */}
+        {/*     </div> */}
+        {/*   </div> */}
+        {/* )} */}
       </div>
     </div>
   );

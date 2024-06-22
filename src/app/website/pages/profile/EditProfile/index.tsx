@@ -44,10 +44,9 @@ const EditProfile = () => {
       <div className="profileEditPic">
         <span className="profilePicture">
           <img src="/img/girl.png" />
-            <span className="pfpButtons">
-              <PencilLine className="edit" size={32} />
-            </span>
-
+          <span className="pfpButtons">
+            <PencilLine className="edit" size={32} />
+          </span>
         </span>
       </div>
       <TextField

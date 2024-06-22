@@ -19,7 +19,7 @@ type Position = {
   lng: number;
 };
 
-export const Addresses = ({onClick}: {onClick?: (address: IAddress) => void}) => {
+export const Addresses = ({onClick, editable = false}: {onClick?: (address: IAddress) => void, editable: boolean}) => {
   const userReducer = useAppSelector((state) => state.userReducer);
   const userAddresses = userReducer.addresses
   const navigate = useNavigate();
@@ -54,9 +54,10 @@ export const Addresses = ({onClick}: {onClick?: (address: IAddress) => void}) =>
           key={index}
           setSelected={setSelected}
           onClick={onClick}
+          editable={editable}
         />
       ))}
-      <div className="addressContainer add" onClick={() => userReducer.isLoggedIn ? setOpenModal(true) : toast('لطفا ابتدا وارد شوید!', { onClose: () => navigate('/login'), type: 'error' })}>
+      <div className="addressContainer add" onClick={() => userReducer.isLoggedIn ? navigate('/address/add') : toast('لطفا ابتدا وارد شوید!', { onClose: () => navigate('/login'), type: 'error' })}>
         <PlusCircle weight={'fill'} color="green" size={20} />
         <Button>افزودن آدرس</Button>
       </div>

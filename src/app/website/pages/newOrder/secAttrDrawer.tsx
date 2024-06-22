@@ -41,7 +41,6 @@ export default function SecAttrDrawer({
     const cond = curParent?.attributes?.some((secAttr) =>
       selected.attributes.includes(secAttr),
     );
-    console.log('cond', cond);
     if (!cond) return;
     setOpen(newOpen);
   };
@@ -64,23 +63,13 @@ export default function SecAttrDrawer({
     if (!secAttr) return;
     const newAttr = {...secAttr};
     if (color) newAttr.color = color;
-
     setSelected((prev: Selected) => {
-      const newSelectedAttrs = prev.attributes.filter((selected) => {
-        return (
-          curParent?.attributes?.findIndex(
-            (curSecAttr) => curSecAttr.slug === selected.slug,
-          ) === -1
-        );
-      });
-
-      return {...prev, attributes: [...newSelectedAttrs, newAttr]};
+      return {...prev, attributes: prev.attributes?.find(e => e.id == newAttr.id) ? prev.attributes?.filter(e => e.id != newAttr.id) : [...prev.attributes, newAttr] };
     });
 
-    setOpen(false);
     setPickingColor({attr: null, open: false});
   };
-
+  console.log(selected.attributes);
   const handlePrevStep = () => {
     setPickingColor({attr: null, open: false});
   };
@@ -166,7 +155,7 @@ export default function SecAttrDrawer({
                   <Box
                     key={secAttr.slug}
                     className={`attr-box ${
-                      selected.attributes.includes(secAttr) ? 'selected' : null
+                      selected?.attributes?.find(e => e.id == secAttr.id) ? 'selected' : ''
                     }`}
                     ref={(el: HTMLElement) => (boxEl.current[index] = el)}
                     onClick={() => handleClickCard(index, secAttr)}

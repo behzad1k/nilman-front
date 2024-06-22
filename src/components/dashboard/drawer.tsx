@@ -42,6 +42,11 @@ const listItems = [
     text: 'افزودن کاربر',
     link: '/dashboard/add-user',
   },
+  {
+    icon: <Category />,
+    text: 'نظرسنجی ها',
+    link: '/dashboard/feedbacks',
+  },
 ];
 
 type Props = {

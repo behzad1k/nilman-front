@@ -75,7 +75,8 @@ export function ProfileCard() {
             />
             <PencilLine
               onClick={() => {
-                setNameDisabled(false);
+                // setNameDisabled(false);
+                navigate('/profile/edit')
               }}
             />
           </span>
@@ -95,7 +96,8 @@ export function ProfileCard() {
             />
             <PencilLine
               onClick={() => {
-                setLastNameDisabled(false);
+                // setLastNameDisabled(false);
+                navigate('/profile/edit');
               }}
             />
           </span>
@@ -115,14 +117,15 @@ export function ProfileCard() {
             />
             <PencilLine
               onClick={() => {
-                setSocialIdDisabled(false);
+                // setSocialIdDisabled(false);
+                navigate('/profile/edit')
               }}
             />
           </span>
         </div>
         <div className="profileCardPicture">
           <span className="profilePicture">
-            <img src={profile?.media?.url} />
+            <img src={profile?.media?.url || '/img/girl.png'} />
           </span>
         </div>
       </div>

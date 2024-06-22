@@ -1,6 +1,8 @@
 import {useState, useEffect} from 'react';
 import {Box, Button, Typography} from '@mui/material';
 import {useForm, FieldValues} from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import Swal from 'sweetalert2';
 import {TextInput, SelectInput} from '../../../../components';
 import {IService} from '../../../../services/types';
 import {api} from '../../../../services/http';
@@ -10,6 +12,7 @@ import {MenuItem} from '@mui/material';
 
 export default function NewService() {
   const [services, setServices] = useState<IService[]>([]);
+  const dispatch = useDispatch();
   const {register, handleSubmit, control, getValues} = useForm();
   // const services = useAppSelector((state) => state.serviceReducer.services);
   // console.log(services);
@@ -20,7 +23,7 @@ export default function NewService() {
   };
 
   const onSubmit = async (data: FieldValues) => {
-    console.log(data);
+
     const reqOptions = {
       method: 'post',
       body: {
@@ -33,7 +36,21 @@ export default function NewService() {
       },
     };
     const res = await api(urls.adminService, reqOptions, true);
-    console.log(res);
+    if (res.code == 201){
+        Swal.fire({
+          title: 'موفق',
+          text: `خدمت جدید با موفقیت اضافه شد.`,
+          icon: 'success',
+          confirmButtonText: 'متوجه شدم',
+        })
+      } else {
+        Swal.fire({
+          title: 'ناموفق',
+          text: res.data,
+          icon: 'error',
+          confirmButtonText: 'متوجه شدم'
+        })
+    }
   };
 
   useEffect(() => {

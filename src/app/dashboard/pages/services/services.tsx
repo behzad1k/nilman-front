@@ -1,6 +1,10 @@
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { MuiFileInput } from 'mui-file-input';
 import {useEffect, useState} from 'react';
+import Swal from 'sweetalert2';
 import {useAppSelector} from '../../../../services/redux/store';
-import {FieldValues, useForm} from 'react-hook-form';
+import { Controller, FieldValues, useForm } from 'react-hook-form';
 import {Box, Button, Paper, Typography} from '@mui/material';
 import {Modal, SelectInput, TextInput} from '../../../../components';
 import {IService} from '../../../../services/types';
@@ -10,6 +14,7 @@ import {MenuItem} from '@mui/material';
 
 export default function Services() {
   const [open, setOpen] = useState(false);
+  const [image, setImage] = useState<any>({});
   const [editData, setEditData] = useState<IService | null>(null);
   const [services, setServices] = useState<IService[]>([]);
 
@@ -36,8 +41,24 @@ export default function Services() {
         service: service.slug,
       },
     };
-    const res = await api(urls.adminService, reqOptions, true);
-    console.log('delete res:', res);
+    if (confirm('آیا مطمئن هستید؟')) {
+      const res = await api(urls.adminService, reqOptions, true);
+      if (res.code == 200){
+        Swal.fire({
+          title: 'موفق',
+          text: `خدمت جدید با موفقیت حذف شد.`,
+          icon: 'success',
+          confirmButtonText: 'متوجه شدم',
+        })
+      } else {
+        Swal.fire({
+          title: 'ناموفق',
+          text: res.data,
+          icon: 'error',
+          confirmButtonText: 'متوجه شدم'
+        })
+      }
+    }
   };
 
   const handleCloseModal = () => {
@@ -46,27 +67,43 @@ export default function Services() {
   };
 
   const onSubmit = async (data: FieldValues) => {
-    const reqOptions = {
-      method: 'put',
-      body: {
-        title: data.title,
-        section: data.section,
-        description: data.description,
-        price: Number(data.price),
-        parent: data.parent,
-        hasColor: Boolean(data.hasColor),
-        service: data.slug,
-      },
-    };
-    console.log(reqOptions);
 
-    const res = await api(urls.adminService, reqOptions, true);
-    console.log('submit res', res);
+    const formData = new FormData();
+    Object.entries({
+      title: data.title,
+      section: data.section,
+      description: data.description,
+      price: Number(data.price),
+      parent: data.parent,
+      hasColor: Boolean(data.hasColor),
+      service: data.slug,
+    }).map(([key, value]) => formData.set(key, value));
+    formData.append('file', image.data)
+
+    const res = await axios(process.env.REACT_APP_BASE_URL + urls.adminService + editData.id, { method: 'POST', data: formData, headers: { Authorization: `Bearer ${Cookies.get('token')}`}});
+
+    if (res.data?.code == 200){
+      setOpen(false);
+      Swal.fire({
+        title: 'موفق',
+        text: `خدمت جدید با موفقیت ویرایش شد.`,
+        icon: 'success',
+        confirmButtonText: 'متوجه شدم',
+      })
+    } else {
+      Swal.fire({
+        title: 'ناموفق',
+        text: res.data?.data,
+        icon: 'error',
+        confirmButtonText: 'متوجه شدم'
+      })
+    }
+    setEditData(null);
+
   };
 
   const fetchData = async () => {
     const res = await api(urls.adminService, {}, true);
-    console.log(res.data);
     setServices(res.data);
   };
   useEffect(() => {
@@ -156,6 +193,16 @@ export default function Services() {
               control={control}
               defaultValue={editData.price}
               size="medium"
+            />
+            <Controller
+              control={control}
+              name="media"
+              render={({field}) => {
+                return <MuiFileInput {...field} label="نمونه کار" size="medium" onChange={(input) => setImage({
+                  data: input,
+                  preview: URL.createObjectURL(input),
+                })}/>;
+              }}
             />
             <Box display="flex" flexDirection="column" gap={1}>
               <Button

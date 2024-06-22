@@ -65,7 +65,7 @@ export function Map({position, setPosition}: Props) {
       center={[position?.lat, position?.lng]}
       zoom={14}
       scrollWheelZoom={false}
-
+      style={{ width: '100%', height: '100%'}}
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -89,7 +89,7 @@ export function MapView({position}: {position: Position}) {
     <MapContainer
       center={[position.lat, position.lng]}
       zoom={14}
-      style={{ width: '100%', height: 200}}
+      style={{ width: '100%', height: '100%'}}
       scrollWheelZoom={false}
 
     >

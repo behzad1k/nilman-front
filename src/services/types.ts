@@ -21,6 +21,7 @@ export interface IService {
   attributes?: IService[];
   hasColor: boolean;
   color?: string;
+  media: any
 }
 
 export interface IAddress {
@@ -71,5 +72,5 @@ export interface IUser {
 
 export interface ISliderCardInfo {
   title: string;
-  imgSrc: string;
+  url: string;
 }
