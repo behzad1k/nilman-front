@@ -12,6 +12,7 @@ export const urls = {
   orderSingle: '/order/single',
   cart: '/order/cart',
   pay: '/order/pay',
+  paymentVerify: '/order/pay/verify/',
   adminOrder: '/admin/order',
   adminFeedback: '/admin/feedback/',
   adminOrderUpdate: '/admin/order/update',

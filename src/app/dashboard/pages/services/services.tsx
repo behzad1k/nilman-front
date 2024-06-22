@@ -204,6 +204,7 @@ export default function Services() {
                 })}/>;
               }}
             />
+            <img src={image.preview} />
             <Box display="flex" flexDirection="column" gap={1}>
               <Button
                 variant="contained"

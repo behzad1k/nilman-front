@@ -80,6 +80,7 @@ export default function Cart() {
   const dispatch = useAppDispatch();
 
   const pay = async () => {
+    dispatch(SET_LOADING(true))
     const res = await api(
       urls.pay,
       {
@@ -89,12 +90,17 @@ export default function Cart() {
     );
 
     if (res.code == 200) {
+      window.location.href = res.data?.url;
       toast('پرداخت با موفقیت انجام شد.', { type: 'success'});
-      sessionStorage.removeItem('new-order')
-      sessionStorage.removeItem('step')
-      dispatch(cart());
-      dispatch(order());
+      // sessionStorage.removeItem('new-order')
+      // sessionStorage.removeItem('step')
+      // dispatch(cart());
+      // dispatch(order());
+    }else{
+      toast('مشکلی پیش آمده، لطفا مجددا امتحان کنید یا با اپراتور تماس بگیرید', { type: 'error'});
     }
+    dispatch(SET_LOADING(false))
+
   };
 
   return (

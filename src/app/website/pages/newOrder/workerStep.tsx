@@ -212,7 +212,8 @@ export default function WorkerStep({
                 openTo="hours"
                 views={['hours']}
                 format="HH"
-                ampm={false}
+                // minTime={new Date()}
+                ampm={true}
                 onChange={(value, context) => setSelected(prev => ({
                   ...prev,
                   time: Number(value.format('HH'))
