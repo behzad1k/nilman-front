@@ -40,6 +40,7 @@ export default function ServiceStep({
           >
             <img src={'/img/' + service.slug + '.png'} />
             <h2>{service.title}</h2>
+            <i className='cardInfoIcon'></i>
           </div>
         ))}
       </section>

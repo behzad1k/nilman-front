@@ -147,7 +147,7 @@ const AddressManage = () => {
             </div>
           </section>
         }
-        <button className='confirmButton marginRight20' onClick={submit}>
+        <button className='confirmButton addressManageButton' onClick={submit}>
           ثبت
         </button>
       </main>

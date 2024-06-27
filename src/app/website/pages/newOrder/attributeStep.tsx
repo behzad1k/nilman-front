@@ -1,5 +1,6 @@
 import {useRef, useState, useEffect} from 'react';
 import {DeleteOutline} from '@mui/icons-material';
+import { Modal } from '../../../../components';
 import {useAppSelector} from '../../../../services/redux/store';
 import {IService} from '../../../../services/types';
 import {Selected} from './newOrder';
@@ -17,6 +18,8 @@ export default function AttributeStep({
   setIsNextStepAllowed,
 }: Props) {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
   const [curId, setCurId] = useState<null | number>(null);
   const cardRef = useRef<Array<HTMLElement | null>>([]);
 
@@ -75,6 +78,12 @@ export default function AttributeStep({
           >
             <img src={'/img/' + attribute.slug + '.png'} />
             <h2>{attribute.title}</h2>
+            {attribute.description && <i className='cardInfoIcon' onClick={(e) => {
+              e.stopPropagation();
+              setShowInfo(attribute);
+              setOpenModal(true);
+            }}></i>}
+
             <DeleteOutline
               className="delete-btn"
               onClick={(e) => handleUnselectAttribute(e, index, attribute)}
@@ -82,10 +91,17 @@ export default function AttributeStep({
           </div>
         ))}
       </section>
+      <Modal open={openModal} setOpen={setOpenModal}>
+        <i className="close-button" onClick={() => setOpenModal(false)}></i>
+        <h4>{showInfo?.title}</h4>
+        <p>
+          {showInfo?.description}
+        </p>
+      </Modal>
       <SecAttrDrawer
         selected={selected}
         setSelected={setSelected}
-        parentId={curId}
+        parent={selected.service?.attributes?.find(e => e.id == curId)}
         open={drawerOpen}
         setOpen={setDrawerOpen}
       />

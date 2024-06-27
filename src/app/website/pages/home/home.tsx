@@ -137,9 +137,9 @@ export default function Home() {
     return rows;
   };
 
-  if (userReducer.data.role != 'USER'){
-    return <WorkerDashboard />
-  }
+  // if (userReducer.data.role != 'USER'){
+  //   return <WorkerDashboard />
+  // }
 
   return (
     <main>

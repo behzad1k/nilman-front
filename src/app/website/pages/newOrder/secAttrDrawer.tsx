@@ -1,15 +1,17 @@
 import {useEffect, useRef, useState} from 'react';
 import {Global} from '@emotion/react';
+import { services } from '../../../../services/redux/reducers/serviceSlice.ts';
+import { formatPrice } from '../../../../utils/utils.ts';
 import {Selected} from './newOrder';
 import {IService} from '../../../../services/types';
 import {Button, Box, Skeleton, Typography, SwipeableDrawer} from '@mui/material';
 import {HexColorPicker} from 'react-colorful';
-import { Close } from '@mui/icons-material';
+import { ArrowBack, Close } from '@mui/icons-material';
 
 type Props = {
   open: boolean;
   setOpen: (val: boolean) => void;
-  parentId: number | null;
+  parent: IService;
   selected: Selected;
   setSelected: (value: (prev: Selected) => Selected) => void;
 };
@@ -22,21 +24,17 @@ type PickingColor = {
 export default function SecAttrDrawer({
   open,
   setOpen,
-  parentId,
+  parent,
   selected,
   setSelected,
 }: Props) {
   const [color, setColor] = useState('#fff');
+  const [curParent, setCurParent] = useState(parent)
   const [pickingColor, setPickingColor] = useState<PickingColor>({
     attr: null,
     open: false,
   });
   const boxEl = useRef<Array<HTMLElement | null>>([]);
-
-  const curParent = selected.service?.attributes?.filter(
-    (attribute) => attribute.id === parentId,
-  )[0];
-
   const toggleDrawer = (newOpen: boolean) => () => {
     const cond = curParent?.attributes?.some((secAttr) =>
       selected.attributes.includes(secAttr),
@@ -44,16 +42,18 @@ export default function SecAttrDrawer({
     if (!cond) return;
     setOpen(newOpen);
   };
-
   const handleClickCard = (index: number, secAttr: IService) => {
     boxEl.current.map((el, i) =>
-      index === i ? el?.classList.add('selected') : el?.classList.remove('selected'),
-    );
+      index === i && el?.classList.add('selected')
+    )
 
     if (secAttr.hasColor) {
       // PICK COLOR FIRST
       setPickingColor({attr: secAttr, open: true});
     } else {
+      if (secAttr.attributes?.length > 0){
+        setCurParent(secAttr);
+      }
       // NO COLOR - ADD TO ATTRIBUTES
       handleAddAttribute(secAttr, null);
     }
@@ -69,7 +69,7 @@ export default function SecAttrDrawer({
 
     setPickingColor({attr: null, open: false});
   };
-  console.log(selected.attributes);
+  console.log(curParent);
   const handlePrevStep = () => {
     setPickingColor({attr: null, open: false});
   };
@@ -78,8 +78,7 @@ export default function SecAttrDrawer({
     setOpen(false)
     
   }
-
-  if (curParent) {
+  if (curParent || parent) {
     return (
       <>
         <Global
@@ -112,6 +111,7 @@ export default function SecAttrDrawer({
             className="attr-drawer-content"
           >
             <Box sx={{position: 'absolute', right: 14}}>
+              {curParent && <ArrowBack onClick={() => setCurParent(prev => selected.service.attributes?.find(e => e.id == prev.parentId))}/>}
               <Close onClick={handleCloseDrawer} />
             </Box>
             {pickingColor.open ? (
@@ -145,13 +145,13 @@ export default function SecAttrDrawer({
               <>
                 <Box display="flex" alignItems="center" justifyContent="space-between">
                   <Typography variant="body1" component="h3" mb={1}>
-                    {curParent.title}
+                    {(curParent || parent)?.title}
                   </Typography>
                 </Box>
                 <Typography variant="caption" component="p" mb={1}>
                   یک یا چند مورد را انتخاب کنید
                 </Typography>
-                {curParent?.attributes?.map((secAttr, index) => (
+                {(curParent || parent)?.attributes?.map((secAttr, index) => (
                   <Box
                     key={secAttr.slug}
                     className={`attr-box ${
@@ -175,13 +175,22 @@ export default function SecAttrDrawer({
                       sx={{color: 'var(--light-black)'}}
                     >
                       {secAttr.title}
+                      {selected?.attributes?.find(e => e.id == secAttr.id) ? <i className={'selectedServiceIcon'}></i> : ''}
                     </Typography>
-                    <Box component="span" sx={{fontWeight: '800', ml: 'auto'}}>
-                      {secAttr.price}
-                    </Box>
-                    <Box component="span" ml={0.5} sx={{fontWeight: '300'}}>
-                      هزارتومان
-                    </Box>
+                    {secAttr?.attributes?.length == 0 ?
+                    <>
+                      <Box component="span" sx={{fontWeight: '800', ml: 'auto'}}>
+                        {formatPrice(secAttr.price)}
+                      </Box>
+                      <Box component="span" ml={0.5} sx={{fontWeight: '300'}}>
+                        هزارتومان
+                      </Box>
+                    </> :
+                      <>
+                    <i className='backIconBlack'></i>
+                      </>
+                    }
+
                   </Box>
                 ))}
               </>

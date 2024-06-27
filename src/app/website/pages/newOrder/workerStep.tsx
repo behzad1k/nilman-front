@@ -1,9 +1,9 @@
-import {useEffect, useState, useRef, useCallback} from 'react';
+import { useEffect, useState, useRef, useCallback, ReactElement } from 'react';
 import { MobileTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import {useForm} from 'react-hook-form';
 import moment from 'jalali-moment';
-import { DatePicker, TimePicker } from 'zaman';
+import { DatePicker } from 'zaman';
 import {api} from '../../../../services/http';
 import {urls} from '../../../../services/endPoint';
 import {SelectInput, TextInput} from '../../../../components';
@@ -50,6 +50,7 @@ export default function WorkerStep({
   setIsNextStepAllowed,
   workers,
   nearest,
+  selected,
   section = 3,
 }: Props) {
   // React
@@ -69,6 +70,24 @@ export default function WorkerStep({
   // @ts-ignore
   const m = moment(date?._d).locale('fa');
 
+  const times = () => {
+    const rows: ReactElement[] = [];
+
+    for (let i = 8; i <= 20; i++) {
+      rows.push(
+        <span
+          className={"newOrderTimeSpan " + (selected.time == i ? 'selected' : '')}
+          onClick={() => setSelected(prev => ({
+          ...prev,
+          time: i
+        }))}>
+          {i}
+        </span>
+      )
+    }
+
+    return rows;
+  };
   // Handlers
   const handleSelectDay = (index: number, fromTime: number) => {
     cardRef.current.map((el, i) =>
@@ -193,8 +212,9 @@ export default function WorkerStep({
           <>
             <div className="app-date-picker">
               <DatePicker
-                value={(date as any)}
-                min={minDate}
+                // value={(date as any)}
+                inputClass='app-date-picker-input'
+                from={minDate}
                 onChange={(value) => {
                   setSelected(prev => ({
                     ...prev,
@@ -205,21 +225,10 @@ export default function WorkerStep({
                 defaultValue={(defaultDate as any)}
               />
             </div>
-              {/* <TimePicker direction="rtl" clockTime={12} accentColor="#ecaa97" onChange={(value) => console.log(value)}/> */}
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <MobileTimePicker
-                label={'ساعت'}
-                openTo="hours"
-                views={['hours']}
-                format="HH"
-                // minTime={new Date()}
-                ampm={true}
-                onChange={(value, context) => setSelected(prev => ({
-                  ...prev,
-                  time: Number(value.format('HH'))
-                }))}
-              />
-              </LocalizationProvider>
+            <h5>ساعت</h5>
+            <div className="newOrderTime">
+              {times()}
+            </div>
             {selectedTab.index === 2 && (
               <SelectInput
                 name="worker"

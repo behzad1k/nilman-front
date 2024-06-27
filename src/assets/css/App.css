@@ -121,7 +121,11 @@ s {
 .header a {
   margin: 7px 0 0 7px;
 }
-
+.backIconBlack{
+  width: 20px;
+  height: 20px;
+  content: url('/public/img/svg/arrow-black.svg');
+}
 .header span {
   width: 40px;
   height: 40px;
@@ -135,10 +139,10 @@ main {
 .appBar {
   z-index: 10;
   display: flex;
-  padding-bottom: 10px;
+  padding-bottom: 13px;
   flex-direction: row-reverse;
   width: 100%;
-  height: 70px;
+  height: 75px;
   gap: 20px;
   align-items: center;
   justify-content: space-around;
@@ -930,8 +934,29 @@ main {
   border-radius: 10px;
   background-color: var(--white-pink);
   width: 100%;
+  font-family: inherit;
 }
 
+.newOrderTime{
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.newOrderTimeSpan{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 30px;
+  padding: 6px;
+  border-radius: 8px;
+  background-color: var(--light-pink);
+  /*color: #FFF;*/
+}
+.newOrderTimeSpan.selected{
+  border: 1px solid var(--mid-pink);
+}
 /* NEW-ORDER - SERVICE-STEP */
 .service-step-container {
   width: 100%;
@@ -959,7 +984,12 @@ main {
   border-radius: 6px;
   height: 70px;
 }
-
+.cardInfoIcon{
+  content: url("/public/img/icons8-info-48.png");
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+}
 .service-step-container .card img {
   width: 40px;
   height: 40px;
@@ -1037,7 +1067,7 @@ main {
   background-color: #fff;
   bottom: 60px;
   inset-inline: 0;
-  padding: 8px;
+  padding: 8px 8px 25px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -1200,7 +1230,11 @@ main {
   border-color: rgb(245, 150, 165);
   background-color: var(--light-pink);
 }
-
+.selectedServiceIcon{
+  content: url("/public/img/checked.png");
+  width: 20px;
+  height: 20px;margin-right: 20px;
+}
 .banner-row {
   display: flex;
   gap: 4px;
@@ -1285,7 +1319,7 @@ main {
   padding: 10px 16px;
 }
 .addressManage{
-  height: 100vh;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -1301,8 +1335,9 @@ main {
   width: 100%;
   height: 85%;
 }
-.confirmButton.marginRight20{
+.confirmButton.addressManageButton{
   margin-right: 20px;
+  bottom:20px;
 }
 .confirmButton{
   width: 90%;
