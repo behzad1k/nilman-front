@@ -140,9 +140,15 @@ export default function Services() {
         {editData && (
           <Box
             component="form"
-            sx={{display: 'flex', flexDirection: 'column', gap: 3}}
             onSubmit={handleSubmit(onSubmit)}
+            sx={{display: 'flex', flexDirection: 'column', height: 700, gap: 3}}
+
           >
+            <Box
+              component="div"
+              sx={{display: 'flex',position:'relative', flexDirection: 'column', overflow: 'auto', gap: 3, height: '100%'}}
+
+            >
             <SelectInput
               name="parent"
               label="دسته بندی اصلی"
@@ -204,7 +210,9 @@ export default function Services() {
                 })}/>;
               }}
             />
-            <img src={image.preview} />
+            <img src={image.preview} className="serviceImageDash" />
+            </Box>
+
             <Box display="flex" flexDirection="column" gap={1}>
               <Button
                 variant="contained"
