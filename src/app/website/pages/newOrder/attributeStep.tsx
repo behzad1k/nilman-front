@@ -20,18 +20,20 @@ export default function AttributeStep({
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
-  const [curId, setCurId] = useState<null | number>(null);
+  const [curId, setCurId] = useState<IService | null>(null);
   const cardRef = useRef<Array<HTMLElement | null>>([]);
-
+  const [currentService, setCurrentService] = useState(selected.service);
   const handleSelectAttribute = (index: number, attribute: IService) => {
     cardRef.current[index]?.classList.add('selected');
-    if (attribute.attributes && attribute.attributes.length > 0) {
-      setDrawerOpen(true);
-      setCurId(attribute.id);
+    if (attribute.attributes && attribute.attributes?.length > 0 && attribute.attributes[0]?.attributes?.length == 0) {
+      setCurId(attribute);
+      setDrawerOpen(true)
+    }else if(attribute.attributes && attribute.attributes.length > 0 && attribute.attributes[0]?.attributes?.length > 0){
+      setCurrentService(attribute);
     }
     setIsNextStepAllowed(true);
   };
-
+  console.log(selected.service);
   const handleUnselectAttribute = (
     e: React.MouseEvent,
     index: number,
@@ -65,25 +67,18 @@ export default function AttributeStep({
 
   return (
     <div className="service-step-container">
-      <p className="hint-text">لطفا از لیست خدمات یک یا چند مورد را انتخاب کنید.</p>
       <section className="cards">
-        {selected.service?.attributes?.map((attribute, index) => (
+        {currentService?.attributes?.map((attribute, index) => (
           <div
             key={attribute.slug}
             ref={(el) => (cardRef.current[index] = el)}
             onClick={() => handleSelectAttribute(index, attribute)}
             className={`card ${
-              selected.attributes.includes(attribute) ? 'selected' : null
-            }`}
+              selected.attributes.includes(attribute) ? 'selected' : ''
+            } ${index % 2 == 0 ? 'reversed' : ''}`}
           >
             <img src={'/img/' + attribute.slug + '.png'} />
             <h2>{attribute.title}</h2>
-            {attribute.description && <i className='cardInfoIcon' onClick={(e) => {
-              e.stopPropagation();
-              setShowInfo(attribute);
-              setOpenModal(true);
-            }}></i>}
-
             <DeleteOutline
               className="delete-btn"
               onClick={(e) => handleUnselectAttribute(e, index, attribute)}
@@ -101,7 +96,7 @@ export default function AttributeStep({
       <SecAttrDrawer
         selected={selected}
         setSelected={setSelected}
-        parent={selected.service?.attributes?.find(e => e.id == curId)}
+        parent={curId}
         open={drawerOpen}
         setOpen={setDrawerOpen}
       />

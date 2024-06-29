@@ -180,9 +180,9 @@ export default function NewOrder() {
           style={{width: `${((step.index + 1) / 4) * 100}%`}}
         ></span>
       </div>
-      <Typography component="span" variant="subtitle2" fontWeight="400" mt={-1} mb={1}>
-        مرحله {Intl.NumberFormat('fa').format(step.index + 1)}
-      </Typography>
+      {/* <Typography component="span" variant="subtitle2" fontWeight="400" mt={-1} mb={1}> */}
+      {/*   مرحله {Intl.NumberFormat('fa').format(step.index + 1)} */}
+      {/* </Typography> */}
       {step.name === 'service' && (
         <ServiceStep
           selected={selected}
@@ -214,33 +214,33 @@ export default function NewOrder() {
         />
       )}
       <div className="bottom-section">
-        <div className="cart-section">
-          <div className="info">
-            {selected.service ? (
-              <h1>
-                {selected.service?.title} {`>`}
-                {selected.attributes.map(
-                  (attr, index) => (index === 0 ? ' ' : ', ') + attr.title,
-                )}
-              </h1>
-            ) : (
-              'در حال انتخاب...'
-            )}
-            <div>
-              {selected.address && <p className="worker">{selected.address.title}</p>}
-              <span className="circle"></span>
-              {selected.time && (
-                <time className="date-time">
-                  {selected.time} |{' '}
-                  {selected.date && moment.unix(selected.date).format('jYYYY/jMM/jDD')}
-                </time>
-              )}
-            </div>
-          </div>
-          <div className="price">
-            <p>{formatPrice(selected.price)} تومان</p>
-          </div>
-        </div>
+        {/* <div className="cart-section"> */}
+        {/*   <div className="info"> */}
+        {/*     {selected.service ? ( */}
+        {/*       <h1> */}
+        {/*         {selected.service?.title} {`>`} */}
+        {/*         {selected.attributes.map( */}
+        {/*           (attr, index) => (index === 0 ? ' ' : ', ') + attr.title, */}
+        {/*         )} */}
+        {/*       </h1> */}
+        {/*     ) : ( */}
+        {/*       'در حال انتخاب...' */}
+        {/*     )} */}
+        {/*     <div> */}
+        {/*       {selected.address && <p className="worker">{selected.address.title}</p>} */}
+        {/*       <span className="circle"></span> */}
+        {/*       {selected.time && ( */}
+        {/*         <time className="date-time"> */}
+        {/*           {selected.time} |{' '} */}
+        {/*           {selected.date && moment.unix(selected.date).format('jYYYY/jMM/jDD')} */}
+        {/*         </time> */}
+        {/*       )} */}
+        {/*     </div> */}
+        {/*   </div> */}
+        {/*   <div className="price"> */}
+        {/*     <p>{formatPrice(selected.price)} تومان</p> */}
+        {/*   </div> */}
+        {/* </div> */}
         <div className="btn-section">
           {step.index === steps.length - 1 ? (
             <Button

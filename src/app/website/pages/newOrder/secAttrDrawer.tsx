@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Global} from '@emotion/react';
 import { services } from '../../../../services/redux/reducers/serviceSlice.ts';
 import { formatPrice } from '../../../../utils/utils.ts';
@@ -69,7 +69,6 @@ export default function SecAttrDrawer({
 
     setPickingColor({attr: null, open: false});
   };
-  console.log(curParent);
   const handlePrevStep = () => {
     setPickingColor({attr: null, open: false});
   };
@@ -177,24 +176,19 @@ export default function SecAttrDrawer({
                       {secAttr.title}
                       {selected?.attributes?.find(e => e.id == secAttr.id) ? <i className={'selectedServiceIcon'}></i> : ''}
                     </Typography>
-                    {secAttr?.attributes?.length == 0 ?
-                    <>
                       <Box component="span" sx={{fontWeight: '800', ml: 'auto'}}>
                         {formatPrice(secAttr.price)}
                       </Box>
                       <Box component="span" ml={0.5} sx={{fontWeight: '300'}}>
                         هزارتومان
                       </Box>
-                    </> :
-                      <>
-                    <i className='backIconBlack'></i>
-                      </>
-                    }
-
                   </Box>
                 ))}
               </>
             )}
+            <button className='confirmButton order' onClick={() => setOpen(false)}>
+              ثبت
+            </button>
           </Box>
         </SwipeableDrawer>
       </>

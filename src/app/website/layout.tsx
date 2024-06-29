@@ -9,7 +9,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
   const loading = useAppSelector((state) => state.loadingReducer.loading);
   return (
     <>
-      <PullToRefresh onRefresh={async () => initialApis(dispatch)}>
+      {/* <PullToRefresh onRefresh={async () => initialApis(dispatch)}> */}
         <Box sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
           <WebsiteHeader />
           <Box component="main" flexGrow={1}>
@@ -17,7 +17,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
             <AppBar />
           </Box>
         </Box>
-      </PullToRefresh>
+      {/* </PullToRefresh> */}
       {loading && <Loading/>}
     </>
   );

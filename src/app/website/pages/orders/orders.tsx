@@ -38,6 +38,7 @@ export default function Orders() {
         display: 'flex',
         flexDirection: 'column',
         gap: 4,
+        paddingTop: '70px',
         alignItems: 'center',
       }}
     >

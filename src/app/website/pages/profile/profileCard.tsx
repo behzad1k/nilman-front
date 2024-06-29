@@ -60,67 +60,31 @@ export function ProfileCard() {
       <div className="profileCardContainer">
         <div className="profileCardDetails">
           <span className="iconInput">
-            <input
-              placeholder={name ? name : 'نام'}
-              className="profileCardInput"
-              disabled={nameDisabled}
-              ref={nameRef}
-              onBlur={(e) => {
-                e.target.value != name &&
-                  confirm('آیا مطمئن هستید؟') &&
-                  setName(e.target.value);
-                e.target.value = '';
-                setNameDisabled(true);
-              }}
-            />
-            <PencilLine
-              onClick={() => {
-                // setNameDisabled(false);
-                navigate('/profile/edit')
-              }}
-            />
+            {name || 'نام'}
+            {/* <PencilLine */}
+            {/*   onClick={() => { */}
+            {/*     // setNameDisabled(false); */}
+            {/*     navigate('/profile/edit') */}
+            {/*   }} */}
+            {/* /> */}
           </span>
           <span className="iconInput">
-            <input
-              placeholder={lastName ? lastName : 'نام خانوادگی'}
-              className="profileCardInput"
-              disabled={lastNameDisabled}
-              ref={lastNameRef}
-              onBlur={(e) => {
-                e.target.value != lastName &&
-                  confirm('آیا مطمئن هستید؟') &&
-                  setLastName(e.target.value);
-                e.target.value = '';
-                setLastNameDisabled(true);
-              }}
-            />
-            <PencilLine
-              onClick={() => {
-                // setLastNameDisabled(false);
-                navigate('/profile/edit');
-              }}
-            />
+            {lastName || 'نام خانوادگی'}
+            {/* <PencilLine */}
+            {/*   onClick={() => { */}
+            {/*     // setLastNameDisabled(false); */}
+            {/*     navigate('/profile/edit'); */}
+            {/*   }} */}
+            {/* /> */}
           </span>
           <span className="iconInput">
-            <input
-              placeholder={socialId ? socialId : 'کد ملی'}
-              className="profileCardInput"
-              disabled={socialIdDisabled}
-              ref={socialIdRef}
-              onBlur={(e) => {
-                e.target.value != socialId &&
-                  confirm('آیا مطمئن هستید؟') &&
-                  setSocialId(e.target.value);
-                e.target.value = '';
-                setSocialIdDisabled(true);
-              }}
-            />
-            <PencilLine
-              onClick={() => {
-                // setSocialIdDisabled(false);
-                navigate('/profile/edit')
-              }}
-            />
+            {socialId || 'کد ملی'}
+            {/* <PencilLine */}
+            {/*   onClick={() => { */}
+            {/*     // setSocialIdDisabled(false); */}
+            {/*     navigate('/profile/edit') */}
+            {/*   }} */}
+            {/* /> */}
           </span>
         </div>
         <div className="profileCardPicture">

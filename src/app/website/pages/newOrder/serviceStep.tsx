@@ -29,18 +29,17 @@ export default function ServiceStep({
 
   return (
     <div className="service-step-container">
-      <p className="hint-text">لطفا از لیست خدمات یک مورد را انتخاب کنید.</p>
       <section className="cards">
         {services.map((service, index) => (
           <div
             key={service.slug}
             ref={(el) => (cardRef.current[index] = el)}
             onClick={() => handleSelectService(index, service)}
-            className={`card ${selected.service === service ? 'selected' : ''}`}
+            className={`card service ${selected.service === service ? 'selected' : ''} ${index % 2 == 0 ? 'reversed' : ''}`}
           >
             <img src={'/img/' + service.slug + '.png'} />
-            <h2>{service.title}</h2>
-            <i className='cardInfoIcon'></i>
+            <p>{service.title}</p>
+            {/* <i className='cardInfoIcon'></i> */}
           </div>
         ))}
       </section>

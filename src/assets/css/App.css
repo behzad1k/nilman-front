@@ -109,6 +109,7 @@ s {
   z-index: 20;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+  position: fixed;
   /*background:linear-gradient(282deg,#c82471,#d09192);*/
 
   /*border-bottom: var(--light-black) 1px solid;*/
@@ -136,8 +137,12 @@ s {
 }
 
 main {
-  /* padding: 0 5px 70px; */
+   padding-top: 70px;
   padding-block: 18px 60px;
+}
+.homeMain{
+  padding-top: 70px;
+
 }
 /* appBar */
 .appBar {
@@ -224,7 +229,7 @@ main {
 /* newOrder page */
 .newOrderMain {
   display: flex;
-  padding: 0 20px 160px;
+  padding: 70px 20px 160px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -360,7 +365,7 @@ main {
   ------------------------------------------------------max page---------------------------------------------------------
 */
 .magMain {
-  padding: 20px 20px;
+  padding: 70px 20px 20px;
   background-color: var(--light-pink);
 }
 .magCategories {
@@ -381,7 +386,7 @@ main {
   justify-content: center;
   align-items: center;
   gap: 20px;
-  padding: 10px 20px 70px;
+  padding: 80px 20px 70px;
 }
 
 .addressSection {
@@ -645,6 +650,11 @@ main {
 }
 .profileCardInput{
   font-family: inherit;
+  color: #000;
+}
+.profileCardInput:disabled{
+  font-family: inherit;
+  color: #000;
 }
 .bannerCard button > i {
   display: block;
@@ -720,11 +730,10 @@ main {
 
 .iconInput {
   border: 0;
-  border-radius: 12px;
   box-shadow: 2px 2px 5px #d3d1d1;
   background-color: var(--light-grey);
   height: 20%;
-  padding: 5px 10px 5px;
+  padding: 10px 10px 5px;
   color: black;
   display: flex;
   justify-content: stretch;
@@ -977,16 +986,30 @@ main {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  overflow: auto;
 }
 
 .service-step-container .card {
-  background: rgb(253, 190, 172);
+  background: linear-gradient( 90deg, #f4c8bc, rgba(242, 224, 221, 0.65) );
   display: flex;
   align-items: center;
   padding: 20px 24px;
   gap: 20px;
   border-radius: 6px;
   height: 70px;
+  font-weight: 300;
+}
+.service-step-container .card.service{
+  height: 120px;
+  justify-content: space-between;
+}
+.service-step-container .card.service img{
+  width: 80px;
+  height: 80px;
+}
+.service-step-container .card.reversed{
+  background: linear-gradient( 270deg, #f4c8bc, rgba(242, 224, 221, 0.65) );
+
 }
 .cardInfoIcon{
   content: url("/public/img/icons8-info-48.png");
@@ -1004,7 +1027,7 @@ main {
 }
 
 .service-step-container .card.selected {
-  background: var(--mid-pink);
+  /*background: linear-gradient( 270deg, #f4c8bc, rgba(242, 224, 221, 0.65) );*/
 }
 .service-step-container .card.selected .delete-btn {
   display: block;
@@ -1135,7 +1158,9 @@ main {
   border-radius: 12px;
   background-color: var(--mid-pink);
 }
-
+.servicesContainer{
+  position: fixed;
+}
 .progress {
   position: sticky;
   width: 100vw;
@@ -1249,6 +1274,9 @@ main {
   height: 24px;
 }
 
+.dirLtr{
+  direction: ltr;
+}
 .contact-us {
   background: linear-gradient(282deg, rgb(255, 135, 177), rgba(255, 163, 195, 0.2));
   align-items: flex-start;
@@ -1320,7 +1348,7 @@ main {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 10px 16px;
+  padding: 80px 22px;
 }
 .addressManage{
   height: 90vh;
@@ -1352,10 +1380,12 @@ main {
   height: 6vh;
   font-size: 18px;
   font-family: inherit;
-  bottom: -40px;
+  bottom: 20px;
   color: #fff;
   border: 0
-
+}
+.confirmButton.order{
+  bottom: 15px;
 }
 .addressManageRow{
   margin-top: 110px;

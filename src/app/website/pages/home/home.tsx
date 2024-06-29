@@ -142,7 +142,7 @@ export default function Home() {
   // }
 
   return (
-    <main>
+    <main className='homeMain'>
       <section className="banners">
         <BannerCard
           title={'ثبت سفارش'}
@@ -160,14 +160,14 @@ export default function Home() {
         />
       </section>
       <section>
-        <div className="resumeText">
-          <h2>نمونه کار ها</h2>
-          <p>
-            {' '}
-            با مشاهده نمونه کار‌ها می‌توانید آرایشگران و نمونه کار‌های محبوب خود را انتخاب
-            کنید.{' '}
-          </p>
-        </div>
+        {/* <div className="resumeText"> */}
+        {/*   <h2>خدمات</h2> */}
+        {/*   <p> */}
+        {/*     {' '} */}
+        {/*     با مشاهده نمونه کار‌ها می‌توانید آرایشگران و نمونه کار‌های محبوب خود را انتخاب */}
+        {/*     کنید.{' '} */}
+        {/*   </p> */}
+        {/* </div> */}
         {sliderList()}
         {/* <Slider title={'خدمات ناخن'} cardInfos={cardInfos1} /> */}
         {/* <Slider title={'خدمات مو'} cardInfos={cardInfos2} /> */}
@@ -193,7 +193,7 @@ export default function Home() {
         </Box>
         <span className="banner-row">
           <Phone />
-          شماره تماس : <a href="tel:02133332563">۰۲۱۲۶۹۱۷۳۵۶-۷</a>
+          شماره تماس : <a className="dirLtr" href="tel:02122753005">۰۲۱۲۲۷۵۳۰۰۵ - ۶</a>
         </span>
         <span className="banner-row">
           <MapPin />
@@ -204,7 +204,7 @@ export default function Home() {
             <WhatsApp />
             <span>واتس اپ</span>
           </a>
-          <a className="whatsapp-btn" href="https://instagram.com/nilmanbeauty">
+          <a className="whatsapp-btn" target="_blank" href="https://instagram.com/nilmanbeauty">
             <InstagramLogo width={25} height={25} />
             <span>اینستاگرام</span>
           </a>
