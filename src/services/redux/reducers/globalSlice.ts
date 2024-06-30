@@ -6,13 +6,19 @@ import { IOrder } from "../../types.ts";
 
 interface IGlobalSlice {
   postCategories: any[];
+  colors: any[];
 }
 
 const initialState: IGlobalSlice = {
   postCategories: [],
+  colors: []
 };
 export const posts = createAsyncThunk('Posts/fetchPosts', async () => {
   return await api(urls.posts, {});
+});
+
+export const colors = createAsyncThunk('Color/fetchColors', async () => {
+  return await api(urls.colors, {});
 });
 
 const GlobalSlice = createSlice({
@@ -24,9 +30,14 @@ const GlobalSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(posts.fulfilled, (state, action) => {
+    builder
+    .addCase(posts.fulfilled, (state, action) => {
       if (action.payload.code === 200) {
         state.postCategories = action.payload.data;
+      }
+    }).addCase(colors.fulfilled, (state, action) => {
+      if (action.payload.code === 200) {
+        state.colors = action.payload.data;
       }
     });
   },

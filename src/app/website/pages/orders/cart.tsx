@@ -40,9 +40,9 @@ const CartItem = ({item}: ICartItemProps) => {
         <h3>{item.service.title}</h3>
         <X size="20" onClick={() => deleteCartItem(item.id)} />
       </span>
-      {item.attributes.map((attribute, index) => (
+      {item.orderServices?.map((attribute, index) => (
         <span className="orderInfo" key={index}>
-          <p>{attribute.title}</p>
+          <p>{attribute.service.title}</p>
           <p>{formatPrice(attribute.price)} تومان</p>
         </span>
       ))}
@@ -91,11 +91,7 @@ export default function Cart() {
 
     if (res.code == 200) {
       window.location.href = res.data?.url;
-      toast('پرداخت با موفقیت انجام شد.', { type: 'success'});
-      // sessionStorage.removeItem('new-order')
-      // sessionStorage.removeItem('step')
-      // dispatch(cart());
-      // dispatch(order());
+      // toast('پرداخت با موفقیت انجام شد.', { type: 'success'});
     }else{
       toast('مشکلی پیش آمده، لطفا مجددا امتحان کنید یا با اپراتور تماس بگیرید', { type: 'error'});
     }

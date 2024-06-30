@@ -1,6 +1,9 @@
+import { attributes } from 'js-cookie';
 import React, {useEffect, useRef, useState} from 'react';
 import {Global} from '@emotion/react';
+import { Modal } from '../../../../components';
 import { services } from '../../../../services/redux/reducers/serviceSlice.ts';
+import { useAppSelector } from '../../../../services/redux/store.ts';
 import { formatPrice } from '../../../../utils/utils.ts';
 import {Selected} from './newOrder';
 import {IService} from '../../../../services/types';
@@ -28,12 +31,15 @@ export default function SecAttrDrawer({
   selected,
   setSelected,
 }: Props) {
+  const colors = useAppSelector(state => state.globalReducer.colors)
   const [color, setColor] = useState('#fff');
+  const [selectedColors, setSelectedColors] = useState([]);
   const [curParent, setCurParent] = useState(parent)
   const [pickingColor, setPickingColor] = useState<PickingColor>({
     attr: null,
     open: false,
   });
+  const [infoModal, setInfoModal] = useState(false);
   const boxEl = useRef<Array<HTMLElement | null>>([]);
   const toggleDrawer = (newOpen: boolean) => () => {
     const cond = curParent?.attributes?.some((secAttr) =>
@@ -69,10 +75,6 @@ export default function SecAttrDrawer({
 
     setPickingColor({attr: null, open: false});
   };
-  const handlePrevStep = () => {
-    setPickingColor({attr: null, open: false});
-  };
-
   const handleCloseDrawer = () => {
     setOpen(false)
     
@@ -86,8 +88,9 @@ export default function SecAttrDrawer({
               height: 'max-content',
               overflow: 'visible',
               minHeight: `60vh`,
-              background:
-                'linear-gradient(360deg, rgba(252, 197, 218, 1), rgba(252, 228, 198, 1))',
+              background: '#FFF',
+              borderTopRightRadius: 20,
+              borderTopLeftRadius: 20,
             },
           }}
         />
@@ -109,18 +112,27 @@ export default function SecAttrDrawer({
             overflow="auto"
             className="attr-drawer-content"
           >
-            <Box sx={{position: 'absolute', right: 14}}>
-              {curParent && <ArrowBack onClick={() => setCurParent(prev => selected.service.attributes?.find(e => e.id == prev.parentId))}/>}
+            <Box sx={{ display: 'flex', position: 'absolute', right: 24, alignItems: 'center', gap: 2}}>
+              <span className='moreInfo' onClick={() => setInfoModal(true)}>
+                <span>توضیحات</span>
+                <i className='infoIcon'></i>
+              </span>
               <Close onClick={handleCloseDrawer} />
             </Box>
             {pickingColor.open ? (
               <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
-                <HexColorPicker
-                  style={{width: '100%'}}
-                  color={color}
-                  onChange={setColor}
-                />
-                <Box sx={{width: '50%', height: 40, backgroundColor: color, mb: 2}}></Box>
+                <div className='colorContainer'>
+                  <p> انتخاب رنگ</p>
+                  {colors.map((color) =>
+                    <div className={`colorRow ${selectedColors.includes(color.slug) ? 'selected' : ''}`} key={color.slug} onClick={() => setSelectedColors(prev => prev.includes(color.slug) ? prev.filter(e => e != color.slug) : [...prev, color.slug])}>
+                      <span>
+                        {color.title}
+                        {selectedColors.includes(color.slug) ? <i className={'selectedServiceIcon'}></i> : ''}
+                      </span>
+                      <span className='colorSpan' style={{ backgroundColor: color.code}}></span>
+                    </div>
+                  )}
+                </div>
                 <Box display="flex" width="100%" gap={2}>
                   <Button
                     size="large"
@@ -134,7 +146,7 @@ export default function SecAttrDrawer({
                     variant="outlined"
                     size="large"
                     color="secondary"
-                    onClick={handlePrevStep}
+                    onClick={() => setPickingColor({attr: null, open: false})}
                   >
                     تغییر سرویس
                   </Button>
@@ -180,7 +192,7 @@ export default function SecAttrDrawer({
                         {formatPrice(secAttr.price)}
                       </Box>
                       <Box component="span" ml={0.5} sx={{fontWeight: '300'}}>
-                        هزارتومان
+                        تومان
                       </Box>
                   </Box>
                 ))}
@@ -191,6 +203,18 @@ export default function SecAttrDrawer({
             </button>
           </Box>
         </SwipeableDrawer>
+        <Modal open={infoModal} setOpen={setInfoModal}>
+          <i className="close-button" onClick={() => setInfoModal(false)}></i>
+          <p className='fontWeight400 marginBottom10'>توضیحات {(curParent || parent).title}</p>
+          <section className='infoModal'>
+            {(curParent || parent).attributes.map((attribute, index) =>
+            <div className='infoRow'>
+              <span className='fontWeight400'>{attribute.title}</span>
+              <span>{attribute.description}</span>
+            </div>
+            )}
+          </section>
+        </Modal>
       </>
     );
   } else return null;

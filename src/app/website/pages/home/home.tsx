@@ -137,14 +137,19 @@ export default function Home() {
     return rows;
   };
 
-  // if (userReducer.data.role != 'USER'){
-  //   return <WorkerDashboard />
-  // }
+  if (userReducer.data.role == 'WORKER'){
+    return <WorkerDashboard />
+  }
 
   return (
     <main className='homeMain'>
       <section className="banners">
+        {/* linear-gradient(282deg, rgb(255, 135, 177), rgba(255, 163, 195, 0.2)); */}
         <BannerCard
+          bgColor1={'rgb(234, 99, 146)'}
+          bgColor2={'rgba(255, 163, 195, 0.2)'}
+          // bgColor1={'rgb(255, 135, 177)'}
+          // bgColor2={'rgb(172, 172, 172)'}
           title={'ثبت سفارش'}
           description={'همین حالا سفارش خود را ثبت کنید!'}
           button={'ثبت'}
@@ -180,8 +185,8 @@ export default function Home() {
           description={'منطقه‌های ۱، ۲، ۳، ۴ و ۵'}
           button={'مشاهده'}
           icon={<Percent />}
-          bgColor1="#FF0078"
-          bgColor2="#F6EFA7"
+          bgColor1="rgb(122, 173, 253)"
+          bgColor2="rgb(216, 228, 234)"
         />
       </section>
       <Box component="section" className="banners contact-us" mt={2.5}>
@@ -204,7 +209,7 @@ export default function Home() {
             <WhatsApp />
             <span>واتس اپ</span>
           </a>
-          <a className="whatsapp-btn" target="_blank" href="https://instagram.com/nilmanbeauty">
+          <a className="whatsapp-btn" href="instagram://user?username=nilmanbeauty">
             <InstagramLogo width={25} height={25} />
             <span>اینستاگرام</span>
           </a>

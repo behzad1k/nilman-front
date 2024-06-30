@@ -50,7 +50,6 @@ export function OrdersModalContent({
       if (!editData?.service) return;
       const params = new URLSearchParams({
         type: 'worker',
-        service: editData.service.slug,
       });
       const res = await api(urls.adminUser + '?' + params, {}, true);
       if (res.code === 200) {

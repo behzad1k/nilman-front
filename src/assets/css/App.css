@@ -75,7 +75,7 @@ a {
 }
 :root {
   --light-pink: rgb(250, 224, 216);
-  --mid-pink: rgb(236, 170, 151);
+  --mid-pink: #c89dc7;
   --light-black: rgb(66, 66, 66);
   --white-pink: rgba(248, 243, 243, 0.74);
   --light-grey: rgba(224, 222, 222, 1);
@@ -590,6 +590,53 @@ main {
   height: 22px;
   border-radius: 10px;
   background-size: cover;
+}
+.workerDashboardMain{
+  padding-top: 70px;
+}
+.moreInfo{
+  background-color: var(--white-pink);
+  border-radius: 100px;
+  /*width: 100px;*/
+  padding: 3px 8px;
+  /*height: 40px;*/
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap:6px
+}
+.infoIcon{
+  content: url("/public/img/infoIcon.png");
+  width: 20px;
+  height: 20px;
+}
+.colorContainer{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 30px 10px;
+  width: 100%;
+  height: fit-content;
+
+}
+.colorRow{
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  width: 100%;
+  height: fit-content;
+  background-color: var(--white-pink);;
+  border-radius: 8px;
+  align-items: center;
+}
+.colorRow.selected {
+  border-color: rgb(245, 150, 165);
+  background-color: var(--light-pink);
+}
+.colorSpan{
+  width: 40px;
+  height: 25px;
+  border-radius: 109px;
 }
 /* banner component*/
 .banners {
@@ -1261,8 +1308,10 @@ main {
 }
 .selectedServiceIcon{
   content: url("/public/img/checked.png");
-  width: 20px;
-  height: 20px;margin-right: 20px;
+  width: 17px;
+  height: 17px;
+  margin-top: 5px;
+  margin-right: 20px;
 }
 .banner-row {
   display: flex;
@@ -1332,6 +1381,27 @@ main {
 
 .comment-textarea:focus-visible {
   outline: 0;
+}
+.infoRow{
+  display: flex;
+  flex-direction: column;
+  background-color: var(--white-pink);
+  min-height: 100px;
+  width: 100%;
+  padding: 10px;
+  gap: 10px;
+  border-radius: 16px;
+}
+.fontWeight400{
+  font-weight: 400;
+}
+.marginBottom10{
+  margin-bottom: 10px;
+}
+.infoModal{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 .close-button{
   content: url("/public/img/svg/cancel.svg");

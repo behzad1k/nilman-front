@@ -25,7 +25,6 @@ const cartSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(cart.fulfilled, (state, action) => {
-      console.log(action.payload);
       if (action.payload.code === 200) {
         state.cartItems = action.payload.data;
       }

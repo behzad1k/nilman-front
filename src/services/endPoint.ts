@@ -1,5 +1,6 @@
 export const urls = {
   services: '/service',
+  colors: '/color',
   login: '/login',
   check: '/check',
   posts: '/home/posts',

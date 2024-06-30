@@ -17,7 +17,6 @@ export default function Services() {
   const [image, setImage] = useState<any>({});
   const [editData, setEditData] = useState<IService | null>(null);
   const [services, setServices] = useState<IService[]>([]);
-
   const {register, handleSubmit, control, getValues} = useForm({
     values:
       {

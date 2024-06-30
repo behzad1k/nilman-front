@@ -33,7 +33,7 @@ const WorkerDashboard = () => {
   }, []);
 
   return (
-    <main>
+    <main className="workerDashboardMain">
       <section className="banners">
         <div className="dashCard">
           <span>کارکرد امروز</span>

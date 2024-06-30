@@ -24,9 +24,9 @@ export default function OrderCard({item}: IOrderCardProps) {
 
   const date = moment.unix(Number(item.date)).locale('fa').format('DD MMMM yy');
   const time = `${item.fromTime} - ${item.toTime}`;
-  const attributes = item.attributes.reduce((acc, atr, index) => {
-    if (index !== 0) return (acc += ', ' + atr.title);
-    else return (acc += atr.title);
+  const attributes = item.orderServices.reduce((acc, atr, index) => {
+    if (index !== 0) return (acc += ', ' + atr.service.title);
+    else return (acc += atr.service.title);
   }, '');
 
   const updateOrder = async () => {

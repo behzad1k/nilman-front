@@ -3,7 +3,9 @@ import { useDispatch } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { urls } from '../../../../services/endPoint.ts';
 import { api } from '../../../../services/http.ts';
+import { cart } from '../../../../services/redux/reducers/cartSlice.ts';
 import { SET_LOADING } from '../../../../services/redux/reducers/loadingSlice.ts';
+import { order } from '../../../../services/redux/reducers/orderSlice.ts';
 
 const Payment = ({ params }) => {
   const [searchParam, setSearchParam] = useSearchParams();
@@ -16,6 +18,10 @@ const Payment = ({ params }) => {
 
     if (res.code == 200){
       setIsSuccessful(true);
+      sessionStorage.removeItem('new-order')
+      sessionStorage.removeItem('step')
+      dispatch(cart());
+      dispatch(order());
     }
     dispatch(SET_LOADING(false));
   };
