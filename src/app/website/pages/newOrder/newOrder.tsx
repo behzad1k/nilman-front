@@ -242,6 +242,15 @@ export default function NewOrder() {
         {/*   </div> */}
         {/* </div> */}
         <div className="btn-section">
+          <Button
+            onClick={() => handleChangeStep('prev')}
+            size="large"
+            variant="outlined"
+            color="error"
+            disabled={step.index === 0}
+          >
+            مرحله قبل
+          </Button>
           {step.index === steps.length - 1 ? (
             <Button
               onClick={handleSubmitOrder}
@@ -262,15 +271,6 @@ export default function NewOrder() {
               مرحله بعد
             </Button>
           )}
-          <Button
-            onClick={() => handleChangeStep('prev')}
-            size="large"
-            variant="outlined"
-            color="error"
-            disabled={step.index === 0}
-          >
-            مرحله قبل
-          </Button>
         </div>
       </div>
     </main>

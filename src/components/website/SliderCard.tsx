@@ -6,7 +6,7 @@ export function SliderCard({url, title}: ISliderCardInfo) {
   const [openModal, setOpenModal] = useState(false);
   return (
     <>
-      <div className="sliderCard" style={{ backgroundImage: `url(${url})` }} onClick={() => setOpenModal(true)}>
+      <div className="sliderCard" style={{ background: `url(${url})`, backgroundSize: 'cover'}} onClick={() => setOpenModal(true)}>
       <span>
         <p>{title}</p>
         <i></i>

@@ -24,7 +24,6 @@ export default function AttributeStep({
   const cardRef = useRef<Array<HTMLElement | null>>([]);
   const [currentService, setCurrentService] = useState(selected.service);
   const handleSelectAttribute = (index: number, attribute: IService) => {
-    cardRef.current[index]?.classList.add('selected');
     if (attribute.attributes && attribute.attributes?.length > 0 && attribute.attributes[0]?.attributes?.length == 0) {
       setCurId(attribute);
       setDrawerOpen(true)
@@ -64,21 +63,21 @@ export default function AttributeStep({
     if (selected.attributes?.length > 0) setIsNextStepAllowed(true);
     else setIsNextStepAllowed(false);
   }, []);
-
+  console.log(selected.attributes);
   return (
     <div className="service-step-container">
       <section className="cards">
-        {currentService?.attributes?.map((attribute, index) => (
+        {[...currentService?.attributes].sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000))?.map((attribute, index) => (
           <div
             key={attribute.slug}
             ref={(el) => (cardRef.current[index] = el)}
             onClick={() => handleSelectAttribute(index, attribute)}
             className={`card ${
-              selected.attributes.includes(attribute) ? 'selected' : ''
+              attribute.attributes.find(e => selected.attributes.map(p => p.id).includes(e.id)) ? 'selected' : ''
             } ${index % 2 == 0 ? 'reversed' : ''}`}
           >
             <img src={'/img/' + attribute.slug + '.png'} />
-            <h2>{attribute.title}</h2>
+            <p className='attributeTitle'>{attribute.title}</p>
             <DeleteOutline
               className="delete-btn"
               onClick={(e) => handleUnselectAttribute(e, index, attribute)}

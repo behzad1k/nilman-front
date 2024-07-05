@@ -19,7 +19,7 @@ type Position = {
   lng: number;
 };
 
-export const Addresses = ({onClick, editable = false}: {onClick?: (address: IAddress) => void, editable: boolean}) => {
+export const Addresses = ({onClick, editable = false, mini = false}: {onClick?: (address: IAddress) => void, editable: boolean, mini: boolean}) => {
   const userReducer = useAppSelector((state) => state.userReducer);
   const userAddresses = userReducer.addresses
   const navigate = useNavigate();
@@ -55,6 +55,7 @@ export const Addresses = ({onClick, editable = false}: {onClick?: (address: IAdd
           setSelected={setSelected}
           onClick={onClick}
           editable={editable}
+mini={mini}
         />
       ))}
       <div className="addressContainer add" onClick={() => userReducer.isLoggedIn ? navigate('/address/add') : toast('لطفا ابتدا وارد شوید!', { onClose: () => navigate('/login'), type: 'error' })}>

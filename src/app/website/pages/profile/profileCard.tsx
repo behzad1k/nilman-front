@@ -1,5 +1,5 @@
-import {PencilLine, SignOut} from '@phosphor-icons/react';
-import {useEffect, useRef, useState} from 'react';
+import { Camera, PencilLine, SignOut } from '@phosphor-icons/react';
+import React, {useEffect, useRef, useState} from 'react';
 import {logout} from '../../../../services/apis/global.ts';
 import {api} from '../../../../services/http';
 import {urls} from '../../../../services/endPoint';
@@ -89,8 +89,11 @@ export function ProfileCard() {
         </div>
         <div className="profileCardPicture">
           <span className="profilePicture">
-            <img src={profile?.media?.url || '/img/girl.png'} />
+          <img src="/img/girl.png" />
+          <span className="pfpButtons">
+            <Camera className="camera" size={32} />
           </span>
+        </span>
         </div>
       </div>
     </section>

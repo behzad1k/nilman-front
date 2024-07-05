@@ -13,6 +13,7 @@ export function Slider({title, cardInfos}: IProps) {
     cardInfos.map((value: ISliderCardInfo, index) => {
       rows.push(<SliderCard url={value.url} title={value.title} key={index}/>);
     });
+
     return rows;
   };
   return (

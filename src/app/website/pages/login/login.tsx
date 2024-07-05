@@ -1,16 +1,18 @@
-import { Box, Button, Container, Typography } from '@mui/material';
+import { Box, Button, Container, SwipeableDrawer, Typography } from '@mui/material';
 import Cookies from 'js-cookie';
-import { useEffect, useRef, useState } from 'react';
+import Picker, { MaskComponent } from 'react-simple-picker';
+import React, { CSSProperties, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Loading, OtpInput, TextInput } from '../../../../components';
+import { Loading, Modal, OtpInput, TextInput } from '../../../../components';
 import { userApis } from '../../../../services/apis/global.ts';
 import { urls } from '../../../../services/endPoint';
 import { api } from '../../../../services/http';
 import { SET_LOADING } from '../../../../services/redux/reducers/loadingSlice.ts';
 import { SET_LOGGED_IN } from '../../../../services/redux/reducers/userSlice';
 import { AppDispatch, useAppDispatch, useAppSelector } from '../../../../services/redux/store';
+import styles from '../../../../assets/css/scroll.css'
 
 type LoginState = 'phoneNumber' | 'otp' | 'complete-profile';
 type LoginForm = {
@@ -19,6 +21,7 @@ type LoginForm = {
   name?: string;
   lastName?: string;
   nationalCode?: string;
+  birthday?: string;
 };
 
 export default function Login() {
@@ -36,6 +39,12 @@ export default function Login() {
   const dispatch: AppDispatch = useAppDispatch();
   const navigate = useNavigate();
   const [urlParams] = useSearchParams();
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [birthday, setBirthday] = useState({
+    day: 0,
+    month: 0,
+    year: 0
+  });
 
   const handleResendCode = async (data: LoginForm = null) => {
     if (getValues().phoneNumber.length != 11 || getValues().phoneNumber.at(0) != '0' || getValues().phoneNumber.at(1) != '9') {
@@ -59,6 +68,15 @@ export default function Login() {
     setLoginState('otp');
   };
 
+  const renderCustomMask = (className: string, style?: CSSProperties) => {
+    const CustomMask = (Mask: MaskComponent) => (
+      <Mask className={className} style={style} />
+    );
+
+    CustomMask.displayName = 'CustomMask';
+
+    return CustomMask;
+  };
   const handleSubmitForm = async (data: LoginForm = null) => {
     if (loginState === 'phoneNumber') {
       if (data.phoneNumber.length != 11 || data.phoneNumber.at(0) != '0' || data.phoneNumber.at(1) != '9') {
@@ -126,6 +144,7 @@ export default function Login() {
           name: data.name,
           lastName: data.lastName,
           nationalCode: data.nationalCode,
+          birthday: Object.values(birthday).reverse().reduce((acc, curr, index) => acc + curr + (index < 2 ? '/' : '') , '')
         },
       };
       dispatch(SET_LOADING(true));
@@ -369,6 +388,26 @@ export default function Login() {
                   },
                 }}
               />
+              <TextInput
+                label="تاریخ تولد"
+                name="birthday"
+                control={control}
+                defaultValue=""
+                size="medium"
+                value={Object.values(birthday).reverse().reduce((acc, curr, index) => acc + curr + (index < 2 ? '/' : '') , '')}
+                // disabled={true}
+                onClick={() => setShowDatePicker(true)}
+                sx={{
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'var(--mid-pink)',
+                    backgroundColor: 'var(--white-pink)',
+                    borderRadius: '10px',
+                  },
+                  '& .MuiOutlinedInput-input': {
+                    zIndex: 1,
+                  },
+                }}
+              />
               <Button
                 variant="contained"
                 type="submit"
@@ -387,6 +426,67 @@ export default function Login() {
           )}
         </Box>
       </Container>
+      <SwipeableDrawer
+      anchor="bottom"
+      open={showDatePicker}
+      onClose={() => setShowDatePicker(false)}
+      onOpen={() => setShowDatePicker(true)}
+      disableSwipeToOpen={false}
+      ModalProps={{
+        keepMounted: true,
+      }}
+    >
+        <i className="close-button datepicker" onClick={() => setShowDatePicker(false)}></i>
+        <p className='fontWeight400 padding10'>تاریخ تولد خود را وارد کنید</p>
+        <section className='datePickerModal'>
+          <Picker
+            className='datepicker-year'
+            height={300}
+            iconAdd={<div>+</div>}
+            iconMinus={<div>-</div>}
+            initCount={1}
+            minCount={1}
+            maxCount={31}
+            preloadCount={8}
+            renderMask={renderCustomMask(styles.gradientMask, {
+              background: 'var(--mid-pink)',
+              borderRadius: '8px',
+              color: '#FFFFFF',
+            })}
+            onChange={number => setBirthday(prev => ({ ...prev, day: number}))}
+          />
+          <Picker
+            className='datepicker-year'
+            height={300}
+            iconAdd={<div>+</div>}
+            iconMinus={<div>-</div>}
+            initCount={1}
+            minCount={1}
+            maxCount={12}
+            preloadCount={8}
+            renderMask={renderCustomMask(styles.gradientMask, {
+              background: 'var(--mid-pink)',
+              borderRadius: '8px',
+              color: '#FFFFFF',
+            })}            onChange={number => setBirthday(prev => ({ ...prev, month: number}))}
+          />
+          <Picker
+            className='datepicker-year'
+            height={300}
+            iconAdd={<div>+</div>}
+            iconMinus={<div>-</div>}
+            initCount={1375}
+            minCount={1320}
+            maxCount={1403}
+            preloadCount={8}
+            renderMask={renderCustomMask(styles.gradientMask, {
+              background: 'var(--mid-pink)',
+              borderRadius: '8px',
+              color: '#FFFFFF',
+            })}            onChange={number => setBirthday(prev => ({ ...prev, year: number}))}
+          />
+        </section>
+    </SwipeableDrawer>
     </Box>
   );
 }

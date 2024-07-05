@@ -15,8 +15,14 @@ export default function Feedback() {
   const [comment, setComment] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [order, setOrder] = useState<IOrder>();
+  const [tab, setTab] = useState('good');
+  const [factors, setFactors] = useState([]);
   const params = useParams();
   const navigate = useNavigate();
+  const tabTitles = {
+    good: 'نقاط قوت',
+    bad: 'نقاط ضعف',
+  }
 
   const handleRate = (e: SyntheticEvent, newRate: number | null) => {
     if (newRate) setRate(newRate);
@@ -42,6 +48,11 @@ export default function Feedback() {
     }
   };
 
+  const fetchFactors = async () => {
+    const res = await api(urls.feedbackFactors, { method: 'GET'})
+    setFactors(res.data)
+  };
+
   const fetchData = async () => {
     const res = await api(urls.orderSingle + '/' + params.id, {}, true)
     if (!res.data){
@@ -58,6 +69,7 @@ export default function Feedback() {
       toast('لطفا ابتدا وارد شوید', { type: 'error' })
       navigate(`/login?from=/feedback/${params.id}`)
     } else {
+      fetchFactors();
       fetchData()
     }
   }, []);
@@ -77,7 +89,7 @@ export default function Feedback() {
         {!isSubmitted ? (
           <>
             <Typography variant="body2" lineHeight="26px" component="p">
-              لطفا جهت نظارت و بهبود عملکرد، نظر و تجربه خود را با ما به اشتراک بگزارید.
+              لطفا جهت نظارت و بهبود عملکرد، تجربه خود را با ما به اشتراک بگذارید.
             </Typography>
             <Box
               onSubmit={handleSubmit}
@@ -98,6 +110,18 @@ export default function Feedback() {
                   '& .MuiRating-iconFilled': {color: 'var(--mid-pink)'},
                 }}
               />
+
+              <div className='feedbackFactors'>
+                <div className='feedbackFactorsCol'>
+                  <span className='feedbackFactorsCell head'>نقاط مثبت</span>
+                  {factors?.filter(e => e.isPositive).map(e => <span className='feedbackFactorsCell positive'>{e.title}</span>)}
+                </div>
+                <div className='feedbackFactorsCol'>
+                  <span className='feedbackFactorsCell head'>نقاط منفی</span>
+                  {factors?.filter(e => !e.isPositive).map(e => <span className='feedbackFactorsCell negative'>{e.title}</span>)}
+                </div>
+              </div>
+
               <TextareaAutosize
                 className="comment-textarea"
                 minRows={5}

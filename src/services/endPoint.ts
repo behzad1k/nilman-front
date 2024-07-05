@@ -11,6 +11,7 @@ export const urls = {
   address: '/address/',
   order: '/order',
   orderSingle: '/order/single',
+  feedbackFactors: '/feedback/factors',
   cart: '/order/cart',
   pay: '/order/pay',
   paymentVerify: '/order/pay/verify/',

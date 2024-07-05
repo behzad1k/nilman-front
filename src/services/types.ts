@@ -20,8 +20,11 @@ export interface IService {
   parent?: IService;
   attributes?: IService[];
   hasColor: boolean;
+  isMulti: boolean;
+  hasMedia: boolean;
   color?: string;
-  media: any
+  media: any,
+  sort: number
 }
 
 export interface IAddress {

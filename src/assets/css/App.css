@@ -411,8 +411,8 @@ main {
 }
 .addressDetails {
   padding-right: 10px;
-  width: 50%;
-  display: flex;
+  width: 93%;
+  text-align:justify;  display: flex;
   justify-content: space-evenly;
   align-items: flex-start;
   flex-direction: column;
@@ -424,6 +424,12 @@ main {
   justify-content: space-between;
   align-items: flex-start;
   flex-direction: row;
+  font-size: 14px;
+}
+.addressDots{
+  transform: rotate(90deg);
+  position: absolute;
+  left: 20px;
 }
 .addressMap {
   width: 40%;
@@ -566,12 +572,13 @@ main {
   flex-shrink: 0;
   border-radius: 15px;
   overflow: hidden;
-  max-height: 200px;
-  max-width: 200px;
+  max-height: 150px;
+  max-width: 150px;
   background-size: cover;
   color: #fff;
   margin-bottom: 10px;
   position: relative;
+  font-size: 12px;
 }
 .sliderCard span {
   display: flex;
@@ -610,14 +617,18 @@ main {
   width: 20px;
   height: 20px;
 }
+.marginLeftAuto{
+  margin-left: auto;
+}
 .colorContainer{
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 30px 10px;
+  padding: 10px 0;
   width: 100%;
   height: fit-content;
-
+  max-height: 400px;
+  overflow: auto;
 }
 .colorRow{
   display: flex;
@@ -751,7 +762,11 @@ main {
   position: absolute;
   z-index: 300;
 }
-
+.pfpButtons > .camera{
+  width: 40px;
+  height: 40px;
+  left: 7vw;
+}
 .pfpButtons > * {
   z-index: 300;
   position: absolute;
@@ -1045,6 +1060,7 @@ main {
   border-radius: 6px;
   height: 70px;
   font-weight: 300;
+  font-size: 17px;
 }
 .service-step-container .card.service{
   height: 120px;
@@ -1056,7 +1072,10 @@ main {
 }
 .service-step-container .card.reversed{
   background: linear-gradient( 270deg, #f4c8bc, rgba(242, 224, 221, 0.65) );
-
+}
+.attributeTitle{
+  font-size: 17px;
+  font-weight: 400;
 }
 .cardInfoIcon{
   content: url("/public/img/icons8-info-48.png");
@@ -1185,11 +1204,12 @@ main {
 
 .tick{
   content: url("/public/img/checked.png");
-  margin-right: 100px;
   opacity: .5;
   z-index: 0;
+
   position: absolute;
   width: 60px;
+  margin: auto;
 }
 .pencil{
   background: #d2d1d1;
@@ -1203,7 +1223,8 @@ main {
 }
 .addressContainer.selected {
   border-radius: 12px;
-  background-color: var(--mid-pink);
+  border: 3px solid #72ad5d;
+  /*background-color: #a0d28f;*/
 }
 .servicesContainer{
   position: fixed;
@@ -1395,6 +1416,13 @@ main {
 .fontWeight400{
   font-weight: 400;
 }
+.infoModalDesc{
+  text-align:justify;
+  font-size: 14px;
+}
+.padding10{
+  padding: 10px;
+}
 .marginBottom10{
   margin-bottom: 10px;
 }
@@ -1402,6 +1430,30 @@ main {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+.infoModal.mediaModal{
+  align-items: center;
+  margin-bottom: 10px;
+}
+.infoModal.mediaModal img{
+  max-width: 400px;
+  max-height: 400px;
+}
+.displayNone{
+  display: none;
+}
+.uploadPhotoButton{
+  align-items: center;
+  gap: 10px;
+  display: flex;
+  padding: 4px;
+  border: 1px solid grey;
+  border-radius: 8px;
+}
+.uploadPhotoButton i{
+  content: url("/public/img/folder.png");
+  width: 30px;
+  height: 30px;
 }
 .close-button{
   content: url("/public/img/svg/cancel.svg");
@@ -1412,7 +1464,22 @@ main {
   left: 1px;
   padding: 5px;
 }
+.close-button.datepicker{
+  margin-top: 0;
+}
+.datepicker-year{
+  width: 100px;
+}
 
+.datePickerModal{
+  display: flex;
+  padding: 10px 40px;
+  justify-content: space-between;
+  gap: 10px;
+}
+.backgroundGrey{
+  background-color: #000;
+}
 .editProfile{
   height: 100vh;
   display: flex;
@@ -1469,4 +1536,104 @@ main {
 }
 .textInput.half{
   width: 45%
+}
+.feedbackFactors{
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+
+.feedbackFactorsCell.head{
+  border: 0;
+  font-size: 17px;
+  font-weight: 300;
+}
+.feedbackFactorsCell.head.negative{
+  /*background: red;*/
+}
+.feedbackFactorsCell.head.positive{
+  /*background: green;*/
+}
+
+.feedbackFactorsCol{
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.feedbackFactorsCell{
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  width: 90%;
+  border-radius: 30px;
+  border: 0.5px solid #3f4d67;
+}
+.feedbackFactorsCell.positive{
+  border: 2px solid #5eaf5e;
+
+}
+.feedbackFactorsCell.negative{
+  border: 2px solid #e76f6f;
+
+}
+.tabContainer{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.tabContainer.tabCell{
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.calTabs{
+  width: 100%;
+  overflow: auto;
+  display: flex;
+  gap: 5px;
+}
+.calTabs .calTabCell{
+  min-width: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.calSections{
+  padding: 20px 20px 0;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.calTabs .calTabCell.selected {
+  color: var(--mid-pink);
+  border-bottom: 3px solid var(--mid-pink);
+}
+.calSectionsSpan{
+  padding: 5px;
+  direction: ltr;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 160px;
+  border: 0.5px solid var(--light-black);
+  border-radius: 16px;
+}
+.calSections .calSectionsSpan.disabled {
+  background: #aaaaaa;
+}
+.calSections .calSectionsSpan.selected{
+  color: #FFF;
+  background: var(--mid-pink);
+  border: 1px solid var(--mid-pink);
 }

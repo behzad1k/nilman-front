@@ -25,7 +25,7 @@ export default function Home() {
       imgSrc: '/img/img1.jpg',
     },
     {
-      title: 'کاشت ناخن',
+      title: 'کاشت نا خن',
       imgSrc: '/img/img2.jpg',
     },
     {

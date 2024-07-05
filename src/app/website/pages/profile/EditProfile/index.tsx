@@ -25,10 +25,11 @@ const EditProfile = () => {
   const submit = async () => {
     dispatch(SET_LOADING(true));
 
-    const res = await api(urls.getUser, { method: 'PUT', body: { name: form.name, lastName: form.lastName }}, true)
+    const res = await api(urls.getUser, { method: 'POST', body: { name: form.name, lastName: form.lastName }}, true)
 
     if (res.code == 200){
       toast('اطلاعات کابری با موفقیت بروزرسانی شد.', { type: 'success'})
+      navigate('/profile')
     }else{
       toast('مشکلی پیش آمده، لطفا مجددا امتحان کنید یا با اپراتور تماس بگیرید', { type: 'error'})
     }

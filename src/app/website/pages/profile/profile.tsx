@@ -44,7 +44,7 @@ export default function Profile() {
         </div>
       </section>
       <h3>آدرس ها</h3>
-      <Addresses editable={true}/>
+      <Addresses editable={true} mini={true}/>
     </main>
   );
 }

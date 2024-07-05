@@ -30,7 +30,7 @@ export default function ServiceStep({
   return (
     <div className="service-step-container">
       <section className="cards">
-        {services.map((service, index) => (
+        {[...services].sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000)).map((service, index) => (
           <div
             key={service.slug}
             ref={(el) => (cardRef.current[index] = el)}

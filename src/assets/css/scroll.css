@@ -1,0 +1,35 @@
+.white-button{
+    /*color: white;*/
+    height: 100%;
+}
+
+.white-button-b {
+    /*composes: white-button;*/
+    border-bottom: 1px white solid;
+}
+
+.white-button-t {
+    /*composes: white-button;*/
+    border-top: 1px white solid;
+}
+
+.date-mask {
+    /*background-color: transparent;*/
+    border-style: solid;
+    border-width: 5px 0 5px 0;
+    border-color: gainsboro;
+}
+
+.gradient-mask {
+    background: #FFF;
+    color: #FFF
+}
+
+.custom-picker {
+    width: 40px;
+    /*background-color: #cb2424;*/
+}
+
+.layout {
+    display: flex;
+}

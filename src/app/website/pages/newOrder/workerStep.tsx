@@ -7,6 +7,7 @@ import { DatePicker } from 'zaman';
 import {api} from '../../../../services/http';
 import {urls} from '../../../../services/endPoint';
 import {SelectInput, TextInput} from '../../../../components';
+import { useAppSelector } from '../../../../services/redux/store.ts';
 import {IService, IUser} from '../../../../services/types';
 import {createSchedule} from '../../../../utils/utils';
 import {Selected} from './newOrder';
@@ -57,9 +58,11 @@ export default function WorkerStep({
   const [schedules, setSchedules] = useState<ScheduleCard[] | []>([]);
   const [date, setDate] = useState();
   const [selectedTab, setSelectedTab] = useState<Tab>(tabs[0]);
+  const [calTab, setCalTab] = useState(0);
+  const [selectedSection, setSelectedSection] = useState<any>();
   const cardRef = useRef<Array<HTMLElement | null>>([]);
   const tabsRef = useRef<Array<HTMLElement | null>>([]);
-
+  const orderReducer = useAppSelector(state => state.orderReducer);
   // Vars
   const curDate = new Date();
   const minDate = curDate.setDate(curDate.getDate() - 1);
@@ -115,6 +118,38 @@ export default function WorkerStep({
     setSchedules([]);
   };
 
+  const calender = () => {
+    const tabs: ReactElement[] = [];
+
+    for (let i = 0; i < 14; i++) {
+      tabs.push(
+        <div className={`calTabCell${calTab == i ? ' selected' : ''}`} onClick={() => setCalTab(i)}>
+        <span>
+        {moment().add(i, 'd').locale('fa').format('DD')}
+        </span>
+        <span>
+        {i ==0 ? 'امروز' : i == 1 ? 'فردا' : moment().add(i, 'd').locale('fa').format('dddd')}
+        </span>
+      </div>
+      )
+    }
+
+    const sections = []
+    for (let i = 8; i < 20; i = i + 2) {
+      const disabled = (i + 3) < Number(moment().format('HH')) ;
+      sections.push(<span className={`calSectionsSpan${selectedSection == i ? ' selected' : ''} ${disabled ? 'disabled' : ''}`} onClick={() => !disabled && setSelectedSection(i)}>{i} - {i + 2}</span>)
+    }
+
+    const body =
+      <div>
+        <div className='calTabs'>
+        {tabs}
+        </div>
+      <div className='calSections'>{sections}</div>
+      </div>
+    return body;
+  };
+
   const fetchWorkersOff = async () => {
     let query;
     // Asap mode
@@ -168,17 +203,6 @@ export default function WorkerStep({
   return (
     <div className="service-step-container">
       <p className="hint-text">یکی از حالت های زیر را برای ادامه انتخاب کنید</p>
-      <div className="tabs">
-        {tabs.map((tab) => (
-          <div
-            className={`tab ${tab.index === 0 && 'selected'}`}
-            ref={(el) => (tabsRef.current[tab.index] = el)}
-            onClick={() => handleChangeTab(tab)}
-          >
-            {tab.name}
-          </div>
-        ))}
-      </div>
       <TextInput
         name="discount"
         label="کد تخفیف"
@@ -199,87 +223,36 @@ export default function WorkerStep({
         }}
       />
       <p className="hint-text">
-        {selectedTab.index === 1 && 'لطفا تاریخ مورد نظر خود را انتخاب کنید'}
-        {selectedTab.index === 2 && 'لطفا تاریخ و آرایشگر مورد نظر خود را انتخاب کنید'}
+        {/* لطفا تاریخ و آرایشگر مورد نظر خود را انتخاب کنید */}
+        {/* {selectedTab.index === 1 && 'لطفا تاریخ مورد نظر خود را انتخاب کنید'} */}
+        {/* {selectedTab.index === 2 && 'لطفا تاریخ و آرایشگر مورد نظر خود را انتخاب کنید'} */}
       </p>
       <div className="content">
-        {selectedTab.index === 0 ? (
-          <div>
-            <h3>نزدیک ترین زمان ممکن :</h3>
-            <p>{nearest?.date}</p>
-          </div>
-        ) : (
-          <>
-            <div className="app-date-picker">
-              <DatePicker
-                // value={(date as any)}
-                inputClass='app-date-picker-input'
-                from={minDate}
-                onChange={(value) => {
-                  setSelected(prev => ({
-                    ...prev,
-                    date: Math.floor(new Date(value.value).getTime() / 1000)
-                  }));
-
-                }}
-                defaultValue={(defaultDate as any)}
-              />
-            </div>
-            <h5>ساعت</h5>
-            <div className="newOrderTime">
-              {times()}
-            </div>
-            {selectedTab.index === 2 && (
-              <SelectInput
-                name="worker"
-                label="آرایشگر"
-                control={control}
-                defaultValue=""
-                size="medium"
-                sx={{
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'var(--mid-pink)',
-                    backgroundColor: 'var(--white-pink)',
-                    borderRadius: '10px',
-                  },
-                }}
-              >
-                {workers.map((worker) => (
-                  <MenuItem key={worker.id} value={worker.id}>
-                    {worker.name} {worker.lastName}
-                  </MenuItem>
-                ))}
-              </SelectInput>
-            )}
-            {/* <Button variant="contained" size="large" onClick={() => fetchWorkersOff()}> */}
-            {/*   برنامه زمانی */}
-            {/* </Button> */}
-          </>
-        )}
-
-        {/* {schedules.length > 0 && ( */}
-        {/*   <div className="workers-schedule"> */}
-        {/*     <div className="card"> */}
-        {/*       <p className="day"> */}
-        {/*         <span>{m.format('dddd')}</span> */}
-        {/*         <span>{m.format('D')}</span> */}
-        {/*         <span>{m.format('MMMM')}</span> */}
-        {/*       </p> */}
-        {/*       <div className="sections"> */}
-        {/*         {schedules.map((section, index) => ( */}
-        {/*           <div */}
-        {/*             key={index} */}
-        {/*             ref={(el) => (cardRef.current[index] = el)} */}
-        {/*             onClick={() => handleSelectDay(index, section.fromTime)} */}
-        {/*             className="section" */}
-        {/*           > */}
-        {/*             {`${section.fromTime} - ${section.toTime}`} */}
-        {/*           </div> */}
-        {/*         ))} */}
-        {/*       </div> */}
-        {/*     </div> */}
-        {/*   </div> */}
-        {/* )} */}
+        {calender()}
+      </div>
+      <div>
+        {orderReducer.orders.filter(e => e.serviceId == selected.service.id).length > 0 &&
+        <SelectInput
+          name="worker"
+          label="آرایشگر"
+          control={control}
+          defaultValue=""
+          size="medium"
+          sx={{
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderColor: 'var(--mid-pink)',
+              backgroundColor: 'var(--white-pink)',
+              borderRadius: '10px',
+            },
+          }}
+        >
+          {orderReducer.orders.filter(e => e.serviceId == selected.service.id).map(e => e.worker).map((worker) => (
+            <MenuItem key={worker.id} value={worker.id}>
+              {worker.name} {worker.lastName}
+            </MenuItem>
+          ))}
+        </SelectInput>
+        }
       </div>
     </div>
   );

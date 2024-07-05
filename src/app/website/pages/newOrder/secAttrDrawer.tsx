@@ -1,6 +1,7 @@
 import { attributes } from 'js-cookie';
 import React, {useEffect, useRef, useState} from 'react';
 import {Global} from '@emotion/react';
+import { toast } from 'react-toastify';
 import { Modal } from '../../../../components';
 import { services } from '../../../../services/redux/reducers/serviceSlice.ts';
 import { useAppSelector } from '../../../../services/redux/store.ts';
@@ -39,7 +40,12 @@ export default function SecAttrDrawer({
     attr: null,
     open: false,
   });
+  const [pickMedia, setPickMedia] = useState(false);
   const [infoModal, setInfoModal] = useState(false);
+  const [media, setMedia] = useState({
+    preview: null,
+    data: null
+  });
   const boxEl = useRef<Array<HTMLElement | null>>([]);
   const toggleDrawer = (newOpen: boolean) => () => {
     const cond = curParent?.attributes?.some((secAttr) =>
@@ -49,19 +55,19 @@ export default function SecAttrDrawer({
     setOpen(newOpen);
   };
   const handleClickCard = (index: number, secAttr: IService) => {
-    boxEl.current.map((el, i) =>
-      index === i && el?.classList.add('selected')
-    )
-
+    if(secAttr.hasMedia) {
+      setPickMedia(true)
+    }
     if (secAttr.hasColor) {
       // PICK COLOR FIRST
       setPickingColor({attr: secAttr, open: true});
     } else {
       if (secAttr.attributes?.length > 0){
         setCurParent(secAttr);
+      }else {
+        handleAddAttribute(secAttr, null);
       }
       // NO COLOR - ADD TO ATTRIBUTES
-      handleAddAttribute(secAttr, null);
     }
   };
 
@@ -69,6 +75,12 @@ export default function SecAttrDrawer({
     if (!secAttr) return;
     const newAttr = {...secAttr};
     if (color) newAttr.color = color;
+    console.log((curParent || parent));
+    console.log(selected.attributes.find(e => e.parent?.id == (curParent || parent).id));
+    if (!(curParent || parent).isMulti && selected.attributes.find(e => e.parent?.id == (curParent || parent).id)){
+      toast(`انتخاب بیش از یک خدمت در ${(curParent || parent).title} مجاز نمی باشد`, {type: 'error'})
+      return;
+    }
     setSelected((prev: Selected) => {
       return {...prev, attributes: prev.attributes?.find(e => e.id == newAttr.id) ? prev.attributes?.filter(e => e.id != newAttr.id) : [...prev.attributes, newAttr] };
     });
@@ -77,7 +89,7 @@ export default function SecAttrDrawer({
   };
   const handleCloseDrawer = () => {
     setOpen(false)
-    
+    setPickingColor({attr: null, open: false})
   }
   if (curParent || parent) {
     return (
@@ -120,9 +132,9 @@ export default function SecAttrDrawer({
               <Close onClick={handleCloseDrawer} />
             </Box>
             {pickingColor.open ? (
-              <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
+              <Box display="flex" flexDirection="column" alignItems="center" padding='0 10px' gap={2}>
+                <p className='marginLeftAuto'> انتخاب رنگ</p>
                 <div className='colorContainer'>
-                  <p> انتخاب رنگ</p>
                   {colors.map((color) =>
                     <div className={`colorRow ${selectedColors.includes(color.slug) ? 'selected' : ''}`} key={color.slug} onClick={() => setSelectedColors(prev => prev.includes(color.slug) ? prev.filter(e => e != color.slug) : [...prev, color.slug])}>
                       <span>
@@ -136,7 +148,7 @@ export default function SecAttrDrawer({
                 <Box display="flex" width="100%" gap={2}>
                   <Button
                     size="large"
-                    sx={{flex: 1}}
+                    sx={{flex: 1, backgroundColor: '#4b794b', color: '#FFF'}}
                     variant="contained"
                     onClick={() => handleAddAttribute(pickingColor.attr, color)}
                   >
@@ -147,9 +159,7 @@ export default function SecAttrDrawer({
                     size="large"
                     color="secondary"
                     onClick={() => setPickingColor({attr: null, open: false})}
-                  >
-                    تغییر سرویس
-                  </Button>
+                  >بازگشت</Button>
                 </Box>
               </Box>
             ) : (
@@ -162,7 +172,7 @@ export default function SecAttrDrawer({
                 <Typography variant="caption" component="p" mb={1}>
                   یک یا چند مورد را انتخاب کنید
                 </Typography>
-                {(curParent || parent)?.attributes?.map((secAttr, index) => (
+                {[...(curParent || parent)?.attributes]?.sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000)).map((secAttr, index) => (
                   <Box
                     key={secAttr.slug}
                     className={`attr-box ${
@@ -198,9 +208,12 @@ export default function SecAttrDrawer({
                 ))}
               </>
             )}
-            <button className='confirmButton order' onClick={() => setOpen(false)}>
-              ثبت
-            </button>
+            {!pickingColor.open &&
+                <button className='confirmButton order' onClick={() => setOpen(false)}>
+                    ثبت
+                </button>
+            }
+
           </Box>
         </SwipeableDrawer>
         <Modal open={infoModal} setOpen={setInfoModal}>
@@ -210,10 +223,38 @@ export default function SecAttrDrawer({
             {(curParent || parent).attributes.map((attribute, index) =>
             <div className='infoRow'>
               <span className='fontWeight400'>{attribute.title}</span>
-              <span>{attribute.description}</span>
+              <span className='infoModalDesc'>{attribute.description}</span>
             </div>
             )}
           </section>
+        </Modal>
+        <Modal open={pickMedia} setOpen={setPickMedia}>
+          <i className="close-button" onClick={() => setPickMedia(false)}></i>
+          <p className='fontWeight400 marginBottom10'>اگر طرح خاصی برای خدمت انتخابی خود در نظر دارید عکس آن را در اینجا بارگزاری نمایید</p>
+          <section className='infoModal mediaModal'>
+            <label htmlFor='uploadPhoto' className='uploadPhotoButton'><i></i>بارگزاری تصویر</label>
+            <input type='file' id='uploadPhoto' className='displayNone' onChange={(input) => setMedia({
+              data: input.target.files[0],
+              preview: URL.createObjectURL(input.target.files[0]),
+            })}/>
+            {media.preview && <img src={media.preview} />}
+          </section>
+          <Box display="flex" width="100%" gap={2}>
+            <Button
+              size="large"
+              sx={{flex: 1, backgroundColor: '#4b794b', color: '#FFF'}}
+              variant="contained"
+              onClick={() => setPickMedia(false)}
+            >
+              تایید
+            </Button>
+            <Button
+              variant="outlined"
+              size="large"
+              color="secondary"
+              onClick={() => setPickMedia(false)}
+            >بازگشت</Button>
+          </Box>
         </Modal>
       </>
     );
