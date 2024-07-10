@@ -12,6 +12,27 @@ type ScheduleCard = {
   toTime: number;
 };
 
+
+export const extractChildren = (node: any, array: any[], index: number = 0, depth = 0) => {
+  ++depth;
+
+  let newTitle = ''
+  for (let i = 1; i < depth; i++) {
+    newTitle += '-'
+  }
+
+  const j = { ...node, title: node.title + newTitle }
+
+  array.push(j)
+
+  if (j.attributes) {
+    j.attributes.map(e => {
+      return extractChildren(e, array, ++index, depth)
+    })
+  }
+  return array;
+}
+
 export const formatPrice = (value: number | string) =>
   Intl.NumberFormat().format(value as number);
 

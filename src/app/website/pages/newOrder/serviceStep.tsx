@@ -1,4 +1,5 @@
 import {useRef, useEffect} from 'react';
+import { toast } from 'react-toastify';
 import {useAppSelector} from '../../../../services/redux/store';
 import {IService} from '../../../../services/types';
 import {Selected} from './newOrder';
@@ -15,10 +16,14 @@ export default function ServiceStep({
   setStep,
 }: Props) {
   const services = useAppSelector((state) => state.serviceReducer.services);
-
+  const cart = useAppSelector(state => state.cartReducer.cartItems);
   const cardRef = useRef<Array<HTMLElement | null>>([]);
 
   const handleSelectService = (index: number, service: IService) => {
+    if(cart.find(e => e.serviceId == service.id)){
+      toast(`لطفا ابتدا سفارش ${service.title} فعلی خود را در سبد خرید پرداخت یا حذف کنید`)
+      return
+    }
     cardRef.current.map((el, i) =>
       index === i ? el?.classList.add('selected') : el?.classList.remove('selected'),
     );

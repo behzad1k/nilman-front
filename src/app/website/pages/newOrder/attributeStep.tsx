@@ -1,5 +1,6 @@
 import {useRef, useState, useEffect} from 'react';
 import {DeleteOutline} from '@mui/icons-material';
+import { toast } from 'react-toastify';
 import { Modal } from '../../../../components';
 import {useAppSelector} from '../../../../services/redux/store';
 import {IService} from '../../../../services/types';
@@ -21,18 +22,22 @@ export default function AttributeStep({
   const [openModal, setOpenModal] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [curId, setCurId] = useState<IService | null>(null);
+  const services = useAppSelector(state => state.serviceReducer.allServices)
   const cardRef = useRef<Array<HTMLElement | null>>([]);
   const [currentService, setCurrentService] = useState(selected.service);
   const handleSelectAttribute = (index: number, attribute: IService) => {
     if (attribute.attributes && attribute.attributes?.length > 0 && attribute.attributes[0]?.attributes?.length == 0) {
-      setCurId(attribute);
-      setDrawerOpen(true)
+      if (!attribute.parent.isMulti && selected.attributes.find(e => services.find(j => j?.id == e.parent?.id)?.parent.id == attribute.parent.id)){
+        toast(`انتخاب بیش از یک خدمت در ${attribute.parent.title} مجاز نمی باشد`, {type: 'error'})
+      }else{
+        setCurId(attribute);
+        setDrawerOpen(true);
+      }
     }else if(attribute.attributes && attribute.attributes.length > 0 && attribute.attributes[0]?.attributes?.length > 0){
       setCurrentService(attribute);
     }
     setIsNextStepAllowed(true);
   };
-  console.log(selected.service);
   const handleUnselectAttribute = (
     e: React.MouseEvent,
     index: number,
@@ -45,7 +50,6 @@ export default function AttributeStep({
     if (attribute.attributes) {
       slugsToRemove = [...slugsToRemove, ...attribute.attributes.map((atr) => atr.slug)];
     }
-    console.log(slugsToRemove);
     setSelected((prev: Selected) => {
       const newSelectedAttrs = prev.attributes.filter(
         (selected) => !slugsToRemove.includes(selected.slug),
@@ -63,7 +67,6 @@ export default function AttributeStep({
     if (selected.attributes?.length > 0) setIsNextStepAllowed(true);
     else setIsNextStepAllowed(false);
   }, []);
-  console.log(selected.attributes);
   return (
     <div className="service-step-container">
       <section className="cards">

@@ -30,6 +30,10 @@ const CartItem = ({item}: ICartItemProps) => {
       },
       true,
     );
+    if (res.code == 200){
+      dispatch(cart())
+      toast('سفارش با موفقیت از سبد خرید حذف شد', { type: 'success'});
+    }
     dispatch(SET_LOADING(false));
   };
 
