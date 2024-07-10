@@ -220,7 +220,7 @@ export default function SecAttrDrawer({
           <i className="close-button" onClick={() => setInfoModal(false)}></i>
           <p className='fontWeight400 marginBottom10'>توضیحات {(curParent || parent).title}</p>
           <section className='infoModal'>
-            {(curParent || parent).attributes?.sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000)).map((attribute, index) =>
+            {[...(curParent || parent).attributes]?.sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000)).map((attribute, index) =>
             <div className='infoRow'>
               <span className='fontWeight400'>{attribute.title}</span>
               <span className='infoModalDesc'>{attribute.description}</span>
