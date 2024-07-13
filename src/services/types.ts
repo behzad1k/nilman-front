@@ -62,6 +62,7 @@ export interface IOrder {
   fromTime: number;
   toTime: number;
   done: boolean;
+  isUrgent: boolean;
 }
 export interface IUser {
   id: number;

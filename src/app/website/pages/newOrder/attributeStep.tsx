@@ -19,24 +19,22 @@ export default function AttributeStep({
   setIsNextStepAllowed,
 }: Props) {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
-  const [showInfo, setShowInfo] = useState(false);
   const [curId, setCurId] = useState<IService | null>(null);
   const services = useAppSelector(state => state.serviceReducer.allServices)
   const cardRef = useRef<Array<HTMLElement | null>>([]);
-  const [currentService, setCurrentService] = useState(selected.service);
   const handleSelectAttribute = (index: number, attribute: IService) => {
     if (attribute.attributes && attribute.attributes?.length > 0 && attribute.attributes[0]?.attributes?.length == 0) {
-      if (!attribute.parent.isMulti && selected.attributes.find(e => services.find(j => j?.id == e.parent?.id)?.parent.id == attribute.parent.id)){
+      if (attribute.parent.isMulti && selected.attributes.find(e => services.find(j => j?.id == e.parent?.id)?.parent.id == attribute.parent.id) && selected.attributes[0].parent.id != attribute.id){
         toast(`انتخاب بیش از یک خدمت در ${attribute.parent.title} مجاز نمی باشد`, {type: 'error'})
       }else{
         setCurId(attribute);
         setDrawerOpen(true);
+        // setIsNextStepAllowed(true);
       }
     }else if(attribute.attributes && attribute.attributes.length > 0 && attribute.attributes[0]?.attributes?.length > 0){
-      setCurrentService(attribute);
+      console.log(attribute);
+      setSelected( prev => ({ ...prev, attributeStep: attribute }))
     }
-    setIsNextStepAllowed(true);
   };
   const handleUnselectAttribute = (
     e: React.MouseEvent,
@@ -70,7 +68,7 @@ export default function AttributeStep({
   return (
     <div className="service-step-container">
       <section className="cards">
-        {[...currentService?.attributes].sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000))?.map((attribute, index) => (
+        {[...(selected.attributeStep || selected.service)?.attributes].sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000))?.map((attribute, index) => (
           <div
             key={attribute.slug}
             ref={(el) => (cardRef.current[index] = el)}
@@ -88,19 +86,13 @@ export default function AttributeStep({
           </div>
         ))}
       </section>
-      <Modal open={openModal} setOpen={setOpenModal}>
-        <i className="close-button" onClick={() => setOpenModal(false)}></i>
-        <h4>{showInfo?.title}</h4>
-        <p>
-          {showInfo?.description}
-        </p>
-      </Modal>
       <SecAttrDrawer
         selected={selected}
         setSelected={setSelected}
         parent={curId}
         open={drawerOpen}
         setOpen={setDrawerOpen}
+        setIsNextStepAllowed={setIsNextStepAllowed}
       />
     </div>
   );

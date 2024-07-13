@@ -155,12 +155,7 @@ export default function Home() {
           button={'ثبت'}
           icon={<PlusCircle />}
           onClick={() => {
-            if (userReducer.isLoggedIn) {
-              navigate('/newOrder')
-            } else {
-              toast('لطفا ابتدا لاگین کنید', { type: 'warning', onClick: () => navigate('/login')});
-              navigate('/login')
-            }
+            navigate('/newOrder?isUrgent=')
           }}
         />
       </section>

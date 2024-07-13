@@ -18,6 +18,7 @@ type Props = {
   parent: IService;
   selected: Selected;
   setSelected: (value: (prev: Selected) => Selected) => void;
+  setIsNextStepAllowed: any
 };
 
 type PickingColor = {
@@ -31,6 +32,7 @@ export default function SecAttrDrawer({
   parent,
   selected,
   setSelected,
+  setIsNextStepAllowed
 }: Props) {
   const colors = useAppSelector(state => state.globalReducer.colors)
   const [color, setColor] = useState('#fff');
@@ -75,12 +77,11 @@ export default function SecAttrDrawer({
     if (!secAttr) return;
     const newAttr = {...secAttr};
     if (color) newAttr.color = color;
-    console.log((curParent || parent));
-    console.log(selected.attributes.find(e => e.parent?.id == (curParent || parent).id));
     if (!(curParent || parent).isMulti && selected.attributes.find(e => e.parent?.id == (curParent || parent).id)){
       toast(`انتخاب بیش از یک خدمت در ${(curParent || parent).title} مجاز نمی باشد`, {type: 'error'})
       return;
     }
+    setIsNextStepAllowed(true)
     setSelected((prev: Selected) => {
       return {...prev, attributes: prev.attributes?.find(e => e.id == newAttr.id) ? prev.attributes?.filter(e => e.id != newAttr.id) : [...prev.attributes, newAttr] };
     });
@@ -91,6 +92,7 @@ export default function SecAttrDrawer({
     setOpen(false)
     setPickingColor({attr: null, open: false})
   }
+
   if (curParent || parent) {
     return (
       <>
@@ -123,6 +125,7 @@ export default function SecAttrDrawer({
             p={2}
             overflow="auto"
             className="attr-drawer-content"
+            sx={{ paddingBottom: '65px'}}
           >
             <Box sx={{ display: 'flex', position: 'absolute', right: 24, alignItems: 'center', gap: 2}}>
               <span className='moreInfo' onClick={() => setInfoModal(true)}>
@@ -136,7 +139,9 @@ export default function SecAttrDrawer({
                 <p className='marginLeftAuto'> انتخاب رنگ</p>
                 <div className='colorContainer'>
                   {colors.map((color) =>
-                    <div className={`colorRow ${selectedColors.includes(color.slug) ? 'selected' : ''}`} key={color.slug} onClick={() => setSelectedColors(prev => prev.includes(color.slug) ? prev.filter(e => e != color.slug) : [...prev, color.slug])}>
+                    <div className={`colorRow ${selectedColors.includes(color.slug) ? 'selected' : ''}`} key={color.slug} onClick={() => setSelectedColors(prev => {
+
+                    })}>
                       <span>
                         {color.title}
                         {selectedColors.includes(color.slug) ? <i className={'selectedServiceIcon'}></i> : ''}
@@ -199,7 +204,7 @@ export default function SecAttrDrawer({
                       {selected?.attributes?.find(e => e.id == secAttr.id) ? <i className={'selectedServiceIcon'}></i> : ''}
                     </Typography>
                       <Box component="span" sx={{fontWeight: '800', ml: 'auto'}}>
-                        {formatPrice(secAttr.price)}
+                        {formatPrice(secAttr.price * (selected.isUrgent ? 2 : 1))}
                       </Box>
                       <Box component="span" ml={0.5} sx={{fontWeight: '300'}}>
                         تومان

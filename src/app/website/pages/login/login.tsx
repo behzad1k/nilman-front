@@ -10,7 +10,7 @@ import { userApis } from '../../../../services/apis/global.ts';
 import { urls } from '../../../../services/endPoint';
 import { api } from '../../../../services/http';
 import { SET_LOADING } from '../../../../services/redux/reducers/loadingSlice.ts';
-import { SET_LOGGED_IN } from '../../../../services/redux/reducers/userSlice';
+import { SET_LOGGED_IN, user } from '../../../../services/redux/reducers/userSlice';
 import { AppDispatch, useAppDispatch, useAppSelector } from '../../../../services/redux/store';
 import styles from '../../../../assets/css/scroll.css'
 
@@ -32,7 +32,7 @@ export default function Login() {
     getValues,
     setValue
   } = useForm<LoginForm>();
-  const [loginState, setLoginState] = useState<LoginState>('phoneNumber');
+  const [loginState, setLoginState] = useState<string>(sessionStorage.getItem('login-step') || 'phoneNumber');
   const userReducer = useAppSelector(state => state.userReducer);
   const formRef = useRef(null);
   const tokenRef = useRef<null | string>(null);
@@ -109,14 +109,19 @@ export default function Login() {
       dispatch(SET_LOADING(false));
 
       if (res.code == 200) {
-        Cookies.set('token', res.data.token, {
-          expires: 30 * 24 * 60 * 60,
-          path: '/'
-        });
         dispatch(SET_LOGGED_IN(true));
+        dispatch(user(res.data.user))
         await userApis(dispatch);
-        if (!res.data?.user?.name) setLoginState('complete-profile');
+        if (!res.data?.user?.isVerified) {
+          sessionStorage.setItem('login-step', 'complete-profile');
+          sessionStorage.setItem('login-step-token', res.data.token)
+          setLoginState('complete-profile');
+        }
         else {
+          Cookies.set('token', res.data.token, {
+            expires: 30 * 24 * 60 * 60,
+            path: '/'
+          });
           toast('خوش آمدید', { type: 'success' });
           navigate(urlParams.get('from') || '/');
         }
@@ -140,6 +145,10 @@ export default function Login() {
 
       const reqOptions = {
         method: 'put',
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem('login-step-token')}`,
+          'content-type': 'application/json'
+        },
         body: {
           name: data.name,
           lastName: data.lastName,
@@ -148,10 +157,17 @@ export default function Login() {
         },
       };
       dispatch(SET_LOADING(true));
-      const res = await api(urls.updateSimpleUser, reqOptions, true);
+      const res = await api(urls.updateSimpleUser, reqOptions);
       dispatch(SET_LOADING(false));
+      console.log(res);
       if (res.code === 200) {
         toast('اطلاعات شما با موفقیت ثبت شد، خوش آمدید', { type: 'success' });
+        Cookies.set('token', res?.token, {
+          expires: 30 * 24 * 60 * 60,
+          path: '/'
+        });
+        sessionStorage.removeItem('login-step')
+        sessionStorage.removeItem('login-step-token')
         navigate('/');
       } else if (res.code == 1005) {
         toast('کد ملی با شماره تلفن تطابق ندارد', { type: 'error' });
@@ -295,6 +311,7 @@ export default function Login() {
               </Typography>
               <OtpInput
                 name="otp"
+
                 control={control}
                 onComplete={handleSubmit(handleSubmitForm) as any}
                 sx={{

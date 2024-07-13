@@ -18,8 +18,6 @@ const Payment = ({ params }) => {
 
     if (res.code == 200){
       setIsSuccessful(true);
-      sessionStorage.removeItem('new-order')
-      sessionStorage.removeItem('step')
       dispatch(cart());
       dispatch(order());
     }

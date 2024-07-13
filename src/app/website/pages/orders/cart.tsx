@@ -1,4 +1,4 @@
-import {Calendar, MapPin, X} from '@phosphor-icons/react';
+import { Calendar, MapPin, Trash, X } from '@phosphor-icons/react';
 import moment from 'jalali-moment';
 import { toast } from 'react-toastify';
 import {urls} from '../../../../services/endPoint.ts';
@@ -36,13 +36,15 @@ const CartItem = ({item}: ICartItemProps) => {
     }
     dispatch(SET_LOADING(false));
   };
-
   return (
     <article className="cartItemContainer">
       <span className="orderInfo">
-        <p></p>
+        <span>{item.isUrgent && <span className='isUrgent'>فوری</span>}</span>
         <h3>{item.service.title}</h3>
-        <X size="20" onClick={() => deleteCartItem(item.id)} />
+        <span className='trashCart' onClick={() => deleteCartItem(item.id)}>
+          <span>حذف</span>
+          <Trash size="20" />
+        </span>
       </span>
       {item.orderServices?.map((attribute, index) => (
         <span className="orderInfo" key={index}>
