@@ -157,7 +157,6 @@ export default function NewOrder() {
       toast('سفارش شما ثبت نشد, لطفا مجددا تلاش کنید.', {type: 'error'});
     }
   };
-  console.log(selected);
 
   const getPrice = () => {
     let final = 0;
