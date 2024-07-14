@@ -59,7 +59,6 @@ export default function WorkerStep({
   const [date, setDate] = useState();
   const [selectedTab, setSelectedTab] = useState<Tab>(tabs[0]);
   const [calTab, setCalTab] = useState(0);
-  const [selectedSection, setSelectedSection] = useState<any>();
   const cardRef = useRef<Array<HTMLElement | null>>([]);
   const tabsRef = useRef<Array<HTMLElement | null>>([]);
   const orderReducer = useAppSelector(state => state.orderReducer);
@@ -136,8 +135,8 @@ export default function WorkerStep({
 
     const sections = []
     for (let i = 8; i < 20; i = i + 2) {
-      const disabled = (i + 3) < Number(moment().format('HH')) ;
-      sections.push(<span className={`calSectionsSpan${selectedSection == i ? ' selected' : ''} ${disabled ? 'disabled' : ''}`} onClick={() => !disabled && setSelectedSection(i)}>{i} - {i + 2}</span>)
+      const disabled = (i - 1) < Number(moment().format('HH')) && calTab == 0 ;
+      sections.push(<span className={`calSectionsSpan${selected.time == i ? ' selected' : ''} ${disabled ? 'disabled' : ''}`} onClick={() => !disabled && setSelected(prev => ({ ...prev, time: i }))}>{i} - {i + 2}</span>)
     }
 
     const body =
@@ -192,6 +191,11 @@ export default function WorkerStep({
       setIsNextStepAllowed(true);
     }
   };
+
+  useEffect(() => {
+    setSelected(prev => ({ ...prev, date: moment().add(calTab, 'd').unix()}))
+  }, [calTab]);
+
   useEffect(() => {
     handleSetAsapModeData();
   }, [nearest, selectedTab]);

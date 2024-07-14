@@ -1,4 +1,5 @@
 import { Warning } from '@phosphor-icons/react';
+import Cookies from 'js-cookie';
 import {useEffect, useState, useCallback, useRef} from 'react';
 import {Button, Typography} from '@mui/material';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
@@ -6,7 +7,7 @@ import {toast} from 'react-toastify';
 import {cart} from '../../../../services/redux/reducers/cartSlice.ts';
 import {order} from '../../../../services/redux/reducers/orderSlice.ts';
 import { useAppDispatch, useAppSelector } from '../../../../services/redux/store.ts';
-import {IAddress, IService, IUser} from '../../../../services/types.ts';
+import { IAddress, IService, IUser, SelectedOptions } from '../../../../services/types.ts';
 import ServiceStep from './serviceStep.tsx';
 import AttributeStep from './attributeStep.tsx';
 import AddressStep from './addressStep.tsx';
@@ -14,6 +15,8 @@ import WorkerStep from './workerStep.tsx';
 import {formatPrice} from '../../../../utils/utils.ts';
 import {urls} from '../../../../services/endPoint.ts';
 import {api} from '../../../../services/http.ts';
+import axios from 'axios';
+
 import moment from 'jalali-moment';
 import {SET_LOADING} from '../../../../services/redux/reducers/loadingSlice.ts';
 
@@ -53,6 +56,7 @@ export type Selected = {
   time: number | null;
   discount: string | null;
   isUrgent: boolean
+  options: SelectedOptions
 };
 
 // Initial
@@ -66,7 +70,8 @@ const initialSelected: Selected = {
   date: null,
   time: null,
   discount: null,
-  isUrgent: false
+  isUrgent: false,
+  options: {}
 };
 
 export default function NewOrder() {
@@ -127,11 +132,12 @@ export default function NewOrder() {
   };
 
   const handleSubmitOrder = async () => {
+    console.log(selected.date);
     const reqOptions = {
       method: 'post',
       body: {
         service: selected.service?.slug,
-        attributes: selected.attributes.map((attr) => attr.slug),
+        attributes: selected.options,
         addressId: selected.address?.id,
         time: selected.time,
         date: selected.date,
@@ -144,6 +150,12 @@ export default function NewOrder() {
     dispatch(SET_LOADING(true));
     const res = await api(urls.order, reqOptions, true);
     dispatch(SET_LOADING(false));
+
+    if (Object.values(selected.options).filter((e: any) => e.media?.data).length > 0){
+      const formData = new FormData();
+      Object.entries(selected.options).filter(([key, value]: any) => value.media?.data).map(([key, value]: any) => formData.append(`files[${key}]`,value.media.data))
+      const mediaRes = await axios(process.env.REACT_APP_BASE_URL + urls.orderMedia + res.data?.id, { method: 'POST', data: formData, headers: { Authorization: `Bearer ${Cookies.get('token')}`}});
+    }
 
     if (res.code === 201) {
       toast('سفارش شما با موفقیت ثبت شد', {type: 'success'});

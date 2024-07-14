@@ -229,7 +229,7 @@ main {
 /* newOrder page */
 .newOrderMain {
   display: flex;
-  padding: 80px 20px 160px;
+  padding: 60px 20px 160px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -684,6 +684,18 @@ main {
   background-color: #dbdbdb;
   display: flex;
   justify-content: space-between;
+}
+.bannerCardColumned {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  max-width: 500px;
+  height: max-content;
+  min-height: 200px;
+  width: 95vw;
+  color: #fff;
+  border-radius: 10px;
+  padding: 20px 15px 20px;
 }
 .bannerCard {
   display: flex;
@@ -1479,11 +1491,23 @@ main {
 }
 .uploadPhotoButton{
   align-items: center;
+  width: 100%;
   gap: 10px;
   display: flex;
-  padding: 4px;
+  padding: 10px 8px;
   border: 1px solid grey;
-  border-radius: 8px;
+  border-radius: 4px;
+}
+.pinterestLogo {
+  display: flex;
+  /*justify-content: center;*/
+  align-items: center;
+  gap: 10px;
+}
+.pinterestLogo i{
+  content: url("/public/img/pinterest.png");
+  width: 25px;
+  height: 25px;
 }
 .uploadPhotoButton i{
   content: url("/public/img/folder.png");

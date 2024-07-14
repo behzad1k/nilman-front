@@ -145,6 +145,11 @@ export default function Home() {
     <main className='homeMain'>
       <section className="banners">
         {/* linear-gradient(282deg, rgb(255, 135, 177), rgba(255, 163, 195, 0.2)); */}
+        {/* <article className='bannerCardColumned'> */}
+        {/*   <div> */}
+        {/*     <h3></h3> */}
+        {/*   </div> */}
+        {/* </article> */}
         <BannerCard
           bgColor1={'rgb(234, 99, 146)'}
           bgColor2={'rgba(255, 163, 195, 0.2)'}

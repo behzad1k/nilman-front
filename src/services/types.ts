@@ -16,6 +16,7 @@ export interface IService {
   description: string;
   price: number;
   slug: string;
+  pricePlus: number;
   section: number;
   parent?: IService;
   attributes?: IService[];
@@ -25,6 +26,14 @@ export interface IService {
   color?: string;
   media: any,
   sort: number
+}
+
+export interface SelectedOptions {
+ [slug: string]: {
+   colors: string[],
+   media: any
+ }
+
 }
 
 export interface IAddress {

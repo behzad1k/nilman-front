@@ -2,13 +2,13 @@ import { attributes } from 'js-cookie';
 import React, {useEffect, useRef, useState} from 'react';
 import {Global} from '@emotion/react';
 import { toast } from 'react-toastify';
-import { Modal } from '../../../../components';
+import { Modal, TextInput } from '../../../../components';
 import { services } from '../../../../services/redux/reducers/serviceSlice.ts';
 import { useAppSelector } from '../../../../services/redux/store.ts';
 import { formatPrice } from '../../../../utils/utils.ts';
 import {Selected} from './newOrder';
 import {IService} from '../../../../services/types';
-import {Button, Box, Skeleton, Typography, SwipeableDrawer} from '@mui/material';
+import { Button, Box, Skeleton, Typography, SwipeableDrawer, TextField } from '@mui/material';
 import {HexColorPicker} from 'react-colorful';
 import { ArrowBack, Close } from '@mui/icons-material';
 
@@ -36,13 +36,13 @@ export default function SecAttrDrawer({
 }: Props) {
   const colors = useAppSelector(state => state.globalReducer.colors)
   const [color, setColor] = useState('#fff');
-  const [selectedColors, setSelectedColors] = useState([]);
   const [curParent, setCurParent] = useState(parent)
   const [pickingColor, setPickingColor] = useState<PickingColor>({
     attr: null,
     open: false,
   });
-  const [pickMedia, setPickMedia] = useState(false);
+  const [pickMedia, setPickMedia] = useState<boolean>(false);
+  const [currentAttribute, setCurrentAttriubte] = useState<IService>();
   const [infoModal, setInfoModal] = useState(false);
   const [media, setMedia] = useState({
     preview: null,
@@ -53,10 +53,11 @@ export default function SecAttrDrawer({
     const cond = curParent?.attributes?.some((secAttr) =>
       selected.attributes.includes(secAttr),
     );
-    if (!cond) return;
+    // if (!cond) return;
     setOpen(newOpen);
   };
   const handleClickCard = (index: number, secAttr: IService) => {
+    setCurrentAttriubte(secAttr)
     if(secAttr.hasMedia) {
       setPickMedia(true)
     }
@@ -92,7 +93,6 @@ export default function SecAttrDrawer({
     setOpen(false)
     setPickingColor({attr: null, open: false})
   }
-
   if (curParent || parent) {
     return (
       <>
@@ -113,9 +113,9 @@ export default function SecAttrDrawer({
           open={open}
           onClose={toggleDrawer(false)}
           onOpen={toggleDrawer(true)}
-          disableSwipeToOpen={false}
+          // disableSwipeToOpen={false}
           ModalProps={{
-            keepMounted: true,
+            // keepMounted: true,
           }}
         >
           <Box
@@ -139,12 +139,24 @@ export default function SecAttrDrawer({
                 <p className='marginLeftAuto'> انتخاب رنگ</p>
                 <div className='colorContainer'>
                   {colors.map((color) =>
-                    <div className={`colorRow ${selectedColors.includes(color.slug) ? 'selected' : ''}`} key={color.slug} onClick={() => setSelectedColors(prev => {
+                    <div className={`colorRow ${selected.options[pickingColor.attr.slug]?.colors?.includes(color.slug) ? 'selected' : ''}`} key={color.slug} onClick={() => setSelected(prev => {
+                      const cp = {...prev}
 
+                      if (!cp.options[currentAttribute?.id]){
+                        cp.options[currentAttribute?.id] = {
+                          colors: [],
+                          media: undefined,
+                          pinterest: ''
+                        }
+                      }
+
+                      cp.options[currentAttribute?.id].colors = cp.options[currentAttribute?.id].colors?.includes(color.slug) ? cp.options[currentAttribute?.id].colors.filter(e => color.slug != e) : [...cp.options[currentAttribute?.id].colors, color.slug]
+
+                      return cp;
                     })}>
                       <span>
                         {color.title}
-                        {selectedColors.includes(color.slug) ? <i className={'selectedServiceIcon'}></i> : ''}
+                        {selected.options[currentAttribute?.id]?.colors?.includes(color.slug) ? <i className={'selectedServiceIcon'}></i> : ''}
                       </span>
                       <span className='colorSpan' style={{ backgroundColor: color.code}}></span>
                     </div>
@@ -198,12 +210,17 @@ export default function SecAttrDrawer({
                     <Typography
                       variant="body1"
                       component="h4"
-                      sx={{color: 'var(--light-black)'}}
+                      sx={{color: 'var(--light-black)', mr: 'auto'}}
                     >
                       {secAttr.title}
                       {selected?.attributes?.find(e => e.id == secAttr.id) ? <i className={'selectedServiceIcon'}></i> : ''}
                     </Typography>
-                      <Box component="span" sx={{fontWeight: '800', ml: 'auto'}}>
+                    {secAttr.pricePlus &&
+                        <Box component="span" ml={0.5} sx={{fontWeight: '300', mr: '10px'}}>
+                          {`(به علاوه ${formatPrice(secAttr.pricePlus)} تومان)`}
+                        </Box>
+                    }
+                      <Box component="span" sx={{fontWeight: '800'}}>
                         {formatPrice(secAttr.price * (selected.isUrgent ? 2 : 1))}
                       </Box>
                       <Box component="span" ml={0.5} sx={{fontWeight: '300'}}>
@@ -235,14 +252,50 @@ export default function SecAttrDrawer({
         </Modal>
         <Modal open={pickMedia} setOpen={setPickMedia}>
           <i className="close-button" onClick={() => setPickMedia(false)}></i>
-          <p className='fontWeight400 marginBottom10'>اگر طرح خاصی برای خدمت انتخابی خود در نظر دارید عکس آن را در اینجا بارگزاری نمایید</p>
+          <p className='fontWeight400 marginBottom10'>اگر طرح خاصی برای خدمت انتخابی خود در نظر دارید عکس آن را در اینجا بارگزاری نمایید و یا لینک پینترست آن را وارد کنید</p>
           <section className='infoModal mediaModal'>
+            <TextField
+              size="medium"
+              onChange={(input) => setSelected(prev => {
+                const cp = {...prev}
+
+                if (!cp.options[currentAttribute?.id]){
+                  cp.options[currentAttribute?.id] = {
+                    colors: [],
+                    media: undefined,
+                    pinterest: ''
+                  }
+                }
+
+                cp.options[currentAttribute?.id].pinterest = input.target.value
+
+                return cp;
+              })}
+              value={selected.options[currentAttribute?.id]?.pinterest}
+              fullWidth
+              label={<span className='pinterestLogo'><i></i>Pinterest</span>}
+              variant="outlined"
+            />
             <label htmlFor='uploadPhoto' className='uploadPhotoButton'><i></i>بارگزاری تصویر</label>
-            <input type='file' id='uploadPhoto' className='displayNone' onChange={(input) => setMedia({
-              data: input.target.files[0],
-              preview: URL.createObjectURL(input.target.files[0]),
+            <input type='file' id='uploadPhoto' className='displayNone' onChange={(input) => setSelected(prev => {
+              const cp = {...prev}
+
+              if (!cp.options[currentAttribute?.id]){
+                cp.options[currentAttribute?.id] = {
+                  colors: [],
+                  media: undefined,
+                  pinterest: ''
+                }
+              }
+
+              cp.options[currentAttribute?.id].media = {
+                data: input.target.files[0],
+                preview: URL.createObjectURL(input.target.files[0]),
+              }
+
+              return cp;
             })}/>
-            {media.preview && <img src={media.preview} />}
+            {selected.options[currentAttribute?.id]?.media?.preview && <img src={selected.options[currentAttribute?.id]?.media?.preview} />}
           </section>
           <Box display="flex" width="100%" gap={2}>
             <Button
