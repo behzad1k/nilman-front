@@ -235,7 +235,7 @@ export default function WorkerStep({
         {calender()}
       </div>
       <div>
-        {orderReducer.orders.filter(e => e.serviceId == selected.service.id).length > 0 &&
+        {orderReducer.orders?.filter(e => e.serviceId == selected?.service?.id)?.length > 0 &&
         <SelectInput
           name="worker"
           label="آرایشگر"
@@ -250,7 +250,7 @@ export default function WorkerStep({
             },
           }}
         >
-          {orderReducer.orders?.filter(e => e.serviceId == selected.service?.id).map(e => e?.worker).map((worker) => (
+          {orderReducer.orders?.filter(e => e.serviceId == selected.service?.id)?.map(e => e?.worker)?.map((worker) => (
             <MenuItem key={worker?.id} value={worker?.id}>
               {worker?.name} {worker?.lastName}
             </MenuItem>

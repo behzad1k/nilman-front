@@ -153,7 +153,7 @@ export default function Login() {
           name: data.name,
           lastName: data.lastName,
           nationalCode: data.nationalCode,
-          birthday: Object.values(birthday).reverse().reduce((acc, curr, index) => acc + curr + (index < 2 ? '/' : '') , '')
+          birthday: Object.values(birthday).reverse().reduce((acc, curr, index) => acc + (index == 1 && curr < 10 ? '0' : '') + curr + (index < 2 ? '/' : '') , '')
         },
       };
       dispatch(SET_LOADING(true));
