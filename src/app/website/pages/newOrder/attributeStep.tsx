@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { Modal } from '../../../../components';
 import {useAppSelector} from '../../../../services/redux/store';
 import {IService} from '../../../../services/types';
+import { findRootCount } from '../../../../utils/utils.ts';
 import {Selected} from './newOrder';
 import SecAttrDrawer from './secAttrDrawer';
 
@@ -20,10 +21,11 @@ export default function AttributeStep({
 }: Props) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [curId, setCurId] = useState<IService | null>(null);
+  const [stepCounter, setStepCounter] = useState(0);
   const services = useAppSelector(state => state.serviceReducer.allServices)
   const cardRef = useRef<Array<HTMLElement | null>>([]);
   const handleSelectAttribute = (index: number, attribute: IService) => {
-    if (attribute.attributes && attribute.attributes?.length > 0 && attribute.attributes[0]?.attributes?.length == 0) {
+    if (attribute.attributes && attribute.attributes?.length > 0 && findRootCount(services, attribute.id) == 2) {
       if (attribute.parent.isMulti && selected.attributes.find(e => services.find(j => j?.id == e.parent?.id)?.parent.id == attribute.parent.id) && selected.attributes[0].parent.id != attribute.id){
         toast(`انتخاب بیش از یک خدمت در ${attribute.parent.title} مجاز نمی باشد`, {type: 'error'})
       }else{
@@ -32,7 +34,7 @@ export default function AttributeStep({
         // setIsNextStepAllowed(true);
       }
     }else if(attribute.attributes && attribute.attributes.length > 0 && attribute.attributes[0]?.attributes?.length > 0){
-      console.log(attribute);
+      setStepCounter(prev => prev + 1)
       setSelected( prev => ({ ...prev, attributeStep: attribute }))
     }
   };

@@ -12,7 +12,20 @@ type ScheduleCard = {
   toTime: number;
 };
 
+export const findRootCount = (arr: any[], value: any, key: string = 'id') => {
+  let obj = arr.find(e => e[key] == value);
+  let count = 0;
 
+  if (!obj?.parent){
+    return count;
+  }
+
+  while (obj?.parent){
+    obj = arr.find(e => e[key] == obj?.parent?.id);
+    ++count;
+  }
+  return count;
+}
 export const extractChildren = (node: any, array: any[], index: number = 0, depth = 0) => {
   ++depth;
 

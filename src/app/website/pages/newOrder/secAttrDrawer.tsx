@@ -82,6 +82,7 @@ export default function SecAttrDrawer({
       toast(`انتخاب بیش از یک خدمت در ${(curParent || parent).title} مجاز نمی باشد`, {type: 'error'})
       return;
     }
+    setCurParent(undefined)
     setIsNextStepAllowed(true)
     setSelected((prev: Selected) => {
       return {...prev, attributes: prev.attributes?.find(e => e.id == newAttr.id) ? prev.attributes?.filter(e => e.id != newAttr.id) : [...prev.attributes, newAttr] };
