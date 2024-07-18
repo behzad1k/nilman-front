@@ -1,3 +1,5 @@
+import { IService } from '../services/types.ts';
+
 type WorkerOff = {
   date: number;
   fromTime: number;
@@ -26,6 +28,20 @@ export const findRootCount = (arr: any[], value: any, key: string = 'id') => {
   }
   return count;
 }
+export const findAncestors = (arr: any[], value: any, key: string = 'id'): IService[] => {
+  let obj = arr.find(e => e[key] == value);
+  let ancestors = [obj];
+
+  if (!obj?.parent){
+    return ancestors;
+  }
+
+  while (obj?.parent){
+    obj = arr.find(e => e[key] == obj?.parent?.id);
+    ancestors.push(obj)
+  }
+  return ancestors;
+}
 export const extractChildren = (node: any, array: any[], index: number = 0, depth = 0) => {
   ++depth;
 
@@ -49,6 +65,11 @@ export const extractChildren = (node: any, array: any[], index: number = 0, dept
 export const formatPrice = (value: number | string) =>
   Intl.NumberFormat().format(value as number);
 
+export const omit = (keys, obj) => {
+  if (!keys.length) return obj
+  const { [keys.pop()]: omitted, ...rest } = obj;
+  return omit(keys, rest);
+}
 export function createSchedule(length: number, workerOff: WorkerOff[]) {
   const start = 8;
   const end = 23;

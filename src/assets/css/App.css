@@ -418,6 +418,37 @@ main {
   justify-content: space-between;
   /*align-items: center;*/
 }
+.addressModal{
+  display: flex;
+  flex-direction: column;
+  padding: 10px 10px 30px;
+  gap: 5px;
+}
+.addressModalButton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #7c7a7a;
+  padding: 8px;
+  width: inherit;
+  border-radius: 8px;
+}
+.deleteModal{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+}
+.deleteModalButtons{
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+.addressModalButton.delete{
+  color: #e76f6f;
+  border: 2px solid #e76f6f;
+
+}
 .addressContainer {
   display: flex;
   align-items: center;

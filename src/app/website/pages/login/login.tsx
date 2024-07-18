@@ -111,7 +111,6 @@ export default function Login() {
       if (res.code == 200) {
         dispatch(SET_LOGGED_IN(true));
         dispatch(user(res.data.user))
-        await userApis(dispatch);
         if (!res.data?.user?.isVerified) {
           sessionStorage.setItem('login-step', 'complete-profile');
           sessionStorage.setItem('login-step-token', res.data.token)
@@ -123,6 +122,7 @@ export default function Login() {
             path: '/'
           });
           toast('خوش آمدید', { type: 'success' });
+          await userApis(dispatch);
           navigate(urlParams.get('from') || '/');
         }
       } else {

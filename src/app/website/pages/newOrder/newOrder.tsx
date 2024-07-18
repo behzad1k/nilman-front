@@ -55,8 +55,8 @@ export type Selected = {
   date: number | null;
   time: number | null;
   discount: string | null;
-  isUrgent: boolean
-  options: SelectedOptions
+  isUrgent: boolean;
+  options: any;
 };
 
 // Initial
@@ -78,7 +78,7 @@ export default function NewOrder() {
   // React
   const prevData = JSON.parse(sessionStorage.getItem('new-order') as string);
   const prevStep = JSON.parse(sessionStorage.getItem('step') as string);
-  const [selected, setSelected] = useState<Selected>(prevData || initialSelected);
+  const [selected, setSelected] = useState<Selected>(prevData || { ...initialSelected, options: {} });
   const [workers, setWorkers] = useState<IUser[] | []>([]);
   const [nearest, setNearest] = useState<{date: string; workerId: number} | null>(null);
   const [isNextStepAllowed, setIsNextStepAllowed] = useState(false);
@@ -112,6 +112,7 @@ export default function NewOrder() {
     // handle next - prev logic
     if (action === 'next') {
         setStep((prev) => (prev.index === steps.length - 1 ? prev : steps[prev.index + 1]));
+        setIsNextStepAllowed(false)
     }
     if (action === 'prev') {
       if (step.index == 1){
@@ -132,7 +133,6 @@ export default function NewOrder() {
   };
 
   const handleSubmitOrder = async () => {
-    console.log(selected.date);
     const reqOptions = {
       method: 'post',
       body: {
@@ -151,19 +151,20 @@ export default function NewOrder() {
     const res = await api(urls.order, reqOptions, true);
     dispatch(SET_LOADING(false));
 
-    if (Object.values(selected.options).filter((e: any) => e.media?.data).length > 0){
+    if (Object.values(selected.options).filter((e: any) => e?.media?.data)?.length > 0){
       const formData = new FormData();
       Object.entries(selected.options).filter(([key, value]: any) => value.media?.data).map(([key, value]: any) => formData.append(`files[${key}]`,value.media.data))
       const mediaRes = await axios(process.env.REACT_APP_BASE_URL + urls.orderMedia + res.data?.id, { method: 'POST', data: formData, headers: { Authorization: `Bearer ${Cookies.get('token')}`}});
     }
 
     if (res.code === 201) {
-      toast('سفارش شما با موفقیت ثبت شد', {type: 'success'});
       sessionStorage.removeItem('new-order');
       sessionStorage.removeItem('step');
       setSelected(initialSelected)
+      setSelected(prev => ({ ...prev, service: null, options: {} }))
       dispatch(order());
       dispatch(cart());
+      toast('سفارش شما با موفقیت ثبت شد', {type: 'success'});
       await setTimeout(() => { navigate('/orders')}, 300)
     } else {
       toast('سفارش شما ثبت نشد, لطفا مجددا تلاش کنید.', {type: 'error'});
@@ -196,6 +197,8 @@ export default function NewOrder() {
       if(selected.service != null) {
         sessionStorage.setItem('new-order', JSON.stringify(selectedRef.current));
         sessionStorage.setItem('step', JSON.stringify(stepRef.current));
+      }else{
+        setSelected(prev => ({...prev, options: {}}));
       }
     };
   }, []);

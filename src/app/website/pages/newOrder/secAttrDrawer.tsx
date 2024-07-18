@@ -35,12 +35,14 @@ export default function SecAttrDrawer({
   setIsNextStepAllowed
 }: Props) {
   const colors = useAppSelector(state => state.globalReducer.colors)
+  const services = useAppSelector(state => state.serviceReducer);
   const [color, setColor] = useState('#fff');
   const [curParent, setCurParent] = useState(parent)
   const [pickingColor, setPickingColor] = useState<PickingColor>({
     attr: null,
     open: false,
   });
+  const [page, setPage] = useState(1);
   const [pickMedia, setPickMedia] = useState<boolean>(false);
   const [currentAttribute, setCurrentAttriubte] = useState<IService>();
   const [infoModal, setInfoModal] = useState(false);
@@ -53,6 +55,8 @@ export default function SecAttrDrawer({
     const cond = curParent?.attributes?.some((secAttr) =>
       selected.attributes.includes(secAttr),
     );
+    setPage(1);
+    setCurParent(undefined)
     // if (!cond) return;
     setOpen(newOpen);
   };
@@ -67,6 +71,7 @@ export default function SecAttrDrawer({
     } else {
       if (secAttr.attributes?.length > 0){
         setCurParent(secAttr);
+        setPage(prev => prev + 1)
       }else {
         handleAddAttribute(secAttr, null);
       }
@@ -78,15 +83,31 @@ export default function SecAttrDrawer({
     if (!secAttr) return;
     const newAttr = {...secAttr};
     if (color) newAttr.color = color;
-    if (!(curParent || parent).isMulti && selected.attributes.find(e => e.parent?.id == (curParent || parent).id)){
+    if (!selected.attributes?.find(e => e.id == newAttr.id) && !(curParent || parent).isMulti && selected.attributes.find(e => e.parent?.id == (curParent || parent).id)){
       toast(`انتخاب بیش از یک خدمت در ${(curParent || parent).title} مجاز نمی باشد`, {type: 'error'})
       return;
     }
-    setCurParent(undefined)
+    // setCurParent(undefined)
     setIsNextStepAllowed(true)
     setSelected((prev: Selected) => {
       return {...prev, attributes: prev.attributes?.find(e => e.id == newAttr.id) ? prev.attributes?.filter(e => e.id != newAttr.id) : [...prev.attributes, newAttr] };
     });
+    if (!color) {
+      setSelected(prev => {
+        const cp = { ...prev };
+        if (cp.options[newAttr.id]) {
+          delete cp.options[newAttr.id];
+        } else {
+          cp.options[newAttr.id] = {
+            colors: [],
+            media: undefined,
+            pinterest: ''
+          };
+        }
+        return cp;
+      });
+    }
+
 
     setPickingColor({attr: null, open: false});
   };
@@ -133,6 +154,10 @@ export default function SecAttrDrawer({
                 <span>توضیحات</span>
                 <i className='infoIcon'></i>
               </span>
+              {page > 1 && <ArrowBack onClick={() => {
+                setPage(prev => prev - 1);
+                setCurParent(prev => services.allServices.find(e => e.id == prev.parent?.id));
+              }} />}
               <Close onClick={handleCloseDrawer} />
             </Box>
             {pickingColor.open ? (
@@ -152,6 +177,9 @@ export default function SecAttrDrawer({
                       }
 
                       cp.options[currentAttribute?.id].colors = cp.options[currentAttribute?.id].colors?.includes(color.slug) ? cp.options[currentAttribute?.id].colors.filter(e => color.slug != e) : [...cp.options[currentAttribute?.id].colors, color.slug]
+                      if (cp.options[currentAttribute?.id].colors?.length == 0){
+                        delete cp.options[currentAttribute?.id]
+                      }
 
                       return cp;
                     })}>
@@ -194,7 +222,7 @@ export default function SecAttrDrawer({
                   <Box
                     key={secAttr.slug}
                     className={`attr-box ${
-                      selected?.attributes?.find(e => e.id == secAttr.id) ? 'selected' : ''
+                      selected?.attributes?.find(e => e.id == secAttr.id) || selected.attributes.find(e => secAttr.attributes.map(j => j.id).includes(e.id)) ? 'selected' : ''
                     }`}
                     ref={(el: HTMLElement) => (boxEl.current[index] = el)}
                     onClick={() => handleClickCard(index, secAttr)}
@@ -214,13 +242,13 @@ export default function SecAttrDrawer({
                       sx={{color: 'var(--light-black)', mr: 'auto'}}
                     >
                       {secAttr.title}
-                      {selected?.attributes?.find(e => e.id == secAttr.id) ? <i className={'selectedServiceIcon'}></i> : ''}
+                      {selected?.attributes?.find(e => e.id == secAttr.id) || selected.attributes.find(e => secAttr.attributes.map(j => j.id).includes(e.id)) ? <i className={'selectedServiceIcon'}></i> : ''}
                     </Typography>
-                    {secAttr.pricePlus &&
-                        <Box component="span" ml={0.5} sx={{fontWeight: '300', mr: '10px'}}>
-                          {`(به علاوه ${formatPrice(secAttr.pricePlus)} تومان)`}
-                        </Box>
-                    }
+                    {/* {secAttr.pricePlus && */}
+                    {/*     <Box component="span" ml={0.5} sx={{fontWeight: '300', mr: '10px'}}> */}
+                    {/*       {`(به علاوه ${formatPrice(secAttr.pricePlus)} تومان)`} */}
+                    {/*     </Box> */}
+                    {/* } */}
                       <Box component="span" sx={{fontWeight: '800'}}>
                         {formatPrice(secAttr.price * (selected.isUrgent ? 2 : 1))}
                       </Box>
@@ -272,7 +300,7 @@ export default function SecAttrDrawer({
 
                 return cp;
               })}
-              value={selected.options[currentAttribute?.id]?.pinterest}
+              value={selected?.options[currentAttribute?.id]?.pinterest}
               fullWidth
               label={<span className='pinterestLogo'><i></i>Pinterest</span>}
               variant="outlined"
@@ -296,7 +324,7 @@ export default function SecAttrDrawer({
 
               return cp;
             })}/>
-            {selected.options[currentAttribute?.id]?.media?.preview && <img src={selected.options[currentAttribute?.id]?.media?.preview} />}
+            {selected?.options[currentAttribute?.id]?.media?.preview && <img src={selected.options[currentAttribute?.id]?.media?.preview} />}
           </section>
           <Box display="flex" width="100%" gap={2}>
             <Button

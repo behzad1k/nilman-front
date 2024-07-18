@@ -5,7 +5,7 @@ import {addresses} from '../../../../services/redux/reducers/userSlice.ts';
 import {useAppDispatch, useAppSelector} from '../../../../services/redux/store.ts';
 import {IAddress} from '../../../../services/types.ts';
 import {AddressRow} from './addressRow.tsx';
-import {Button, Typography, Box} from '@mui/material';
+import { Button, Typography, Box, SwipeableDrawer } from '@mui/material';
 import {Modal, TextInput} from '../../../../components';
 import {useForm, FieldValues} from 'react-hook-form';
 import {api} from '../../../../services/http.ts';
@@ -23,26 +23,23 @@ export const Addresses = ({onClick, editable = false, mini = false}: {onClick?: 
   const userReducer = useAppSelector((state) => state.userReducer);
   const userAddresses = userReducer.addresses
   const navigate = useNavigate();
-  const {reset, handleSubmit, control} = useForm();
   const dispatch = useAppDispatch();
-  const [openModal, setOpenModal] = useState(false);
-  const [position, setPosition] = useState<Position | null>({ lat: 35.80761631591913, lng: 51.4319429449887});
+  const [modal, setModal] = useState({ open: false, content: undefined});
   const [selected, setSelected] = useState<IAddress>();
+  const [confirmModal, setConfirmModal] = useState(false);
 
-  const handleSubmitAddAddress = async (data: FieldValues) => {
-    const reqOptions = {
-      method: 'post',
-      body: {
-        ...data,
-        longitude: position?.lng.toString(),
-        latitude: position?.lat.toString(),
-      },
-    };
-    dispatch(SET_LOADING(true));
-    const res = await api(urls.address, reqOptions, true);
-    dispatch(addresses());
-    dispatch(SET_LOADING(false));
-    setOpenModal(false);
+  const deleteAddress = async (id) => {
+    const res = await api(urls.address + id, { method: 'DELETE' }, true);
+
+    if (res.code == 200){
+      toast('آدرس با موفقیت حذف شد.', { type: 'success'});
+      dispatch(addresses())
+    }else{
+      toast('مشکلی پیش آمده، لطفا مجددا امتحان کنید یا با اپراتور تماس بگیرید', { type: 'error'});
+    }
+
+    setModal({ content: undefined, open: false })
+    setConfirmModal(false)
   };
 
   return (
@@ -55,7 +52,7 @@ export const Addresses = ({onClick, editable = false, mini = false}: {onClick?: 
           setSelected={setSelected}
           onClick={onClick}
           editable={editable}
-mini={mini}
+          setModal={setModal}
         />
       ))}
       <div className="addressContainer add" onClick={() => userReducer.isLoggedIn ? navigate('/address/add') : toast('لطفا ابتدا وارد شوید!', { onClose: () => navigate('/login'), type: 'error' })}>
@@ -63,39 +60,27 @@ mini={mini}
         <Button>افزودن آدرس</Button>
       </div>
 
-      <Modal open={openModal} setOpen={setOpenModal}>
-        <Typography variant="h6" component="h2" marginBottom={4}>
-          افزودن آدرس
-        </Typography>
-        <Box
-          component="form"
-          sx={{display: 'flex', flexDirection: 'column', gap: 3}}
-          onSubmit={handleSubmit(handleSubmitAddAddress)}
-        >
-          <TextInput name="title" label="عنوان آدرس" control={control} defaultValue="" />
-          <TextInput
-            name="phoneNumber"
-            label="تلفن ثابت"
-            control={control}
-            defaultValue=""
-            type="number"
-          />
-          <TextInput name="description" label="آدرس" control={control} defaultValue="" />
-          <Map position={position} setPosition={setPosition} />
-          <Box display="flex" flexDirection="column" gap={1}>
-            <Button variant="contained" color="primary" fullWidth type="submit">
-              افزودن
-            </Button>
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={() => setOpenModal(false)}
-              fullWidth
-            >
-              بیخیال
-            </Button>
-          </Box>
-        </Box>
+      <SwipeableDrawer
+        anchor="bottom"
+        open={modal.open}
+        onClose={() => setModal(prev => ({ content: undefined, open: false}))}
+        onOpen={() => setModal(prev => ({ content: undefined, open: true}))}
+      >
+        <div className='addressModal'>
+          <h4>{modal.content?.title}</h4>
+          <span className='addressModalButton' onClick={() => navigate(`/address/edit/${modal.content?.id}`)}>ویرایش آدرس</span>
+          <span className='addressModalButton delete' onClick={() => setConfirmModal(true)}>حذف آدرس</span>
+        </div>
+
+      </SwipeableDrawer>
+      <Modal open={confirmModal} setOpen={setConfirmModal}>
+        <div className='deleteModal'>
+          از حذف آدرس {modal.content?.title} مطمئن هستید؟
+          <div className='deleteModalButtons'>
+            <span className='addressModalButton' onClick={() => setConfirmModal(false)}>بازگشت</span>
+            <span className='addressModalButton delete' onClick={() => deleteAddress(modal.content?.id)}>بله</span>
+          </div>
+        </div>
       </Modal>
     </section>
   );

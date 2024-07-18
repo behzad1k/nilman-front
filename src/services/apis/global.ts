@@ -13,12 +13,11 @@ export const initialApis = async (dispatch: any) => {
   await Promise.all([
     dispatch(services()),
   ]);
-
   if (Cookies.get('token')) {
     const res = await api(urls.getUser, {}, true);
     if (res.code == 200) {
       dispatch(SET_LOGGED_IN(true))
-      userApis(dispatch);
+      await userApis(dispatch);
       dispatch(user(res.data))
     } else {
       // Cookies.remove('token');

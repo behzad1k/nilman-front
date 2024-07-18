@@ -5,9 +5,8 @@ import { Map } from '../../../../components';
 import { MapView } from '../../../../components/common/map.tsx';
 import { IAddress, Position } from '../../../../services/types.ts';
 
-export function AddressRow({ address, isSelected, onClick , setSelected, editable = false, mini = false }: {address: IAddress, isSelected: boolean, onClick?: (address: IAddress) => void, setSelected: React.Dispatch<React.SetStateAction<IAddress | undefined>>, editable?: boolean, mini?: boolean}) {
-  const navigate = useNavigate();
-const [position, setPosition] = useState<Position>({ lat: address.latitude, lng: address.longitude });
+export function AddressRow({ address, isSelected, onClick , setSelected, editable = false, setModal = undefined }: {address: IAddress, isSelected: boolean, onClick?: (address: IAddress) => void, setSelected: React.Dispatch<React.SetStateAction<IAddress | undefined>>, editable?: boolean, setModal?: React.Dispatch<React.SetStateAction<any>>}) {
+
   return (
     <article className={'addressContainer' + (isSelected ? ' selected' : '')} onClick={() => {
       setSelected(address);
@@ -25,7 +24,7 @@ const [position, setPosition] = useState<Position>({ lat: address.latitude, lng:
         </span>
         {editable &&
         <span className='addressDots'>
-          <DotsThree width={40} height={40} onClick={() => navigate(`/address/edit/${address.id}`)}/>
+          <DotsThree width={40} height={40} onClick={() => setModal && setModal({ open: true, content: address })}/>
         </span>
         }
       </div>

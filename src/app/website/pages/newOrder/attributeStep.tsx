@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { Modal } from '../../../../components';
 import {useAppSelector} from '../../../../services/redux/store';
 import {IService} from '../../../../services/types';
-import { findRootCount } from '../../../../utils/utils.ts';
+import { findAncestors, findRootCount } from '../../../../utils/utils.ts';
 import {Selected} from './newOrder';
 import SecAttrDrawer from './secAttrDrawer';
 
@@ -26,7 +26,7 @@ export default function AttributeStep({
   const cardRef = useRef<Array<HTMLElement | null>>([]);
   const handleSelectAttribute = (index: number, attribute: IService) => {
     if (attribute.attributes && attribute.attributes?.length > 0 && findRootCount(services, attribute.id) == 2) {
-      if (attribute.parent.isMulti && selected.attributes.find(e => services.find(j => j?.id == e.parent?.id)?.parent.id == attribute.parent.id) && selected.attributes[0].parent.id != attribute.id){
+      if (attribute.parent.isMulti && selected.attributes.find(e => services.find(j => j?.id == e.parent?.id)?.parent.id == attribute.parent.id) && !selected.attributes.map(e => findAncestors(services, e.id)).flat(1).map(e => e.id).includes(attribute.id)){
         toast(`انتخاب بیش از یک خدمت در ${attribute.parent.title} مجاز نمی باشد`, {type: 'error'})
       }else{
         setCurId(attribute);
@@ -67,6 +67,7 @@ export default function AttributeStep({
     if (selected.attributes?.length > 0) setIsNextStepAllowed(true);
     else setIsNextStepAllowed(false);
   }, []);
+
   return (
     <div className="service-step-container">
       <section className="cards">
