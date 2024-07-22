@@ -194,12 +194,10 @@ export default function NewOrder() {
 
   useEffect(() => {
     return () => {
-      if(selected.service != null) {
-        sessionStorage.setItem('new-order', JSON.stringify(selectedRef.current));
-        sessionStorage.setItem('step', JSON.stringify(stepRef.current));
-      }else{
-        setSelected(prev => ({...prev, options: {}}));
-      }
+      // if(selected.service != null) {
+      sessionStorage.setItem('new-order', JSON.stringify(selectedRef.current));
+      sessionStorage.setItem('step', JSON.stringify(stepRef.current));
+    // }
     };
   }, []);
 

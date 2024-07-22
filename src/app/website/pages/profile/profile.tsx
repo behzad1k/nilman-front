@@ -31,7 +31,7 @@ export default function Profile() {
       <section className="infoBox">
         <div className="profileButton" onClick={() => navigate('/profile/edit')}>
           <PencilLine size={20}/>
-          <span>ویرایش اطلاعات کابری</span>
+          <span>ویرایش اطلاعات کاربری</span>
         </div>
         <div className="profileButton" onClick={handleLogout}>
           <SignOut

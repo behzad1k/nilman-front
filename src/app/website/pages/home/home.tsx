@@ -160,6 +160,27 @@ export default function Home() {
           button={'ثبت'}
           icon={<PlusCircle />}
           onClick={() => {
+            navigate('/newOrder')
+          }}
+        />
+      </section>
+      <section className="banners">
+        {/* linear-gradient(282deg, rgb(255, 135, 177), rgba(255, 163, 195, 0.2)); */}
+        {/* <article className='bannerCardColumned'> */}
+        {/*   <div> */}
+        {/*     <h3></h3> */}
+        {/*   </div> */}
+        {/* </article> */}
+        <BannerCard
+          bgColor1="rgb(122, 173, 253)"
+          bgColor2="rgb(216, 228, 234)"
+          // bgColor1={'rgb(255, 135, 177)'}
+          // bgColor2={'rgb(172, 172, 172)'}
+          title={'سفارش فوری'}
+          description={'ثبت سفارش برای دو ساعت بعد(با افزایش هزینه همراه می باشد!)'}
+          button={'ثبت سفارش فوری'}
+          icon={<PlusCircle />}
+          onClick={() => {
             navigate('/newOrder?isUrgent=')
           }}
         />
@@ -185,8 +206,9 @@ export default function Home() {
           description={'منطقه‌های ۱، ۲، ۳، ۴ و ۵'}
           button={'مشاهده'}
           icon={<Percent />}
-          bgColor1="rgb(122, 173, 253)"
-          bgColor2="rgb(216, 228, 234)"
+          bgColor1={'rgb(234, 99, 146)'}
+          bgColor2={'rgba(255, 163, 195, 0.2)'}
+
         />
       </section>
       <Box component="section" className="banners contact-us" mt={2.5}>

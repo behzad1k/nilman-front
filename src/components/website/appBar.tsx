@@ -28,17 +28,7 @@ export function AppBar() {
       </NavLink>
       {userReducer.data.role === 'USER' && (
         <>
-          <NavLink to="/newOrder" className="appBarIconContainer" onClick={(e) => {
-            e.preventDefault();
-
-            if (!userReducer.isLoggedIn) {
-              toast('لطفا ابتدا لاگین کنید', { type: 'warning', onClick: () => navigate('/login')});
-              navigate('/login')
-              return
-            }
-
-            navigate('/newOrder')
-          }}>
+          <NavLink to="/newOrder" className="appBarIconContainer">
             <PlusCircle
               className="appBarIcon"
               weight={location.pathname === '/newOrder' ? 'fill' : 'regular'}
