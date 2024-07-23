@@ -1,4 +1,4 @@
-import { IService } from '../services/types.ts';
+import { IService } from '../services/types';
 
 type WorkerOff = {
   date: number;
@@ -45,12 +45,7 @@ export const findAncestors = (arr: any[], value: any, key: string = 'id'): IServ
 export const extractChildren = (node: any, array: any[], index: number = 0, depth = 0) => {
   ++depth;
 
-  let newTitle = ''
-  for (let i = 1; i < depth; i++) {
-    newTitle += '-'
-  }
-
-  const j = { ...node, title: node.title + newTitle }
+  const j = { ...node, title: node.title }
 
   array.push(j)
 
