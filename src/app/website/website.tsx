@@ -67,7 +67,11 @@ export default function Website() {
           </>
         }
       />
-      <Route path="/payment/verify" element={<Payment />} />
+      <Route path="/payment/verify" element={
+        <Layout>
+          <Payment />
+        </Layout>
+      } />
       <Route path="/feedback/:id" element={<Feedback />} />
       <Route path="/profile/edit" element={<EditProfile />} />
       <Route path="/address/edit/:id" element={<AddressManage />} />

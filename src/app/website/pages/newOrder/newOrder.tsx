@@ -111,6 +111,10 @@ export default function NewOrder() {
   const handleChangeStep = (action: 'next' | 'prev') => {
     // handle next - prev logic
     if (action === 'next') {
+      if(step.index == 1 && !Cookies.get('token')){
+        navigate('/login');
+        return;
+      }
         setStep((prev) => (prev.index === steps.length - 1 ? prev : steps[prev.index + 1]));
         setIsNextStepAllowed(false)
     }

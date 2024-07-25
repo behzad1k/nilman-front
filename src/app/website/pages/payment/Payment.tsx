@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { urls } from '../../../../services/endPoint.ts';
 import { api } from '../../../../services/http.ts';
 import { cart } from '../../../../services/redux/reducers/cartSlice.ts';
@@ -9,8 +9,9 @@ import { order } from '../../../../services/redux/reducers/orderSlice.ts';
 
 const Payment = ({ params }) => {
   const [searchParam, setSearchParam] = useSearchParams();
-  const dispatch = useDispatch()
   const [isSuccessful, setIsSuccessful] = useState(false)
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
   const send = async () => {
     dispatch(SET_LOADING(true));
 
@@ -25,11 +26,23 @@ const Payment = ({ params }) => {
   };
 
   useEffect(() => {
+send()
   }, []);
 
   return (
-    <div>
-      {isSuccessful ? 'پرداخت ناموفق' : 'پرداخت موفق'}
+    <div className='paymentContainer'>
+      {isSuccessful ?
+        <div className='payment'>
+          <img className='paymentImage' src='/img/checked.png'/>
+          <span>پرداخت شما موفقیت آمیز بود</span>
+        </div>
+        :
+        <div className='payment'>
+          <img className='paymentImage' src='/img/cancel.png'/>
+          <span>پرداخت موفقیت آمیز نبود</span>
+        </div>
+      }
+      <button onClick={() => navigate('/orders')} className={`paymentButton ${isSuccessful ? 'successful' : 'unSuccessful'}`}>بازگشت به صفحه سفارشات</button>
     </div>
   );
 };

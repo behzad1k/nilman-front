@@ -1727,3 +1727,36 @@ main {
   background: var(--mid-pink);
   border: 1px solid var(--mid-pink);
 }
+.paymentContainer{
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+
+}
+.paymentButton{
+  border: 0;
+  border-radius: 12px;
+  padding: 8px;
+  color: #FFF;
+}
+.paymentButton.unSuccessful{
+  background-color: #f15249;
+}
+.paymentButton.successful{
+  background-color: mediumseagreen;
+}
+.paymentImage{
+  width: 200px;
+  height: 200px;
+}
+.payment{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
