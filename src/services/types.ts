@@ -25,7 +25,8 @@ export interface IService {
   hasMedia: boolean;
   color?: string;
   media: any,
-  sort: number
+  sort: number,
+  openDrawer: boolean
 }
 
 export interface SelectedOptions {

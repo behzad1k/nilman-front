@@ -249,12 +249,16 @@ export default function SecAttrDrawer({
                     {/*       {`(به علاوه ${formatPrice(secAttr.pricePlus)} تومان)`} */}
                     {/*     </Box> */}
                     {/* } */}
-                      <Box component="span" sx={{fontWeight: '800'}}>
-                        {formatPrice(secAttr.price * (selected.isUrgent ? 2 : 1))}
-                      </Box>
-                      <Box component="span" ml={0.5} sx={{fontWeight: '300'}}>
-                        تومان
-                      </Box>
+                    {secAttr.price > 0 &&
+                    <>
+                        <Box component="span" sx={{ fontWeight: '800' }}>
+                          {formatPrice(secAttr.price * (selected.isUrgent ? 2 : 1))}
+                        </Box>
+                        <Box component="span" ml={0.5} sx={{ fontWeight: '300' }}>
+                            تومان
+                        </Box>
+                    </>
+                    }
                   </Box>
                 ))}
               </>

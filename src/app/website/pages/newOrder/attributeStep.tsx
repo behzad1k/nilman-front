@@ -25,8 +25,10 @@ export default function AttributeStep({
   const services = useAppSelector(state => state.serviceReducer.allServices)
   const cardRef = useRef<Array<HTMLElement | null>>([]);
   const handleSelectAttribute = (index: number, attribute: IService) => {
-    if (attribute.attributes && attribute.attributes?.length > 0 && findRootCount(services, attribute.id) == 2) {
-      if (attribute.parent.isMulti && selected.attributes.find(e => services.find(j => j?.id == e.parent?.id)?.parent.id == attribute.parent.id) && !selected.attributes.map(e => findAncestors(services, e.id)).flat(1).map(e => e.id).includes(attribute.id)){
+    if (attribute.attributes && attribute.attributes?.length > 0 && attribute.openDrawer) {
+      if (attribute.parent.isMulti
+        && selected.attributes.find(e => services.find(j => j?.id == e.parent?.id)?.parent.id == attribute.parent.id)
+        && !selected.attributes.map(e => findAncestors(services, e.id)).flat(1).map(e => e.id).includes(attribute.id)){
         toast(`انتخاب بیش از یک خدمت در ${attribute.parent.title} مجاز نمی باشد`, {type: 'error'})
       }else{
         setCurId(attribute);
@@ -67,17 +69,17 @@ export default function AttributeStep({
     if (selected.attributes?.length > 0) setIsNextStepAllowed(true);
     else setIsNextStepAllowed(false);
   }, []);
-
+  console.log((selected));
   return (
     <div className="service-step-container">
       <section className="cards">
-        {[...(selected.attributeStep || selected.service)?.attributes].sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000))?.map((attribute, index) => (
+        {[...(selected?.attributeStep || selected?.service)?.attributes].sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000))?.map((attribute, index) => (
           <div
             key={attribute.slug}
             ref={(el) => (cardRef.current[index] = el)}
             onClick={() => handleSelectAttribute(index, attribute)}
             className={`card ${
-              attribute.attributes.find(e => selected.attributes.map(p => p.id).includes(e.id)) ? 'selected' : ''
+              attribute.attributes?.find(e => selected?.attributes?.map(p => p.id)?.includes(e.id)) ? 'selected' : ''
             } ${index % 2 == 0 ? 'reversed' : ''}`}
           >
             <img src={'/img/' + attribute.slug + '.png'} />

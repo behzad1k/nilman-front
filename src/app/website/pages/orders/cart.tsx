@@ -64,7 +64,7 @@ const CartItem = ({item}: ICartItemProps) => {
       }
       <span className="orderInfo dashedBottom">
         <h4>جمع کل</h4>
-        <h4> {formatPrice(item.price)} تومان</h4>
+        <h4> {formatPrice(item.finalPrice)} تومان</h4>
       </span>
       <span className="orderInfo">
         <span className="orderInfoIcon">

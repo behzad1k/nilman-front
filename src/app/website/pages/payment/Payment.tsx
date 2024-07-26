@@ -9,7 +9,7 @@ import { order } from '../../../../services/redux/reducers/orderSlice.ts';
 
 const Payment = ({ params }) => {
   const [searchParam, setSearchParam] = useSearchParams();
-  const [isSuccessful, setIsSuccessful] = useState(false)
+  const [isSuccessful, setIsSuccessful] = useState(searchParam.get('Status') == 'OK')
   const dispatch = useDispatch()
   const navigate = useNavigate();
   const send = async () => {
@@ -21,6 +21,8 @@ const Payment = ({ params }) => {
       setIsSuccessful(true);
       dispatch(cart());
       dispatch(order());
+    }else {
+      setIsSuccessful(false);
     }
     dispatch(SET_LOADING(false));
   };
