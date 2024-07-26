@@ -15,7 +15,7 @@ const Payment = ({ params }) => {
   const send = async () => {
     dispatch(SET_LOADING(true));
 
-    const res = await api(urls.paymentVerify, { method: 'POST', body: { authority: searchParam.get('Authority') }})
+    const res = await api(urls.paymentVerify, { method: 'POST', body: { authority: searchParam.get('Authority') }}, true  )
 
     if (res.code == 200){
       setIsSuccessful(true);
