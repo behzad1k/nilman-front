@@ -99,7 +99,7 @@ export default function WorkerStep({
     setSelected((prev: Selected) => ({
       ...prev,
       worker: watchWorker,
-      date: moment(Intl.DateTimeFormat().format(date)).unix(),
+      date: moment(Intl.DateTimeFormat().format(date)).format('jYYYY/jMM/jDD'),
       time: fromTime,
     }));
     setIsNextStepAllowed(true);
@@ -185,7 +185,7 @@ export default function WorkerStep({
       setSelected((prev: Selected) => ({
         ...prev,
         worker: nearest.workerId,
-        date: moment(date, 'jYYYY/jMM/jDD').unix(),
+        date: moment(date, 'jYYYY/jMM/jDD'),
         time: fromTime,
       }));
       setIsNextStepAllowed(true);
@@ -193,7 +193,7 @@ export default function WorkerStep({
   };
 
   useEffect(() => {
-    setSelected(prev => ({ ...prev, date: moment().add(calTab, 'd').unix()}))
+    setSelected(prev => ({ ...prev, date: moment().add(calTab, 'd').format('jYYYY/jMM/jDD')}))
   }, [calTab]);
 
   useEffect(() => {

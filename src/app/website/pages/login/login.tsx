@@ -123,7 +123,8 @@ export default function Login() {
           });
           toast('خوش آمدید', { type: 'success' });
           await userApis(dispatch);
-          navigate(urlParams.get('from') || '/');
+          // window.location.href = urlParams.get('from')
+          navigate('/' + urlParams.get('from'));
         }
       } else {
         toast('کد وارد شده صحیح نیست', { type: 'error' });

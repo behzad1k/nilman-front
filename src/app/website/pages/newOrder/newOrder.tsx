@@ -52,7 +52,7 @@ export type Selected = {
   address: IAddress | null;
   price: number;
   worker: string | null;
-  date: number | null;
+  date: string | null;
   time: number | null;
   discount: string | null;
   isUrgent: boolean;
@@ -76,8 +76,8 @@ const initialSelected: Selected = {
 
 export default function NewOrder() {
   // React
-  const prevData = JSON.parse(sessionStorage.getItem('new-order') as string);
-  const prevStep = JSON.parse(sessionStorage.getItem('step') as string);
+  const prevData = JSON.parse(localStorage.getItem('new-order') as string);
+  const prevStep = JSON.parse(localStorage.getItem('step') as string);
   const [selected, setSelected] = useState<Selected>(prevData || { ...initialSelected, options: {} });
   const [workers, setWorkers] = useState<IUser[] | []>([]);
   const [nearest, setNearest] = useState<{date: string; workerId: number} | null>(null);
@@ -108,11 +108,14 @@ export default function NewOrder() {
   }, [selected.address, selected.service]);
 
   // Handlers
-  const handleChangeStep = (action: 'next' | 'prev') => {
+  const handleChangeStep = async (action: 'next' | 'prev') => {
     // handle next - prev logic
     if (action === 'next') {
       if(step.index == 1 && !Cookies.get('token')){
-        navigate('/login');
+        localStorage.setItem('new-order', JSON.stringify(selectedRef.current));
+        localStorage.setItem('step', JSON.stringify(stepRef.current));
+        await new Promise(resolve => setTimeout(resolve, 300))
+        navigate('/login?from=newOrder');
         return;
       }
         setStep((prev) => (prev.index === steps.length - 1 ? prev : steps[prev.index + 1]));
@@ -162,14 +165,16 @@ export default function NewOrder() {
     }
 
     if (res.code === 201) {
-      sessionStorage.removeItem('new-order');
-      sessionStorage.removeItem('step');
+      localStorage.removeItem('new-order');
+      localStorage.removeItem('step');
       setSelected(initialSelected)
       setSelected(prev => ({ ...prev, service: null, options: {} }))
       dispatch(order());
       dispatch(cart());
       toast('سفارش شما با موفقیت ثبت شد', {type: 'success'});
-      await setTimeout(() => { navigate('/orders')}, 300)
+
+      await new Promise(resolve => setTimeout(resolve, 300))
+      navigate('/orders')
     } else {
       toast('سفارش شما ثبت نشد, لطفا مجددا تلاش کنید.', {type: 'error'});
     }
@@ -197,10 +202,15 @@ export default function NewOrder() {
   }, [step]);
 
   useEffect(() => {
+    console.log('j1', selected.service);
+    console.log('jj', selected.service != null);
     return () => {
       if(selected.service != null) {
-        sessionStorage.setItem('new-order', JSON.stringify(selectedRef.current));
-        sessionStorage.setItem('step', JSON.stringify(stepRef.current));
+        localStorage.setItem('new-order', JSON.stringify(selectedRef.current));
+        localStorage.setItem('step', JSON.stringify(stepRef.current));
+      }else{
+        localStorage.removeItem('new-order');
+        localStorage.removeItem('step');
       }
     };
   }, []);
