@@ -22,7 +22,7 @@ export default function OrderCard({item}: IOrderCardProps) {
   const [openModal, setOpenModal] = useState(false);
   const userType = useAppSelector((state) => state.userReducer.data.role);
 
-  const date = moment.unix(Number(item.date)).locale('fa').format('DD MMMM yy');
+  const date = item.date;
   const time = `${item.fromTime} - ${item.toTime}`;
   const attributes = item.orderServices.reduce((acc, atr, index) => {
     if (index !== 0) return (acc += ', ' + atr.service.title);
