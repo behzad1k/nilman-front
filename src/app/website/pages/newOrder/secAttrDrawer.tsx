@@ -252,7 +252,7 @@ export default function SecAttrDrawer({
                     {secAttr.price > 0 &&
                     <>
                         <Box component="span" sx={{ fontWeight: '800' }}>
-                          {formatPrice(secAttr.price * (selected.isUrgent ? 2 : 1))}
+                          {formatPrice(secAttr.price * (selected.isUrgent ? 1.5 : 1))}
                         </Box>
                         <Box component="span" ml={0.5} sx={{ fontWeight: '300' }}>
                             تومان
@@ -328,7 +328,7 @@ export default function SecAttrDrawer({
 
               return cp;
             })}/>
-            {selected?.options[currentAttribute?.id]?.media?.preview && <img src={selected.options[currentAttribute?.id]?.media?.preview} />}
+            {selected?.options[currentAttribute?.id]?.media?.preview && <img className='previewImage' src={selected.options[currentAttribute?.id]?.media?.preview} />}
           </section>
           <Box display="flex" width="100%" gap={2}>
             <Button

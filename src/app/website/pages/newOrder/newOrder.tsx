@@ -114,14 +114,14 @@ export default function NewOrder() {
       if(step.index == 1 && !Cookies.get('token')){
         localStorage.setItem('new-order', JSON.stringify(selectedRef.current));
         localStorage.setItem('step', JSON.stringify(stepRef.current));
-        await new Promise(resolve => setTimeout(resolve, 300))
-        navigate('/login?from=newOrder');
-        return;
+        console.log(selected);
+        // await new Promise(resolve => setTimeout(resolve, 300))
+        navigate('/login');
       }
         setStep((prev) => (prev.index === steps.length - 1 ? prev : steps[prev.index + 1]));
         setIsNextStepAllowed(false)
     }
-    if (action === 'prev') {
+    else if (action === 'prev') {
       if (step.index == 1){
         const newParent = services.find(e => e.id == selected.attributeStep?.parent?.id);
         if(!newParent){
@@ -200,17 +200,19 @@ export default function NewOrder() {
   useEffect(() => {
     stepRef.current = step;
   }, [step]);
-
   useEffect(() => {
-    console.log('j1', selected.service);
-    console.log('jj', selected.service != null);
     return () => {
+      console.log(selected);
+      console.log(step);
+
       if(selected.service != null) {
+        console.log('here');
         localStorage.setItem('new-order', JSON.stringify(selectedRef.current));
         localStorage.setItem('step', JSON.stringify(stepRef.current));
       }else{
-        localStorage.removeItem('new-order');
-        localStorage.removeItem('step');
+        // console.log('there');
+        // localStorage.removeItem('new-order');
+        // localStorage.removeItem('step');
       }
     };
   }, []);

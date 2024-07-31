@@ -1520,6 +1520,12 @@ main {
 .displayNone{
   display: none;
 }
+
+.previewImage{
+  max-width: 300px;
+  max-height: 300px;
+  margin: auto;
+}
 .uploadPhotoButton{
   align-items: center;
   width: 100%;
