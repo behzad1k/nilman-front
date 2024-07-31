@@ -155,7 +155,7 @@ export default function Home() {
           bgColor2={'rgba(255, 163, 195, 0.2)'}
           // bgColor1={'rgb(255, 135, 177)'}
           // bgColor2={'rgb(172, 172, 172)'}
-          title={'ثبت سفارش'}
+          title={'ثبت سفارش عادی'}
           description={'همین حالا سفارش خود را ثبت کنید!'}
           button={'ثبت'}
           icon={<PlusCircle />}
@@ -177,7 +177,7 @@ export default function Home() {
           // bgColor1={'rgb(255, 135, 177)'}
           // bgColor2={'rgb(172, 172, 172)'}
           title={'سفارش فوری'}
-          description={'ثبت سفارش برای دو ساعت بعد(با افزایش هزینه همراه می باشد!)'}
+          description={'برای سفارشات فوری از دو ساعت آینده(با افزایش هزینه همراه می باشد!)'}
           button={'ثبت سفارش فوری'}
           icon={<PlusCircle />}
           onClick={() => {

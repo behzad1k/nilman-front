@@ -154,11 +154,11 @@ export default function OrderCard({item}: IOrderCardProps) {
             <Money size={22} />
             {item.discount > 0 ? (
               <>
-                <s>{formatPrice(item.price)}</s>
+                <s>{formatPrice(item.finalPrice)}</s>
                 <p>{formatPrice(item.price - item.discount)}</p>
               </>
             ) : (
-              <p>{formatPrice(item.price)}</p>
+              <p>{formatPrice(item.finalPrice)}</p>
             )}
           </span>
         </div>
