@@ -149,56 +149,18 @@ export default function WorkerStep({
     return body;
   };
 
-  const fetchWorkersOff = async () => {
-    let query;
-    // Asap mode
-    if (selectedTab.index === 0) {
-      return;
-    }
-    if (selectedTab.index === 1) {
-      // only date
-      query = new URLSearchParams({
-        // @ts-ignore
-        date: String(moment(Intl.DateTimeFormat().format(date)).unix()),
-      });
-    } else {
-      // Date and worker
-      query = new URLSearchParams({
-        workerId: watchWorker,
-        // @ts-ignore
-        date: String(moment(Intl.DateTimeFormat().format(date)).unix()),
-      });
-    }
-
-    const res = await api(urls.workersOffs + '?' + query, {}, true);
+  const fetchWorkersOff = async (id: string) => {
+    const res = await api(urls.workersOffs + selected.service?.id + '?workerId=' + id, {}, true);
     if (res.code === 200) {
-      console.log(createSchedule(section, res.data));
-
-      setSchedules(createSchedule(section, res.data));
+      console.log(res.data);
+      // setSchedules(createSchedule(section, res.data));
     }
   };
 
-  const handleSetAsapModeData = () => {
-    if (selectedTab.index === 0 && nearest) {
-      const [date, time] = nearest.date.split(' ');
-      const fromTime = time.split('-')[0];
-      setSelected((prev: Selected) => ({
-        ...prev,
-        worker: nearest.workerId,
-        date: moment(date, 'jYYYY/jMM/jDD'),
-        time: fromTime,
-      }));
-      setIsNextStepAllowed(true);
-    }
-  };
 
   useEffect(() => {
     setSelected(prev => ({ ...prev, date: moment().add(calTab, 'd').format('jYYYY/jMM/jDD')}))
   }, [calTab]);
-
-  useEffect(() => {
-    handleSetAsapModeData();
-  }, [nearest, selectedTab]);
 
   useEffect(() => {
     setSelected((prev) => ({...prev, discount: watchDiscount}));
@@ -234,15 +196,16 @@ export default function WorkerStep({
       <div className="content">
         {calender()}
       </div>
-      <div>
         {orderReducer.orders?.filter(e => e.serviceId == selected?.service?.id)?.length > 0 &&
         <SelectInput
           name="worker"
           label="آرایشگر"
           control={control}
           defaultValue=""
+          onChange={(input) => fetchWorkersOff(input.target.value)}
           size="medium"
           sx={{
+            width: '100%',
             '& .MuiOutlinedInput-notchedOutline': {
               borderColor: 'var(--mid-pink)',
               backgroundColor: 'var(--white-pink)',
@@ -257,7 +220,6 @@ export default function WorkerStep({
           ))}
         </SelectInput>
         }
-      </div>
     </div>
   );
 }

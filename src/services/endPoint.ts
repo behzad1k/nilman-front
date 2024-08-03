@@ -20,7 +20,7 @@ export const urls = {
   adminFeedback: '/admin/feedback/',
   adminOrderUpdate: '/admin/order/update',
   ariaWorker: '/order/workers',
-  workersOffs: '/user/workerOffs',
+  workersOffs: '/user/workerOffs/',
   adminLogin: '/admin/login',
   adminDashboard: '/admin/login',
   feedback: '/feedback',

@@ -1097,6 +1097,9 @@ main {
 }
 /* NEW-ORDER - SERVICE-STEP */
 .service-step-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   width: 100%;
 }
 

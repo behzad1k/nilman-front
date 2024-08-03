@@ -164,7 +164,7 @@ export default function OrderCard({item}: IOrderCardProps) {
         </div>
         <div className="orderRowProfile">
           <ProfilePicture imgSrc={'./img/girl.png'} />
-          <p>{item.worker?.name ?? 'در حال انتخاب'}</p>
+          <p>{item.worker?.name ? item.worker?.name + ' ' + item.worker?.lastName : 'در حال انتخاب'}</p>
         </div>
       </div>
     </article>
