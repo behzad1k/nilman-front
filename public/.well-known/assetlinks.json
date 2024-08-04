@@ -1,10 +1,23 @@
-[{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
-    "namespace": "android_app",
-    "package_name": "co.nilman.app.twa",
-    "sha256_cert_fingerprints": [
-      "A9:17:77:BE:53:E7:7A:8A:C4:55:E3:44:0D:8B:BC:D8:12:4B:BF:F5:F4:43:F4:FD:2E:1A:6B:5C:5C:8F:B4:2E"
-    ]
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "co.nilman.app.twa",
+      "sha256_cert_fingerprints": [
+        "A9:17:77:BE:53:E7:7A:8A:C4:55:E3:44:0D:8B:BC:D8:12:4B:BF:F5:F4:43:F4:FD:2E:1A:6B:5C:5C:8F:B4:2E"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "check_validation"
+    ],
+    "target": {
+      "namespace": "cafebazaar_twa",
+      "package_name": "co.nilman.app.twa"
+    }
   }
-}]
+]
