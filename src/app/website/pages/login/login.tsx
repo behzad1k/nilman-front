@@ -123,7 +123,7 @@ export default function Login() {
           });
           toast('خوش آمدید', { type: 'success' });
           await userApis(dispatch);
-          navigate(`/${localStorage.getItem('new-order') ? '/newOrder' : ''}`)        }
+          navigate(`${localStorage.getItem('new-order') ? '/newOrder' : '/'}`)        }
       } else {
         toast('کد وارد شده صحیح نیست', { type: 'error' });
       }

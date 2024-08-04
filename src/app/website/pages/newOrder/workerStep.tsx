@@ -55,7 +55,7 @@ export default function WorkerStep({
   section = 3,
 }: Props) {
   // React
-  const [schedules, setSchedules] = useState<ScheduleCard[] | []>([]);
+  const [schedules, setSchedules] = useState<any>(undefined);
   const [date, setDate] = useState();
   const [selectedTab, setSelectedTab] = useState<Tab>(tabs[0]);
   const [calTab, setCalTab] = useState(0);
@@ -149,14 +149,21 @@ export default function WorkerStep({
     return body;
   };
 
-  const fetchWorkersOff = async (id: string) => {
-    const res = await api(urls.workersOffs + selected.service?.id + '?workerId=' + id, {}, true);
+  const fetchWorkersOff = async (id: string = null) => {
+    const reqBody = { method: 'POST', body: { attributes: selected.attributes.map(e => e.id)}}
+    if (id){
+      reqBody.body['workerId'] = id
+    }
+
+    const res = await api(urls.workersOffs, reqBody, true);
     if (res.code === 200) {
-      console.log(res.data);
-      // setSchedules(createSchedule(section, res.data));
+      setSchedules(res.data);
     }
   };
 
+  useEffect(() => {
+    fetchWorkersOff()
+  }, []);
 
   useEffect(() => {
     setSelected(prev => ({ ...prev, date: moment().add(calTab, 'd').format('jYYYY/jMM/jDD')}))
