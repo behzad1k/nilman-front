@@ -69,11 +69,11 @@ export default function AttributeStep({
     if (selected.attributes?.length > 0) setIsNextStepAllowed(true);
     else setIsNextStepAllowed(false);
   }, []);
-  console.log((selected));
+
   return (
     <div className="service-step-container">
       <section className="cards">
-        {[...(selected?.attributeStep || selected?.service)?.attributes].sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000))?.map((attribute, index) => (
+        {[...(selected?.attributeStep || selected?.service)?.attributes || []]?.sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000))?.map((attribute, index) => (
           <div
             key={attribute.slug}
             ref={(el) => (cardRef.current[index] = el)}

@@ -10,6 +10,7 @@ export const urls = {
   adminUser: '/admin/user',
   address: '/address/',
   order: '/order',
+  orderService: '/order/service/',
   orderSingle: '/order/single',
   orderMedia: '/order/media/',
   feedbackFactors: '/feedback/factors',

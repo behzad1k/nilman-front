@@ -17,7 +17,6 @@ interface IOrderCardProps {
 
 export default function OrderCard({item}: IOrderCardProps) {
   const dispatch = useAppDispatch();
-  console.log(item);
 
   const [openModal, setOpenModal] = useState(false);
   const userType = useAppSelector((state) => state.userReducer.data.role);
@@ -30,8 +29,6 @@ export default function OrderCard({item}: IOrderCardProps) {
   }, '');
 
   const updateOrder = async () => {
-    console.log('here', item);
-
     const reqOptions = {
       method: 'PUT',
       body: {
@@ -46,91 +43,6 @@ export default function OrderCard({item}: IOrderCardProps) {
     }
   };
 
-  if (userType === 'WORKER') {
-    return (
-      <Paper
-        elevation={3}
-        component="article"
-        sx={{
-          width: '100%',
-          bgcolor: 'var(--white-pink)',
-        }}
-      >
-        <Box
-          className="order-card-title"
-          sx={{
-            display: 'grid',
-            placeItems: 'center',
-            bgcolor: 'var(--light-pink)',
-            height: '40px',
-            m: '10px -14px 0 -14px',
-          }}
-        >
-          <Typography variant="body1" component="h2">
-            {item.service.title}
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            p: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 1,
-          }}
-        >
-          {attributes && <OrderItem Icon={Article} value={attributes} />}
-          <OrderItem Icon={Clock} value={time} />
-          <OrderItem Icon={Calendar} value={date} />
-          <OrderItem Icon={MapPinLine} value={item.address?.description ?? ''} />
-          <OrderItem Icon={Money} value={Intl.NumberFormat().format(item.price)} />
-          <Button
-            variant="outlined"
-            onClick={() => setOpenModal(true)}
-            sx={{
-              borderColor: 'var(--light-grey)',
-              color: 'var(--light-black)',
-              mt: 1,
-              ':hover': {bgcolor: 'var(--mid-pink)', borderColor: 'var(--mid-pink)'},
-            }}
-          >
-            جزئیات
-          </Button>
-          {userType === 'WORKER' && (
-            <Box display="flex" gap={1}>
-              <Button
-                fullWidth
-                variant="contained"
-                sx={{
-                  bgcolor: 'var(--light-grey)',
-                  color: 'var(--light-black)',
-                  ':hover': {bgcolor: 'var(--mid-pink)'},
-                }}
-              >
-                <a href="tel:09037131808">تماس با پشتیبانی</a>
-              </Button>
-              {item.status !== 'Done' && (
-                <Button
-                  fullWidth
-                  variant="contained"
-                  sx={{
-                    bgcolor: 'var(--light-pink)',
-                    color: 'var(--light-black)',
-                    ':hover': {bgcolor: 'var(--mid-pink)'},
-                  }}
-                  onClick={updateOrder}
-                >
-                  انجام شده
-                </Button>
-              )}
-            </Box>
-          )}
-        </Box>
-        <Modal open={openModal} setOpen={setOpenModal}>
-          <MapView position={{lat: +item.address.latitude, lng: +item.address.longitude}}></MapView>
-        </Modal>
-      </Paper>
-    );
-  }
   return (
     <article className="infoBox orderRow">
       <h4>{item.service.title} </h4>
@@ -163,7 +75,7 @@ export default function OrderCard({item}: IOrderCardProps) {
           </span>
         </div>
         <div className="orderRowProfile">
-          <ProfilePicture imgSrc={'./img/girl.png'} />
+          <ProfilePicture imgSrc={item.worker?.profilePic?.url || './img/girl.png'} />
           <p>{item.worker?.name ? item.worker?.name + ' ' + item.worker?.lastName : 'در حال انتخاب'}</p>
         </div>
       </div>

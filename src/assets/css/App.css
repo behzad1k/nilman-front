@@ -146,7 +146,7 @@ main {
 }
 /* appBar */
 .appBar {
-  z-index: 10;
+  z-index: 1000;
   display: flex;
   padding-bottom: 13px;
   flex-direction: row-reverse;
@@ -351,6 +351,10 @@ main {
 }
 .orderInfo:nth-last-child(1) {
   margin-bottom: 0;
+}
+.orderInfoDelete{
+  display: flex;
+  gap: 3px;
 }
 .orderInfo.dashedBottom {
   padding-bottom: 8px;
@@ -849,6 +853,7 @@ main {
 .profilePicture img {
   max-width: 100%;
   max-height: 100%;
+  border-radius: 150px;
 }
 
 /* icon input component */

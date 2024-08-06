@@ -36,20 +36,41 @@ const CartItem = ({item}: ICartItemProps) => {
     }
     dispatch(SET_LOADING(false));
   };
+  const deleteOrderService = async (id: number) => {
+    dispatch(SET_LOADING(true));
+    const res = await api(
+      urls.orderService + id,
+      {
+        method: 'DELETE',
+        body: {},
+      },
+      true,
+    );
+    if (res.code == 200){
+      dispatch(cart())
+      toast('آیتم با موفقیت از سبد خرید حذف شد', { type: 'success'});
+    }
+    dispatch(SET_LOADING(false));
+  };
   return (
     <article className="cartItemContainer">
       <span className="orderInfo">
         <span>{item.isUrgent && <span className='isUrgent'>فوری</span>}</span>
         <h3>{item.service.title}</h3>
         <span className='trashCart' onClick={() => deleteCartItem(item.id)}>
-          <span>حذف</span>
+          <span>حذف همه</span>
           <Trash size="20" />
         </span>
       </span>
       {item.orderServices?.map((attribute, index) => (
         <span className="orderInfo" key={index}>
-          <p>{attribute.service.title}</p>
-          <p>{formatPrice(attribute.price)} تومان</p>
+          <p>{attribute.service?.title}</p>
+          <span className='orderInfoDelete'>
+            <p>{formatPrice(attribute.price)} تومان</p>
+            <span className='trashCart' onClick={() => deleteOrderService(attribute.id)}>
+              <Trash size="20" />
+            </span>
+          </span>
         </span>
       ))}
       <span className="orderInfo">

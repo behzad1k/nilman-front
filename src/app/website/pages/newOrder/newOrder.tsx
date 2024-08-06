@@ -114,7 +114,6 @@ export default function NewOrder() {
       if(step.index == 1 && !Cookies.get('token')){
         localStorage.setItem('new-order', JSON.stringify(selectedRef.current));
         localStorage.setItem('step', JSON.stringify(stepRef.current));
-        console.log(selected);
         // await new Promise(resolve => setTimeout(resolve, 300))
         navigate('/login');
       }
@@ -122,6 +121,10 @@ export default function NewOrder() {
         setIsNextStepAllowed(false)
     }
     else if (action === 'prev') {
+      if (!(selected?.attributeStep || selected?.service)){
+        localStorage.removeItem('new-order');
+        localStorage.removeItem('step');
+      }
       if (step.index == 1){
         const newParent = services.find(e => e.id == selected.attributeStep?.parent?.id);
         if(!newParent){
@@ -202,11 +205,7 @@ export default function NewOrder() {
   }, [step]);
   useEffect(() => {
     return () => {
-      console.log(selected);
-      console.log(step);
-
       if(selected.service != null) {
-        console.log('here');
         localStorage.setItem('new-order', JSON.stringify(selectedRef.current));
         localStorage.setItem('step', JSON.stringify(stepRef.current));
       }else{
