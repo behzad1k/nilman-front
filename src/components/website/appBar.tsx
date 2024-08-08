@@ -26,7 +26,6 @@ export function AppBar() {
         />
         <p>سفارش ها</p>
       </NavLink>
-      {userReducer.data.role === 'USER' && (
         <>
           <NavLink to="/newOrder" className="appBarIconContainer">
             <PlusCircle
@@ -45,7 +44,6 @@ export function AppBar() {
             <p>مجله</p>
           </NavLink>
         </>
-      )}
       <NavLink
         to={userReducer.isLoggedIn ? '/profile' : '/login'}
         className="appBarIconContainer"

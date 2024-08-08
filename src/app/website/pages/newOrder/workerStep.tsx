@@ -57,65 +57,10 @@ export default function WorkerStep({
   // React
   const [schedules, setSchedules] = useState<any>(undefined);
   const [date, setDate] = useState();
-  const [selectedTab, setSelectedTab] = useState<Tab>(tabs[0]);
   const [calTab, setCalTab] = useState(0);
-  const cardRef = useRef<Array<HTMLElement | null>>([]);
-  const tabsRef = useRef<Array<HTMLElement | null>>([]);
   const orderReducer = useAppSelector(state => state.orderReducer);
-  // Vars
-  const curDate = new Date();
-  const minDate = curDate.setDate(curDate.getDate() - 1);
-  const defaultDate = moment(new Date());
   const {control, watch} = useForm();
-  const watchWorker = watch('worker') as string;
   const watchDiscount = watch('discount') as string;
-  // @ts-ignore
-  const m = moment(date?._d).locale('fa');
-
-  const times = () => {
-    const rows: ReactElement[] = [];
-
-    for (let i = 8; i <= 20; i++) {
-      rows.push(
-        <span
-          className={"newOrderTimeSpan " + (selected.time == i ? 'selected' : '')}
-          onClick={() => setSelected(prev => ({
-          ...prev,
-          time: i
-        }))}>
-          {i}
-        </span>
-      )
-    }
-
-    return rows;
-  };
-  // Handlers
-  const handleSelectDay = (index: number, fromTime: number) => {
-    cardRef.current.map((el, i) =>
-      i === index ? el?.classList.add('selected') : el?.classList.remove('selected'),
-    );
-
-    setSelected((prev: Selected) => ({
-      ...prev,
-      worker: watchWorker,
-      date: moment(Intl.DateTimeFormat().format(date)).format('jYYYY/jMM/jDD'),
-      time: fromTime,
-    }));
-    setIsNextStepAllowed(true);
-  };
-
-  const handleChangeTab = (clickedTab: Tab) => {
-    tabsRef.current.forEach((tab, i) => {
-      if (clickedTab.index === i) {
-        tab?.classList.add('selected');
-        setSelectedTab(clickedTab);
-      } else {
-        tab?.classList.remove('selected');
-      }
-    });
-    setSchedules([]);
-  };
 
   const calender = () => {
     const tabs: ReactElement[] = [];
@@ -135,7 +80,8 @@ export default function WorkerStep({
 
     const sections = []
     for (let i = 8; i < 20; i = i + 2) {
-      const disabled = (i - 1) < Number(moment().format('HH')) && calTab == 0 ;
+      const day = moment().add(calTab, 'day').format('jYYYY/jMM/jDD')
+      const disabled = schedules && schedules[day] ? schedules[day].includes(i) : false;
       sections.push(<span className={`calSectionsSpan${selected.time == i ? ' selected' : ''} ${disabled ? 'disabled' : ''}`} onClick={() => !disabled && setSelected(prev => ({ ...prev, time: i }))}>{i} - {i + 2}</span>)
     }
 
@@ -148,7 +94,6 @@ export default function WorkerStep({
       </div>
     return body;
   };
-
   const fetchWorkersOff = async (id: string = null) => {
     const reqBody = { method: 'POST', body: { attributes: selected.attributes.map(e => e.id)}}
     if (id){
@@ -209,7 +154,10 @@ export default function WorkerStep({
           label="آرایشگر"
           control={control}
           defaultValue=""
-          onChange={(input) => fetchWorkersOff(input.target.value)}
+          onChange={(input) => {
+            setSelected(prev => ({ ...prev, worker: input.target.id }))
+            fetchWorkersOff(input.target.value);
+          }}
           size="medium"
           sx={{
             width: '100%',
