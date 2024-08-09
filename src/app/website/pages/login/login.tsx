@@ -255,6 +255,7 @@ export default function Login() {
                   },
                 }}
               />
+              <span>ورود به اپلیکشن به منزله پذیرش <a className='basicLink' href={process.env.REACT_APP_BLOG_URL + '/privacy_policy'}>قوانین حریم شخصی</a> می باشد</span>
               <Button
                 variant="contained"
                 type="submit"
