@@ -1,0 +1,8 @@
+co/nilman/app/twa/BuildConfig.java
+ co.nilman.app.twa.BuildConfig
+co/nilman/app/twa/LauncherActivity.java
+ co.nilman.app.twa.LauncherActivity
+co/nilman/app/twa/DelegationService.java
+ co.nilman.app.twa.DelegationService
+co/nilman/app/twa/Application.java
+ co.nilman.app.twa.Application
