@@ -52,12 +52,14 @@ export default function SecAttrDrawer({
   });
   const boxEl = useRef<Array<HTMLElement | null>>([]);
   const toggleDrawer = (newOpen: boolean) => () => {
+
     const cond = curParent?.attributes?.some((secAttr) =>
       selected.attributes.includes(secAttr),
     );
     setPage(1);
     setCurParent(undefined)
     // if (!cond) return;
+    console.log(newOpen);
     setOpen(newOpen);
   };
   const handleClickCard = (index: number, secAttr: IService) => {
@@ -264,11 +266,10 @@ export default function SecAttrDrawer({
               </>
             )}
             {!pickingColor.open &&
-                <button className='confirmButton order' onClick={() => setOpen(false)}>
+                <button className='confirmButton order' onClick={toggleDrawer(false)}>
                     ثبت
                 </button>
             }
-
           </Box>
         </SwipeableDrawer>
         <Modal open={infoModal} setOpen={setInfoModal}>

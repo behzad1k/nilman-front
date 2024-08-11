@@ -8,7 +8,7 @@
     "build": "npx react-scripts build",
     "prod": "npx react-scripts build && npx serve -s build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "twa": "bubblewrap init --manifest https://app.nilman.co/manifest.json --directory=/Users/behzad1k/Documents/Apps/zib-front/twa && bubblewrap build"
+    "twa": "bubblewrap init --manifest https://app.nilman.co/manifest.json --directory=/Users/behzad1k/Documents/Apps/zib-front/twa"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",

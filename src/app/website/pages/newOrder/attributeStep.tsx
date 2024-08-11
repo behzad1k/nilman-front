@@ -26,15 +26,33 @@ export default function AttributeStep({
   const cardRef = useRef<Array<HTMLElement | null>>([]);
   const handleSelectAttribute = (index: number, attribute: IService) => {
     if (attribute.attributes && attribute.attributes?.length > 0 && attribute.openDrawer) {
-      if (attribute.parent.isMulti
-        && selected.attributes.find(e => services.find(j => j?.id == e.parent?.id)?.parent.id == attribute.parent.id)
-        && !selected.attributes.map(e => findAncestors(services, e.id)).flat(1).map(e => e.id).includes(attribute.id)){
-        toast(`انتخاب بیش از یک خدمت در ${attribute.parent.title} مجاز نمی باشد`, {type: 'error'})
-      }else{
+      if (selected.attributes.length == 0){
         setCurId(attribute);
         setDrawerOpen(true);
-        // setIsNextStepAllowed(true);
       }
+      else if (!attribute.parent.isMulti && !selected.attributes.map(e => findAncestors(services, e.id)).flat(1).map(e => e.id).includes(attribute.id)){
+        toast(`انتخاب بیش از یک خدمت در ${attribute.parent.title} مجاز نمی باشد`, {type: 'error'})
+      }else{
+        // console.log(selected.attributes.map(e => findAncestors(services, e.id)));
+        // console.log(selected.attributes.find(e => services.find(j => j?.id == e.parent?.id)?.parent.id == attribute.parent.id));
+        // if (selected.attributes.find(e => services.find(j => j?.id == e.parent?.id)?.parent.id == attribute.parent.id)){
+          // && !selected.attributes.map(e => findAncestors(services, e.id)).flat(1).map(e => e.id).includes(attribute.id)){
+        //   toast(`انتخاب بیش از یک خدمت در ${attribute.parent.title} مجاز نمی باشد`, {type: 'error'})
+        // }else {
+          setCurId(attribute);
+          setDrawerOpen(true);
+        // }
+      }
+      // if (attribute.parent.isMulti
+      //   && selected.attributes.find(e => services.find(j => j?.id == e.parent?.id)?.parent.id == attribute.parent.id)
+      //   && !selected.attributes.map(e => findAncestors(services, e.id)).flat(1).map(e => e.id).includes(attribute.id)
+      // ){
+      //   toast(`انتخاب بیش از یک خدمت در ${attribute.parent.title} مجاز نمی باشد`, {type: 'error'})
+      // }else{
+      //   setCurId(attribute);
+      //   setDrawerOpen(true);
+      //   // setIsNextStepAllowed(true);
+      // }
     }else if(attribute.attributes && attribute.attributes.length > 0 && attribute.attributes[0]?.attributes?.length > 0){
       setStepCounter(prev => prev + 1)
       setSelected( prev => ({ ...prev, attributeStep: attribute }))
