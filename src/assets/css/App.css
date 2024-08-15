@@ -1518,10 +1518,21 @@ main {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding: 15px 10px 30px;
+  overflow: auto;
+}
+.infoModalHeader{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
 }
 .infoModal.mediaModal{
+  padding: 20px 16px;
   align-items: center;
   margin-bottom: 10px;
+  height: 200px;
+
 }
 .infoModal.mediaModal img{
   max-width: 400px;

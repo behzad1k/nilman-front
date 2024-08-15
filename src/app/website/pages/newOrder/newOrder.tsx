@@ -129,7 +129,7 @@ export default function NewOrder() {
         const newParent = services.find(e => e.id == selected.attributeStep?.parent?.id);
         if(!newParent){
           setStep(steps[0])
-          setSelected(prev => ({ ...prev, attributeStep: null }))
+          setSelected(prev => ({ ...prev, attributeStep: null, options: {}, attributes: [] }))
         }else{
           setSelected(prev => ({...prev, attributeStep: services.find(e => e.id == prev.attributeStep?.parent?.id) }))
         }
@@ -141,7 +141,6 @@ export default function NewOrder() {
     // set next btn disabled when we go to a new step
     // setIsNextStepAllowed(false);
   };
-
   const handleSubmitOrder = async () => {
     const reqOptions = {
       method: 'post',

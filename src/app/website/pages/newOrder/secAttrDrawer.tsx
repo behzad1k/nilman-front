@@ -272,22 +272,35 @@ export default function SecAttrDrawer({
             }
           </Box>
         </SwipeableDrawer>
-        <Modal open={infoModal} setOpen={setInfoModal}>
-          <i className="close-button" onClick={() => setInfoModal(false)}></i>
-          <p className='fontWeight400 marginBottom10'>توضیحات {(curParent || parent).title}</p>
+        <SwipeableDrawer
+          anchor="bottom"
+          onClose={() => setInfoModal(false)}
+          onOpen={() => setInfoModal(true)}
+          open={infoModal}
+          >
           <section className='infoModal'>
-            {[...(curParent || parent).attributes]?.sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000)).map((attribute, index) =>
+            <div className="infoModalHeader">
+              <p className='fontWeight400 marginBottom10'>توضیحات {(curParent || parent).title}</p>
+              <Close onClick={() => setInfoModal(false)}/>
+            </div>
+           {[...(curParent || parent).attributes]?.sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000)).map((attribute, index) =>
             <div className='infoRow'>
               <span className='fontWeight400'>{attribute.title}</span>
               <span className='infoModalDesc'>{attribute.description}</span>
             </div>
             )}
           </section>
-        </Modal>
-        <Modal open={pickMedia} setOpen={setPickMedia}>
-          <i className="close-button" onClick={() => setPickMedia(false)}></i>
-          <p className='fontWeight400 marginBottom10'>اگر طرح خاصی برای خدمت انتخابی خود در نظر دارید عکس آن را در اینجا بارگزاری نمایید و یا لینک پینترست آن را وارد کنید</p>
+        </SwipeableDrawer>
+        <SwipeableDrawer
+          anchor="bottom"
+          onClose={() => setPickMedia(false)}
+          onOpen={() => setPickMedia(true)}
+          open={pickMedia}
+          sx={{height: "200px"}}
+        >
           <section className='infoModal mediaModal'>
+            <p className='fontWeight400 marginBottom10'>اگر طرح خاصی برای خدمت انتخابی خود در نظر دارید عکس آن را در اینجا بارگزاری نمایید و یا لینک پینترست آن را وارد کنید</p>
+
             <TextField
               size="medium"
               onChange={(input) => setSelected(prev => {
@@ -329,25 +342,28 @@ export default function SecAttrDrawer({
 
               return cp;
             })}/>
-            {selected?.options[currentAttribute?.id]?.media?.preview && <img className='previewImage' src={selected.options[currentAttribute?.id]?.media?.preview} />}
+            {<img className='previewImage' src={selected?.options[currentAttribute?.id]?.media?.preview ? selected.options[currentAttribute?.id]?.media?.preview : 'iiklllpublic/img/placeholder400.png'} />}
+            <Box width="100%">
+              <Box display="flex" width="100%" gap={2}>
+                <Button
+                  size="large"
+                  sx={{flex: 1, backgroundColor: '#4b794b', color: '#FFF'}}
+                  variant="contained"
+                  onClick={() => setPickMedia(false)}
+                >
+                  تایید
+                </Button>
+                <Button
+                  variant="outlined"
+                  size="large"
+                  color="secondary"
+                  onClick={() => setPickMedia(false)}
+                >بازگشت</Button>
+              </Box>
+            </Box>
           </section>
-          <Box display="flex" width="100%" gap={2}>
-            <Button
-              size="large"
-              sx={{flex: 1, backgroundColor: '#4b794b', color: '#FFF'}}
-              variant="contained"
-              onClick={() => setPickMedia(false)}
-            >
-              تایید
-            </Button>
-            <Button
-              variant="outlined"
-              size="large"
-              color="secondary"
-              onClick={() => setPickMedia(false)}
-            >بازگشت</Button>
-          </Box>
-        </Modal>
+
+        </SwipeableDrawer>
       </>
     );
   } else return null;
