@@ -38,11 +38,35 @@ function SearchField() {
 
 // Add Marker Component on click
 function LocationMarker({position, setPosition}: Props) {
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.permissions.query({name:'geolocation'}).then(permissionStatus => {
+        if (permissionStatus.state === 'denied') {
+          alert('Please allow location access.');
+          window.location.href = "app-settings:location";
+        } else {
+          navigator.geolocation.getCurrentPosition((e) => {
+            setPosition({
+              lat: e.coords.latitude,
+              lng: e.coords.longitude
+            });
+            map.flyTo({
+              lat: e.coords.latitude,
+              lng: e.coords.longitude
+            }, map.getZoom());
+          }, (e) => console.log('errror', e),{timeout:10000});
+        }
+      });
+    } else {
+      alert('Geolocation is not supported in your browser.');
+    }
+  }, []);
   const map = useMapEvents({
-    // locationfound(e: any) {
-    //   setPosition(e.latlng);
-    //   map.flyTo(e.latlng, map.getZoom());
-    // },
+    locationfound(e: any) {
+      console.log(e);
+      setPosition(e.latlng);
+      map.flyTo(e.latlng, map.getZoom());
+    },
     click(e: any) {
       console.log(e);
       setPosition(e.latlng);
@@ -50,7 +74,6 @@ function LocationMarker({position, setPosition}: Props) {
       map.locate();
     },
   });
-
   return position === null ? null : (
     <Marker position={position}>
       <Popup>You are here</Popup>
