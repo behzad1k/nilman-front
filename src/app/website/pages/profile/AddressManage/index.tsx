@@ -30,7 +30,7 @@ const AddressManage = () => {
     title: address?.title,
     phoneNumber: address?.phoneNumber,
     description: address?.description,
-    postalCode: address?.postalCode,
+    // postalCode: address?.postalCode,
     pelak: address?.pelak,
     vahed: address?.vahed,
   });
