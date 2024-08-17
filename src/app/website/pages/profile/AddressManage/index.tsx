@@ -56,7 +56,7 @@ const AddressManage = () => {
         title: form?.title,
         phoneNumber: form?.phoneNumber,
         description: form?.description,
-        postalCode: form?.postalCode,
+        // postalCode: form?.postalCode,
         pelak: form?.pelak,
         vahed: form?.vahed,
         longitude: position.lng,
@@ -98,15 +98,15 @@ const AddressManage = () => {
               className='textInput'
               placeholder='مثال:‌ خانه'
             />
-            <TextField
-              size="small"
-              onChange={(input) => setForm(prev => ({ ...prev, postalCode: input.target.value}))}
-              value={form?.postalCode}
-              fullWidth
-              label='کد پستی'
-              variant="outlined"
-              className='textInput'
-            />
+            {/* <TextField */}
+            {/*   size="small" */}
+            {/*   onChange={(input) => setForm(prev => ({ ...prev, postalCode: input.target.value}))} */}
+            {/*   value={form?.postalCode} */}
+            {/*   fullWidth */}
+            {/*   label='کد پستی' */}
+            {/*   variant="outlined" */}
+            {/*   className='textInput' */}
+            {/* /> */}
             <TextField
               size="small"
               onChange={(input) => setForm(prev => ({ ...prev, phoneNumber: input.target.value}))}
