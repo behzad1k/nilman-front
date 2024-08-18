@@ -80,8 +80,8 @@ export default function WorkerStep({
 
     const sections = []
     for (let i = 8; i < 20; i = i + 2) {
-      const day = moment().add(calTab, 'day').format('jYYYY/jMM/jDD') || calTab == 0;
-      const disabled = schedules && schedules[day] ? schedules[day].includes(i) : false;
+      const day = moment().add(calTab, 'day').format('jYYYY/jMM/jDD');
+      const disabled = (schedules && schedules[day] ? schedules[day].includes(i) : false)  || calTab == 0 || calTab == 1;
       sections.push(<span className={`calSectionsSpan${selected.time == i ? ' selected' : ''} ${disabled ? 'disabled' : ''}`} onClick={() => !disabled && setSelected(prev => ({ ...prev, time: i }))}>{i} - {i + 2}</span>)
     }
 
