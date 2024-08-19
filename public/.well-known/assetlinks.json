@@ -6,9 +6,7 @@
     "target": {
       "namespace": "android_app",
       "package_name": "co.nilman.app.twa",
-      "sha256_cert_fingerprints": [
-        "A9:17:77:BE:53:E7:7A:8A:C4:55:E3:44:0D:8B:BC:D8:12:4B:BF:F5:F4:43:F4:FD:2E:1A:6B:5C:5C:8F:B4:2E"
-      ]
+      "sha256_cert_fingerprints": ["1B:7C:28:10:7B:7C:9C:9B:11:D5:34:2F:5A:C5:0A:56:88:23:E7:A0:86:0D:21:8D:48:2E:06:DC:4D:61:3A:CD"]
     }
   },
   {
