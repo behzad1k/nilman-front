@@ -375,6 +375,9 @@ main {
   align-items: center;
   gap: 10px;
 }
+.payLink{
+  display: none;
+}
 .payButtom {
   width: 100%;
   max-width: 400px;

@@ -1,7 +1,7 @@
 {
   "name": "nilman",
   "private": true,
-  "version": "1.0.12",
+  "version": "1.0.13",
   "type": "module",
   "scripts": {
     "dev": "npx react-scripts start",

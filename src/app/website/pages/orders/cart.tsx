@@ -1,5 +1,6 @@
 import { Calendar, MapPin, Trash, X } from '@phosphor-icons/react';
 import moment from 'jalali-moment';
+import { useRef } from 'react';
 import { toast } from 'react-toastify';
 import {urls} from '../../../../services/endPoint.ts';
 import {api} from '../../../../services/http.ts';
@@ -105,7 +106,7 @@ const CartItem = ({item}: ICartItemProps) => {
 export default function Cart() {
   const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
   const dispatch = useAppDispatch();
-
+  const linkRef = useRef(null);
   const pay = async () => {
     dispatch(SET_LOADING(true))
     const res = await api(
@@ -117,8 +118,8 @@ export default function Cart() {
     );
 
     if (res.code == 200) {
-      window.location.href = res.data?.url;
-      // toast('پرداخت با موفقیت انجام شد.', { type: 'success'});
+      linkRef.current.href = res.data?.url;
+      linkRef.current?.click();
     }else{
       toast('مشکلی پیش آمده، لطفا مجددا امتحان کنید یا با اپراتور تماس بگیرید', { type: 'error'});
     }
@@ -133,6 +134,7 @@ export default function Cart() {
           {cartItems.map((order, index) => (
             <CartItem key={index} item={order} />
           ))}
+          <a className='payLink' href='' ref={linkRef}></a>
           <span className="payButtom" onClick={pay}>
             پرداخت
           </span>
