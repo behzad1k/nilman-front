@@ -1608,6 +1608,7 @@ main {
   padding: 80px 22px;
 }
 .addressManage{
+  padding-top: 20px;
   height: 90vh;
   display: flex;
   flex-direction: column;
