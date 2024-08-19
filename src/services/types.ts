@@ -81,7 +81,7 @@ export interface IUser {
   nationalCode: string;
   phoneNumber: string;
   role: 'USER' | 'WORKER' | 'OPERATOR' | 'SUPER_ADMIN';
-  media: { url: string}
+  profilePic: { url: string}
 }
 
 export interface ISliderCardInfo {

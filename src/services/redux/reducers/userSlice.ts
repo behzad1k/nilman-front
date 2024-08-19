@@ -17,7 +17,7 @@ const initialState: IUserSlice = {
     nationalCode: '',
     phoneNumber: '',
     role: 'USER',
-    media: { url: ''}
+    profilePic: { url: ''}
   },
   addresses: [],
   isLoggedIn: false,

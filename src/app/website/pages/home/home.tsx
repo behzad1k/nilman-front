@@ -16,101 +16,6 @@ export default function Home() {
   const services = useAppSelector(state => state.serviceReducer.services)
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  // useEffect(() => {
-  //   initialApis(dispatch);
-  // }, []);
-  const cardInfos1: ISliderCardInfo[] = [
-    {
-      title: 'لاک ژل',
-      imgSrc: '/img/img1.jpg',
-    },
-    {
-      title: 'کاشت نا خن',
-      imgSrc: '/img/img2.jpg',
-    },
-    {
-      title: 'لاک معمولی',
-      imgSrc: '/img/img3.jpg',
-    },
-    {
-      title: 'لاک طرح دار',
-      imgSrc: './img/img4.jpg',
-    },
-    {
-      title: 'لاک ژل',
-      imgSrc: './img/img5.jpg',
-    },
-    {
-      title: 'لاک ژل',
-      imgSrc: './img/img1.jpg',
-    },
-  ];
-  const cardInfos2: ISliderCardInfo[] = [
-    {
-      title: 'رنگ مو طلایی',
-      imgSrc: './img/hair1.jpg',
-    },
-    {
-      title: 'هایلایت',
-      imgSrc: './img/hair2.jpg',
-    },
-    {
-      title: 'کراتین مو',
-      imgSrc: './img/hair3.jpg',
-    },
-    {
-      title: 'بافت مو',
-      imgSrc: './img/hair4.jpg',
-    },
-    {
-      title: 'رنگ مو قهوه ای',
-      imgSrc: './img/hair5.jpg',
-    },
-    {
-      title: 'رنگ مو صورتی',
-      imgSrc: './img/hair6.jpg',
-    },
-  ];
-  const cardInfos3: ISliderCardInfo[] = [
-    {
-      title: 'میکرو بلیدینگ ابرو',
-      imgSrc: './img/eyebrows1.jpg',
-    },
-    {
-      title: 'تتو ابرو',
-      imgSrc: './img/eyebrows2.jpg',
-    },
-    {
-      title: 'رنگ ابرو',
-      imgSrc: './img/eyebrows3.jpg',
-    },
-    {
-      title: 'اصلاح ابرو',
-      imgSrc: './img/eyebrows4.jpg',
-    },
-    {
-      title: 'لیفت ابرو',
-      imgSrc: './img/eyebrows5.jpg',
-    },
-    {
-      title: 'رنگ ابرو طلایی',
-      imgSrc: './img/eyebrows6.jpg',
-    },
-  ];
-  const cardInfos4: ISliderCardInfo[] = [
-    {
-      title: 'لمینت مژه',
-      imgSrc: './img/eyelash1.jpg',
-    },
-    {
-      title: 'اکستنشن مژه',
-      imgSrc: './img/eyelash2.jpg',
-    },
-    {
-      title: 'کاشت مژه',
-      imgSrc: './img/eyelash3.jpg',
-    },
-  ];
 
   const sliderList = () => {
     const rows: ReactElement[] = []
@@ -136,10 +41,6 @@ export default function Home() {
 
     return rows;
   };
-
-  if (userReducer.data.role == 'WORKER'){
-    return <WorkerDashboard />
-  }
 
   return (
     <main className='homeMain'>
@@ -203,7 +104,7 @@ export default function Home() {
       <section className="banners">
         <BannerCard
           title={'مناطق سرویس‌دهی'}
-          description={'منطقه‌های ۱، ۲، ۳، ۴ و ۵'}
+          description={'مناطق ۱ تا ۸'}
           button={'مشاهده'}
           icon={<Percent />}
           bgColor1={'rgb(234, 99, 146)'}

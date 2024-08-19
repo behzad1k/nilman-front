@@ -45,10 +45,7 @@ export function ProfileCard() {
         </div>
         <div className="profileCardPicture">
           <span className="profilePicture">
-          <img src="/img/girl.png" />
-          <span className="pfpButtons">
-            <Camera className="camera" size={32} />
-          </span>
+          <img src={profile.profilePic?.url || '/img/girl.png'} />
         </span>
         </div>
       </div>

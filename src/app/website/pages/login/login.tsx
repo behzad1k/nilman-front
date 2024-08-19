@@ -197,7 +197,8 @@ export default function Login() {
           textAlign="center"
           color="var(--mid-pink)"
           sx={{
-            filter: 'drop-shadow(0px 4px 2px rgb(201, 182, 182))',
+            color: '#a3238e'
+            // filter: 'drop-shadow(0px 4px 2px rgb(201, 182, 182))',
           }}
         >
           nilman
@@ -211,7 +212,7 @@ export default function Login() {
           {/*  borderRadius={50}*/}
           {/*  sx={{backgroundColor: 'white'}}*/}
           {/*>*/}
-          <Box width={180} height={180} component="img" src="./img/nilmanLogo.png"/>
+          <Box width={180} height={180} component="img" src="./img/newLogo.png"/>
           {/*</Box>*/}
         </Box>
       </Container>

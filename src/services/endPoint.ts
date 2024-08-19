@@ -5,6 +5,7 @@ export const urls = {
   check: '/check',
   posts: '/home/posts',
   getUser: '/user',
+  userMedia: '/user/medias',
   updateSimpleUser: '/user',
   adminService: '/admin/service/',
   adminUser: '/admin/user',
