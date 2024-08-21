@@ -1535,7 +1535,6 @@ main {
   padding: 20px 16px;
   align-items: center;
   margin-bottom: 10px;
-  height: 200px;
 
 }
 .infoModal.mediaModal img{
@@ -1547,8 +1546,8 @@ main {
 }
 
 .previewImage{
-  max-width: 300px;
-  max-height: 300px;
+  max-width: 200px !important;
+  max-height: 200px !important;
   margin: auto;
 }
 .uploadPhotoButton{

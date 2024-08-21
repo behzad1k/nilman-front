@@ -296,7 +296,7 @@ export default function SecAttrDrawer({
           onClose={() => setPickMedia(false)}
           onOpen={() => setPickMedia(true)}
           open={pickMedia}
-          sx={{height: "200px"}}
+          sx={{}}
         >
           <section className='infoModal mediaModal'>
             <p className='fontWeight400 marginBottom10'>اگر طرح خاصی برای خدمت انتخابی خود در نظر دارید عکس آن را در اینجا بارگزاری نمایید و یا لینک پینترست آن را وارد کنید</p>
@@ -342,7 +342,7 @@ export default function SecAttrDrawer({
 
               return cp;
             })}/>
-            {<img className='previewImage' src={selected?.options[currentAttribute?.id]?.media?.preview ? selected.options[currentAttribute?.id]?.media?.preview : 'iiklllpublic/img/placeholder400.png'} />}
+            {<img className='previewImage' src={selected?.options[currentAttribute?.id]?.media?.preview ? selected.options[currentAttribute?.id]?.media?.preview : '/img/placeholder400.png'} />}
             <Box width="100%">
               <Box display="flex" width="100%" gap={2}>
                 <Button
