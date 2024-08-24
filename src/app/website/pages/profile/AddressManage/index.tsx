@@ -1,11 +1,13 @@
 import { TextField } from '@mui/material';
-import { PencilLine } from '@phosphor-icons/react';
-import React, { useState } from 'react';
+import nmp_mapboxgl from '@neshan-maps-platform/mapbox-gl';
+import { MapComponent } from '@neshan-maps-platform/mapbox-gl-react';
+import '@neshan-maps-platform/mapbox-gl/dist/NeshanMapboxGl.css';
+import SDKMap from '@neshan-maps-platform/mapbox-gl/dist/src/core/Map';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { TextInput } from '../../../../../components';
-import { Map } from '../../../../../components/common/map.tsx';
+import Neshan from '../../../../../components/common/Neshan.tsx';
 import { Header } from '../../../../../components/website/header.tsx';
 import { urls } from '../../../../../services/endPoint.ts';
 import { api } from '../../../../../services/http.ts';
@@ -18,14 +20,17 @@ const AddressManage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id: paramId } = useParams();
-  const userReducer = useAppSelector(state => state.userReducer)
-  const address = userReducer.addresses.find(e => e.id == paramId)
+  const userReducer = useAppSelector(state => state.userReducer);
+  const address = userReducer.addresses.find(e => e.id == paramId);
   const defaultPosition: Position = {
     lat: '35.80761631591913',
     lng: '51.4319429449887'
-  }
+  };
   const [step, setStep] = useState(1);
-  const [position, setPosition] = useState<Position>(address?.longitude && address?.longitude ? { lat: address?.latitude, lng: address?.longitude } : defaultPosition);
+  const [position, setPosition] = useState<Position>(address?.longitude && address?.longitude ? {
+    lat: address?.latitude,
+    lng: address?.longitude
+  } : defaultPosition);
   const [form, setForm] = useState({
     title: address?.title,
     phoneNumber: address?.phoneNumber,
@@ -34,25 +39,26 @@ const AddressManage = () => {
     pelak: address?.pelak,
     vahed: address?.vahed,
   });
-  console.log(form);
   const submit = async () => {
-    if (step == 1){
-      if (position.lng != defaultPosition.lng && position.lat != defaultPosition.lat){
+    if (step == 1) {
+      if (position.lng != defaultPosition.lng && position.lat != defaultPosition.lat) {
         setStep(prev => prev + 1);
       } else {
-        toast('لطفا موقعیت مکانی خود را به درستی وارد کنید', { type: 'error'})
+        toast('لطفا موقعیت مکانی خود را به درستی وارد کنید', { type: 'error' });
       }
       return;
     }
 
-    if(Object.values(form).filter(e => e == undefined)?.length > 0){
-      toast('لطفا تمامی اطلاعات را به درستی وارد کنید', { type: 'error'})
+    if (Object.values(form).filter(e => e == undefined)?.length > 0) {
+      toast('لطفا تمامی اطلاعات را به درستی وارد کنید', { type: 'error' });
       return;
     }
 
     dispatch(SET_LOADING(true));
 
-    const res = await api(urls.address + (paramId || '') , { method: 'POST', body: {
+    const res = await api(urls.address + (paramId || ''), {
+      method: 'POST',
+      body: {
         title: form?.title,
         phoneNumber: form?.phoneNumber,
         description: form?.description,
@@ -61,14 +67,15 @@ const AddressManage = () => {
         vahed: form?.vahed,
         longitude: position.lng,
         latitude: position.lat
-    }}, true)
+      }
+    }, true);
 
-    if (res.code == 200){
-      toast('اطلاعات آدرس با موفقیت ذخیره شد.', { type: 'success'})
+    if (res.code == 200) {
+      toast('اطلاعات آدرس با موفقیت ذخیره شد.', { type: 'success' });
       dispatch(addresses());
-      navigate(-1)
-    }else{
-      toast('مشکلی پیش آمده، لطفا مجددا امتحان کنید یا با اپراتور تماس بگیرید', { type: 'error'})
+      navigate(-1);
+    } else {
+      toast('مشکلی پیش آمده، لطفا مجددا امتحان کنید یا با اپراتور تماس بگیرید', { type: 'error' });
     }
 
     dispatch(SET_LOADING(false));
@@ -76,27 +83,28 @@ const AddressManage = () => {
 
   return (
     <>
-      <Header onBack={() => navigate('/profile')} />
-      <main className='addressManage'>
-      <h3>{paramId ? 'ویرایش' : 'افزودن'} آدرس</h3>
+      <Header onBack={() => navigate('/profile')}/>
+      <main className="addressManage">
+        <h3>{paramId ? 'ویرایش' : 'افزودن'} آدرس</h3>
         {step == 1 ?
           <>
             <h5>لطفا موقعیت مکانی دقیق خود را روی نقشه انتخاب نمایید</h5>
-            <div className="largeMap">
-              <Map position={position} setPosition={setPosition}/>
-            </div>
+            <Neshan position={position} setPosition={setPosition}/>
           </>
-            :
+          :
           <section className="editProfile">
             <TextField
               size="small"
-              onChange={(input) => setForm(prev => ({ ...prev, title: input.target.value}))}
+              onChange={(input) => setForm(prev => ({
+                ...prev,
+                title: input.target.value
+              }))}
               value={form?.title}
               fullWidth
-              label='عنوان'
+              label="عنوان"
               variant="outlined"
-              className='textInput'
-              placeholder='مثال:‌ خانه'
+              className="textInput"
+              placeholder="مثال:‌ خانه"
             />
             {/* <TextField */}
             {/*   size="small" */}
@@ -109,45 +117,57 @@ const AddressManage = () => {
             {/* /> */}
             <TextField
               size="small"
-              onChange={(input) => setForm(prev => ({ ...prev, phoneNumber: input.target.value}))}
+              onChange={(input) => setForm(prev => ({
+                ...prev,
+                phoneNumber: input.target.value
+              }))}
               value={form?.phoneNumber}
               fullWidth
-              label='تلفن'
+              label="تلفن"
               variant="outlined"
-              className='textInput'
+              className="textInput"
             />
             <TextField
               size="medium"
               value={form?.description}
-              onChange={(input) => setForm(prev => ({ ...prev, description: input.target.value}))}
+              onChange={(input) => setForm(prev => ({
+                ...prev,
+                description: input.target.value
+              }))}
               fullWidth
-              label='نشانی'
+              label="نشانی"
               rows={5}
               multiline={true}
               variant="outlined"
-              className='textInput'
+              className="textInput"
             />
             <div className="addressManageRow">
               <TextField
                 size="small"
                 value={form?.pelak}
-                onChange={(input) => setForm(prev => ({ ...prev, pelak: input.target.value}))}
-                label='پلاک'
+                onChange={(input) => setForm(prev => ({
+                  ...prev,
+                  pelak: input.target.value
+                }))}
+                label="پلاک"
                 variant="outlined"
-                className='textInput half'
+                className="textInput half"
               />
               <TextField
                 size="small"
                 value={form?.vahed}
-                label='واحد'
-                onChange={(input) => setForm(prev => ({ ...prev, vahed: input.target.value}))}
+                label="واحد"
+                onChange={(input) => setForm(prev => ({
+                  ...prev,
+                  vahed: input.target.value
+                }))}
                 variant="outlined"
-                className='textInput half'
+                className="textInput half"
               />
             </div>
           </section>
         }
-        <button className='confirmButton addressManageButton' onClick={submit}>
+        <button className="confirmButton addressManageButton" onClick={submit}>
           ثبت
         </button>
       </main>

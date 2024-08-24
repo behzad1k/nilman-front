@@ -761,7 +761,7 @@ main {
   margin-top: 5px;
 }
 .bannerCard p {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 200;
 }
 .bannerCard button {
@@ -1609,7 +1609,7 @@ main {
 }
 .addressManage{
   padding-top: 20px;
-  height: 90vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -1623,7 +1623,11 @@ main {
 }
 .largeMap{
   width: 100%;
-  height: 85%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  /*padding: 20px 0;*/
 }
 .confirmButton.addressManageButton{
   margin-right: 20px;
@@ -1794,4 +1798,51 @@ main {
 .basicLink {
   text-decoration: underline;
   color: blue;
+}
+.mapSearchInput{
+  background: #FFF;
+  border-radius: 12px;
+  width: 90%;
+  position: absolute;
+  margin: 25px auto 0 ;
+  z-index: 10;
+}
+.mapSearchInputBox{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px;
+}
+.mapSearchInput ul{
+  list-style-type: none;
+  padding: 10px
+}
+.mapSearchInput li{
+  padding: 5px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.mapSearchInput input{
+  border: 0;
+  direction: rtl;
+  width: 100%;
+  height: 50px;
+}
+.mapSearchInput i{
+  content: url("/public/img/search.png");
+  width: 35px;
+  height: 35px;
+}
+.mapTargetIcon{
+  content: url("/public/img/target.png");
+  padding: 13px;
+  background: #FFF;
+  border-radius: 100px;
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  right: 12px;
+  bottom: 130px;
 }

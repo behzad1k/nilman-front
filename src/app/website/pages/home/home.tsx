@@ -77,7 +77,7 @@ export default function Home() {
           bgColor2="rgb(216, 228, 234)"
           // bgColor1={'rgb(255, 135, 177)'}
           // bgColor2={'rgb(172, 172, 172)'}
-          title={'سفارش فوری'}
+          title={'ثبت سفارش فوری'}
           description={'برای سفارشات فوری از دو ساعت آینده(با افزایش هزینه همراه می باشد!)'}
           button={'ثبت سفارش فوری'}
           icon={<PlusCircle />}
