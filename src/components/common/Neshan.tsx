@@ -54,6 +54,7 @@ const Neshan = ({
     map?.flyTo({
       center: [position.lng, position.lat]
     });
+    setSearchResult([]);
   }, [position]);
 
   return (
