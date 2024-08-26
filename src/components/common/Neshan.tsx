@@ -33,7 +33,7 @@ const Neshan = ({
     if (navigator.geolocation) {
       navigator.permissions.query({ name: 'geolocation' }).then(permissionStatus => {
         if (permissionStatus.state === 'denied') {
-          alert('Please allow location access.');
+          // alert('Please allow location access.');
           window.location.href = 'app-settings:location';
         } else {
           navigator.geolocation.getCurrentPosition((e) => {
@@ -45,7 +45,7 @@ const Neshan = ({
         }
       });
     } else {
-      alert('Geolocation is not supported in your browser.');
+      // alert('Geolocation is not supported in your browser.');
     }
   };
 
@@ -102,13 +102,18 @@ const Neshan = ({
           }
         }}
         mapSetter={(map: SDKMap) => {
+          (map as any).on('click', (e) => setPosition({
+            lng: e.lngLat.lng.toString(),
+            lat: e.lngLat.lat.toString()
+          }))
           setMap(map);
           const marker = new nmp_mapboxgl.Marker({
             draggable: true,
             scale: 2,
             anchor: 'center',
             pitchAlignment: 'map'
-          }).setLngLat([position.lng, position.lat]).addTo(map as any).on('dragend', (e: any) => setPosition({
+          }).setLngLat([position.lng, position.lat]).addTo(map as any)
+          .on('dragend', (e: any) => setPosition({
             lng: e.target._lngLat.lng.toString(),
             lat: e.target._lngLat.lat.toString()
           }));
