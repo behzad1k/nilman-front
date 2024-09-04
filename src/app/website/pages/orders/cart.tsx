@@ -95,7 +95,7 @@ const CartItem = ({item}: ICartItemProps) => {
         </span>
         <span className="orderInfoIcon">
           {item.fromTime + ' - ' + item.toTime}{' '}
-          {moment(parseInt(item.date) * 1000).format('jYYYY/jMM/jDD')}
+          {item.date}
           <Calendar size={20} />
         </span>
       </span>

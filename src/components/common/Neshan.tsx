@@ -70,12 +70,12 @@ const Neshan = ({
           }}/>
           <i></i>
         </div>
-        {searchResult.length > 0 &&
+        {searchResult?.length > 0 &&
             <ul>
               {searchResult.slice(0, 10).map(e => <li onClick={() => setPosition({
                 lng: e.location.x,
                 lat: e.location.y
-              })}>{e.title.substring(0, 50)}<small>({e.address.substring(0, 40)})</small></li>)}
+              })}>{e.title?.substring(0, 50)}<small>({e.address?.substring(0, 40)})</small></li>)}
             </ul>
         }
       </div>
