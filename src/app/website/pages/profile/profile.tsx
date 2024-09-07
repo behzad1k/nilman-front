@@ -1,14 +1,16 @@
+import { AccountBalanceWalletOutlined, WalletOutlined, WalletRounded } from '@mui/icons-material';
 import { PencilLine, SignOut } from '@phosphor-icons/react';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../../services/apis/global.ts';
 import { useAppSelector } from '../../../../services/redux/store.ts';
+import { formatPrice } from '../../../../utils/utils.ts';
 import { Addresses } from './Addresses.tsx';
 import { ProfileCard } from './profileCard.tsx';
 
 export default function Profile() {
-  const loggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
+  const userReducer = useAppSelector((state) => state.userReducer);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleLogout = () => {
@@ -20,7 +22,7 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    if (!loggedIn) {
+    if (!userReducer.isLoggedIn) {
       navigate('/login');
     }
   }, []);
@@ -28,6 +30,15 @@ export default function Profile() {
   return (
     <main className="profileMain">
       <ProfileCard/>
+      <section className="infoBox justifyCenter">
+        <div className='walletBalance'>
+          <div>
+            <AccountBalanceWalletOutlined/>
+            <span>موجودی کیف پول</span>
+          </div>
+          <span>{formatPrice(userReducer.data?.walletBalance)} تومان</span>
+        </div>
+      </section>
       <section className="infoBox">
         <div className="profileButton" onClick={() => navigate('/profile/edit')}>
           <PencilLine size={20}/>

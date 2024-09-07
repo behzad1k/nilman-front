@@ -1,6 +1,6 @@
 import { Calendar, MapPin, Trash, X } from '@phosphor-icons/react';
 import moment from 'jalali-moment';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import {urls} from '../../../../services/endPoint.ts';
 import {api} from '../../../../services/http.ts';
@@ -13,6 +13,7 @@ import {Typography} from '@mui/material';
 import {Box} from '@mui/system';
 import emptyCart from '../../../../assets/img/empty-cart.png';
 import { formatPrice } from '../../../../utils/utils.ts';
+import Switch from 'react-ios-switch';
 
 interface ICartItemProps {
   item: IOrder;
@@ -107,12 +108,17 @@ export default function Cart() {
   const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
   const dispatch = useAppDispatch();
   const linkRef = useRef(null);
+  const userReducer = useAppSelector(state => state.userReducer)
+  const [isCredit, setIsCredit] = useState(false);
   const pay = async () => {
     dispatch(SET_LOADING(true))
     const res = await api(
       urls.pay,
       {
         method: 'POST',
+        body: {
+          isCredit: isCredit
+        }
       },
       true,
     );
@@ -134,6 +140,16 @@ export default function Cart() {
           {cartItems.map((order, index) => (
             <CartItem key={index} item={order} />
           ))}
+          {userReducer.data?.walletBalance > 0 &&
+              <div className='cartIsCredit'>
+                  <span>استفاه از اعتبار کیف پول ({formatPrice(userReducer.data?.walletBalance)} تومان)</span>
+                  <Switch
+                      checked={isCredit}
+                      onChange={checked => setIsCredit(prev => !prev)}
+                  />
+              </div>
+          }
+
           <a className='payLink' href='' ref={linkRef}></a>
           <span className="payButtom" onClick={pay}>
             پرداخت

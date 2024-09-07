@@ -67,7 +67,9 @@ export default function WorkerStep({
 
     for (let i = 0; i < 30; i++) {
       tabs.push(
-        <div className={`calTabCell${calTab == i ? ' selected' : ''}`} onClick={() => setCalTab(i)}>
+        <div className={`calTabCell${calTab == i ? ' selected' : ''}`} onClick={() => {
+          setCalTab(i)
+        }}>
         <span>
         {moment().add(i, 'd').locale('fa').format('DD')}
         </span>
@@ -82,7 +84,7 @@ export default function WorkerStep({
     for (let i = 8; i < 20; i = i + 2) {
       const day = moment().add(calTab, 'day').format('jYYYY/jMM/jDD');
       const disabled = (schedules && schedules[day] ? schedules[day].includes(i) : false)  || !selected.isUrgent ? (calTab == 0 || calTab == 1) : false;
-      sections.push(<span className={`calSectionsSpan${selected.time == i ? ' selected' : ''} ${disabled ? 'disabled' : ''}`} onClick={() => !disabled && setSelected(prev => ({ ...prev, time: i }))}>{i} - {i + 2}</span>)
+      sections.push(<span className={`calSectionsSpan${(selected.time == i && selected.date == day) ? ' selected' : ''} ${disabled ? 'disabled' : ''}`} onClick={() => !disabled && setSelected(prev => ({ ...prev, time: i, date: day }))}>{i} - {i + 2}</span>)
     }
 
     const body =
@@ -94,6 +96,7 @@ export default function WorkerStep({
       </div>
     return body;
   };
+  console.log(selected.date);
   const fetchWorkersOff = async (id: string = null) => {
     const reqBody = { method: 'POST', body: { attributes: selected.attributes.map(e => e.id)}}
     if (id){
@@ -110,9 +113,6 @@ export default function WorkerStep({
     fetchWorkersOff()
   }, []);
 
-  useEffect(() => {
-    setSelected(prev => ({ ...prev, date: moment().add(calTab, 'd').format('jYYYY/jMM/jDD')}))
-  }, [calTab]);
 
   useEffect(() => {
     setSelected((prev) => ({...prev, discount: watchDiscount}));

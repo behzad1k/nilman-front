@@ -48,9 +48,8 @@ const AddressManage = () => {
       }
       return;
     }
-
-    if (Object.values(form).filter(e => e == undefined)?.length > 0) {
-      toast('لطفا تمامی اطلاعات را به درستی وارد کنید', { type: 'error' });
+    if (!form?.description || !form.pelak || !form.vahed) {
+      // toast('لطفا تمامی اطلاعات را به درستی وارد کنید', { type: 'error' });
       return;
     }
 
@@ -84,7 +83,7 @@ const AddressManage = () => {
   return (
     <>
       <Header onBack={() => navigate('/profile')}/>
-      <main className="addressManage">
+      <form className="addressManage">
         <h3>{paramId ? 'ویرایش' : 'افزودن'} آدرس</h3>
         {step == 1 ?
           <>
@@ -140,6 +139,12 @@ const AddressManage = () => {
               multiline={true}
               variant="outlined"
               className="textInput"
+              required
+              onInvalid={(e) => {
+                // @ts-ignore
+                document.getElementById("desc-textfield").setCustomValidity("لطفا جزئیات آدرس را وارد کنید");
+              }}
+              id="desc-textfield"
             />
             <div className="addressManageRow">
               <TextField
@@ -152,8 +157,21 @@ const AddressManage = () => {
                 label="پلاک"
                 variant="outlined"
                 className="textInput half"
+                required
+                onInvalid={(e) => {
+                  // @ts-ignore
+                  document.getElementById("pelak-textfield").setCustomValidity("لطفا پلاک را وارد کنید");
+                }}
+                id="pelak-textfield"
               />
               <TextField
+                // helperText={!form.vahed && 'لطفا واحد را وارد کنید'}
+                onInvalid={(e) => {
+                  // @ts-ignore
+                  document.getElementById("vahed-textfield").setCustomValidity("لطفا واحد را وارد کنید");
+                }}
+                id="vahed-textfield"
+                onError={(e) => console.log(e)}
                 size="small"
                 value={form?.vahed}
                 label="واحد"
@@ -163,14 +181,16 @@ const AddressManage = () => {
                 }))}
                 variant="outlined"
                 className="textInput half"
+                required
+
               />
             </div>
           </section>
         }
-        <button className="confirmButton addressManageButton" onClick={submit}>
+        <button className="confirmButton addressManageButton" type='submit' onClick={submit}>
           ثبت
         </button>
-      </main>
+      </form>
     </>
   );
 };

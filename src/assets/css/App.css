@@ -375,6 +375,12 @@ main {
   align-items: center;
   gap: 10px;
 }
+.cartIsCredit{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+}
 .payLink{
   display: none;
 }
@@ -523,6 +529,21 @@ main {
 }
 .profileMain .infoBox h4 {
   margin-right: 50px;
+}
+.walletBalance{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 95%;
+  border-radius: 8px;
+  margin: auto;
+  background: #e0dede;
+  padding: 8px;
+}
+.walletBalance div{
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 .profileCardContainer {
   display: flex;
@@ -802,6 +823,9 @@ main {
   justify-content: center;
 }
 
+.infoBox .justifyCenter{
+  justify-content: center;
+}
 /* info box component*/
 .infoBox {
   padding: 20px;
