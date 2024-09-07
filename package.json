@@ -1,12 +1,12 @@
 {
   "name": "nilman",
   "private": true,
-  "version": "1.0.18",
+  "version": "1.0.19",
   "type": "module",
   "scripts": {
     "dev": "npx react-scripts start",
     "build": "npx react-scripts build",
-    "prod": "npx react-scripts build && npx serve -s build",
+    "prod": "npx serve -s build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "twa": "bubblewrap init --manifest https://app.nilman.co/manifest.json --directory=/Users/behzad1k/Documents/Apps/zib-front/twa"
   },
