@@ -11,6 +11,7 @@ import Mag from './pages/mag/mag.tsx';
 import NewOrder from './pages/newOrder/newOrder.tsx';
 import Orders from './pages/orders/orders.tsx';
 import Payment from './pages/payment/Payment.tsx';
+import Privacy from './pages/privacy';
 import AddressManage from './pages/profile/AddressManage';
 import EditProfile from './pages/profile/EditProfile';
 import Profile from './pages/profile/profile.tsx';
@@ -72,6 +73,7 @@ export default function Website() {
           <Payment />
         </Layout>
       } />
+      <Route path="/privacy" element={<Privacy />} />
       <Route path="/feedback/:id" element={<Feedback />} />
       <Route path="/profile/edit" element={<EditProfile />} />
       <Route path="/address/edit/:id" element={<AddressManage />} />

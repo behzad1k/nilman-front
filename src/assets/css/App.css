@@ -1870,3 +1870,12 @@ main {
   right: 12px;
   bottom: 130px;
 }
+
+.privacyMain{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100vh;
+  padding: 70px 10px 0;
+
+}

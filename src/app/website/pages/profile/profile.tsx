@@ -1,4 +1,4 @@
-import { AccountBalanceWalletOutlined, WalletOutlined, WalletRounded } from '@mui/icons-material';
+import { AccountBalanceWalletOutlined, PrivacyTip, PrivacyTipOutlined, WalletOutlined, WalletRounded } from '@mui/icons-material';
 import { PencilLine, SignOut } from '@phosphor-icons/react';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -43,6 +43,10 @@ export default function Profile() {
         <div className="profileButton" onClick={() => navigate('/profile/edit')}>
           <PencilLine size={20}/>
           <span>ویرایش اطلاعات کاربری</span>
+        </div>
+        <div className="profileButton" onClick={() => navigate('/privacy')}>
+          <PrivacyTipOutlined />
+          <span>حریم خصوصی</span>
         </div>
         <div className="profileButton" onClick={handleLogout}>
           <SignOut
