@@ -55,7 +55,7 @@ export default function WorkerStep({
   section = 3,
 }: Props) {
   // React
-  const [schedules, setSchedules] = useState<any>(undefined);
+  const [schedules, setSchedules] = useState<any>({ '1403/06/22': [8] });
   const [date, setDate] = useState();
   const [calTab, setCalTab] = useState(0);
   const orderReducer = useAppSelector(state => state.orderReducer);
