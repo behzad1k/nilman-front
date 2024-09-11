@@ -55,7 +55,7 @@ export default function WorkerStep({
   section = 3,
 }: Props) {
   // React
-  const [schedules, setSchedules] = useState<any>({ '1403/06/22': [8] });
+  const [schedules, setSchedules] = useState<any>(undefined);
   const [date, setDate] = useState();
   const [calTab, setCalTab] = useState(0);
   const orderReducer = useAppSelector(state => state.orderReducer);
@@ -83,7 +83,6 @@ export default function WorkerStep({
     const sections = []
     for (let i = 8; i < 20; i = i + 2) {
       const day = moment().add(calTab, 'day').format('jYYYY/jMM/jDD');
-      console.log(schedules && schedules[day] ? schedules[day].includes(i) : false);
       const disabled = (schedules && schedules[day] ? schedules[day].includes(i) : false)  || (!selected.isUrgent ? (calTab == 0) : false);
       sections.push(<span className={`calSectionsSpan${(selected.time == i && selected.date == day) ? ' selected' : ''} ${disabled ? 'disabled' : ''}`} onClick={() => !disabled && setSelected(prev => ({ ...prev, time: i, date: day }))}>{i} - {i + 2}</span>)
     }
