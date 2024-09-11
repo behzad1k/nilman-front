@@ -25,4 +25,5 @@ yarn.lock
 *.sln
 *.sw?
 .env
+/twa-copy
 /twa
