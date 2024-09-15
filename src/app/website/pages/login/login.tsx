@@ -13,6 +13,7 @@ import { SET_LOADING } from '../../../../services/redux/reducers/loadingSlice.ts
 import { SET_LOGGED_IN, user } from '../../../../services/redux/reducers/userSlice';
 import { AppDispatch, useAppDispatch, useAppSelector } from '../../../../services/redux/store';
 import styles from '../../../../assets/css/scroll.css'
+import { persianNumToEn } from '../../../../utils/utils.ts';
 
 type LoginState = 'phoneNumber' | 'otp' | 'complete-profile';
 type LoginForm = {
@@ -64,7 +65,9 @@ export default function Login() {
       // Send phonenumber here ...
       const reqOptions = {
         method: 'post',
-        body: data,
+        body: {
+          phoneNumber: persianNumToEn(data.phoneNumber)
+        },
       };
 
       dispatch(SET_LOADING(true));
@@ -77,7 +80,7 @@ export default function Login() {
       const reqOptions = {
         method: 'post',
         body: {
-          code: data?.otp,
+          code: persianNumToEn(data?.otp),
           token: tokenRef.current,
         },
       };
@@ -129,14 +132,13 @@ export default function Login() {
         body: {
           name: data.name,
           lastName: data.lastName,
-          nationalCode: data.nationalCode,
+          nationalCode: persianNumToEn(data.nationalCode),
           // birthday: Object.values(birthday).reverse().reduce((acc, curr, index) => acc + (index == 1 && curr < 10 ? '0' : '') + curr + (index < 2 ? '/' : '') , '')
         },
       };
       dispatch(SET_LOADING(true));
       const res = await api(urls.updateSimpleUser, reqOptions);
       dispatch(SET_LOADING(false));
-      console.log(res);
       if (res.code === 200) {
         toast('اطلاعات شما با موفقیت ثبت شد، خوش آمدید', { type: 'success' });
         Cookies.set('token', res?.token, {

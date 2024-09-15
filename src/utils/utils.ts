@@ -98,3 +98,5 @@ export function createSchedule(length: number, workerOff: WorkerOff[]) {
 export const isEmpty = (obj) => {
   return Object.keys(obj)?.length == 0;
 }
+
+export const persianNumToEn = (str: any) => str.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
