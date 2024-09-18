@@ -28,6 +28,11 @@ const api = async (url: string, request: fetchType = {}, useToken = false) => {
     request.body = JSON.stringify(request.body);
   }
 
+  if (request.query){
+    if (url.at(url.length - 1) == '/')
+      url = url.substring(0, url.length - 1)
+    Object.entries(request.query).map(([key, value], index) => url += ((index == 0 ? '?' : '&') + key + '=' + value) )
+  }
   return await fetch(baseUrl + url, request)
     .then(async (response: any) => {
       return await response.json();

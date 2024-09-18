@@ -3,6 +3,8 @@ import { MapComponent } from '@neshan-maps-platform/mapbox-gl-react';
 import SDKMap from '@neshan-maps-platform/mapbox-gl/dist/src/core/Map';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { urls } from '../../services/endPoint.ts';
+import { api } from '../../services/http.ts';
 
 const Neshan = ({
                   position,
@@ -14,18 +16,13 @@ const Neshan = ({
   // const [query, setQuery] = useState('');
 
   const search = async (query) => {
-    const res = await axios.get('https://api.neshan.org/v1/search', {
-      params: {
+    const res = await api(urls.addressSearch, { method: 'GET', query: {
         term: query,
         lat: position.lat,
         lng: position.lng
-      },
-      headers: {
-        'Api-Key': 'service.6e9aff7b5cd6457dae762930a57542a0'
-      }
-    });
-    if (res.status == 200) {
-      setSearchResult(res.data?.items);
+      }});
+    if (res.code == 200) {
+      setSearchResult(res.data);
     }
   };
 
@@ -75,7 +72,7 @@ const Neshan = ({
               {searchResult.slice(0, 10).map(e => <li onClick={() => setPosition({
                 lng: e.location.x,
                 lat: e.location.y
-              })}>{e.title?.substring(0, 50)}<small>({e.address?.substring(0, 40)})</small></li>)}
+              })}>{e.title?.substring(0, 30)}<small>({(e.neighbourhood || e.address)?.substring(0, 40)})</small></li>)}
             </ul>
         }
       </div>

@@ -1,9 +1,6 @@
 import { TextField } from '@mui/material';
-import nmp_mapboxgl from '@neshan-maps-platform/mapbox-gl';
-import { MapComponent } from '@neshan-maps-platform/mapbox-gl-react';
 import '@neshan-maps-platform/mapbox-gl/dist/NeshanMapboxGl.css';
-import SDKMap from '@neshan-maps-platform/mapbox-gl/dist/src/core/Map';
-import React, { forwardRef, useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -42,7 +39,22 @@ const AddressManage = () => {
   const submit = async () => {
     if (step == 1) {
       if (position.lng != defaultPosition.lng && position.lat != defaultPosition.lat) {
-        setStep(prev => prev + 1);
+        const res = await api(urls.addressGeo, {
+          query: {
+            lng: position.lng,
+            lat: position.lat
+          }
+        });
+        if (res.code == 200){
+          if (Number(res.data.municipality_zone) > 8 || res.data.city != 'تهران'){
+            toast('موقعیت مکانی انتخاب شده در محدوده پشتیانی نیلمان نمی باشد', { type: 'error' });
+            return;
+          }
+          if (!paramId){
+            setForm(prev => ({ ...prev, description: res.data.formatted_address}))
+          }
+          setStep(prev => prev + 1);
+        }
       } else {
         toast('لطفا موقعیت مکانی خود را به درستی وارد کنید', { type: 'error' });
       }
@@ -142,7 +154,7 @@ const AddressManage = () => {
               required
               onInvalid={(e) => {
                 // @ts-ignore
-                document.getElementById("desc-textfield").setCustomValidity("لطفا جزئیات آدرس را وارد کنید");
+                document.getElementById('desc-textfield').setCustomValidity('لطفا جزئیات آدرس را وارد کنید');
               }}
               id="desc-textfield"
             />
@@ -160,7 +172,7 @@ const AddressManage = () => {
                 required
                 onInvalid={(e) => {
                   // @ts-ignore
-                  document.getElementById("pelak-textfield").setCustomValidity("لطفا پلاک را وارد کنید");
+                  document.getElementById('pelak-textfield').setCustomValidity('لطفا پلاک را وارد کنید');
                 }}
                 id="pelak-textfield"
               />
@@ -168,7 +180,7 @@ const AddressManage = () => {
                 // helperText={!form.vahed && 'لطفا واحد را وارد کنید'}
                 onInvalid={(e) => {
                   // @ts-ignore
-                  document.getElementById("vahed-textfield").setCustomValidity("لطفا واحد را وارد کنید");
+                  document.getElementById('vahed-textfield').setCustomValidity('لطفا واحد را وارد کنید');
                 }}
                 id="vahed-textfield"
                 onError={(e) => console.log(e)}
@@ -187,7 +199,7 @@ const AddressManage = () => {
             </div>
           </section>
         }
-        <button className="confirmButton addressManageButton" type='button' onClick={submit}>
+        <button className="confirmButton addressManageButton" type="button" onClick={submit}>
           ثبت
         </button>
       </form>
