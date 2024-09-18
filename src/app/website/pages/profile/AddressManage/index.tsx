@@ -35,7 +35,7 @@ const AddressManage = () => {
     // postalCode: address?.postalCode,
     pelak: address?.pelak,
     vahed: address?.vahed,
-    district: address?.district
+    districtId: address?.districtId
   });
   const submit = async () => {
     if (step == 1) {
@@ -54,7 +54,7 @@ const AddressManage = () => {
           if (!paramId){
             setForm(prev => ({ ...prev, description: res.data.formatted_address }))
           }
-          setForm(prev => ({ ...prev, district: res.data.municipality_zone }))
+          setForm(prev => ({ ...prev, districtId: res.data.municipality_zone }))
           setStep(prev => prev + 1);
         }
       } else {
@@ -80,7 +80,7 @@ const AddressManage = () => {
         vahed: form?.vahed,
         longitude: position.lng,
         latitude: position.lat,
-        district: form?.district
+        district: form?.districtId
       }
     }, true);
 
