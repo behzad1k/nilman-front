@@ -27,7 +27,7 @@ export const urls = {
   workersOffs: '/user/workerOffs/',
   adminLogin: '/admin/login',
   adminDashboard: '/admin/login',
-  feedback: '/feedback',
+  feedback: '/feedback/',
   workerDashboard: '/worker/salary',
   sales: '/admin/dashboard/sales'
 };

@@ -104,6 +104,8 @@ const AddressManage = () => {
           <>
             <h5>لطفا موقعیت مکانی دقیق خود را روی نقشه انتخاب نمایید</h5>
             <Neshan position={position} setPosition={setPosition}/>
+
+
           </>
           :
           <section className="editProfile">

@@ -1731,6 +1731,14 @@ main {
   border: 2px solid #e76f6f;
 
 }
+.feedbackFactorsCell.positive.selected{
+  background: #5eaf5e;
+  color: #FFF;
+}
+.feedbackFactorsCell.negative.selected{
+  background: #e76f6f;
+  color: #FFF;
+}
 .tabContainer{
   display: flex;
   width: 100%;

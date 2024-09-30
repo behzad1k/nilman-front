@@ -1,23 +1,27 @@
+import { X } from '@phosphor-icons/react';
 import Cookies from 'js-cookie';
 import { FormEvent, SyntheticEvent, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import {Box, Button, Container, Rating, Typography} from '@mui/material';
 import {TextareaAutosize} from '@mui/base/TextareaAutosize';
 import {urls} from '../../../../services/endPoint.ts';
 import {api} from '../../../../services/http.ts';
+import { order as orderSlice } from '../../../../services/redux/reducers/orderSlice.ts';
 import { useAppSelector } from '../../../../services/redux/store.ts';
 import { IOrder } from '../../../../services/types.ts';
 import Success from './success.tsx';
 import {toast} from 'react-toastify';
 
-export default function Feedback() {
-  const [rate, setRate] = useState(0);
+export default function Feedback({ order }) {
+  const [rate, setRate] = useState(5);
   const [comment, setComment] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [order, setOrder] = useState<IOrder>();
   const [tab, setTab] = useState('good');
   const [factors, setFactors] = useState([]);
+  const [selectedFactors, setSelectedFactors] = useState([]);
   const params = useParams();
+  const dispatch = useDispatch()
   const navigate = useNavigate();
   const tabTitles = {
     good: 'نقاط قوت',
@@ -28,23 +32,27 @@ export default function Feedback() {
     if (newRate) setRate(newRate);
   };
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!comment) {
-      return toast('نظر خود را وارد کنید');
-    }
-    if (rate === 0) {
-      return toast('ابتدا امتیاز بدهید');
-    }
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    // if (!comment) {
+    //   return toast('نظر خود را وارد کنید');
+    // }
+    // if (rate === 0) {
+    //   return toast('ابتدا امتیاز بدهید');
+    // }
     const reqBody = {
       orderId: order.id,
       rate,
       comment,
+      factors: selectedFactors
     };
-
-    const res = await api(urls.feedback, { method: 'post', body: reqBody}, true);
+    const res = await api(urls.feedback, { method: 'POST', body: reqBody}, true);
     if (res.code === 200) {
-      setIsSubmitted(true);
+      toast('نظر شما با موفقیت ثبت شد', { type: 'success'})
+      setSelectedFactors([]);
+      setRate(5);
+      setComment('');
+      dispatch(orderSlice())
     }
   };
 
@@ -53,24 +61,12 @@ export default function Feedback() {
     setFactors(res.data)
   };
 
-  const fetchData = async () => {
-    const res = await api(urls.orderSingle + '/' + params.id, {}, true)
-    if (!res.data){
-      navigate('/')
-    } else if (res.data?.feedback){
-      toast('نظرسنجی این سفارش قبلا ثبت شده است.', { type: 'error', onClose: () => navigate('/') })
-    } else {
-      setOrder(res.data)
-    }
-  };
-
   useEffect(() => {
     if (Cookies.get('token') == undefined){
       toast('لطفا ابتدا وارد شوید', { type: 'error' })
       navigate(`/login?from=/feedback/${params.id}`)
     } else {
       fetchFactors();
-      fetchData()
     }
   }, []);
 
@@ -82,12 +78,14 @@ export default function Feedback() {
           display: 'flex',
           py: 2,
           flexDirection: 'column',
-          gap: 4,
-          minHeight: '100vh',
+          gap: 3,
+          height: '100%'
         }}
       >
-        {!isSubmitted ? (
-          <>
+        {/* <Button sx={{ marginLeft: 'auto'}} onClick={handleSubmit}> */}
+        {/*   <X size={20}/> */}
+        {/* </Button> */}
+            <Typography variant="body2" lineHeight="26px" component="h2" margin={'auto'}>{order.code}</Typography>
             <Typography variant="body2" lineHeight="26px" component="p">
               لطفا جهت نظارت و بهبود عملکرد، تجربه خود را با ما به اشتراک بگذارید.
             </Typography>
@@ -99,7 +97,7 @@ export default function Feedback() {
               gap={4}
             >
               <Rating
-                name="rating"
+                // name="rating"
                 size="large"
                 value={rate}
                 // dir={'ltr'}
@@ -114,11 +112,11 @@ export default function Feedback() {
               <div className='feedbackFactors'>
                 <div className='feedbackFactorsCol'>
                   <span className='feedbackFactorsCell head'>نقاط مثبت</span>
-                  {factors?.filter(e => e.isPositive).map(e => <span className='feedbackFactorsCell positive'>{e.title}</span>)}
+                  {factors?.filter(e => e.isPositive).map(e => <span className={`feedbackFactorsCell positive${selectedFactors.includes(e.id) ? ' selected' : ''}`} onClick={() => setSelectedFactors(prev => prev.includes(e.id) ? prev.filter(j => j != e.id) : [...prev, e.id])}>{e.title}</span>)}
                 </div>
                 <div className='feedbackFactorsCol'>
                   <span className='feedbackFactorsCell head'>نقاط منفی</span>
-                  {factors?.filter(e => !e.isPositive).map(e => <span className='feedbackFactorsCell negative'>{e.title}</span>)}
+                  {factors?.filter(e => !e.isPositive).map(e => <span className={`feedbackFactorsCell negative${selectedFactors.includes(e.id) ? ' selected' : ''}`} onClick={() => setSelectedFactors(prev => prev.includes(e.id) ? prev.filter(j => j != e.id) : [...prev, e.id])}>{e.title}</span>)}
                 </div>
               </div>
 
@@ -126,7 +124,7 @@ export default function Feedback() {
                 className="comment-textarea"
                 minRows={5}
                 maxRows={6}
-                name="comment"
+                // name="comment"
                 placeholder="نظر خود را بنویسید ..."
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
@@ -136,15 +134,11 @@ export default function Feedback() {
                 type="submit"
                 variant="contained"
                 size="large"
-                sx={{backgroundColor: 'var(--mid-pink)'}}
+                sx={{backgroundColor: 'var(--mid-pink)', marginTop: 'auto'}}
               >
                 ثبت
               </Button>
             </Box>
-          </>
-        ) : (
-          <Success />
-        )}
       </Container>
     </Box>
   );
