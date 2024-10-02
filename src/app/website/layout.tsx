@@ -8,7 +8,7 @@ import Feedback from './pages/feedback/feedback.tsx';
 export default function Layout({children}: {children: React.ReactNode}) {
   const dispatch = useAppDispatch();
   const loading = useAppSelector((state) => state.loadingReducer.loading);
-  const feedback = useAppSelector(state => state.orderReducer.orders).find(e => !e.isFeedbacked)
+  const feedback = useAppSelector(state => state.orderReducer.orders).find(e => !e.isFeedbacked && e.status == 'Done')
   if (feedback){
     return <Feedback order={feedback}/>
   }
