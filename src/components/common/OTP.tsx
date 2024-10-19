@@ -1,3 +1,4 @@
+import OtpInput from 'react-otp-input';
 import { ReactElement, useEffect, useRef, useState } from 'react';
 import {Controller} from 'react-hook-form';
 import {MuiOtpInput, MuiOtpInputProps} from 'mui-one-time-password-input';
@@ -6,7 +7,7 @@ interface Props extends MuiOtpInputProps {
   control: any;
 }
 
-export function OtpInput({ code, setCode, onComplete }) {
+export function OTP({ code, setCode, onComplete }) {
   const firstInput = useRef(null);
   const setCodeData = (e: any) => {
     const value = e.target.value.slice(0, 1);
@@ -37,10 +38,10 @@ export function OtpInput({ code, setCode, onComplete }) {
     return rows;
   }
 
-  useEffect(() => {
-    firstInput.current.select()
-    firstInput.current.focus()
-  }, [firstInput]);
+  // useEffect(() => {
+  //   firstInput.current.select()
+  //   firstInput.current.focus()
+  // }, [firstInput]);
 
   useEffect(() => {
     if (code.length == 6) {
@@ -50,22 +51,16 @@ export function OtpInput({ code, setCode, onComplete }) {
   }, [code]);
   return (
     <div className='otpContainer'>
-      {/* <OTPInput maxLength={6} render={({slots})  => <> */}
-      {/*   <div className="flex"> */}
-      {/*     {slots.slice(0, 3).map((slot, idx) => ( */}
-      {/*       <Slot key={idx} {...slot} /> */}
-      {/*     ))} */}
-      {/*   </div> */}
-
-      {/*   <FakeDash /> */}
-
-      {/*   <div className="flex"> */}
-      {/*     {slots.slice(3).map((slot, idx) => ( */}
-      {/*       <Slot key={idx} {...slot} /> */}
-      {/*     ))} */}
-      {/*   </div> */}
-      {/* </>} /> */}
-      {list()}
+      {/* {list()} */}
+      <OtpInput
+        inputType={'number'}
+        shouldAutoFocus={true}
+        value={code}
+        onChange={setCode}
+        numInputs={6}
+        renderSeparator={<span>-</span>}
+        renderInput={(props,index) => <input autoComplete={index == 0 ? 'one-time-code' : undefined} autoFocus={index == 0}/>}
+      />
     </div>
   )
   // return (

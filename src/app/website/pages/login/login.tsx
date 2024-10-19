@@ -5,7 +5,7 @@ import React, { CSSProperties, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Loading, Modal, OtpInput, TextInput } from '../../../../components';
+import { Loading, Modal, OTP, TextInput } from '../../../../components';
 import { userApis } from '../../../../services/apis/global.ts';
 import { urls } from '../../../../services/endPoint';
 import { api } from '../../../../services/http';
@@ -35,7 +35,7 @@ export default function Login() {
   } = useForm<LoginForm>();
   const [loginState, setLoginState] = useState<string>(sessionStorage.getItem('login-step') || 'phoneNumber');
   const userReducer = useAppSelector(state => state.userReducer);
-  const [code, setCode] = useState([]);
+  const [code, setCode] = useState('');
   const formRef = useRef(null);
   const tokenRef = useRef<null | string>(null);
   const dispatch: AppDispatch = useAppDispatch();
@@ -292,11 +292,11 @@ export default function Login() {
                 ارسال شد
               </Typography>
               <input autoComplete='one-time-code' autoFocus/>
-              {/* <OtpInput */}
-              {/*   code={code} */}
-              {/*   setCode={setCode} */}
-              {/*   onComplete={() => handleSubmit(handleSubmitForm) as any} */}
-              {/* /> */}
+              <OTP
+                code={code}
+                setCode={setCode}
+                onComplete={() => handleSubmit(handleSubmitForm) as any}
+              />
               <Box>
                 <Typography
                   color="var(--mid-pink)"
