@@ -33,7 +33,7 @@ export default function Login() {
     getValues,
     setValue
   } = useForm<LoginForm>();
-  const [loginState, setLoginState] = useState<string>(sessionStorage.getItem('login-step') || 'otp');
+  const [loginState, setLoginState] = useState<string>(sessionStorage.getItem('login-step') || 'phoneNumber');
   const userReducer = useAppSelector(state => state.userReducer);
   const formRef = useRef(null);
   const tokenRef = useRef<null | string>(null);

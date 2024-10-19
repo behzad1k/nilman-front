@@ -28,7 +28,7 @@ export function OtpInput({name, control, ...props}: Props) {
   const list = () => {
     const rows: ReactElement[] = []
 
-    Array.from({length: 6}).map((e, index) => rows.push(<input type='number' className='otpInput' key={index} name={index.toString()} autoFocus={index == 0} value={code[index]} autoComplete='one-time-code' onChange={(e) => setCodeData(e)}/>))
+    Array.from({length: 6}).map((e, index) => rows.push(<input className='otpInput' key={index} name={index.toString()} autoFocus={index == 0} value={code[index]} autoComplete={index == 0 ? 'one-time-code' : undefined} onChange={(e) => setCodeData(e)}/>))
 
     return rows;
   }
