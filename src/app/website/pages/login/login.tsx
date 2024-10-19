@@ -156,7 +156,6 @@ export default function Login() {
   };
   useEffect(() => {
     if ("OTPCredential" in window) {
-      alert('here')
       const ac = new AbortController();
         navigator.credentials
         .get({
@@ -291,7 +290,6 @@ export default function Login() {
                 </Box>
                 ارسال شد
               </Typography>
-              {/* <input autoComplete='one-time-code' autoFocus value={code} onChange={(e) => setCode([...e.target.value])}/> */}
               <OTP
                 code={code}
                 setCode={setCode}

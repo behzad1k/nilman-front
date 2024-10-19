@@ -23,7 +23,6 @@ export function OTP({ code, setCode, onComplete }) {
     });
     const form = e.target.form;
     const index = [...form].indexOf(e.target);
-    console.log(index);
     if (index < 5 && value !== '' && e.target.name !== 5) {
       form.elements[index + 1].focus();
       form.elements[index + 1].select();
@@ -44,7 +43,6 @@ export function OTP({ code, setCode, onComplete }) {
 
   useEffect(() => {
     if (code.length == 6) {
-      console.log(onComplete);
       onComplete && onComplete()
     }
   }, [code]);
