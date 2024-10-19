@@ -1,4 +1,3 @@
-import OtpInput from 'react-otp-input';
 import { ReactElement, useEffect, useRef, useState } from 'react';
 import {Controller} from 'react-hook-form';
 import {MuiOtpInput, MuiOtpInputProps} from 'mui-one-time-password-input';
@@ -38,10 +37,10 @@ export function OTP({ code, setCode, onComplete }) {
     return rows;
   }
 
-  // useEffect(() => {
-  //   firstInput.current.select()
-  //   firstInput.current.focus()
-  // }, [firstInput]);
+  useEffect(() => {
+    firstInput.current.select()
+    firstInput.current.focus()
+  }, [firstInput]);
 
   useEffect(() => {
     if (code.length == 6) {
@@ -51,16 +50,7 @@ export function OTP({ code, setCode, onComplete }) {
   }, [code]);
   return (
     <div className='otpContainer'>
-      {/* {list()} */}
-      <OtpInput
-        inputType={'number'}
-        shouldAutoFocus={true}
-        value={code}
-        onChange={setCode}
-        numInputs={6}
-        renderSeparator={<span>-</span>}
-        renderInput={(props,index) => <input autoComplete={index == 0 ? 'one-time-code' : undefined} autoFocus={index == 0}/>}
-      />
+      {list()}
     </div>
   )
   // return (
