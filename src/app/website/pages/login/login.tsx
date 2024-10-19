@@ -291,11 +291,12 @@ export default function Login() {
                 </Box>
                 ارسال شد
               </Typography>
-              <OtpInput
-                code={code}
-                setCode={setCode}
-                onComplete={() => handleSubmit(handleSubmitForm) as any}
-              />
+              <input autoComplete='one-time-code' autoFocus/>
+              {/* <OtpInput */}
+              {/*   code={code} */}
+              {/*   setCode={setCode} */}
+              {/*   onComplete={() => handleSubmit(handleSubmitForm) as any} */}
+              {/* /> */}
               <Box>
                 <Typography
                   color="var(--mid-pink)"
