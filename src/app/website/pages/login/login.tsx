@@ -35,6 +35,7 @@ export default function Login() {
   } = useForm<LoginForm>();
   const [loginState, setLoginState] = useState<string>(sessionStorage.getItem('login-step') || 'phoneNumber');
   const userReducer = useAppSelector(state => state.userReducer);
+  const [code, setCode] = useState([]);
   const formRef = useRef(null);
   const tokenRef = useRef<null | string>(null);
   const dispatch: AppDispatch = useAppDispatch();
@@ -80,7 +81,7 @@ export default function Login() {
       const reqOptions = {
         method: 'post',
         body: {
-          code: persianNumToEn(data?.otp),
+          code: persianNumToEn(code?.reduce((acc, curr) => acc + curr, '')),
           token: tokenRef.current,
         },
       };
@@ -290,20 +291,9 @@ export default function Login() {
                 ارسال شد
               </Typography>
               <OtpInput
-                name="otp"
-                control={control}
-                onComplete={handleSubmit(handleSubmitForm) as any}
-                sx={{
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'var(--mid-pink)',
-                    backgroundColor: 'var(--white-pink)',
-                    borderRadius: '10px',
-                    color: 'var(--light-black)',
-                  },
-                  '& .MuiOutlinedInput-input': {
-                    zIndex: 1,
-                  },
-                }}
+                code={code}
+                setCode={setCode}
+                onComplete={() => handleSubmit(handleSubmitForm) as any}
               />
               <Box>
                 <Typography

@@ -1910,4 +1910,6 @@ main {
   height: 50px;
   font-size: 18px;
   text-align: center;
+  border-radius: 4px;
+  border: 0
 }
