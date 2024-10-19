@@ -33,7 +33,7 @@ export default function Login() {
     getValues,
     setValue
   } = useForm<LoginForm>();
-  const [loginState, setLoginState] = useState<string>(sessionStorage.getItem('login-step') || 'phoneNumber');
+  const [loginState, setLoginState] = useState<string>(sessionStorage.getItem('login-step') || 'otp');
   const userReducer = useAppSelector(state => state.userReducer);
   const formRef = useRef(null);
   const tokenRef = useRef<null | string>(null);
@@ -289,10 +289,8 @@ export default function Login() {
                 </Box>
                 ارسال شد
               </Typography>
-              <input autoComplete="one-time-code" autoFocus />
               <OtpInput
                 name="otp"
-
                 control={control}
                 onComplete={handleSubmit(handleSubmitForm) as any}
                 sx={{
