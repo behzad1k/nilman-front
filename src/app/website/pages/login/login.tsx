@@ -291,12 +291,12 @@ export default function Login() {
                 </Box>
                 ارسال شد
               </Typography>
-              <input autoComplete='one-time-code' autoFocus/>
-              <OTP
-                code={code}
-                setCode={setCode}
-                onComplete={() => handleSubmit(handleSubmitForm) as any}
-              />
+              <input autoComplete='one-time-code' autoFocus value={code} onChange={(e) => setCode([...e.target.value])}/>
+              {/* <OTP */}
+              {/*   code={code} */}
+              {/*   setCode={setCode} */}
+              {/*   onComplete={() => handleSubmit(handleSubmitForm) as any} */}
+              {/* /> */}
               <Box>
                 <Typography
                   color="var(--mid-pink)"
