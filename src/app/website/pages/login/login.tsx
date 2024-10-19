@@ -155,7 +155,6 @@ export default function Login() {
   };
   useEffect(() => {
     if ("OTPCredential" in window) {
-      console.log('here1');
       const ac = new AbortController();
         navigator.credentials
         .get({
@@ -166,11 +165,9 @@ export default function Login() {
         .then((otp) => {
           // @ts-ignore
           setValue('otp', otp.code);
-          console.log('here2');
           ac.abort();
         })
         .catch((err) => {
-          console.log(err, 'here3');
           ac.abort();
         });
     }
