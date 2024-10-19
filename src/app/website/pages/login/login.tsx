@@ -291,7 +291,6 @@ export default function Login() {
                 </Box>
                 ارسال شد
               </Typography>
-              <input autoComplete='one-time-code' autoFocus/>
               <OTP
                 code={code}
                 setCode={setCode}
