@@ -142,6 +142,10 @@ export default function NewOrder() {
     // setIsNextStepAllowed(false);
   };
   const handleSubmitOrder = async () => {
+    if (!selected.date || !selected.time){
+      toast('لطفا تاریخ و ساعت را انتخاب کنید', { type: 'error' })
+      return;
+    }
     const reqOptions = {
       method: 'post',
       body: {
@@ -221,7 +225,7 @@ export default function NewOrder() {
 
   useEffect(() => {
     setSelected(prev => ({ ...prev, isUrgent: searchParams.get('isUrgent') != null}))
-  }, []);
+  }, [searchParams]);
 
   return (
     <main className="newOrderMain">

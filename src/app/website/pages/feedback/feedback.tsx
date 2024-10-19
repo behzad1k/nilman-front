@@ -14,7 +14,7 @@ import Success from './success.tsx';
 import {toast} from 'react-toastify';
 
 export default function Feedback({ order }) {
-  const [rate, setRate] = useState(5);
+  const [rate, setRate] = useState(3);
   const [comment, setComment] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [tab, setTab] = useState('good');

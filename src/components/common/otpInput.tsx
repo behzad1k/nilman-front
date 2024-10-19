@@ -22,7 +22,6 @@ export function OtpInput({name, control, ...props}: Props) {
           dir="ltr"
           autoFocus
           TextFieldsProps={{
-            autoComplete: 'one-time-code',
             placeholder: '-',
             type: 'number',
             inputProps: {

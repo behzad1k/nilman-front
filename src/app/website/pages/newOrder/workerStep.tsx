@@ -3,6 +3,8 @@ import { MobileTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import {useForm} from 'react-hook-form';
 import moment from 'jalali-moment';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { DatePicker } from 'zaman';
 import {api} from '../../../../services/http';
 import {urls} from '../../../../services/endPoint';
@@ -61,7 +63,7 @@ export default function WorkerStep({
   const orderReducer = useAppSelector(state => state.orderReducer);
   const {control, watch} = useForm();
   const watchDiscount = watch('discount') as string;
-
+  const navigate = useNavigate();
   const calender = () => {
     const tabs: ReactElement[] = [];
 
@@ -87,7 +89,14 @@ export default function WorkerStep({
         (schedules && schedules[day] && !selected.isUrgent ? schedules[day].includes(i) : false) ||
         (!selected.isUrgent ? (calTab == 0) || (calTab == 1 && Number(moment().add(24, 'h').format('HH')) > i) : false) ||
         (calTab == 0 && Number(moment().format('HH')) > (i - 2));
-      sections.push(<span className={`calSectionsSpan${(selected.time == i && selected.date == day) ? ' selected' : ''} ${disabled ? 'disabled' : ''}`} onClick={() => !disabled && setSelected(prev => ({ ...prev, time: i, date: day }))}>{i} - {i + 2}</span>)
+      sections.push(<span className={`calSectionsSpan${(selected.time == i && selected.date == day) ? ' selected' : ''} ${disabled ? 'disabled' : ''}`} onClick={() => {
+        if (disabled){
+          toast('انتخاب این زمان فقط در حالت سفارش فوری امکان پذیر می باشد.', { type: 'warning' })
+        }else{
+          setSelected(prev => ({ ...prev, time: i, date: day }))
+        }
+
+      }}>{i} - {i + 2}</span>)
     }
 
     const body =
@@ -99,7 +108,6 @@ export default function WorkerStep({
       </div>
     return body;
   };
-  console.log(selected.date);
   const fetchWorkersOff = async (id: string = null) => {
     const reqBody = { method: 'POST', body: { attributes: selected.attributes.map(e => e.id)}}
     if (id){
@@ -123,7 +131,7 @@ export default function WorkerStep({
 
   return (
     <div className="service-step-container">
-      <p className="hint-text">یکی از حالت های زیر را برای ادامه انتخاب کنید</p>
+      <p className="hint-text">لطفا تاریخ و ساعت را انتخاب کنید</p>
       <TextInput
         name="discount"
         label="کد تخفیف"
@@ -178,6 +186,12 @@ export default function WorkerStep({
           ))}
         </SelectInput>
         }
+      {!selected.isUrgent &&
+        <div className='workerUrgentBox'>
+            <span>جهت ثبت سفارش برای ۲۴ ساعت آینده حالت سفارش فوری را انتخاب کنید</span>
+            <span className='workerUrgentBoxButton' onClick={() => navigate('/newOrder?isUrgent=')}>سفارش فوری</span>
+        </div>
+      }
     </div>
   );
 }
