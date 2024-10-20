@@ -189,7 +189,6 @@ export default function WorkerStep({
       {!selected.isUrgent &&
         <div className='workerUrgentBox'>
             <span>جهت ثبت سفارش برای ۲۴ ساعت آینده حالت سفارش فوری را انتخاب کنید</span>
-            <span className='workerUrgentBoxButton' onClick={() => navigate('/newOrder?isUrgent=')}>سفارش فوری</span>
         </div>
       }
     </div>

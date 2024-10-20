@@ -1,3 +1,4 @@
+import Switch from 'react-ios-switch';
 import { Warning } from '@phosphor-icons/react';
 import Cookies from 'js-cookie';
 import {useEffect, useState, useCallback, useRef} from 'react';
@@ -56,6 +57,7 @@ export type Selected = {
   time: number | null;
   discount: string | null;
   isUrgent: boolean;
+  isMulti: boolean;
   options: any;
 };
 
@@ -71,6 +73,7 @@ const initialSelected: Selected = {
   time: null,
   discount: null,
   isUrgent: false,
+  isMulti: false,
   options: {}
 };
 
@@ -156,7 +159,8 @@ export default function NewOrder() {
         date: selected.date,
         workerId: Number(selected.worker),
         discount: selected.discount,
-        isUrgent: selected.isUrgent
+        isUrgent: selected.isUrgent,
+        isMulti: selected.isMulti
       },
     };
 
@@ -224,7 +228,7 @@ export default function NewOrder() {
   }, [selected.attributes]);
 
   useEffect(() => {
-    setSelected(prev => ({ ...prev, isUrgent: searchParams.get('isUrgent') != null}))
+    setSelected(prev => ({ ...prev, isUrgent: searchParams.get('isUrgent') != null, isMulti: searchParams.get('isMulti') != null }))
   }, [searchParams]);
 
   return (
@@ -273,11 +277,11 @@ export default function NewOrder() {
         <div className="cart-section">
           <Warning size={25}/>
           <span className='urgentWarning'>سفارش شما در حالت فوری قرار دارد و با افزایش قیمت همراه است</span>
-          <span className='urgentWarning button' onClick={() => {
-            searchParams.delete('isUrgent');
-            setSearchParams(searchParams);
-            setSelected(prev => ({ ...prev, isUrgent: false }))
-          }}>خروج</span>
+          {/* <span className='urgentWarning button' onClick={() => { */}
+          {/*   searchParams.delete('isUrgent'); */}
+          {/*   setSearchParams(searchParams); */}
+          {/*   setSelected(prev => ({ ...prev, isUrgent: false })) */}
+          {/* }}>خروج</span> */}
 
           {/* <div className="info"> */}
           {/*   {selected.service ? ( */}
@@ -306,7 +310,30 @@ export default function NewOrder() {
           {/* </div> */}
         </div>
         }
+        <div className='newOrderBottomButtons'>
+          <div className='newOrderBottomButtonsRow'>
+            <span>سفارش فوری</span>
+            <Switch
+              checked={searchParams.get('isUrgent') != null}
+              onChange={(checked) => {
+                checked ? searchParams.set('isUrgent', '') : searchParams.delete('isUrgent');
+                setSearchParams(searchParams);
+              }}
+            />
+          </div>
+          {/* <div className='newOrderBottomButtonsRow'> */}
+          {/*   <span>سفارش چندگانه</span> */}
+          {/*   <Switch */}
+          {/*     checked={searchParams.get('isMulti') != null} */}
+          {/*     onChange={(checked) => { */}
+          {/*       checked ? searchParams.set('isMulti', '') : searchParams.delete('isMulti'); */}
+          {/*       setSearchParams(searchParams); */}
+          {/*     }} */}
+          {/*   /> */}
+          {/* </div> */}
+        </div>
         <div className="btn-section">
+
           <Button
             onClick={() => handleChangeStep('prev')}
             size="large"

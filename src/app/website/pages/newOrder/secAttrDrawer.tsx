@@ -251,6 +251,37 @@ export default function SecAttrDrawer({
                     {/*       {`(به علاوه ${formatPrice(secAttr.pricePlus)} تومان)`} */}
                     {/*     </Box> */}
                     {/* } */}
+                    {selected.isMulti && <div className="quantityButtom">
+                        <i className="tablePlusIcon" onClick={(e: any) => {
+                          e.preventDefault();
+                          setSelected(prev => {
+                            const cp = { ...selected };
+                            // if (cp.options[]){
+                            //
+                            // }
+                            cp.options[secAttr.id].count = Number(cp.options[secAttr.id].count) + 1;
+
+                            return cp;
+                          });
+                        }}></i>
+                        <input type='number' className="quantityNumber" value={selected?.options[secAttr.id]?.count || 1}
+                               onChange={(input: any) => setSelected(prev => {
+                                 const cp = { ...prev }
+
+                                 cp.options[secAttr.id].count = input.target.value
+
+                                 return cp;
+                               })}
+                        />
+                        <i className="tableCollapsIcon" onClick={(e: any) =>
+                          selected?.options[secAttr.id].count > 1 && setSelected(prev => {
+                            const cp = { ...prev };
+
+                            cp.options[secAttr.id].count = Number(cp.options[secAttr.id].count) - 1;
+
+                            return cp;
+                          })}></i>
+                    </div>}
                     {secAttr.price > 0 &&
                     <>
                         <Box component="span" sx={{ fontWeight: '800' }}>
