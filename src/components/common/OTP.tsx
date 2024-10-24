@@ -8,6 +8,7 @@ interface Props extends MuiOtpInputProps {
 
 export function OTP({ code, setCode, onComplete }) {
   const firstInput = useRef(null);
+  const formRef = useRef(null);
   const setCodeData = (e: any) => {
     const value = e.target.value.slice(0, 1);
     setCode((prevCode) => {
@@ -31,23 +32,31 @@ export function OTP({ code, setCode, onComplete }) {
   const list = () => {
     const rows: ReactElement[] = []
 
-    Array.from({length: 6}).map((e, index) => rows.push(<input className='otpInput' ref={index == 0 ? firstInput : null} key={index} name={index.toString()} autoFocus={index == 0} autoComplete={index == 0 ? 'one-time-code' : undefined} onChange={(e) => setCodeData(e)}/>))
+    Array.from({length: 6}).map((e, index) => rows.push(<input className='otpInput'
+                                                               onPaste={(event) =>
+      setCode(prev => {
+      let newCode = [];
+      [...(event.clipboardData).getData("text")].map((e,i) => newCode[i] = e)
+      return newCode;
+    })
+    }
+                                                               ref={index == 0 ? firstInput : null} key={index} name={index.toString()} autoFocus={index == 0} autoComplete={index == 0 ? 'one-time-code' : undefined} onChange={(e) => setCodeData(e)}/>))
 
     return rows;
   }
 
   useEffect(() => {
-    firstInput.current.select()
-    firstInput.current.focus()
-  }, [firstInput]);
+    code.map((e ,i) => [...formRef.current?.children][i].value = e)
+  }, [code]);
 
   useEffect(() => {
     if (code.length == 6) {
-      onComplete && onComplete()
+      console.log('here');
+      onComplete()
     }
   }, [code]);
   return (
-    <div className='otpContainer'>
+    <div className='otpContainer' ref={formRef}>
       {list()}
     </div>
   )

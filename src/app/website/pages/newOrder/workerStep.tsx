@@ -88,7 +88,7 @@ export default function WorkerStep({
       const disabled =
         (schedules && schedules[day] && !selected.isUrgent ? schedules[day].includes(i) : false) ||
         (!selected.isUrgent ? (calTab == 0) || (calTab == 1 && Number(moment().add(24, 'h').format('HH')) > i) : false) ||
-        (calTab == 0 && Number(moment().format('HH')) > (i - 2));
+        (calTab == 0 && Number(moment().format('HH')) > (i - 5));
       sections.push(<span className={`calSectionsSpan${(selected.time == i && selected.date == day) ? ' selected' : ''} ${disabled ? 'disabled' : ''}`} onClick={() => {
         if (disabled){
           toast('انتخاب این زمان فقط در حالت سفارش فوری امکان پذیر می باشد.', { type: 'warning' })
