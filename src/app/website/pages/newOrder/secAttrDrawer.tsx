@@ -275,6 +275,7 @@ export default function SecAttrDrawer({
                     handleAddAttribute(selectedAddOn, null, true);
                     setSelectedAddOn(null);
                     setShouldPickAddOns(false);
+                    handleCloseDrawer()
                   }
                 }}>
                   ثبت
