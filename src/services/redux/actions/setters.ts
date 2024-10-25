@@ -1,2 +1,2 @@
-import {IUser} from '../../types.ts';
-import {useAppDispatch} from '../store.ts';
+import {IUser} from '../../types';
+import {useAppDispatch} from '../store';

@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { Modal } from '../../../../components';
 import {useAppSelector} from '../../../../services/redux/store';
 import {IService} from '../../../../services/types';
-import { findAncestors, findRootCount } from '../../../../utils/utils.ts';
+import { findAncestors, findRootCount } from '../../../../utils/utils';
 import {Selected} from './newOrder';
 import SecAttrDrawer from './secAttrDrawer';
 

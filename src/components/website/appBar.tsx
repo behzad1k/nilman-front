@@ -1,7 +1,7 @@
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {House, PlusCircle, Clipboard, Newspaper, User} from '@phosphor-icons/react';
 import { toast } from 'react-toastify';
-import {useAppSelector} from '../../services/redux/store.ts';
+import {useAppSelector} from '../../services/redux/store';
 
 export function AppBar() {
   const userReducer = useAppSelector((state) => state.userReducer);

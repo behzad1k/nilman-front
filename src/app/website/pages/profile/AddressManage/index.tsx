@@ -4,14 +4,14 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Neshan from '../../../../../components/common/Neshan.tsx';
-import { Header } from '../../../../../components/website/header.tsx';
-import { urls } from '../../../../../services/endPoint.ts';
-import { api } from '../../../../../services/http.ts';
-import { SET_LOADING } from '../../../../../services/redux/reducers/loadingSlice.ts';
-import { addresses } from '../../../../../services/redux/reducers/userSlice.ts';
-import { useAppSelector } from '../../../../../services/redux/store.ts';
-import { Position } from '../../../../../services/types.ts';
+import Neshan from '../../../../../components/common/Neshan';
+import { Header } from '../../../../../components/website/header';
+import { urls } from '../../../../../services/endPoint';
+import { api } from '../../../../../services/http';
+import { SET_LOADING } from '../../../../../services/redux/reducers/loadingSlice';
+import { addresses } from '../../../../../services/redux/reducers/userSlice';
+import { useAppSelector } from '../../../../../services/redux/store';
+import { Position } from '../../../../../services/types';
 
 const AddressManage = () => {
   const navigate = useNavigate();

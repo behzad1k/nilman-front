@@ -1,9 +1,9 @@
 import moment from 'jalali-moment';
 import { useEffect, useState } from 'react';
-import { urls } from '../../../../services/endPoint.ts';
-import { api } from '../../../../services/http.ts';
-import { useAppSelector } from '../../../../services/redux/store.ts';
-import { formatPrice } from '../../../../utils/utils.ts';
+import { urls } from '../../../../services/endPoint';
+import { api } from '../../../../services/http';
+import { useAppSelector } from '../../../../services/redux/store';
+import { formatPrice } from '../../../../utils/utils';
 
 const WorkerDashboard = () => {
   const userReducer = useAppSelector(state => state.userReducer)

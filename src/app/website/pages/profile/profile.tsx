@@ -3,11 +3,11 @@ import { PencilLine, SignOut } from '@phosphor-icons/react';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { logout } from '../../../../services/apis/global.ts';
-import { useAppSelector } from '../../../../services/redux/store.ts';
-import { formatPrice } from '../../../../utils/utils.ts';
-import { Addresses } from './Addresses.tsx';
-import { ProfileCard } from './profileCard.tsx';
+import { logout } from '../../../../services/apis/global';
+import { useAppSelector } from '../../../../services/redux/store';
+import { formatPrice } from '../../../../utils/utils';
+import { Addresses } from './Addresses';
+import { ProfileCard } from './profileCard';
 
 export default function Profile() {
   const userReducer = useAppSelector((state) => state.userReducer);

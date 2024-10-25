@@ -2,15 +2,15 @@ import {useState} from 'react';
 import {Modal, ProfilePicture} from '../../../../components';
 import {Article, Calendar, MapPinLine, Money, Clock} from '@phosphor-icons/react';
 import {Box, Typography, Paper, Button} from '@mui/material';
-import {IOrder} from '../../../../services/types.ts';
-import {formatPrice} from '../../../../utils/utils.ts';
+import {IOrder} from '../../../../services/types';
+import {formatPrice} from '../../../../utils/utils';
 import OrderItem from './orderItem';
 import moment from 'jalali-moment';
-import {urls} from '../../../../services/endPoint.ts';
-import {api} from '../../../../services/http.ts';
-import {order} from '../../../../services/redux/reducers/orderSlice.ts';
-import {useAppDispatch, useAppSelector} from '../../../../services/redux/store.ts';
-import { MapView } from '../../../../components/common/map.tsx';
+import {urls} from '../../../../services/endPoint';
+import {api} from '../../../../services/http';
+import {order} from '../../../../services/redux/reducers/orderSlice';
+import {useAppDispatch, useAppSelector} from '../../../../services/redux/store';
+import { MapView } from '../../../../components/common/map';
 interface IOrderCardProps {
   item: IOrder;
 }

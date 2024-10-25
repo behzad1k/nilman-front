@@ -1,6 +1,6 @@
 import {useAppSelector} from '../../../../services/redux/store';
 import {IAddress} from '../../../../services/types';
-import { Addresses } from '../profile/Addresses.tsx';
+import { Addresses } from '../profile/Addresses';
 import {AddressRow} from '../profile/addressRow';
 import {useRef} from 'react';
 import {Selected} from './newOrder';

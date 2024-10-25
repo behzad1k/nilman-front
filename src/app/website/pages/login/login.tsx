@@ -6,14 +6,14 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Loading, Modal, OTP, TextInput } from '../../../../components';
-import { userApis } from '../../../../services/apis/global.ts';
+import { userApis } from '../../../../services/apis/global';
 import { urls } from '../../../../services/endPoint';
 import { api } from '../../../../services/http';
-import { SET_LOADING } from '../../../../services/redux/reducers/loadingSlice.ts';
+import { SET_LOADING } from '../../../../services/redux/reducers/loadingSlice';
 import { SET_LOGGED_IN, user } from '../../../../services/redux/reducers/userSlice';
 import { AppDispatch, useAppDispatch, useAppSelector } from '../../../../services/redux/store';
 import styles from '../../../../assets/css/scroll.css'
-import { persianNumToEn } from '../../../../utils/utils.ts';
+import { persianNumToEn } from '../../../../utils/utils';
 
 type LoginState = 'phoneNumber' | 'otp' | 'complete-profile';
 type LoginForm = {

@@ -7,12 +7,12 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { TextInput } from '../../../../../components';
-import { Header } from '../../../../../components/website/header.tsx';
-import { urls } from '../../../../../services/endPoint.ts';
-import { api } from '../../../../../services/http.ts';
-import { SET_LOADING } from '../../../../../services/redux/reducers/loadingSlice.ts';
-import { user } from '../../../../../services/redux/reducers/userSlice.ts';
-import { useAppSelector } from '../../../../../services/redux/store.ts';
+import { Header } from '../../../../../components/website/header';
+import { urls } from '../../../../../services/endPoint';
+import { api } from '../../../../../services/http';
+import { SET_LOADING } from '../../../../../services/redux/reducers/loadingSlice';
+import { user } from '../../../../../services/redux/reducers/userSlice';
+import { useAppSelector } from '../../../../../services/redux/store';
 
 const EditProfile = () => {
   const navigate = useNavigate();

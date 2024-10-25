@@ -4,7 +4,7 @@ import {OrdersTable} from '../../../../components';
 import {OrdersModalContent} from '../../../../components';
 import {Typography, Paper, Tab, Tabs} from '@mui/material';
 import {useForm} from 'react-hook-form';
-import { FeedbacksTable } from '../../../../components/dashboard/FeedbacksTable.tsx';
+import { FeedbacksTable } from '../../../../components/dashboard/FeedbacksTable';
 import {api} from '../../../../services/http';
 import {urls} from '../../../../services/endPoint';
 import {IOrder} from '../../../../services/types';

@@ -1,12 +1,12 @@
 import Cookies from 'js-cookie';
-import {urls} from '../endPoint.ts';
-import {api} from '../http.ts';
-import {cart} from '../redux/reducers/cartSlice.ts';
-import { colors, posts } from '../redux/reducers/globalSlice.ts';
-import {order} from '../redux/reducers/orderSlice.ts';
-import {services} from '../redux/reducers/serviceSlice.ts';
-import { addresses, SET_LOGGED_IN, user } from '../redux/reducers/userSlice.ts';
-import {SET_LOADING} from '../redux/reducers/loadingSlice.ts';
+import {urls} from '../endPoint';
+import {api} from '../http';
+import {cart} from '../redux/reducers/cartSlice';
+import { colors, posts } from '../redux/reducers/globalSlice';
+import {order} from '../redux/reducers/orderSlice';
+import {services} from '../redux/reducers/serviceSlice';
+import { addresses, SET_LOGGED_IN, user } from '../redux/reducers/userSlice';
+import {SET_LOADING} from '../redux/reducers/loadingSlice';
 
 export const initialApis = async (dispatch: any) => {
   dispatch(SET_LOADING(true));

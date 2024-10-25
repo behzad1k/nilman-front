@@ -2,17 +2,17 @@ import { Calendar, MapPin, Trash, X } from '@phosphor-icons/react';
 import moment from 'jalali-moment';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
-import {urls} from '../../../../services/endPoint.ts';
-import {api} from '../../../../services/http.ts';
-import {cart} from '../../../../services/redux/reducers/cartSlice.ts';
-import {order} from '../../../../services/redux/reducers/orderSlice.ts';
-import {IOrder} from '../../../../services/types.ts';
-import {useAppDispatch, useAppSelector} from '../../../../services/redux/store.ts';
-import {SET_LOADING} from '../../../../services/redux/reducers/loadingSlice.ts';
+import {urls} from '../../../../services/endPoint';
+import {api} from '../../../../services/http';
+import {cart} from '../../../../services/redux/reducers/cartSlice';
+import {order} from '../../../../services/redux/reducers/orderSlice';
+import {IOrder} from '../../../../services/types';
+import {useAppDispatch, useAppSelector} from '../../../../services/redux/store';
+import {SET_LOADING} from '../../../../services/redux/reducers/loadingSlice';
 import {Typography} from '@mui/material';
 import {Box} from '@mui/system';
 import emptyCart from '../../../../assets/img/empty-cart.png';
-import { formatPrice } from '../../../../utils/utils.ts';
+import { formatPrice } from '../../../../utils/utils';
 import Switch from 'react-ios-switch';
 
 interface ICartItemProps {

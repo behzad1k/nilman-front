@@ -12,8 +12,8 @@ import eyebrow from '../../../../assets/img/category-eyebrow.png';
 import hair from '../../../../assets/img/category-hair.png';
 import {SwipeableDrawer} from '@mui/material';
 import { useRef, useEffect, ReactElement } from 'react';
-import { SET_LOADING } from '../../../../services/redux/reducers/loadingSlice.ts';
-import { useAppSelector } from '../../../../services/redux/store.ts';
+import { SET_LOADING } from '../../../../services/redux/reducers/loadingSlice';
+import { useAppSelector } from '../../../../services/redux/store';
 
 export default function Mag() {
   const drawerEl = useRef<HTMLElement | null>(null);

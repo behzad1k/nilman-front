@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { urls } from '../../../../services/endPoint.ts';
-import { api } from '../../../../services/http.ts';
-import { cart } from '../../../../services/redux/reducers/cartSlice.ts';
-import { SET_LOADING } from '../../../../services/redux/reducers/loadingSlice.ts';
-import { order } from '../../../../services/redux/reducers/orderSlice.ts';
+import { urls } from '../../../../services/endPoint';
+import { api } from '../../../../services/http';
+import { cart } from '../../../../services/redux/reducers/cartSlice';
+import { SET_LOADING } from '../../../../services/redux/reducers/loadingSlice';
+import { order } from '../../../../services/redux/reducers/orderSlice';
 
 const Payment = ({ params }) => {
   const [searchParam, setSearchParam] = useSearchParams();

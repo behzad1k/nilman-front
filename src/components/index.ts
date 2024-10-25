@@ -2,7 +2,7 @@
 export {TextInput} from './common/textInput';
 export {SelectInput} from './common/selectInput';
 export {Modal} from './common/modal';
-export {OTP} from './common/OTP.tsx';
+export {OTP} from './common/OTP';
 export {Map} from './common/map';
 export {Loading} from './common/loading';
 

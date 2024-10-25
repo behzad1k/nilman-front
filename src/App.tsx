@@ -1,11 +1,11 @@
 import {Provider} from 'react-redux';
 import {ToastContainer} from 'react-toastify';
-import store from './services/redux/store.ts';
+import store from './services/redux/store';
 import './assets/css/App.css';
-import Website from './app/website/website.tsx';
-import Dashboard from './app/dashboard/dashboard.tsx';
+import Website from './app/website/website';
+import Dashboard from './app/dashboard/dashboard';
 import {Routes, Route} from 'react-router-dom';
-import {Mui} from './mui.tsx';
+import {Mui} from './mui';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {

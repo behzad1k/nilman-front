@@ -3,8 +3,8 @@ import { MapComponent } from '@neshan-maps-platform/mapbox-gl-react';
 import SDKMap from '@neshan-maps-platform/mapbox-gl/dist/src/core/Map';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { urls } from '../../services/endPoint.ts';
-import { api } from '../../services/http.ts';
+import { urls } from '../../services/endPoint';
+import { api } from '../../services/http';
 
 const Neshan = ({
                   position,

@@ -1,18 +1,18 @@
 import {useRef, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import {addresses} from '../../../../services/redux/reducers/userSlice.ts';
-import {useAppDispatch, useAppSelector} from '../../../../services/redux/store.ts';
-import {IAddress} from '../../../../services/types.ts';
-import {AddressRow} from './addressRow.tsx';
+import {addresses} from '../../../../services/redux/reducers/userSlice';
+import {useAppDispatch, useAppSelector} from '../../../../services/redux/store';
+import {IAddress} from '../../../../services/types';
+import {AddressRow} from './addressRow';
 import { Button, Typography, Box, SwipeableDrawer } from '@mui/material';
 import {Modal, TextInput} from '../../../../components';
 import {useForm, FieldValues} from 'react-hook-form';
-import {api} from '../../../../services/http.ts';
-import {urls} from '../../../../services/endPoint.ts';
+import {api} from '../../../../services/http';
+import {urls} from '../../../../services/endPoint';
 import {Map} from '../../../../components';
 import {PlusCircle} from '@phosphor-icons/react';
-import {SET_LOADING} from '../../../../services/redux/reducers/loadingSlice.ts';
+import {SET_LOADING} from '../../../../services/redux/reducers/loadingSlice';
 
 type Position = {
   lat: number;

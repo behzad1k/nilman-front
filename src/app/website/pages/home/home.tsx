@@ -3,13 +3,13 @@ import {ContactPhone, WhatsApp} from '@mui/icons-material';
 import React, { ReactElement, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import {initialApis} from '../../../../services/apis/global.ts';
-import { useAppDispatch, useAppSelector } from '../../../../services/redux/store.ts';
-import {ISliderCardInfo} from '../../../../services/types.ts';
+import {initialApis} from '../../../../services/apis/global';
+import { useAppDispatch, useAppSelector } from '../../../../services/redux/store';
+import {ISliderCardInfo} from '../../../../services/types';
 import {Slider} from '../../../../components';
 import {BannerCard} from '../../../../components';
 import {Box, Stack, Typography} from '@mui/material';
-import WorkerDashboard from './WorkerDashboard.tsx';
+import WorkerDashboard from './WorkerDashboard';
 
 export default function Home() {
   const userReducer = useAppSelector((state) => state.userReducer);

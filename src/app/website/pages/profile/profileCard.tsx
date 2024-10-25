@@ -1,10 +1,10 @@
 import { Camera, PencilLine, SignOut } from '@phosphor-icons/react';
 import React, {useEffect, useRef, useState} from 'react';
-import {logout} from '../../../../services/apis/global.ts';
+import {logout} from '../../../../services/apis/global';
 import {api} from '../../../../services/http';
 import {urls} from '../../../../services/endPoint';
-import {useAppDispatch, useAppSelector} from '../../../../services/redux/store.ts';
-import {SET_LOADING} from '../../../../services/redux/reducers/loadingSlice.ts';
+import {useAppDispatch, useAppSelector} from '../../../../services/redux/store';
+import {SET_LOADING} from '../../../../services/redux/reducers/loadingSlice';
 import {useNavigate} from 'react-router-dom';
 
 export function ProfileCard() {

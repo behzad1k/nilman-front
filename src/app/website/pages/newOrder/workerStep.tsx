@@ -9,7 +9,7 @@ import { DatePicker } from 'zaman';
 import {api} from '../../../../services/http';
 import {urls} from '../../../../services/endPoint';
 import {SelectInput, TextInput} from '../../../../components';
-import { useAppSelector } from '../../../../services/redux/store.ts';
+import { useAppSelector } from '../../../../services/redux/store';
 import {IService, IUser} from '../../../../services/types';
 import {createSchedule} from '../../../../utils/utils';
 import {Selected} from './newOrder';

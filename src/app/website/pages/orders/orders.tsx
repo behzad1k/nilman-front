@@ -1,8 +1,8 @@
-import OrderCard from './orderCard.tsx';
-import Cart from './cart.tsx';
-import {IOrder, IService} from '../../../../services/types.ts';
+import OrderCard from './orderCard';
+import Cart from './cart';
+import {IOrder, IService} from '../../../../services/types';
 import {Typography, Box, Container, Tabs, Tab} from '@mui/material';
-import {useAppSelector} from '../../../../services/redux/store.ts';
+import {useAppSelector} from '../../../../services/redux/store';
 import emptyList from '../../../../assets/img/svg/emptylist.svg';
 import {useState} from 'react';
 

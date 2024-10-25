@@ -1,8 +1,8 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import { extractChildren } from '../../../utils/utils.ts';
-import {urls} from '../../endPoint.ts';
-import {api} from '../../http.ts';
-import {IService} from '../../types.ts';
+import { extractChildren } from '../../../utils/utils';
+import {urls} from '../../endPoint';
+import {api} from '../../http';
+import {IService} from '../../types';
 interface serviceState {
   services: IService[];
   allServices: IService[];

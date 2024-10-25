@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import {AppDispatch, useAppDispatch} from '../../../../services/redux/store';
 import {SET_LOGGED_IN, user} from '../../../../services/redux/reducers/userSlice';
-import {userApis} from '../../../../services/apis/global.ts';
+import {userApis} from '../../../../services/apis/global';
 
 
 export default function Login() {

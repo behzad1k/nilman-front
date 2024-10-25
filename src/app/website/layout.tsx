@@ -1,9 +1,9 @@
 import {Box} from '@mui/material';
 import PullToRefresh from 'react-simple-pull-to-refresh';
 import {WebsiteHeader, AppBar, Loading} from '../../components';
-import {initialApis} from '../../services/apis/global.ts';
-import {useAppDispatch, useAppSelector} from '../../services/redux/store.ts';
-import Feedback from './pages/feedback/feedback.tsx';
+import {initialApis} from '../../services/apis/global';
+import {useAppDispatch, useAppSelector} from '../../services/redux/store';
+import Feedback from './pages/feedback/feedback';
 
 export default function Layout({children}: {children: React.ReactNode}) {
   const dispatch = useAppDispatch();

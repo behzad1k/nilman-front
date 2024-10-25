@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {urls} from '../../endPoint.ts';
-import {IAddress, IUser} from '../../types.ts';
-import {api} from '../../http.ts';
+import {urls} from '../../endPoint';
+import {IAddress, IUser} from '../../types';
+import {api} from '../../http';
 
 interface IUserSlice {
   data: IUser;

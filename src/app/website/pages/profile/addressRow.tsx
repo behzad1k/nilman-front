@@ -2,8 +2,8 @@ import { DotsThree, HouseLine, MapTrifold, PencilLine, PhoneDisconnect } from '@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Map } from '../../../../components';
-import { MapView } from '../../../../components/common/map.tsx';
-import { IAddress, Position } from '../../../../services/types.ts';
+import { MapView } from '../../../../components/common/map';
+import { IAddress, Position } from '../../../../services/types';
 
 export function AddressRow({ address, isSelected, onClick , setSelected, editable = false, setModal = undefined }: {address: IAddress, isSelected: boolean, onClick?: (address: IAddress) => void, setSelected: React.Dispatch<React.SetStateAction<IAddress | undefined>>, editable?: boolean, setModal?: React.Dispatch<React.SetStateAction<any>>}) {
 

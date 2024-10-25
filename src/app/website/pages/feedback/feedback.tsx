@@ -5,12 +5,12 @@ import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import {Box, Button, Container, Rating, Typography} from '@mui/material';
 import {TextareaAutosize} from '@mui/base/TextareaAutosize';
-import {urls} from '../../../../services/endPoint.ts';
-import {api} from '../../../../services/http.ts';
-import { order as orderSlice } from '../../../../services/redux/reducers/orderSlice.ts';
-import { useAppSelector } from '../../../../services/redux/store.ts';
-import { IOrder } from '../../../../services/types.ts';
-import Success from './success.tsx';
+import {urls} from '../../../../services/endPoint';
+import {api} from '../../../../services/http';
+import { order as orderSlice } from '../../../../services/redux/reducers/orderSlice';
+import { useAppSelector } from '../../../../services/redux/store';
+import { IOrder } from '../../../../services/types';
+import Success from './success';
 import {toast} from 'react-toastify';
 
 export default function Feedback({ order }) {
@@ -21,7 +21,7 @@ export default function Feedback({ order }) {
   const [factors, setFactors] = useState([]);
   const [selectedFactors, setSelectedFactors] = useState([]);
   const params = useParams();
-  const dispatch = useDispatch()
+  const dispatch: any = useDispatch()
   const navigate = useNavigate();
   const tabTitles = {
     good: 'نقاط قوت',

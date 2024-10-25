@@ -3,9 +3,9 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Global} from '@emotion/react';
 import { toast } from 'react-toastify';
 import { Modal, TextInput } from '../../../../components';
-import { services } from '../../../../services/redux/reducers/serviceSlice.ts';
-import { useAppSelector } from '../../../../services/redux/store.ts';
-import { formatPrice } from '../../../../utils/utils.ts';
+import { services } from '../../../../services/redux/reducers/serviceSlice';
+import { useAppSelector } from '../../../../services/redux/store';
+import { formatPrice } from '../../../../utils/utils';
 import {Selected} from './newOrder';
 import {IService} from '../../../../services/types';
 import { Button, Box, Skeleton, Typography, SwipeableDrawer, TextField } from '@mui/material';
@@ -36,6 +36,7 @@ export default function SecAttrDrawer({
 }: Props) {
   const colors = useAppSelector(state => state.globalReducer.colors)
   const services = useAppSelector(state => state.serviceReducer);
+  const [shouldPickAddOns, setShouldPickAddOns] = useState(false);
   const [color, setColor] = useState('#fff');
   const [curParent, setCurParent] = useState(parent)
   const [pickingColor, setPickingColor] = useState<PickingColor>({
@@ -45,6 +46,7 @@ export default function SecAttrDrawer({
   const [page, setPage] = useState(1);
   const [pickMedia, setPickMedia] = useState<boolean>(false);
   const [currentAttribute, setCurrentAttriubte] = useState<IService>();
+  const [selectedAddOn, setSelectedAddOn] = useState<IService>(null);
   const [infoModal, setInfoModal] = useState(false);
   const [media, setMedia] = useState({
     preview: null,
@@ -59,7 +61,6 @@ export default function SecAttrDrawer({
     setPage(1);
     setCurParent(undefined)
     // if (!cond) return;
-    console.log(newOpen);
     setOpen(newOpen);
   };
   const handleClickCard = (index: number, secAttr: IService) => {
@@ -70,22 +71,31 @@ export default function SecAttrDrawer({
     if (secAttr.hasColor) {
       // PICK COLOR FIRST
       setPickingColor({attr: secAttr, open: true});
-    } else {
+    }  else {
       if (secAttr.attributes?.length > 0){
         setCurParent(secAttr);
         setPage(prev => prev + 1)
-      }else {
-        handleAddAttribute(secAttr, null);
+      } else {
+        if (secAttr.addOns.length > 0){
+          if (Object.keys(selected.options).includes(secAttr.id.toString())){
+            handleAddAttribute(secAttr, null)
+            handleAddAttribute(secAttr?.addOns?.find(e => Object.keys(selected.options)?.includes(e.id.toString())), null)
+          }else{
+            setShouldPickAddOns(true)
+          }
+        }else{
+          handleAddAttribute(secAttr, null);
+        }
       }
       // NO COLOR - ADD TO ATTRIBUTES
     }
   };
 
-  const handleAddAttribute = (secAttr: IService | null, color: string | null) => {
+  const handleAddAttribute = (secAttr: IService | null, color: string | null, isAddOn = false) => {
     if (!secAttr) return;
     const newAttr = {...secAttr};
     if (color) newAttr.color = color;
-    if (!selected.attributes?.find(e => e.id == newAttr.id) && !(curParent || parent).isMulti && selected.attributes.find(e => e.parent?.id == (curParent || parent).id)){
+    if (!isAddOn && !selected.attributes?.find(e => e.id == newAttr.id) && !(curParent || parent).isMulti && selected.attributes.find(e => e.parent?.id == (curParent || parent).id)){
       toast(`انتخاب بیش از یک خدمت در ${(curParent || parent).title} مجاز نمی باشد`, {type: 'error'})
       return;
     }
@@ -110,13 +120,18 @@ export default function SecAttrDrawer({
       });
     }
 
-
     setPickingColor({attr: null, open: false});
   };
+
   const handleCloseDrawer = () => {
     setOpen(false)
     setPickingColor({attr: null, open: false})
   }
+
+  useEffect(() => {
+    setSelectedAddOn(currentAttribute?.addOns?.find(e => Object.keys(selected.options)?.includes(e.id.toString())))
+  }, [currentAttribute]);
+
   if (curParent || parent) {
     return (
       <>
@@ -210,7 +225,62 @@ export default function SecAttrDrawer({
                   >بازگشت</Button>
                 </Box>
               </Box>
-            ) : (
+            ) : shouldPickAddOns ? (
+              <>
+                <Box display="flex" alignItems="center" justifyContent="space-between">
+                  <Typography variant="body1" component="h3" mb={1}>
+                    {(curParent || parent)?.title}
+                  </Typography>
+                </Box>
+                <Typography variant="caption" component="p" mb={1}>
+                  برای ثبت خدمت {currentAttribute?.title} باید یکی از خدمات زیر را نیز انتخاب کنید
+                </Typography>
+                {[...currentAttribute?.addOns]?.sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000))?.map((secAttr, index) => (
+                  <Box
+                    key={secAttr.slug}
+                    className={`attr-box ${
+                      selectedAddOn?.id == secAttr.id ? 'selected' : ''
+                    }`}
+                    ref={(el: HTMLElement) => (boxEl.current[index] = el)}
+                    onClick={() => setSelectedAddOn(secAttr)}
+                    sx={{
+                      backgroundColor: 'var(--white-pink)',
+                      borderRadius: '6px',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      py: 1.5,
+                      px: 1,
+                    }}
+                  >
+                    <Typography
+                      variant="body1"
+                      component="h4"
+                      sx={{color: 'var(--light-black)', mr: 'auto'}}
+                    >
+                      {secAttr.title}
+                      {selectedAddOn?.id == secAttr.id ? <i className={'selectedServiceIcon'}></i> : ''}
+                    </Typography>
+                    <Box component="span" sx={{ fontWeight: '800' }}>
+                      {formatPrice(secAttr.price * (selected.isUrgent ? 1.5 : 1))}
+                    </Box>
+                    <Box component="span" ml={0.5} sx={{ fontWeight: '300' }}>
+                        تومان
+                    </Box>
+                  </Box>
+                ))}
+                <button className='confirmButton order' onClick={() => {
+                  if (selectedAddOn) {
+                    handleAddAttribute(currentAttribute, null);
+                    handleAddAttribute(selectedAddOn, null, true);
+                    setSelectedAddOn(null);
+                    setShouldPickAddOns(false);
+                  }
+                }}>
+                  ثبت
+                </button>
+              </>
+            ) :
               <>
                 <Box display="flex" alignItems="center" justifyContent="space-between">
                   <Typography variant="body1" component="h3" mb={1}>
@@ -283,23 +353,21 @@ export default function SecAttrDrawer({
                           })}></i>
                     </div>}
                     {secAttr.price > 0 &&
-                    <>
-                        <Box component="span" sx={{ fontWeight: '800' }}>
-                          {formatPrice(secAttr.price * (selected.isUrgent ? 1.5 : 1))}
-                        </Box>
-                        <Box component="span" ml={0.5} sx={{ fontWeight: '300' }}>
-                            تومان
-                        </Box>
-                    </>
+                        <>
+                            <Box component="span" sx={{ fontWeight: '800' }}>
+                              {formatPrice(secAttr.price * (selected.isUrgent ? 1.5 : 1))}
+                            </Box>
+                            <Box component="span" ml={0.5} sx={{ fontWeight: '300' }}>
+                                تومان
+                            </Box>
+                        </>
                     }
                   </Box>
                 ))}
-              </>
-            )}
-            {!pickingColor.open &&
                 <button className='confirmButton order' onClick={toggleDrawer(false)}>
-                    ثبت
+                  ثبت
                 </button>
+              </>
             }
           </Box>
         </SwipeableDrawer>

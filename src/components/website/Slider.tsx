@@ -1,6 +1,6 @@
 import {ReactElement} from 'react';
-import {ISliderCardInfo} from '../../services/types.ts';
-import {SliderCard} from './SliderCard.tsx';
+import {ISliderCardInfo} from '../../services/types';
+import {SliderCard} from './SliderCard';
 
 type IProps = {
   title: string;

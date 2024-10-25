@@ -1,5 +1,5 @@
-import { isEmpty } from '../utils/utils.ts';
-import {config} from './config.tsx';
+import { isEmpty } from '../utils/utils';
+import {config} from './config';
 import Cookies from 'js-cookie';
 
 type fetchType = {

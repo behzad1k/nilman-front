@@ -5,21 +5,21 @@ import {useEffect, useState, useCallback, useRef} from 'react';
 import {Button, Typography} from '@mui/material';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import {toast} from 'react-toastify';
-import {cart} from '../../../../services/redux/reducers/cartSlice.ts';
-import {order} from '../../../../services/redux/reducers/orderSlice.ts';
-import { useAppDispatch, useAppSelector } from '../../../../services/redux/store.ts';
-import { IAddress, IService, IUser, SelectedOptions } from '../../../../services/types.ts';
-import ServiceStep from './serviceStep.tsx';
-import AttributeStep from './attributeStep.tsx';
-import AddressStep from './addressStep.tsx';
-import WorkerStep from './workerStep.tsx';
-import {formatPrice} from '../../../../utils/utils.ts';
-import {urls} from '../../../../services/endPoint.ts';
-import {api} from '../../../../services/http.ts';
+import {cart} from '../../../../services/redux/reducers/cartSlice';
+import {order} from '../../../../services/redux/reducers/orderSlice';
+import { useAppDispatch, useAppSelector } from '../../../../services/redux/store';
+import { IAddress, IService, IUser, SelectedOptions } from '../../../../services/types';
+import ServiceStep from './serviceStep';
+import AttributeStep from './attributeStep';
+import AddressStep from './addressStep';
+import WorkerStep from './workerStep';
+import {formatPrice} from '../../../../utils/utils';
+import {urls} from '../../../../services/endPoint';
+import {api} from '../../../../services/http';
 import axios from 'axios';
 
 import moment from 'jalali-moment';
-import {SET_LOADING} from '../../../../services/redux/reducers/loadingSlice.ts';
+import {SET_LOADING} from '../../../../services/redux/reducers/loadingSlice';
 
 // Types
 type Step = {

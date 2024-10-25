@@ -1,10 +1,10 @@
 import { MenuItem, Paper, Select, Typography } from '@mui/material';
 import moment from 'jalali-moment';
 import { useEffect, useState } from 'react';
-import { urls } from '../../../../services/endPoint.ts';
-import { api } from '../../../../services/http.ts';
-import { IUser } from '../../../../services/types.ts';
-import { formatPrice } from '../../../../utils/utils.ts';
+import { urls } from '../../../../services/endPoint';
+import { api } from '../../../../services/http';
+import { IUser } from '../../../../services/types';
+import { formatPrice } from '../../../../utils/utils';
 
 export default function Home() {
   const [worker, setWorker] = useState(undefined);

@@ -7,10 +7,10 @@ import NewService from './pages/newService/newService';
 import Users from './pages/users/users';
 import Orders from './pages/orders/orders';
 import AddUser from './pages/addUser/addUser';
-import Services from './pages/services/services.tsx';
-import {AppDispatch, useAppDispatch} from '../../services/redux/store.ts';
-import {initialApis} from '../../services/apis/global.ts';
-import Login from './pages/login/login.tsx';
+import Services from './pages/services/services';
+import {AppDispatch, useAppDispatch} from '../../services/redux/store';
+import {initialApis} from '../../services/apis/global';
+import Login from './pages/login/login';
 
 export default function Dashboard() {
   const dispatch: AppDispatch = useAppDispatch();
