@@ -27,15 +27,14 @@ export default function ServiceStep({
     cardRef.current.map((el, i) =>
       index === i ? el?.classList.add('selected') : el?.classList.remove('selected'),
     );
-    console.log(service);
     setSelected((prev: Selected) => ({...prev, service: service, attributes: []}));
     setStep({ index: 1, name: 'attribute'})
   };
-  console.log(selected);
+
   return (
     <div className="service-step-container">
       <section className="cards">
-        {[...services].sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000)).map((service, index) => (
+        {[...services].filter(e => e.showInList).sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000)).map((service, index) => (
           <div
             key={service.slug}
             ref={(el) => (cardRef.current[index] = el)}

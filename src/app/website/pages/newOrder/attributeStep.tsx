@@ -91,7 +91,7 @@ export default function AttributeStep({
   return (
     <div className="service-step-container">
       <section className="cards">
-        {[...(selected?.attributeStep || selected?.service)?.attributes || []]?.sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000))?.map((attribute, index) => (
+        {[...(selected?.attributeStep || selected?.service)?.attributes || []]?.filter(e => e.showInList).sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000))?.map((attribute, index) => (
           <div
             key={attribute.slug}
             ref={(el) => (cardRef.current[index] = el)}

@@ -27,6 +27,7 @@ export interface IService {
   media: any,
   sort: number,
   openDrawer: boolean,
+  showInList: boolean,
   addOns: IService[]
 }
 

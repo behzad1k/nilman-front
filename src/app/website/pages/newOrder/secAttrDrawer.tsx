@@ -275,7 +275,11 @@ export default function SecAttrDrawer({
                     handleAddAttribute(selectedAddOn, null, true);
                     setSelectedAddOn(null);
                     setShouldPickAddOns(false);
-                    handleCloseDrawer()
+                    if (selectedAddOn.hasColor) {
+                      // PICK COLOR FIRST
+                      setPickingColor({attr: selectedAddOn, open: true});
+                    }
+                    // handleCloseDrawer()
                   }
                 }}>
                   ثبت
@@ -291,7 +295,7 @@ export default function SecAttrDrawer({
                 <Typography variant="caption" component="p" mb={1}>
                   یک یا چند مورد را انتخاب کنید
                 </Typography>
-                {[...(curParent || parent)?.attributes]?.sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000)).map((secAttr, index) => (
+                {[...(curParent || parent)?.attributes]?.filter(e => e.showInList)?.sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000)).map((secAttr, index) => (
                   <Box
                     key={secAttr.slug}
                     className={`attr-box ${
