@@ -175,6 +175,10 @@ export default function SecAttrDrawer({
                 setPage(prev => prev - 1);
                 setCurParent(prev => services.allServices.find(e => e.id == prev.parent?.id));
               }} />}
+              {shouldPickAddOns && <ArrowBack onClick={() => {
+                setSelectedAddOn(null)
+                setShouldPickAddOns(false)
+                }} />}
               <Close onClick={handleCloseDrawer} />
             </Box>
             {pickingColor.open ? (
