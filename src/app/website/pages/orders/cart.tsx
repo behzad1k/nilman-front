@@ -1,7 +1,7 @@
 import { Calendar, MapPin, Trash, X } from '@phosphor-icons/react';
 import axios from 'axios';
 import moment from 'jalali-moment';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import {urls} from '../../../../services/endPoint';
 import {api} from '../../../../services/http';
@@ -114,10 +114,13 @@ export default function Cart() {
   const [creditModel, setCreditModal] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(undefined);
   const formRef = useRef(null)
+  const [sepToken, setSepToken] = useState('');
   const pay = async () => {
     if (!selectedPaymentMethod){
       toast('لطفا یکی از درگاه های زیر را انتخاب کنید', { type: 'error'})
     }
+    formRef.current.elements['Token'].value = 'hi';
+    console.log(formRef.current.elements);
     dispatch(SET_LOADING(true))
     const res = await api(
       urls.pay,
@@ -133,8 +136,8 @@ export default function Cart() {
 
     if (res.code == 200) {
       if (selectedPaymentMethod == 'sep'){
-        // formRef.current.elements.Token.value = res.data.authority;
-        formRef.current.submit();
+        formRef.current.elements.Token.value = res.data.authority;
+        setSepToken(res.data.authority);
       }
       else{
         linkRef.current.href = res.data?.url;
@@ -146,6 +149,13 @@ export default function Cart() {
     dispatch(SET_LOADING(false))
 
   };
+
+  useEffect(() => {
+    if (sepToken != ''){
+      formRef.current.submit();
+
+    }
+  }, [sepToken]);
 
   return (
     <section className="cartContainer">
@@ -247,7 +257,7 @@ export default function Cart() {
             method="post"
             ref={formRef}
           >
-            <input hidden name='Token' type="text" value=''/>
+            <input hidden name='Token' type="text" value={sepToken}/>
             <input hidden name='GetMethod' type="text" value='true'/>
           </form>
           <Button sx={{
