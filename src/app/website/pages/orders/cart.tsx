@@ -113,6 +113,7 @@ export default function Cart() {
   const [isCredit, setIsCredit] = useState(false);
   const [creditModel, setCreditModal] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(undefined);
+  const formRef = useRef(null)
   const pay = async () => {
     if (!selectedPaymentMethod){
       toast('لطفا یکی از درگاه های زیر را انتخاب کنید', { type: 'error'})
@@ -132,8 +133,8 @@ export default function Cart() {
 
     if (res.code == 200) {
       if (selectedPaymentMethod == 'sep'){
-        const res2 = await axios('https://sep.shaparak.ir/OnlinePG/OnlinePG', { method: 'POST', data:{ Token: res.data.authority }})
-        console.log(res2.data);
+        formRef.current.elements.Token.value = res.data.authority;
+        formRef.current.submit();
       }
       else{
         linkRef.current.href = res.data?.url;
@@ -238,7 +239,17 @@ export default function Cart() {
             <span>زرین پال</span>
             {selectedPaymentMethod == 'zarinpal' && <img className='checkIcon marginRightAuto' src="img/checked.png" alt="zarinpal"/>}
           </Box>
-          
+
+          {/* sep submit form */}
+
+          <form
+            action="https://sep.shaparak.ir/OnlinePG/OnlinePG"
+            method="post"
+            ref={formRef}
+          >
+            <input hidden name='Token' type="text" value=''/>
+            <input hidden name='GetMethod' type="text" value='true'/>
+          </form>
           <Button sx={{
             padding: '10px',
             border: '1px solid gray',
