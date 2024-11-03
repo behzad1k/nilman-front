@@ -131,7 +131,7 @@ export default function Cart() {
 
     if (res.code == 200) {
       if (selectedPaymentMethod == 'sep'){
-        const res = await api('https://sep.shaparak.ir/OnlinePG/OnlinePG', { method: 'POST', Token: res.data.token})
+        const res2 = await api('https://sep.shaparak.ir/OnlinePG/OnlinePG', { method: 'POST', body:{ Token: res.data.authority }})
       }
       else{
         linkRef.current.href = res.data?.url;
