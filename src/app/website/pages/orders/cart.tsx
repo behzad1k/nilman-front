@@ -227,7 +227,7 @@ export default function Cart() {
             alignItems="center"
             padding="0 10px"
             bgcolor={selectedPaymentMethod == 'sep' ? 'rgba(210,253,191,0.99)' : '#FFF'}
-            onClick={() => setSelectedPaymentMethod('sep')}
+            // onClick={() => setSelectedPaymentMethod('sep')}
           >
             <img className='portalImage' src='img/sep.png'/>
             <span>بانک سامان (بزودی)</span>
