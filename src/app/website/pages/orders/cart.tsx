@@ -1,4 +1,5 @@
 import { Calendar, MapPin, Trash, X } from '@phosphor-icons/react';
+import axios from 'axios';
 import moment from 'jalali-moment';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -131,8 +132,8 @@ export default function Cart() {
 
     if (res.code == 200) {
       if (selectedPaymentMethod == 'sep'){
-        const res2 = await api('https://sep.shaparak.ir/OnlinePG/OnlinePG', { method: 'POST', body:{ Token: res.data.authority }})
-        console.log(res2);
+        const res2 = await axios('https://sep.shaparak.ir/OnlinePG/OnlinePG', { method: 'POST', data:{ Token: res.data.authority }})
+        console.log(res2.data);
       }
       else{
         linkRef.current.href = res.data?.url;
