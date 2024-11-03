@@ -130,8 +130,13 @@ export default function Cart() {
     );
 
     if (res.code == 200) {
-      linkRef.current.href = res.data?.url;
-      linkRef.current?.click();
+      if (selectedPaymentMethod == 'sep'){
+        const res = await api('https://sep.shaparak.ir/OnlinePG/OnlinePG', { method: 'POST', Token: res.data.token})
+      }
+      else{
+        linkRef.current.href = res.data?.url;
+        linkRef.current?.click();
+      }
     }else{
       toast('مشکلی پیش آمده، لطفا مجددا امتحان کنید یا با اپراتور تماس بگیرید', { type: 'error'});
     }
