@@ -133,7 +133,7 @@ export default function Cart() {
 
     if (res.code == 200) {
       if (selectedPaymentMethod == 'sep'){
-        formRef.current.elements.Token.value = res.data.authority;
+        // formRef.current.elements.Token.value = res.data.authority;
         formRef.current.submit();
       }
       else{
