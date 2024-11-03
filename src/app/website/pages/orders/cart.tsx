@@ -112,15 +112,13 @@ export default function Cart() {
   const userReducer = useAppSelector(state => state.userReducer)
   const [isCredit, setIsCredit] = useState(false);
   const [creditModel, setCreditModal] = useState(false);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(undefined);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('zarinpal');
   const formRef = useRef(null)
   const [sepToken, setSepToken] = useState('');
   const pay = async () => {
     if (!selectedPaymentMethod){
       toast('لطفا یکی از درگاه های زیر را انتخاب کنید', { type: 'error'})
     }
-    formRef.current.elements['Token'].value = 'hi';
-    console.log(formRef.current.elements);
     dispatch(SET_LOADING(true))
     const res = await api(
       urls.pay,
@@ -229,7 +227,7 @@ export default function Cart() {
             alignItems="center"
             padding="0 10px"
             bgcolor={selectedPaymentMethod == 'sep' ? 'rgba(210,253,191,0.99)' : '#FFF'}
-            onClick={() => setSelectedPaymentMethod('sep')}
+            // onClick={() => setSelectedPaymentMethod('sep')}
           >
             <img className='portalImage' src='img/sep.png'/>
             <span>بانک سامان (بزودی)</span>
