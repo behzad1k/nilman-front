@@ -126,7 +126,7 @@ export default function SecAttrDrawer({
   const handleCloseDrawer = () => {
     setOpen(false)
     setCurParent(undefined)
-
+    setPage(1);
     setPickingColor({attr: null, open: false})
   }
 
