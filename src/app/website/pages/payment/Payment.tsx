@@ -17,7 +17,7 @@ const Payment = ({ params }) => {
   const send = async () => {
     dispatch(SET_LOADING(true));
 
-    const res = await api(urls.paymentVerify, { method: 'POST', body: { authority: searchParam.get('Authority') || searchParam.get('Token') , status: searchParam.get('Status') || searchParam.get('State'), terminalId: searchParam.get('TerminalId') }}, true  )
+    const res = await api(urls.paymentVerify, { method: 'POST', body: { authority: searchParam.get('Authority') || searchParam.get('Token') , status: searchParam.get('Status') || searchParam.get('State'), terminalId: searchParam.get('TerminalId'), refNum: searchParam.get('RefNum') }}, true  )
 
     if (res.code == 200){
       setIsSuccessful(true);
