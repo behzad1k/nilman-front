@@ -260,8 +260,8 @@ export default function Cart() {
             {/* <input type="hidden" name="Amount" value="<?php echo $Amount?>"> */}
             {/* <input type="hidden" name="RedirectURL" value="<?php echo $RedirectURL?>"> */}
             {/* <input type="hidden" name="ResNum1" value="<?php echo $ResNum1?>"> */}
-            <input hidden name='Token' type="text" value={sepToken}/>
-            <input hidden name='GetMethod' type="text" value='true'/>
+            <input hidden name='token' type="text" value={sepToken}/>
+            <input hidden name='RedirectURL' type="text" value='https://nilman.co/app/payment/verify'/>
           </form>
           <Button sx={{
             padding: '10px',
