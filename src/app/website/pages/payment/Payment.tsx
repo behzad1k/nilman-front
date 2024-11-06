@@ -13,10 +13,11 @@ const Payment = ({ params }) => {
   const [isSuccessful, setIsSuccessful] = useState(searchParam.get('Status') == 'OK' || searchParam.get('State') == 'OK')
   const dispatch = useAppDispatch()
   const navigate = useNavigate();
+  console.log(searchParam.get('Authority') || searchParam.get('RefNum') );
   const send = async () => {
     dispatch(SET_LOADING(true));
 
-    const res = await api(urls.paymentVerify, { method: 'POST', body: { authority: searchParam.get('Authority') || searchParam.get('RefNum') , status: searchParam.get('Status') || searchParam.get('State'), terminalId: searchParam.get('TerminalId') }}, true  )
+    const res = await api(urls.paymentVerify, { method: 'POST', body: { authority: searchParam.get('Authority') || searchParam.get('Token') , status: searchParam.get('Status') || searchParam.get('State'), terminalId: searchParam.get('TerminalId') }}, true  )
 
     if (res.code == 200){
       setIsSuccessful(true);
