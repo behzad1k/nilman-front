@@ -134,7 +134,7 @@ export default function Cart() {
 
     if (res.code == 200) {
       if (selectedPaymentMethod == 'sep'){
-        window.location.href = `https://sep.shaparak.ir/OnlinePG/SendToken?token=${res.data.authority;}`
+        window.location.href = `https://sep.shaparak.ir/OnlinePG/SendToken?token=${res.data.authority}`
         // formRef.current.elements.Token.value = res.data.authority;
         // setSepToken(res.data.authority);
       }
