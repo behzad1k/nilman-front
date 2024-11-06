@@ -6,16 +6,17 @@ import { api } from '../../../../services/http';
 import { cart } from '../../../../services/redux/reducers/cartSlice';
 import { SET_LOADING } from '../../../../services/redux/reducers/loadingSlice';
 import { order } from '../../../../services/redux/reducers/orderSlice';
+import { useAppDispatch } from '../../../../services/redux/store';
 
 const Payment = ({ params }) => {
   const [searchParam, setSearchParam] = useSearchParams();
-  const [isSuccessful, setIsSuccessful] = useState(searchParam.get('Status') == 'OK')
-  const dispatch = useDispatch()
+  const [isSuccessful, setIsSuccessful] = useState(searchParam.get('Status') == 'OK' || searchParam.get('State') == 'OK')
+  const dispatch = useAppDispatch()
   const navigate = useNavigate();
   const send = async () => {
     dispatch(SET_LOADING(true));
 
-    const res = await api(urls.paymentVerify, { method: 'POST', body: { authority: searchParam.get('Authority'), status: searchParam.get('Status') }}, true  )
+    const res = await api(urls.paymentVerify, { method: 'POST', body: { authority: searchParam.get('Authority') || searchParam.get('RefNum') , status: searchParam.get('Status') || searchParam.get('State'), terminalId: searchParam.get('TerminalId') }}, true  )
 
     if (res.code == 200){
       setIsSuccessful(true);
@@ -28,7 +29,9 @@ const Payment = ({ params }) => {
   };
 
   useEffect(() => {
-send()
+    if (isSuccessful) {
+      send();
+    }
   }, []);
 
   return (
