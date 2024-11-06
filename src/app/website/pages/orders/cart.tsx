@@ -134,9 +134,8 @@ export default function Cart() {
 
     if (res.code == 200) {
       if (selectedPaymentMethod == 'sep'){
-        window.location.href = `https://sep.shaparak.ir/OnlinePG/SendToken?token=${res.data.authority}`
-        // formRef.current.elements.Token.value = res.data.authority;
-        // setSepToken(res.data.authority);
+        formRef.current.elements.Token.value = res.data.authority;
+        setSepToken(res.data.authority);
       }
       else{
         linkRef.current.href = res.data?.url;
@@ -149,12 +148,12 @@ export default function Cart() {
 
   };
 
-  // useEffect(() => {
-  //   if (sepToken != ''){
-  //     formRef.current.submit();
-  //
-  //   }
-  // }, [sepToken]);
+  useEffect(() => {
+    if (sepToken != ''){
+      formRef.current.submit();
+
+    }
+  }, [sepToken]);
 
   return (
     <section className="cartContainer">
@@ -252,17 +251,12 @@ export default function Cart() {
           {/* sep submit form */}
 
           <form
-            action="https://sep.shaparak.ir/payment.aspx"
+            action="https://sep.shaparak.ir/OnlinePG/OnlinePG"
             method="post"
             ref={formRef}
           >
-            {/* <input type="hidden" name="MID" value="<?php echo $MID?>"> */}
-            {/* <input type="hidden" name="ResNum" value="<?php echo $ResNum?>"> */}
-            {/* <input type="hidden" name="Amount" value="<?php echo $Amount?>"> */}
-            {/* <input type="hidden" name="RedirectURL" value="<?php echo $RedirectURL?>"> */}
-            {/* <input type="hidden" name="ResNum1" value="<?php echo $ResNum1?>"> */}
-            <input hidden name='token' type="text" value={sepToken}/>
-            <input hidden name='RedirectURL' type="text" value='https://nilman.co/app/payment/verify'/>
+            <input hidden name='Token' type="text" value={sepToken}/>
+            <input hidden name='GetMethod' type="text" value='true'/>
           </form>
           <Button sx={{
             padding: '10px',
