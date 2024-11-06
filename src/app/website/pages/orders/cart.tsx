@@ -251,10 +251,15 @@ export default function Cart() {
           {/* sep submit form */}
 
           <form
-            action="https://sep.shaparak.ir/OnlinePG/OnlinePG"
+            action="https://sep.shaparak.ir/payment.aspx"
             method="post"
             ref={formRef}
           >
+            {/* <input type="hidden" name="MID" value="<?php echo $MID?>"> */}
+            {/* <input type="hidden" name="ResNum" value="<?php echo $ResNum?>"> */}
+            {/* <input type="hidden" name="Amount" value="<?php echo $Amount?>"> */}
+            {/* <input type="hidden" name="RedirectURL" value="<?php echo $RedirectURL?>"> */}
+            {/* <input type="hidden" name="ResNum1" value="<?php echo $ResNum1?>"> */}
             <input hidden name='Token' type="text" value={sepToken}/>
             <input hidden name='GetMethod' type="text" value='true'/>
           </form>
