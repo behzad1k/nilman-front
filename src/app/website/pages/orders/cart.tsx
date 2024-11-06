@@ -134,8 +134,9 @@ export default function Cart() {
 
     if (res.code == 200) {
       if (selectedPaymentMethod == 'sep'){
-        formRef.current.elements.Token.value = res.data.authority;
-        setSepToken(res.data.authority);
+        window.location.href = `https://sep.shaparak.ir/OnlinePG/SendToken?token=${res.data.authority;}`
+        // formRef.current.elements.Token.value = res.data.authority;
+        // setSepToken(res.data.authority);
       }
       else{
         linkRef.current.href = res.data?.url;
@@ -148,12 +149,12 @@ export default function Cart() {
 
   };
 
-  useEffect(() => {
-    if (sepToken != ''){
-      formRef.current.submit();
-
-    }
-  }, [sepToken]);
+  // useEffect(() => {
+  //   if (sepToken != ''){
+  //     formRef.current.submit();
+  //
+  //   }
+  // }, [sepToken]);
 
   return (
     <section className="cartContainer">
