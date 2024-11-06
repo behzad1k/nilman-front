@@ -230,7 +230,7 @@ export default function Cart() {
             onClick={() => setSelectedPaymentMethod('sep')}
           >
             <img className='portalImage' src='img/sep.png'/>
-            <span>بانک سامان (بزودی)</span>
+            <span>بانک سامان</span>
             {selectedPaymentMethod == 'sep' && <img className='checkIcon marginRightAuto' src="img/checked.png" alt="sep"/>}
           </Box>
           <Box
