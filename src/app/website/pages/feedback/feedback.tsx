@@ -14,7 +14,8 @@ import Success from './success';
 import {toast} from 'react-toastify';
 
 export default function Feedback({ order }) {
-  const [rate, setRate] = useState(3);
+  const [rate, setRate] = useState(0);
+  const [didRate, setDidRate] = useState(false);
   const [comment, setComment] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [tab, setTab] = useState('good');
@@ -29,11 +30,15 @@ export default function Feedback({ order }) {
   }
 
   const handleRate = (e: SyntheticEvent, newRate: number | null) => {
+    setDidRate(true);
     if (newRate) setRate(newRate);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (!didRate){
+      toast('لطفا بین یک تا پنج ستاره یکی را انتخاب کنید', { type: 'error'})
+    }
     // if (!comment) {
     //   return toast('نظر خود را وارد کنید');
     // }
@@ -50,7 +55,8 @@ export default function Feedback({ order }) {
     if (res.code === 200) {
       toast('نظر شما با موفقیت ثبت شد', { type: 'success'})
       setSelectedFactors([]);
-      setRate(5);
+      setRate(0);
+      setDidRate(false)
       setComment('');
       dispatch(orderSlice())
     }
