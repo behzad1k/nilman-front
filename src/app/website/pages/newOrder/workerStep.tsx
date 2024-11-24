@@ -147,9 +147,10 @@ export default function WorkerStep({
           name="worker"
           label="آرایشگر"
           control={control}
-          defaultValue=""
+          defaultValue={selected?.worker}
+          value={selected?.worker}
           onChange={(input) => {
-            setSelected(prev => ({ ...prev, worker: input.target.id }))
+            setSelected(prev => ({ ...prev, worker: input.target.value }))
             fetchWorkersOff(input.target.value);
           }}
           size="medium"
