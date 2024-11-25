@@ -38,6 +38,7 @@ export default function Feedback({ order }) {
     e.preventDefault()
     if (!didRate){
       toast('لطفا بین یک تا پنج ستاره یکی را انتخاب کنید', { type: 'error'})
+      return;
     }
     // if (!comment) {
     //   return toast('نظر خود را وارد کنید');
