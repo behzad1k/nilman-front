@@ -138,8 +138,8 @@ export default function Cart() {
         setSepToken(res.data.authority);
       }
       else{
-        linkRef.current.href = res.data?.url;
-        linkRef.current?.click();
+        // linkRef.current.href = res.data?.url;
+        // linkRef.current?.click();
       }
     }else{
       toast('مشکلی پیش آمده، لطفا مجددا امتحان کنید یا با اپراتور تماس بگیرید', { type: 'error'});
@@ -213,7 +213,7 @@ export default function Cart() {
             alignItems="center"
             padding="0 10px"
             bgcolor={selectedPaymentMethod == 'ap' ? 'rgba(210,253,191,0.99)' : '#FFF'}
-            // onClick={() => setSelectedPaymentMethod('ap')}
+            onClick={() => setSelectedPaymentMethod('ap')}
           >
             <img className='portalImage' src='img/ap.png'/>
             <span>آسان پرداخت (بزودی)</span>
