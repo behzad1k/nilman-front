@@ -112,7 +112,7 @@ export default function Cart() {
   const userReducer = useAppSelector(state => state.userReducer)
   const [isCredit, setIsCredit] = useState(false);
   const [creditModel, setCreditModal] = useState(false);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('zarinpal');
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('sep');
   const formRef = useRef(null)
   const [sepToken, setSepToken] = useState('');
   const pay = async () => {
@@ -213,7 +213,7 @@ export default function Cart() {
             alignItems="center"
             padding="0 10px"
             bgcolor={selectedPaymentMethod == 'ap' ? 'rgba(210,253,191,0.99)' : '#FFF'}
-            onClick={() => setSelectedPaymentMethod('ap')}
+            // onClick={() => setSelectedPaymentMethod('ap')}
           >
             <img className='portalImage' src='img/ap.png'/>
             <span>آسان پرداخت (بزودی)</span>
