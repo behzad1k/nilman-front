@@ -1,6 +1,7 @@
 import {Box} from '@mui/material';
 import PullToRefresh from 'react-simple-pull-to-refresh';
 import {WebsiteHeader, AppBar, Loading} from '../../components';
+import Snow from '../../components/common/Snow.tsx';
 import {initialApis} from '../../services/apis/global';
 import {useAppDispatch, useAppSelector} from '../../services/redux/store';
 import Feedback from './pages/feedback/feedback';
@@ -21,6 +22,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
             {children}
             <AppBar />
           </Box>
+          <Snow />
         </Box>
       {/* </PullToRefresh> */}
       {loading && <Loading/>}
