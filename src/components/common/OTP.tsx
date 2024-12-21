@@ -33,25 +33,37 @@ export function OTP({ code, setCode, onComplete }) {
     const rows: ReactElement[] = []
 
     Array.from({length: 6}).map((e, index) => rows.push(<input className='otpInput'
-                                                               onPaste={(event) =>
-      setCode(prev => {
-      let newCode = [];
-      [...(event.clipboardData).getData("text")].map((e,i) => newCode[i] = e)
-      return newCode;
-    })
-    }
+                                                               // onPaste={handlePaste}
                                                                ref={index == 0 ? firstInput : null} key={index} name={index.toString()} autoFocus={index == 0} autoComplete={index == 0 ? 'one-time-code' : undefined} onChange={(e) => setCodeData(e)}/>))
 
     return rows;
   }
 
   useEffect(() => {
-    code.map((e ,i) => [...formRef.current?.children][i].value = e)
+    if (code && Array.isArray(code) && code?.length == 6 && formRef?.current?.children?.length > 0) {
+      code?.map((e, i) => [...Array.from(formRef.current.children) as any[]][i].value = e);
+    }
   }, [code]);
 
   useEffect(() => {
-    if (code.length == 6) {
-      console.log('here');
+    document.addEventListener('paste', handlePaste);
+
+    return () => {
+      document.removeEventListener('paste', handlePaste);
+    };
+  }, []);
+
+  const handlePaste = (e) => {
+    event.preventDefault()
+    setCode(prev => {
+      let newCode = [];
+      [...((e.clipboardData).getData("text") || (e.clipboardData).getData("text/plain"))].map((e,i) => newCode[i] = e)
+      return newCode;
+    })
+  };
+
+  useEffect(() => {
+    if (code?.length == 6) {
       onComplete()
     }
   }, [code]);

@@ -33,7 +33,7 @@ export default function Login() {
     getValues,
     setValue
   } = useForm<LoginForm>();
-  const [loginState, setLoginState] = useState<string>(sessionStorage.getItem('login-step') || 'phoneNumber');
+  const [loginState, setLoginState] = useState<string>('otp');
   const userReducer = useAppSelector(state => state.userReducer);
   const [code, setCode] = useState([]);
   const formRef = useRef(null);
@@ -70,7 +70,6 @@ export default function Login() {
           phoneNumber: persianNumToEn(data.phoneNumber)
         },
       };
-
       dispatch(SET_LOADING(true));
       const res = await api(urls.login, reqOptions);
       dispatch(SET_LOADING(false));
@@ -78,6 +77,8 @@ export default function Login() {
       setLoginState('otp');
     } else if (loginState === 'otp') {
       // Verify OTP Code here ...
+      console.log(code);
+
       const reqOptions = {
         method: 'post',
         body: {
