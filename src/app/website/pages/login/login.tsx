@@ -33,7 +33,7 @@ export default function Login() {
     getValues,
     setValue
   } = useForm<LoginForm>();
-  const [loginState, setLoginState] = useState<string>('otp');
+  const [loginState, setLoginState] = useState<string>(sessionStorage.getItem('login-step') || 'phoneNumber');
   const userReducer = useAppSelector(state => state.userReducer);
   const [code, setCode] = useState([]);
   const formRef = useRef(null);
@@ -77,8 +77,6 @@ export default function Login() {
       setLoginState('otp');
     } else if (loginState === 'otp') {
       // Verify OTP Code here ...
-      console.log(code);
-
       const reqOptions = {
         method: 'post',
         body: {
