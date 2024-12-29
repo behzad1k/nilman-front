@@ -1952,12 +1952,16 @@ main {
   font-size: 16px;
   font-weight: 400;
   border: 0;
-  width: 10px;
+  width: 20px;
   text-align: center;
 }
 .tableCollapsIcon{
   color: #c89dc7;
   content: url("/public/svg/tableCollaps.svg");
+}
+.tableTrashIcon{
+  color: #c89dc7;
+  content: url("/public/svg/trash.svg");
 }
 .tablePlusIcon{
   color: #c89dc7;

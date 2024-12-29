@@ -9,7 +9,8 @@ import { DatePicker } from 'zaman';
 import {api} from '../../../../services/http';
 import {urls} from '../../../../services/endPoint';
 import {SelectInput, TextInput} from '../../../../components';
-import { useAppSelector } from '../../../../services/redux/store';
+import { SET_LOADING } from '../../../../services/redux/reducers/loadingSlice.ts';
+import { useAppDispatch, useAppSelector } from '../../../../services/redux/store';
 import {IService, IUser} from '../../../../services/types';
 import {createSchedule} from '../../../../utils/utils';
 import {Selected} from './newOrder';
@@ -44,7 +45,12 @@ export default function WorkerStep({
   const orderReducer = useAppSelector(state => state.orderReducer);
   const {control, watch} = useForm();
   const watchDiscount = watch('discount') as string;
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const exWorkers = {}
+  for (const exWorker of orderReducer.orders?.filter(e => e.serviceId == selected.service?.id).map(e => e.worker)) {
+    exWorkers[exWorker.id] = exWorker
+  }
   const calender = () => {
     const tabs: ReactElement[] = [];
 
@@ -92,6 +98,8 @@ export default function WorkerStep({
     return body;
   };
   const fetchWorkersOff = async (id: string = null) => {
+    dispatch(SET_LOADING(true));
+
     const reqBody = { method: 'POST', body: { attributes: selected.attributes.map(e => e.id)}}
     if (id){
       reqBody.body['workerId'] = id
@@ -101,6 +109,7 @@ export default function WorkerStep({
     if (res.code === 200) {
       setSchedules(res.data);
     }
+    dispatch(SET_LOADING(false));
   };
 
   useEffect(() => {
@@ -163,7 +172,7 @@ export default function WorkerStep({
             },
           }}
         >
-          {orderReducer.orders?.filter(e => e.serviceId == selected.service?.id)?.map(e => e?.worker)?.map((worker) => (
+          {Object.values(exWorkers)?.map((worker: any) => (
             <MenuItem key={worker?.id} value={worker?.id}>
               {worker?.name} {worker?.lastName}
             </MenuItem>

@@ -67,7 +67,7 @@ const CartItem = ({item}: ICartItemProps) => {
       </span>
       {item.orderServices?.map((attribute, index) => (
         <span className="orderInfo" key={index}>
-          <p>{attribute.service?.title}</p>
+          <p>{attribute.service?.title + ' ' + attribute.count + 'x '} </p>
           <span className='orderInfoDelete'>
             <p>{formatPrice(attribute.price)} تومان</p>
             <span className='trashCart' onClick={() => deleteOrderService(attribute.id)}>

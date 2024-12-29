@@ -102,25 +102,35 @@ export default function SecAttrDrawer({
     // setCurParent(undefined)
     setIsNextStepAllowed(true)
     setSelected((prev: Selected) => {
-      return {...prev, attributes: prev.attributes?.find(e => e.id == newAttr.id) ? prev.attributes?.filter(e => e.id != newAttr.id) : [...prev.attributes, newAttr] };
+      return {...prev, attributes: [...prev.attributes, newAttr] };
     });
     if (!color) {
       setSelected(prev => {
         const cp = { ...prev };
-        if (cp.options[newAttr.id]) {
-          delete cp.options[newAttr.id];
-        } else {
-          cp.options[newAttr.id] = {
-            colors: [],
-            media: undefined,
-            pinterest: ''
-          };
-        }
+        cp.options[newAttr.id] = {
+          colors: [],
+          media: undefined,
+          pinterest: '',
+          count: 1
+        };
         return cp;
       });
     }
 
     setPickingColor({attr: null, open: false});
+  };
+
+  const deleteAttribute = (attrId: number) => {
+    setSelected((prev: Selected) => {
+      const cp = { ...prev };
+      if (cp.options[attrId]) {
+        delete cp.options[attrId];
+      }
+      return cp;
+    });
+    setSelected((prev: Selected) => {
+      return {...prev, attributes: prev.attributes?.filter(e => e.id != attrId) };
+    });
   };
 
   const handleCloseDrawer = () => {
@@ -133,7 +143,7 @@ export default function SecAttrDrawer({
   useEffect(() => {
     setSelectedAddOn(currentAttribute?.addOns?.find(e => Object.keys(selected.options)?.includes(e.id.toString())))
   }, [currentAttribute]);
-
+console.log(selected.options)
   if (curParent || parent) {
     return (
       <>
@@ -322,56 +332,64 @@ export default function SecAttrDrawer({
                     <Typography
                       variant="body1"
                       component="h4"
-                      sx={{color: 'var(--light-black)', mr: 'auto'}}
+                      sx={{color: 'var(--light-black)'}}
                     >
                       {secAttr.title}
-                      {selected?.attributes?.find(e => e.id == secAttr.id) || selected.attributes.find(e => secAttr.attributes.map(j => j.id).includes(e.id)) ? <i className={'selectedServiceIcon'}></i> : ''}
+                      {/* {selected?.attributes?.find(e => e.id == secAttr.id) || selected.attributes.find(e => secAttr.attributes.map(j => j.id).includes(e.id)) ? <i className={'selectedServiceIcon'}></i> : ''} */}
                     </Typography>
                     {/* {secAttr.pricePlus && */}
                     {/*     <Box component="span" ml={0.5} sx={{fontWeight: '300', mr: '10px'}}> */}
                     {/*       {`(به علاوه ${formatPrice(secAttr.pricePlus)} تومان)`} */}
                     {/*     </Box> */}
                     {/* } */}
-                    {selected.isMulti && <div className="quantityButtom">
+                    {secAttr.price > 0 &&
+                        <Box component="div" sx={{ display: 'flex', flexDirection:'column', alignItems: 'center', justifyContent: 'center' }}>
+                          <Box component="div">
+                              <Box component="span" sx={{ fontWeight: '800' }}>
+                                {formatPrice(secAttr.price * (selected.isUrgent ? 1.5 : 1))}
+                              </Box>
+                              <Box component="span" ml={0.5} sx={{ fontWeight: '300' }}>
+                                  تومان
+                              </Box>
+                            </Box>
+                            {selected?.attributes?.find(e => e.id == secAttr.id) || selected.attributes.find(e => secAttr.attributes.map(j => j.id).includes(e.id)) ? 
+                        <div className="quantityButtom">
+                        <i className={selected?.options[secAttr.id].count == 1 ? 'tableTrashIcon' : "tableCollapsIcon"} onClick={(e: any) => {
+                          e.stopPropagation();
+                          if (selected?.options[secAttr.id].count > 1) {
+                            setSelected(prev => {
+                              const cp = { ...prev };
+                              cp.options[secAttr.id].count = Number(cp.options[secAttr.id].count) - 1;
+                              return cp;
+                            });
+                          }else{
+                            deleteAttribute(secAttr.id)
+                          }
+                        }}></i>
+                        <input 
+                          type='number' 
+                          className="quantityNumber" 
+                          value={selected?.options[secAttr.id]?.count}
+                          onClick={(e) => e.stopPropagation()}
+                          onChange={(input: any) => setSelected(prev => {
+                            const cp = { ...prev }
+                            cp.options[secAttr.id].count = input.target.value
+                            return cp;
+                          })}
+                        />
                         <i className="tablePlusIcon" onClick={(e: any) => {
-                          e.preventDefault();
+                          e.stopPropagation();
                           setSelected(prev => {
-                            const cp = { ...selected };
-                            // if (cp.options[]){
-                            //
-                            // }
+                            const cp = { ...prev };
                             cp.options[secAttr.id].count = Number(cp.options[secAttr.id].count) + 1;
-
                             return cp;
                           });
                         }}></i>
-                        <input type='number' className="quantityNumber" value={selected?.options[secAttr.id]?.count || 1}
-                               onChange={(input: any) => setSelected(prev => {
-                                 const cp = { ...prev }
-
-                                 cp.options[secAttr.id].count = input.target.value
-
-                                 return cp;
-                               })}
-                        />
-                        <i className="tableCollapsIcon" onClick={(e: any) =>
-                          selected?.options[secAttr.id].count > 1 && setSelected(prev => {
-                            const cp = { ...prev };
-
-                            cp.options[secAttr.id].count = Number(cp.options[secAttr.id].count) - 1;
-
-                            return cp;
-                          })}></i>
-                    </div>}
-                    {secAttr.price > 0 &&
-                        <>
-                            <Box component="span" sx={{ fontWeight: '800' }}>
-                              {formatPrice(secAttr.price * (selected.isUrgent ? 1.5 : 1))}
-                            </Box>
-                            <Box component="span" ml={0.5} sx={{ fontWeight: '300' }}>
-                                تومان
-                            </Box>
-                        </>
+                        
+                      </div>
+                      
+                    : ''}
+                        </Box>
                     }
                   </Box>
                 ))}

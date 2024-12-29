@@ -47,7 +47,7 @@ const AddressManage = () => {
           }
         });
         if (res.code == 200){
-          if (Number(res.data.municipality_zone) > 8 || res.data.city != 'تهران'){
+          if (Number(res.data.municipality_zone) > 8 || Number(res.data.municipality_zone) != 22 || res.data.city != 'تهران'){
             toast('موقعیت مکانی انتخاب شده در محدوده پشتیانی نیلمان نمی باشد', { type: 'error' });
             return;
           }
