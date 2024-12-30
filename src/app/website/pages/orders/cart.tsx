@@ -114,7 +114,8 @@ export default function Cart() {
   const [creditModel, setCreditModal] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('sep');
   const formRef = useRef(null)
-  const [sepToken, setSepToken] = useState('');
+  const apFormRef = useRef(null)
+  const [portalToken, setPortalToken] = useState('');
   const pay = async () => {
     if (!selectedPaymentMethod){
       toast('لطفا یکی از درگاه های زیر را انتخاب کنید', { type: 'error'})
@@ -135,7 +136,10 @@ export default function Cart() {
     if (res.code == 200) {
       if (selectedPaymentMethod == 'sep'){
         formRef.current.elements.Token.value = res.data.authority;
-        setSepToken(res.data.authority);
+        setPortalToken(res.data.authority);
+      }else if(selectedPaymentMethod == 'ap'){
+        apFormRef.current.elements.RefID.value = res.data.authority;
+        setPortalToken(res.data.authority);
       }
       else{
         // linkRef.current.href = res.data?.url;
@@ -149,11 +153,15 @@ export default function Cart() {
   };
 
   useEffect(() => {
-    if (sepToken != ''){
-      formRef.current.submit();
+    if (portalToken != ''){
+      if (selectedPaymentMethod == 'sep'){
+        formRef.current.submit();
+      }else{
+        apFormRef.current.submit();
+      }
 
     }
-  }, [sepToken]);
+  }, [portalToken]);
 
   return (
     <section className="cartContainer">
@@ -249,13 +257,20 @@ export default function Cart() {
           </Box>
 
           {/* sep submit form */}
+          <form
+            action="https://asan.shaparak.ir"
+            method="post"
+            ref={apFormRef}
+          >
+            <input hidden name='RefID' type="text" value={portalToken}/>
 
+          </form>
           <form
             action="https://sep.shaparak.ir/OnlinePG/OnlinePG"
             method="post"
             ref={formRef}
           >
-            <input hidden name='Token' type="text" value={sepToken}/>
+            <input hidden name='Token' type="text" value={portalToken}/>
             <input hidden name='GetMethod' type="text" value='true'/>
           </form>
           <Button sx={{
