@@ -76,6 +76,7 @@ export default function WorkerStep({
         (schedules && schedules[day] && !selected.isUrgent ? schedules[day].includes(i) : false) ||
         (!selected.isUrgent ? (calTab == 0) || (calTab == 1 && Number(moment().add(24, 'h').format('HH')) > i) : false) ||
         (calTab == 0 && Number(moment().format('HH')) > (i - 5)) ||
+        // (calTab == 0 && Number(moment().format('HH')) > (i - 5)) ||
         (calTab == 1 && Number(moment().format('HH')) >= 16 && Number(moment().format('HH')) < 18 && i < 10) ||
         (calTab == 1 && Number(moment().format('HH')) >= 18 && i < 12)
       sections.push(<span className={`calSectionsSpan${(selected.time == i && selected.date == day) ? ' selected' : ''} ${disabled ? 'disabled' : ''}`} onClick={() => {
