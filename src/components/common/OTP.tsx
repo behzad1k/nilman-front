@@ -32,7 +32,7 @@ export function OTP({ code, setCode, onComplete }) {
   const list = () => {
     const rows: ReactElement[] = []
 
-    Array.from({length: 6}).map((e, index) => rows.push(<input className='otpInput'
+    Array.from({length: 6}).map((e, index) => rows.push(<input className='otpInput' type='number'
                                                                // onPaste={handlePaste}
                                                                ref={index == 0 ? firstInput : null} key={index} name={index.toString()} autoFocus={index == 0} autoComplete={index == 0 ? 'one-time-code' : undefined} onChange={(e) => setCodeData(e)}/>))
 
