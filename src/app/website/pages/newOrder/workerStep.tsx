@@ -48,7 +48,7 @@ export default function WorkerStep({
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const exWorkers = {}
-  for (const exWorker of orderReducer.orders?.filter(e => e.serviceId == selected.service?.id).map(e => e.worker)) {
+  for (const exWorker of orderReducer.orders?.filter(e => e.serviceId == selected.service?.id)?.map(e => e.worker)) {
     exWorkers[exWorker.id] = exWorker
   }
   const calender = () => {
