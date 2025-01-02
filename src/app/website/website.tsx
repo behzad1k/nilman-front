@@ -28,7 +28,7 @@ export default function Website() {
   return (
     <Routes>
       <Route
-        path="/"
+        path="/home"
         element={
           <Layout>
             <Home />
@@ -44,7 +44,7 @@ export default function Website() {
         }
       />
       <Route
-        path="/newOrder"
+        path="/"
         element={
           <Layout>
             <NewOrder />

@@ -61,7 +61,7 @@ export default function Home() {
           button={'ثبت'}
           icon={<PlusCircle />}
           onClick={() => {
-            navigate('/newOrder')
+            navigate('/')
           }}
         />
       </section>
@@ -82,7 +82,7 @@ export default function Home() {
           button={'ثبت سفارش فوری'}
           icon={<PlusCircle />}
           onClick={() => {
-            navigate('/newOrder?isUrgent=')
+            navigate('/?isUrgent=')
           }}
         />
       </section>

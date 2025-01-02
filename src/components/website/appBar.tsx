@@ -10,11 +10,11 @@ export function AppBar() {
 
   return (
     <nav className="appBar plusHighlight">
-        <NavLink to="/" className="appBarIconContainer">
+        <NavLink to="/home" className="appBarIconContainer">
           <House
             className="appBarIcon"
-            weight={location.pathname === '/' ? 'fill' : 'regular'}
-            color={location.pathname === '/' ? 'rgb(255,255,255)' : '#ffffff'}
+            weight={location.pathname === '/home' ? 'fill' : 'regular'}
+            color={location.pathname === '/home' ? 'rgb(255,255,255)' : '#ffffff'}
           />
           <p>خانه</p>
         </NavLink>
@@ -27,11 +27,11 @@ export function AppBar() {
         <p>سفارش ها</p>
       </NavLink>
         <>
-          <NavLink to="/newOrder" className="appBarIconContainer">
+          <NavLink to="/" className="appBarIconContainer">
             <PlusCircle
               className="appBarIcon"
-              weight={location.pathname === '/newOrder' ? 'fill' : 'regular'}
-              color={location.pathname === '/newOrder' ? 'rgb(255,255,255)' : '#ffffff'}
+              weight={location.pathname === '/' ? 'fill' : 'regular'}
+              color={location.pathname === '/' ? 'rgb(255,255,255)' : '#ffffff'}
             />
             <p>ثبت سفارش</p>
           </NavLink>

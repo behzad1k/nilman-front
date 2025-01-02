@@ -104,7 +104,7 @@ export default function Login() {
           });
           toast('خوش آمدید', { type: 'success' });
           await userApis(dispatch);
-          navigate(`${localStorage.getItem('new-order') ? '/newOrder' : '/'}`)        }
+          navigate(`${localStorage.getItem('new-order') ? '/' : '/home'}`)        }
       } else {
         toast('کد وارد شده صحیح نیست', { type: 'error' });
       }
@@ -147,7 +147,7 @@ export default function Login() {
         });
         sessionStorage.removeItem('login-step')
         sessionStorage.removeItem('login-step-token')
-        navigate(`${localStorage.getItem('new-order') ? '/newOrder' : '/'}`);
+        navigate(`${localStorage.getItem('new-order') ? '/' : '/home'}`);
       } else if (res.code == 1005) {
         toast('کد ملی با شماره تلفن تطابق ندارد', { type: 'error' });
       }
