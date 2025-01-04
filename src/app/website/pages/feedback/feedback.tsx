@@ -40,6 +40,10 @@ export default function Feedback({ order }) {
       toast('لطفا بین یک تا پنج ستاره یکی را انتخاب کنید', { type: 'error'})
       return;
     }
+    if (selectedFactors.length == 0){
+      toast('لطفا حداقل یکی از نقاط مثبت یا منفی را انتخاب کنید', { type: 'error'})
+      return;
+    }
     // if (!comment) {
     //   return toast('نظر خود را وارد کنید');
     // }
