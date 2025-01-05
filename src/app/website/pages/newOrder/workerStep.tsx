@@ -49,7 +49,9 @@ export default function WorkerStep({
   const navigate = useNavigate();
   const exWorkers = {}
   for (const exWorker of orderReducer.orders?.filter(e => e.serviceId == selected.service?.id)?.map(e => e.worker)) {
-    exWorkers[exWorker.id] = exWorker
+    if(exWorker && exWorker?.id) {
+      exWorkers[exWorker.id] = exWorker;
+    }
   }
   const calender = () => {
     const tabs: ReactElement[] = [];

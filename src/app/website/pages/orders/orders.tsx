@@ -16,7 +16,7 @@ export default function Orders() {
   const currentOrders: IOrder[] = [];
   const prevOrders: IOrder[] = [];
 
-  orders.map((order) => {
+  orders.filter(e => e.status != 'Canceled').map((order) => {
     if (order.status !== 'Done') {
       currentOrders.push(order);
     } else {

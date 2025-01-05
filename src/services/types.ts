@@ -66,7 +66,7 @@ export interface IOrder {
   discount: number;
   discountAmount: number;
   transportation: number | string;
-  status: 'ACCEPTED' | 'PAID' | 'Done' | 'CREATED' | 'ASSIGNED' | 'CANCELED';
+  status: 'ACCEPTED' | 'PAID' | 'Done' | 'CREATED' | 'ASSIGNED' | 'Canceled';
   worker: IUser;
   service: IService;
   attribute?: IService;
