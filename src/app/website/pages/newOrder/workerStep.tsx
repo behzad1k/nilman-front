@@ -75,7 +75,7 @@ export default function WorkerStep({
     for (let i = 8; i < 20; i = i + 2) {
       const day = moment().add(calTab, 'day').format('jYYYY/jMM/jDD');
       const disabled =
-        (schedules && schedules[day] && !selected.isUrgent ? schedules[day].includes(i) : false) ||
+        (schedules && schedules[day] ? schedules[day].includes(i) : false) ||
         (!selected.isUrgent ? (calTab == 0) || (calTab == 1 && Number(moment().add(24, 'h').format('HH')) > i) : false) ||
         (calTab == 0 && Number(moment().format('HH')) > (i - 5)) ||
         // (calTab == 0 && Number(moment().format('HH')) > (i - 5)) ||
