@@ -2,8 +2,7 @@ import {Provider} from 'react-redux';
 import {ToastContainer} from 'react-toastify';
 import store from './services/redux/store';
 import './assets/css/App.css';
-import Website from './app/website/website';
-import Dashboard from './app/dashboard/dashboard';
+import Website from './app/website';
 import {Routes, Route} from 'react-router-dom';
 import {Mui} from './mui';
 import 'react-toastify/dist/ReactToastify.css';
@@ -14,7 +13,6 @@ function App() {
       <Mui>
         <Routes>
           <Route path="*" element={<Website />} />
-          <Route path="/dashboard/*" element={<Dashboard />} />
         </Routes>
         <ToastContainer
           progressStyle={{
