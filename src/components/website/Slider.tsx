@@ -1,5 +1,5 @@
 import {ReactElement} from 'react';
-import {ISliderCardInfo} from '../../services/types';
+import {ISliderCardInfo} from 'src/types/globalType.ts';
 import {SliderCard} from './SliderCard';
 
 type IProps = {

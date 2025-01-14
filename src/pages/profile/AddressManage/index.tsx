@@ -1,7 +1,6 @@
 import { TextField } from '@mui/material';
 import '@neshan-maps-platform/mapbox-gl/dist/NeshanMapboxGl.css';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Neshan from '../../../components/common/Neshan';
@@ -10,21 +9,23 @@ import { urls } from '../../../services/endPoint';
 import { api } from '../../../services/http';
 import { SET_LOADING } from '../../../services/redux/reducers/loadingSlice';
 import { addresses } from '../../../services/redux/reducers/userSlice';
-import { useAppSelector } from '../../../services/redux/store';
-import { Position } from '../../../services/types';
+import { useAppDispatch, useAppSelector } from '../../../services/redux/store';
+import global from 'src/types/globalType.ts';
+
+const defaultPosition: globalEnum.IPosition = {
+  lat: '35.80761631591913',
+  lng: '51.4319429449887'
+};
 
 const AddressManage = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { id: paramId } = useParams();
   const userReducer = useAppSelector(state => state.userReducer);
-  const address = userReducer.addresses.find(e => e.id == paramId);
-  const defaultPosition: Position = {
-    lat: '35.80761631591913',
-    lng: '51.4319429449887'
-  };
+  const address = userReducer.addresses.find(e => e.id == Number(paramId));
   const [step, setStep] = useState(1);
-  const [position, setPosition] = useState<Position>(address?.longitude && address?.longitude ? {
+
+  const [position, setPosition] = useState<globalEnum.IPosition>(address?.longitude && address?.longitude ? {
     lat: address?.latitude,
     lng: address?.longitude
   } : defaultPosition);
@@ -37,6 +38,7 @@ const AddressManage = () => {
     vahed: address?.vahed,
     districtId: address?.districtId
   });
+
   const submit = async () => {
     if (step == 1) {
       if (position.lng != defaultPosition.lng && position.lat != defaultPosition.lat) {
@@ -46,15 +48,21 @@ const AddressManage = () => {
             lat: position.lat
           }
         });
-        if (res.code == 200){
-          if (Number(res.data.municipality_zone) > 8 || res.data.city != 'تهران'){
+        if (res.code == 200) {
+          if (Number(res.data.municipality_zone) > 8 || res.data.city != 'تهران') {
             toast('موقعیت مکانی انتخاب شده در محدوده پشتیانی نیلمان نمی باشد', { type: 'error' });
             return;
           }
-          if (!paramId){
-            setForm(prev => ({ ...prev, description: res.data.formatted_address }))
+          if (!paramId) {
+            setForm(prev => ({
+              ...prev,
+              description: res.data.formatted_address
+            }));
           }
-          setForm(prev => ({ ...prev, districtId: res.data.municipality_zone }))
+          setForm(prev => ({
+            ...prev,
+            districtId: res.data.municipality_zone
+          }));
           setStep(prev => prev + 1);
         }
       } else {
@@ -63,7 +71,7 @@ const AddressManage = () => {
       return;
     }
     if (!form?.description || !form.pelak || !form.vahed) {
-      // toast('لطفا تمامی اطلاعات را به درستی وارد کنید', { type: 'error' });
+      // toast('لطفا تمامی اطلاعات را به درستی وارد کنید', { types: 'error' });
       return;
     }
 

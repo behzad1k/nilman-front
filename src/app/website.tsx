@@ -1,10 +1,6 @@
-import {useEffect} from 'react';
-import {Routes, Route} from 'react-router-dom';
-import App from '../App';
-import {AppBar} from '../components';
-import {initialApis} from '../services/apis/global';
-import {AppDispatch, useAppDispatch, useAppSelector} from '../services/redux/store';
-import Layout from './layout';
+import { useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { AppBar } from '../components';
 import Home from '../pages/home/home';
 import Login from '../pages/login/login';
 import Mag from '../pages/mag/mag';
@@ -15,11 +11,12 @@ import Privacy from '../pages/privacy';
 import AddressManage from '../pages/profile/AddressManage';
 import EditProfile from '../pages/profile/EditProfile';
 import Profile from '../pages/profile/profile';
-import Feedback from '../pages/feedback/feedback';
+import { initialApis } from '../services/apis/global';
+import { AppDispatch, useAppDispatch, useAppSelector } from '../services/redux/store';
+import Layout from './layout';
 
 export default function Website() {
   const dispatch: AppDispatch = useAppDispatch();
-  const loading = useAppSelector((state) => state.loadingReducer.loading);
 
   useEffect(() => {
     initialApis(dispatch);
@@ -31,7 +28,7 @@ export default function Website() {
         path="/home"
         element={
           <Layout>
-            <Home />
+            <Home/>
           </Layout>
         }
       />
@@ -39,7 +36,7 @@ export default function Website() {
         path="/orders"
         element={
           <Layout>
-            <Orders />
+            <Orders/>
           </Layout>
         }
       />
@@ -47,7 +44,7 @@ export default function Website() {
         path="/"
         element={
           <Layout>
-            <NewOrder />
+            <NewOrder/>
           </Layout>
         }
       />
@@ -55,7 +52,7 @@ export default function Website() {
         path="/profile"
         element={
           <Layout>
-            <Profile />
+            <Profile/>
           </Layout>
         }
       />
@@ -63,27 +60,26 @@ export default function Website() {
         path="/mag"
         element={
           <>
-            <Mag />
-            <AppBar />
+            <Mag/>
+            <AppBar/>
           </>
         }
       />
       <Route path="/payment/verify" element={
         <Layout>
-          <Payment />
+          <Payment/>
         </Layout>
-      } />
-      <Route path="/privacy" element={<Privacy />} />
-      <Route path="/feedback/:id" element={<Feedback />} />
-      <Route path="/profile/edit" element={<EditProfile />} />
-      <Route path="/address/edit/:id" element={<AddressManage />} />
-      <Route path="/address/add" element={<AddressManage />} />
+      }/>
+      <Route path="/privacy" element={<Privacy/>}/>
+      <Route path="/profile/edit" element={<EditProfile/>}/>
+      <Route path="/address/edit/:id" element={<AddressManage/>}/>
+      <Route path="/address/add" element={<AddressManage/>}/>
       <Route
         path="/login"
         element={
           <>
-            <Login />
-            <AppBar />
+            <Login/>
+            <AppBar/>
           </>
         }
       />

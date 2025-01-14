@@ -9,7 +9,7 @@ import {urls} from '../../services/endPoint';
 import {api} from '../../services/http';
 import { order as orderSlice } from '../../services/redux/reducers/orderSlice';
 import { useAppSelector } from '../../services/redux/store';
-import { IOrder } from '../../services/types';
+import { IOrder } from 'src/types/globalType.ts';
 import Success from './success';
 import {toast} from 'react-toastify';
 

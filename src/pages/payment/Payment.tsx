@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { urls } from '../../services/endPoint';
 import { api } from '../../services/http';
@@ -9,21 +8,29 @@ import { order } from '../../services/redux/reducers/orderSlice';
 import { useAppDispatch } from '../../services/redux/store';
 
 const Payment = () => {
-  const [searchParam, setSearchParam] = useSearchParams();
-  const [isSuccessful, setIsSuccessful] = useState(searchParam.get('Status') == 'OK' || searchParam.get('State') == 'OK')
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  console.log(searchParam.get('Authority') || searchParam.get('RefNum') );
+  const [searchParam, setSearchParam] = useSearchParams();
+  const [isSuccessful, setIsSuccessful] = useState(searchParam.get('Status') == 'OK' || searchParam.get('State') == 'OK');
+
   const send = async () => {
     dispatch(SET_LOADING(true));
 
-    const res = await api(urls.paymentVerify, { method: 'POST', body: { authority: searchParam.get('Authority') || searchParam.get('Token') , status: searchParam.get('Status') || searchParam.get('State'), terminalId: searchParam.get('TerminalId'), refNum: searchParam.get('RefNum') }}, true  )
+    const res = await api(urls.paymentVerify, {
+      method: 'POST',
+      body: {
+        authority: searchParam.get('Authority') || searchParam.get('Token'),
+        status: searchParam.get('Status') || searchParam.get('State'),
+        terminalId: searchParam.get('TerminalId'),
+        refNum: searchParam.get('RefNum')
+      }
+    }, true);
 
-    if (res.code == 200){
+    if (res.code == 200) {
       setIsSuccessful(true);
       dispatch(cart());
       dispatch(order());
-    }else {
+    } else {
       setIsSuccessful(false);
     }
     dispatch(SET_LOADING(false));
@@ -36,15 +43,15 @@ const Payment = () => {
   }, []);
 
   return (
-    <div className='paymentContainer'>
+    <div className="paymentContainer">
       {isSuccessful ?
-        <div className='payment'>
-          <img className='paymentImage' src='/img/checked.png'/>
+        <div className="payment">
+          <img className="paymentImage" src="/img/checked.png"/>
           <span>پرداخت شما موفقیت آمیز بود</span>
         </div>
         :
-        <div className='payment'>
-          <img className='paymentImage' src='/img/cancel.png'/>
+        <div className="payment">
+          <img className="paymentImage" src="/img/cancel.png"/>
           <span>پرداخت موفقیت آمیز نبود</span>
         </div>
       }

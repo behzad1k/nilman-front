@@ -11,7 +11,7 @@ import {urls} from '../../services/endPoint';
 import {SelectInput, TextInput} from '../../components';
 import { SET_LOADING } from '../../services/redux/reducers/loadingSlice.ts';
 import { useAppDispatch, useAppSelector } from '../../services/redux/store';
-import {IService, IUser} from '../../services/types';
+import {IService, IUser} from 'src/types/globalType.ts';
 import {createSchedule} from '../../utils/utils';
 import {Selected} from './newOrder';
 import {Button, MenuItem} from '@mui/material';

@@ -1,10 +1,10 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import globalType from '../../../types/globalType';
 import {urls} from '../../endPoint';
-import { IOrder, IUser } from '../../types';
 import {api} from '../../http';
 
 interface IOrderSlice {
-  orders: IOrder[]
+  orders: globalType.Order[]
 }
 
 const initialState: IOrderSlice = {

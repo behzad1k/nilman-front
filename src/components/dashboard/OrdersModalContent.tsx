@@ -4,7 +4,7 @@ import {Box, Button, Typography} from '@mui/material';
 import {api} from '../../services/http';
 import {urls} from '../../services/endPoint';
 import {useForm} from 'react-hook-form';
-import {IOrder, IUser} from '../../services/types';
+import {IOrder, IUser} from 'src/types/globalType.ts';
 import {MenuItem} from '@mui/material';
 
 type Props = {

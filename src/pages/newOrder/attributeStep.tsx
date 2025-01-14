@@ -1,67 +1,47 @@
-import {useRef, useState, useEffect} from 'react';
-import {DeleteOutline} from '@mui/icons-material';
+import { DeleteOutline } from '@mui/icons-material';
+import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
-import { Modal } from '../../components';
-import {useAppSelector} from '../../services/redux/store';
-import {IService} from '../../services/types';
-import { findAncestors, findRootCount } from '../../utils/utils';
-import {Selected} from './newOrder';
+import { useAppSelector } from '../../services/redux/store';
+import comp from '../../types/comp';
+import globalType from '../../types/globalType';
+import { findAncestors } from '../../utils/utils';
 import SecAttrDrawer from './secAttrDrawer';
-
-type Props = {
-  selected: Selected;
-  setSelected: (value: (prev: Selected) => Selected) => void;
-  setIsNextStepAllowed: (val: boolean) => void;
-};
+import IAttributeStep = comp.IAttributeStep;
 
 export default function AttributeStep({
-  selected,
-  setSelected,
-  setIsNextStepAllowed,
-}: Props) {
+                                        selected,
+                                        setSelected,
+                                        setIsNextStepAllowed,
+                                      }: IAttributeStep) {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [curId, setCurId] = useState<IService | null>(null);
+  const [curId, setCurId] = useState<globalType.Service | null>(null);
   const [stepCounter, setStepCounter] = useState(0);
-  const services = useAppSelector(state => state.serviceReducer.allServices)
+  const services = useAppSelector(state => state.serviceReducer.allServices);
   const cardRef = useRef<Array<HTMLElement | null>>([]);
-  const handleSelectAttribute = (index: number, attribute: IService) => {
+  const handleSelectAttribute = (index: number, attribute: globalType.Service) => {
     if (attribute.attributes && attribute.attributes?.length > 0 && attribute.openDrawer) {
-      if (selected.attributes.length == 0){
+      if (selected.attributes.length == 0) {
+        setCurId(attribute);
+        setDrawerOpen(true);
+      } else if (!attribute.parent.isMulti && !selected.attributes.map(e => findAncestors(services, e.id)).flat(1).map(e => e.id).includes(attribute.id)) {
+        toast(`انتخاب بیش از یک خدمت در ${attribute.parent.title} مجاز نمی باشد`, { type: 'error' });
+      } else {
         setCurId(attribute);
         setDrawerOpen(true);
       }
-      else if (!attribute.parent.isMulti && !selected.attributes.map(e => findAncestors(services, e.id)).flat(1).map(e => e.id).includes(attribute.id)){
-        toast(`انتخاب بیش از یک خدمت در ${attribute.parent.title} مجاز نمی باشد`, {type: 'error'})
-      }else{
-        // console.log(selected.attributes.map(e => findAncestors(services, e.id)));
-        // console.log(selected.attributes.find(e => services.find(j => j?.id == e.parent?.id)?.parent.id == attribute.parent.id));
-        // if (selected.attributes.find(e => services.find(j => j?.id == e.parent?.id)?.parent.id == attribute.parent.id)){
-          // && !selected.attributes.map(e => findAncestors(services, e.id)).flat(1).map(e => e.id).includes(attribute.id)){
-        //   toast(`انتخاب بیش از یک خدمت در ${attribute.parent.title} مجاز نمی باشد`, {type: 'error'})
-        // }else {
-          setCurId(attribute);
-          setDrawerOpen(true);
-        // }
-      }
-      // if (attribute.parent.isMulti
-      //   && selected.attributes.find(e => services.find(j => j?.id == e.parent?.id)?.parent.id == attribute.parent.id)
-      //   && !selected.attributes.map(e => findAncestors(services, e.id)).flat(1).map(e => e.id).includes(attribute.id)
-      // ){
-      //   toast(`انتخاب بیش از یک خدمت در ${attribute.parent.title} مجاز نمی باشد`, {type: 'error'})
-      // }else{
-      //   setCurId(attribute);
-      //   setDrawerOpen(true);
-      //   // setIsNextStepAllowed(true);
-      // }
-    }else if(attribute.attributes && attribute.attributes.length > 0 && attribute.attributes[0]?.attributes?.length > 0){
-      setStepCounter(prev => prev + 1)
-      setSelected( prev => ({ ...prev, attributeStep: attribute }))
+    } else if (attribute.attributes && attribute.attributes.length > 0 && attribute.attributes[0]?.attributes?.length > 0) {
+      setStepCounter(prev => prev + 1);
+      setSelected(prev => ({
+        ...prev,
+        attributeStep: attribute
+      }));
     }
   };
+
   const handleUnselectAttribute = (
     e: React.MouseEvent,
     index: number,
-    attribute: IService,
+    attribute: globalType.Service,
   ) => {
     e.stopPropagation();
     cardRef.current[index]?.classList.remove('selected');
@@ -70,12 +50,15 @@ export default function AttributeStep({
     if (attribute.attributes) {
       slugsToRemove = [...slugsToRemove, ...attribute.attributes.map((atr) => atr.slug)];
     }
-    setSelected((prev: Selected) => {
+    setSelected((prev: globalType.Form) => {
       const newSelectedAttrs = prev.attributes.filter(
         (selected) => !slugsToRemove.includes(selected.slug),
       );
       if (newSelectedAttrs.length === 0) setIsNextStepAllowed(false);
-      return {...prev, attributes: newSelectedAttrs};
+      return {
+        ...prev,
+        attributes: newSelectedAttrs
+      };
     });
   };
 
@@ -100,8 +83,8 @@ export default function AttributeStep({
               attribute.attributes?.find(e => selected?.attributes?.map(p => p.id)?.includes(e.id)) ? 'selected' : ''
             } ${index % 2 == 0 ? 'reversed' : ''}`}
           >
-            <img src={'/img/' + attribute.slug + '.png'} />
-            <p className='attributeTitle'>{attribute.title}</p>
+            <img src={'/img/' + attribute.slug + '.png'}/>
+            <p className="attributeTitle">{attribute.title}</p>
             <DeleteOutline
               className="delete-btn"
               onClick={(e) => handleUnselectAttribute(e, index, attribute)}

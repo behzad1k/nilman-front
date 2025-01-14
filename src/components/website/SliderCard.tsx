@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {ISliderCardInfo} from '../../services/types';
+import {ISliderCardInfo} from 'src/types/globalType.ts';
 import { Modal } from '../common/modal';
 
 export function SliderCard({url, title}: ISliderCardInfo) {

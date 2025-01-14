@@ -1,7 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {urls} from '../../endPoint';
 import {api} from '../../http';
-import { IOrder } from "../../types.ts";
 
 
 interface IGlobalSlice {

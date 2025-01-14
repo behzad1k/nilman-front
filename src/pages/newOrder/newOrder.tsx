@@ -1,33 +1,27 @@
-import Switch from 'react-ios-switch';
+import { Button } from '@mui/material';
 import { Warning } from '@phosphor-icons/react';
-import Cookies from 'js-cookie';
-import {useEffect, useState, useCallback, useRef} from 'react';
-import {Button, Typography} from '@mui/material';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import {toast} from 'react-toastify';
-import {cart} from '../../services/redux/reducers/cartSlice';
-import {order} from '../../services/redux/reducers/orderSlice';
-import { useAppDispatch, useAppSelector } from '../../services/redux/store';
-import { IAddress, IService, IUser, SelectedOptions } from '../../services/types';
-import ServiceStep from './serviceStep';
-import AttributeStep from './attributeStep';
-import AddressStep from './addressStep';
-import WorkerStep from './workerStep';
-import {formatPrice} from '../../utils/utils';
-import {urls} from '../../services/endPoint';
-import {api} from '../../services/http';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import Switch from 'react-ios-switch';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import comp from '../../types/comp';
+import globalType from '../../types/globalType';
+import { urls } from '../../services/endPoint';
+import { api } from '../../services/http';
+import { cart } from '../../services/redux/reducers/cartSlice';
+import { SET_LOADING } from '../../services/redux/reducers/loadingSlice';
+import { order } from '../../services/redux/reducers/orderSlice';
+import { useAppDispatch, useAppSelector } from '../../services/redux/store';
+import AddressStep from './addressStep';
+import AttributeStep from './attributeStep';
+import ServiceStep from './serviceStep';
+import WorkerStep from './workerStep';
 
-import moment from 'jalali-moment';
-import {SET_LOADING} from '../../services/redux/reducers/loadingSlice';
 
-// Types
-type Step = {
-  index: number;
-  name: 'service' | 'attribute' | 'address' | 'worker';
-};
 
-const steps: Step[] = [
+const steps: comp.ServiceStep[] = [
   {
     index: 0,
     name: 'service',
@@ -46,23 +40,8 @@ const steps: Step[] = [
   },
 ];
 
-export type Selected = {
-  service: IService | null;
-  attributeStep: IService | null;
-  attributes: IService[];
-  address: IAddress | null;
-  price: number;
-  worker: string | null;
-  date: string | null;
-  time: number | null;
-  discount: string | null;
-  isUrgent: boolean;
-  isMulti: boolean;
-  options: any;
-};
-
 // Initial
-const initialSelected: Selected = {
+const initialSelected: globalType.Form = {
   service: null,
   attributeStep: null,
   attributes: [],
@@ -78,75 +57,67 @@ const initialSelected: Selected = {
 };
 
 export default function NewOrder() {
-  // React
   const prevData = JSON.parse(localStorage.getItem('new-order') as string);
   const prevStep = JSON.parse(localStorage.getItem('step') as string);
-  const [selected, setSelected] = useState<Selected>(prevData || { ...initialSelected, options: {} });
-  const [workers, setWorkers] = useState<IUser[] | []>([]);
-  const [nearest, setNearest] = useState<{date: string; workerId: number} | null>(null);
+  const [selected, setSelected] = useState<globalType.Form>(prevData || {
+    ...initialSelected,
+    options: {}
+  });
+  const [workers, setWorkers] = useState<globalType.User[] | []>([]);
+  const [nearest, setNearest] = useState<{
+    date: string;
+    workerId: number
+  } | null>(null);
   const [isNextStepAllowed, setIsNextStepAllowed] = useState(false);
-  const [step, setStep] = useState<Step>(prevStep || steps[0]);
+  const [step, setStep] = useState<comp.ServiceStep>(prevStep || steps[0]);
   const services = useAppSelector(state => state.serviceReducer.allServices);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   let [searchParams, setSearchParams] = useSearchParams();
-  let section = 0;
   let selectedRef = useRef(selected);
   let stepRef = useRef(step);
-  // Fns
-  const getAreaWorkers = useCallback(async () => {
-    selected.attributes.forEach((attr) => (section += attr.section));
-    const params = new URLSearchParams({
-      addressId: String(selected.address?.id),
-      serviceId: String(selected.service?.id),
-      section: String(section),
-    });
-    dispatch(SET_LOADING(true));
-    const res = await api(urls.ariaWorker + '?' + params, {}, true);
-    dispatch(SET_LOADING(false));
-    if (res.code === 200) {
-      setWorkers(res.data.workers);
-      setNearest(res.data.nearest);
-    }
-  }, [selected.address, selected.service]);
 
-  // Handlers
   const handleChangeStep = async (action: 'next' | 'prev') => {
     // handle next - prev logic
     if (action === 'next') {
-      if(step.index == 1 && !Cookies.get('token')){
+      if (step.index == 1 && !Cookies.get('token')) {
         localStorage.setItem('new-order', JSON.stringify(selectedRef.current));
         localStorage.setItem('step', JSON.stringify(stepRef.current));
-        // await new Promise(resolve => setTimeout(resolve, 300))
+        await new Promise(resolve => setTimeout(resolve, 300))
         navigate('/login');
       }
-        setStep((prev) => (prev.index === steps.length - 1 ? prev : steps[prev.index + 1]));
-        setIsNextStepAllowed(false)
-    }
-    else if (action === 'prev') {
-      if (!(selected?.attributeStep || selected?.service)){
+      setStep((prev) => (prev.index === steps.length - 1 ? prev : steps[prev.index + 1]));
+      setIsNextStepAllowed(false);
+    } else if (action === 'prev') {
+      if (!(selected?.attributeStep || selected?.service)) {
         localStorage.removeItem('new-order');
         localStorage.removeItem('step');
       }
-      if (step.index == 1){
+      if (step.index == 1) {
         const newParent = services.find(e => e.id == selected.attributeStep?.parent?.id);
-        if(!newParent){
-          setStep(steps[0])
-          setSelected(prev => ({ ...prev, attributeStep: null, options: {}, attributes: [] }))
-        }else{
-          setSelected(prev => ({...prev, attributeStep: services.find(e => e.id == prev.attributeStep?.parent?.id) }))
+        if (!newParent) {
+          setStep(steps[0]);
+          setSelected(prev => ({
+            ...prev,
+            attributeStep: null,
+            options: {},
+            attributes: []
+          }));
+        } else {
+          setSelected(prev => ({
+            ...prev,
+            attributeStep: services.find(e => e.id == prev.attributeStep?.parent?.id)
+          }));
         }
-      }else {
+      } else {
         setStep((prev) => (prev.index === 0 ? prev : steps[prev.index - 1]));
       }
     }
-
-    // set next btn disabled when we go to a new step
-    // setIsNextStepAllowed(false);
   };
+
   const handleSubmitOrder = async () => {
-    if (!selected.date || !selected.time){
-      toast('لطفا تاریخ و ساعت را انتخاب کنید', { type: 'error' })
+    if (!selected.date || !selected.time) {
+      toast('لطفا تاریخ و ساعت را انتخاب کنید', { type: 'error' });
       return;
     }
     const reqOptions = {
@@ -168,25 +139,33 @@ export default function NewOrder() {
     const res = await api(urls.order, reqOptions, true);
     dispatch(SET_LOADING(false));
 
-    if (Object.values(selected.options).filter((e: any) => e?.media?.data)?.length > 0){
+    if (Object.values(selected.options).filter((e: any) => e?.media?.data)?.length > 0) {
       const formData = new FormData();
-      Object.entries(selected.options).filter(([key, value]: any) => value.media?.data).map(([key, value]: any) => formData.append(`files[${key}]`,value.media.data))
-      const mediaRes = await axios(process.env.REACT_APP_BASE_URL + urls.orderMedia + res.data?.id, { method: 'POST', data: formData, headers: { Authorization: `Bearer ${Cookies.get('token')}`}});
+      Object.entries(selected.options).filter(([key, value]: any) => value.media?.data).map(([key, value]: any) => formData.append(`files[${key}]`, value.media.data));
+      const mediaRes = await axios(process.env.REACT_APP_BASE_URL + urls.orderMedia + res.data?.id, {
+        method: 'POST',
+        data: formData,
+        headers: { Authorization: `Bearer ${Cookies.get('token')}` }
+      });
     }
 
     if (res.code === 201) {
       localStorage.removeItem('new-order');
       localStorage.removeItem('step');
-      setSelected(initialSelected)
-      setSelected(prev => ({ ...prev, service: null, options: {} }))
+      setSelected(initialSelected);
+      setSelected(prev => ({
+        ...prev,
+        service: null,
+        options: {}
+      }));
       dispatch(order());
       dispatch(cart());
-      toast('سفارش شما با موفقیت ثبت شد', {type: 'success'});
+      toast('سفارش شما با موفقیت ثبت شد', { type: 'success' });
 
-      await new Promise(resolve => setTimeout(resolve, 300))
-      navigate('/orders')
+      await new Promise(resolve => setTimeout(resolve, 300));
+      navigate('/orders');
     } else {
-      toast('سفارش شما ثبت نشد, لطفا مجددا تلاش کنید.', {type: 'error'});
+      toast('سفارش شما ثبت نشد, لطفا مجددا تلاش کنید.', { type: 'error' });
     }
   };
 
@@ -197,25 +176,19 @@ export default function NewOrder() {
   };
 
   useEffect(() => {
-    // Fetch needed data based on step
-    if (step.name === 'worker') {
-      getAreaWorkers();
-    }
-  }, [step]);
-
-  useEffect(() => {
-    selectedRef.current = selected;    
+    selectedRef.current = selected;
   }, [selected]);
 
   useEffect(() => {
     stepRef.current = step;
   }, [step]);
+
   useEffect(() => {
     return () => {
-      if(selected.service != null) {
+      if (selected.service != null) {
         localStorage.setItem('new-order', JSON.stringify(selectedRef.current));
         localStorage.setItem('step', JSON.stringify(stepRef.current));
-      }else{
+      } else {
         // console.log('there');
         // localStorage.removeItem('new-order');
         // localStorage.removeItem('step');
@@ -224,11 +197,18 @@ export default function NewOrder() {
   }, []);
 
   useEffect(() => {
-    setSelected((prev) => ({...prev, price: getPrice()}));
+    setSelected((prev) => ({
+      ...prev,
+      price: getPrice()
+    }));
   }, [selected.attributes]);
 
   useEffect(() => {
-    setSelected(prev => ({ ...prev, isUrgent: searchParams.get('isUrgent') != null, isMulti: searchParams.get('isMulti') != null }))
+    setSelected(prev => ({
+      ...prev,
+      isUrgent: searchParams.get('isUrgent') != null,
+      isMulti: searchParams.get('isMulti') != null
+    }));
   }, [searchParams]);
 
   return (
@@ -236,7 +216,7 @@ export default function NewOrder() {
       <div className="progress">
         <span
           className="progress-active"
-          style={{width: `${((step.index + 1) / 4) * 100}%`}}
+          style={{ width: `${((step.index + 1) / 4) * 100}%` }}
         ></span>
       </div>
       {/* <Typography component="span" variant="subtitle2" fontWeight="400" mt={-1} mb={1}> */}
@@ -274,44 +254,13 @@ export default function NewOrder() {
       )}
       <div className="bottom-section">
         {selected.isUrgent &&
-        <div className="cart-section">
-          <Warning size={25}/>
-          <span className='urgentWarning'>سفارش شما در حالت فوری قرار دارد و با افزایش قیمت همراه است</span>
-          {/* <span className='urgentWarning button' onClick={() => { */}
-          {/*   searchParams.delete('isUrgent'); */}
-          {/*   setSearchParams(searchParams); */}
-          {/*   setSelected(prev => ({ ...prev, isUrgent: false })) */}
-          {/* }}>خروج</span> */}
-
-          {/* <div className="info"> */}
-          {/*   {selected.service ? ( */}
-          {/*     <h1> */}
-          {/*       {selected.service?.title} {`>`} */}
-          {/*       {selected.attributes.map( */}
-          {/*         (attr, index) => (index === 0 ? ' ' : ', ') + attr.title, */}
-          {/*       )} */}
-          {/*     </h1> */}
-          {/*   ) : ( */}
-          {/*     'در حال انتخاب...' */}
-          {/*   )} */}
-          {/*   <div> */}
-          {/*     {selected.address && <p className="worker">{selected.address.title}</p>} */}
-          {/*     <span className="circle"></span> */}
-          {/*     {selected.time && ( */}
-          {/*       <time className="date-time"> */}
-          {/*         {selected.time} |{' '} */}
-          {/*         {selected.date && moment.unix(selected.date).format('jYYYY/jMM/jDD')} */}
-          {/*       </time> */}
-          {/*     )} */}
-          {/*   </div> */}
-          {/* </div> */}
-          {/* <div className="price"> */}
-          {/*   <p>{formatPrice(selected.price)} تومان</p> */}
-          {/* </div> */}
-        </div>
+            <div className="cart-section">
+                <Warning size={25}/>
+                <span className="urgentWarning">سفارش شما در حالت فوری قرار دارد و با افزایش قیمت همراه است</span>
+            </div>
         }
-        <div className='newOrderBottomButtons'>
-          <div className='newOrderBottomButtonsRow'>
+        <div className="newOrderBottomButtons">
+          <div className="newOrderBottomButtonsRow">
             <span>سفارش فوری</span>
             <Switch
               checked={searchParams.get('isUrgent') != null}
@@ -321,16 +270,16 @@ export default function NewOrder() {
               }}
             />
           </div>
-          {/* <div className='newOrderBottomButtonsRow'> */}
-          {/*   <span>سفارش چندگانه</span> */}
-          {/*   <Switch */}
-          {/*     checked={searchParams.get('isMulti') != null} */}
-          {/*     onChange={(checked) => { */}
-          {/*       checked ? searchParams.set('isMulti', '') : searchParams.delete('isMulti'); */}
-          {/*       setSearchParams(searchParams); */}
-          {/*     }} */}
-          {/*   /> */}
-          {/* </div> */}
+          <div className='newOrderBottomButtonsRow'>
+            <span>سفارش برای بیش از چند نفر</span>
+            <Switch
+              checked={searchParams.get('isMulti') != null}
+              onChange={(checked) => {
+                checked ? searchParams.set('isMulti', '') : searchParams.delete('isMulti');
+                setSearchParams(searchParams);
+              }}
+            />
+          </div>
         </div>
         <div className="btn-section">
 
