@@ -162,7 +162,7 @@ export default function WorkerStep({
           defaultValue={selected?.worker}
           value={selected?.worker}
           onChange={(input) => {
-            setSelected(prev => ({ ...prev, worker: input.target.value }))
+            setSelected(prev => ({ ...prev, worker: input.target.value, date: null, time: null }))
             fetchWorkersOff(input.target.value);
           }}
           size="medium"
