@@ -26,10 +26,10 @@ namespace comp {
 
 
   export interface IAddressRow {
-    address: IAddress,
+    address: globalType.Address,
     isSelected: boolean,
-    onClick?: (address: IAddress) => void,
-    setSelected: React.Dispatch<React.SetStateAction<IAddress | undefined>>,
+    onClick?: (address: globalType.Address) => void,
+    setSelected: React.Dispatch<React.SetStateAction<globalType.Address | undefined>>,
     editable?: boolean,
     setModal?: React.Dispatch<React.SetStateAction<any>>
   }

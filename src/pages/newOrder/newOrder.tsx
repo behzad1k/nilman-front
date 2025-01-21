@@ -2,24 +2,23 @@ import { Button } from '@mui/material';
 import { Warning } from '@phosphor-icons/react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Switch from 'react-ios-switch';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import comp from '../../types/comp';
-import globalType from '../../types/globalType';
+import { AppBar, WebsiteHeader } from '../../components';
 import { urls } from '../../services/endPoint';
 import { api } from '../../services/http';
 import { cart } from '../../services/redux/reducers/cartSlice';
 import { SET_LOADING } from '../../services/redux/reducers/loadingSlice';
 import { order } from '../../services/redux/reducers/orderSlice';
 import { useAppDispatch, useAppSelector } from '../../services/redux/store';
-import AddressStep from './addressStep';
-import AttributeStep from './attributeStep';
-import ServiceStep from './serviceStep';
-import WorkerStep from './workerStep';
-
-
+import comp from '../../types/comp';
+import globalType from '../../types/globalType';
+import AddressStep from './Steps/addressStep';
+import AttributeStep from './Steps/attributeStep';
+import ServiceStep from './Steps/serviceStep';
+import WorkerStep from './Steps/workerStep';
 
 const steps: comp.ServiceStep[] = [
   {
@@ -83,7 +82,7 @@ export default function NewOrder() {
       if (step.index == 1 && !Cookies.get('token')) {
         localStorage.setItem('new-order', JSON.stringify(selectedRef.current));
         localStorage.setItem('step', JSON.stringify(stepRef.current));
-        await new Promise(resolve => setTimeout(resolve, 300))
+        await new Promise(resolve => setTimeout(resolve, 300));
         navigate('/login');
       }
       setStep((prev) => (prev.index === steps.length - 1 ? prev : steps[prev.index + 1]));
@@ -210,110 +209,115 @@ export default function NewOrder() {
       isMulti: searchParams.get('isMulti') != null
     }));
   }, [searchParams]);
-
+  console.log(step.index);
   return (
-    <main className="newOrderMain">
-      <div className="progress">
+    <>
+      <WebsiteHeader onBack={step.index > 0 ? () => handleChangeStep('prev') : null}/>
+      <main className="newOrderMain">
+        <div className="progress">
         <span
           className="progress-active"
           style={{ width: `${((step.index + 1) / 4) * 100}%` }}
         ></span>
-      </div>
-      {/* <Typography component="span" variant="subtitle2" fontWeight="400" mt={-1} mb={1}> */}
-      {/*   مرحله {Intl.NumberFormat('fa').format(step.index + 1)} */}
-      {/* </Typography> */}
-      {step.name === 'service' && (
-        <ServiceStep
-          selected={selected}
-          setSelected={setSelected}
-          setStep={setStep}
-        />
-      )}
-      {step.name === 'attribute' && (
-        <AttributeStep
-          selected={selected}
-          setSelected={setSelected}
-          setIsNextStepAllowed={setIsNextStepAllowed}
-        />
-      )}
-      {step.name === 'address' && (
-        <AddressStep
-          selected={selected}
-          setSelected={setSelected}
-          setIsNextStepAllowed={setIsNextStepAllowed}
-        />
-      )}
-      {step.name === 'worker' && (
-        <WorkerStep
-          selected={selected}
-          setSelected={setSelected}
-          workers={workers}
-          nearest={nearest}
-          setIsNextStepAllowed={setIsNextStepAllowed}
-        />
-      )}
-      <div className="bottom-section">
-        {selected.isUrgent &&
-            <div className="cart-section">
-                <Warning size={25}/>
-                <span className="urgentWarning">سفارش شما در حالت فوری قرار دارد و با افزایش قیمت همراه است</span>
+        </div>
+        {/* <Typography component="span" variant="subtitle2" fontWeight="400" mt={-1} mb={1}> */}
+        {/*   مرحله {Intl.NumberFormat('fa').format(step.index + 1)} */}
+        {/* </Typography> */}
+        {step.name === 'service' && (
+          <ServiceStep
+            selected={selected}
+            setSelected={setSelected}
+            setStep={setStep}
+          />
+        )}
+        {step.name === 'attribute' && (
+          <AttributeStep
+            selected={selected}
+            setSelected={setSelected}
+            setIsNextStepAllowed={setIsNextStepAllowed}
+          />
+        )}
+        {step.name === 'address' && (
+          <AddressStep
+            selected={selected}
+            setSelected={setSelected}
+            setIsNextStepAllowed={setIsNextStepAllowed}
+          />
+        )}
+        {step.name === 'worker' && (
+          <WorkerStep
+            selected={selected}
+            setSelected={setSelected}
+            workers={workers}
+            nearest={nearest}
+            setIsNextStepAllowed={setIsNextStepAllowed}
+          />
+        )}
+        <div className="bottom-section">
+          {selected.isUrgent &&
+              <div className="cart-section">
+                  <Warning size={25}/>
+                  <span className="urgentWarning">سفارش شما در حالت فوری قرار دارد و با افزایش قیمت همراه است</span>
+              </div>
+          }
+          <div className="newOrderBottomButtons">
+            <div className="newOrderBottomButtonsRow">
+              <span>سفارش فوری</span>
+              <Switch
+                checked={searchParams.get('isUrgent') != null}
+                onChange={(checked) => {
+                  checked ? searchParams.set('isUrgent', '') : searchParams.delete('isUrgent');
+                  setSearchParams(searchParams);
+                }}
+              />
             </div>
-        }
-        <div className="newOrderBottomButtons">
-          <div className="newOrderBottomButtonsRow">
-            <span>سفارش فوری</span>
-            <Switch
-              checked={searchParams.get('isUrgent') != null}
-              onChange={(checked) => {
-                checked ? searchParams.set('isUrgent', '') : searchParams.delete('isUrgent');
-                setSearchParams(searchParams);
-              }}
-            />
+            {step.index < 2 &&
+            <div className="newOrderBottomButtonsRow">
+              <span>سفارش چندگانه</span>
+              <Switch
+                checked={searchParams.get('isMulti') != null}
+                onChange={(checked) => {
+                  checked ? searchParams.set('isMulti', '') : searchParams.delete('isMulti');
+                  setSearchParams(searchParams);
+                }}
+              />
+            </div>
+            }
           </div>
-          <div className='newOrderBottomButtonsRow'>
-            <span>سفارش برای بیش از چند نفر</span>
-            <Switch
-              checked={searchParams.get('isMulti') != null}
-              onChange={(checked) => {
-                checked ? searchParams.set('isMulti', '') : searchParams.delete('isMulti');
-                setSearchParams(searchParams);
-              }}
-            />
-          </div>
-        </div>
-        <div className="btn-section">
+          <div className="btn-section">
 
-          <Button
-            onClick={() => handleChangeStep('prev')}
-            size="large"
-            variant="outlined"
-            color="error"
-            disabled={step.index === 0}
-          >
-            مرحله قبل
-          </Button>
-          {step.index === steps.length - 1 ? (
-            <Button
-              onClick={handleSubmitOrder}
-              size="large"
-              variant="contained"
-              color="success"
-            >
-              ثبت سفارش
-            </Button>
-          ) : (
-            <Button
-              onClick={() => handleChangeStep('next')}
-              size="large"
-              variant="contained"
-              color="info"
-              disabled={!isNextStepAllowed}
-            >
-              مرحله بعد
-            </Button>
-          )}
+            {/* <Button */}
+            {/*   onClick={() => handleChangeStep('prev')} */}
+            {/*   size="large" */}
+            {/*   variant="outlined" */}
+            {/*   color="error" */}
+            {/*   disabled={step.index === 0} */}
+            {/* > */}
+            {/*   مرحله قبل */}
+            {/* </Button> */}
+            {step.index === steps.length - 1 ? (
+              <Button
+                onClick={handleSubmitOrder}
+                size="large"
+                variant="contained"
+                color="success"
+              >
+                ثبت سفارش
+              </Button>
+            ) : (
+              <Button
+                onClick={() => handleChangeStep('next')}
+                size="large"
+                variant="contained"
+                color="success"
+                disabled={!isNextStepAllowed}
+              >
+ادامه              </Button>
+            )}
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+      <AppBar/>
+    </>
   );
 }

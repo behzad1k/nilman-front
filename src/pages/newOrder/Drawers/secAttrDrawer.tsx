@@ -3,14 +3,14 @@ import { ArrowBack, Close } from '@mui/icons-material';
 import { Box, SwipeableDrawer } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
-import { useAppSelector } from '../../services/redux/store';
-import comp from '../../types/comp';
-import globalType from '../../types/globalType';
-import orderType from '../../types/orderType';
-import AddOnDrawer from './Drawers/AddOnDrawer';
-import InfoDrawer from './Drawers/InfoDrawer';
-import PickColorDrawer from './Drawers/PickColorDrawer';
-import ServiceDrawer from './Drawers/ServiceDrawer';
+import { useAppSelector } from '../../../services/redux/store';
+import comp from '../../../types/comp';
+import globalType from '../../../types/globalType';
+import orderType from '../../../types/orderType';
+import AddOnDrawer from '../Drawers/AddOnDrawer';
+import InfoDrawer from '../Drawers/InfoDrawer';
+import PickColorDrawer from '../Drawers/PickColorDrawer';
+import ServiceDrawer from '../Drawers/ServiceDrawer';
 
 export default function SecAttrDrawer({
                                         open,
@@ -52,9 +52,7 @@ export default function SecAttrDrawer({
         open: true
       });
     } else {
-      console.log('hhhhhh');
       if (secAttr.attributes?.length > 0) {
-        console.log('qqqqq');
         setCurParent(secAttr);
         setPage(prev => prev + 1);
       } else {
@@ -64,7 +62,6 @@ export default function SecAttrDrawer({
           //   handleAddAttribute(secAttr, null);
           //   handleAddAttribute(secAttr?.addOns?.find(e => Object.keys(selected.options)?.includes(e.id.toString())), null);
           // } else {
-            console.log('me2');
             setShouldPickAddOns(true);
           // }
         } else {
@@ -79,17 +76,18 @@ export default function SecAttrDrawer({
     if (!secAttr) return;
     const newAttr = { ...secAttr };
     if (color) newAttr.color = color;
-    if (!isAddOn && !selected.attributes?.find(e => e.id == newAttr.id) && !(curParent || parent).isMulti && selected.attributes.find(e => e.parent?.id == (curParent || parent).id)) {
+    if (!isAddOn && !Object.keys(selected.options)?.find(e => e == newAttr.id.toString()) && !(curParent || parent).isMulti && Object.keys(selected.options).find(e => services.allServices.find(j => e == j.id.toString()).parent.id == (curParent || parent).id)) {
       toast(`انتخاب بیش از یک خدمت در ${(curParent || parent).title} مجاز نمی باشد`, { type: 'error' });
       return;
     }
     setCurParent(undefined);
     setIsNextStepAllowed(true);
     setSelected((prev: globalType.Form) => {
-      return {
-        ...prev,
-        attributes: [...prev.attributes, newAttr]
-      };
+      const cp = { ...prev };
+      cp.options[newAttr.id] = {
+        count: 1
+      }
+      return cp;
     });
     // if (!color) {
     //   setSelected(prev => {
@@ -125,15 +123,15 @@ export default function SecAttrDrawer({
       };
     });
   };
-
   const handleCloseDrawer = () => {
-    setOpen(false);
     setCurParent(undefined);
     setPage(1);
+    setShouldPickAddOns(false)
     setPickingColor({
       attr: null,
       open: false
     });
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -199,8 +197,7 @@ export default function SecAttrDrawer({
               <PickColorDrawer colors={colors} color={color} selected={selected} setSelected={setSelected} currentAttribute={currentAttribute} pickingColor={pickingColor} setPickingColor={setPickingColor}
                                handleAddAttribute={handleAddAttribute}/>
               : shouldPickAddOns ?
-                <AddOnDrawer deleteAttribute={deleteAttribute} setSelected={setSelected} curParent={curParent} selected={selected} parent={parent} boxEl={boxEl} currentAttribute={currentAttribute} selectedAddOn={selectedAddOn} handleAddAttribute={handleAddAttribute}
-                             setSelectedAddOn={setSelectedAddOn} setShouldPickAddOns={setShouldPickAddOns} setPickingColor={setPickingColor}/>
+                <AddOnDrawer setSelected={setSelected} selected={selected} parent={curParent || parent} currentAttribute={currentAttribute} setShouldPickAddOns={setShouldPickAddOns}/>
                 :
                 <ServiceDrawer curParent={curParent} parent={parent} selected={selected} setSelected={setSelected} handleClickCard={handleClickCard} deleteAttribute={deleteAttribute} toggleDrawer={toggleDrawer}
                                boxEl={boxEl}/>

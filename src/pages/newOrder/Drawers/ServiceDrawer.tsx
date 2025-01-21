@@ -10,9 +10,7 @@ const ServiceDrawer = ({ curParent, parent, selected, setSelected, handleClickCa
           {(curParent || parent)?.title}
         </Typography>
       </Box>
-      <Typography variant="caption" component="p" mb={1}>
-        یک یا چند مورد را انتخاب کنید
-      </Typography>
+
       {[...(curParent || parent)?.attributes]?.filter(e => e.showInList)?.sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000)).map((secAttr, index) => (
         <Box
           key={secAttr.slug}
@@ -37,7 +35,7 @@ const ServiceDrawer = ({ curParent, parent, selected, setSelected, handleClickCa
             sx={{color: 'var(--light-black)'}}
           >
             {secAttr.title}
-            {/* {selected?.attributes?.find(e => e.id == secAttr.id) || selected.attributes.find(e => secAttr.attributes.map(j => j.id).includes(e.id)) ? <i className={'selectedServiceIcon'}></i> : ''} */}
+            {Object.keys(selected?.options)?.find(e => e == secAttr.id.toString()) || Object.keys(selected.options).find(e => secAttr.attributes.map(j => j.id.toString()).includes(e)) ? <i className={'selectedServiceIcon'}></i> : ''}
           </Typography>
           {/* {secAttr.pricePlus && */}
           {/*     <Box component="span" ml={0.5} sx={{fontWeight: '300', mr: '10px'}}> */}
@@ -54,7 +52,7 @@ const ServiceDrawer = ({ curParent, parent, selected, setSelected, handleClickCa
                           تومان
                       </Box>
                   </Box>
-                {Object.keys(selected.options).includes(secAttr.id.toString()) ?
+                {Object.keys(selected.options).includes(secAttr.id.toString()) && selected.isMulti ?
                   <div className="quantityButtom">
                     <i className={selected?.options[secAttr.id].count == 1 ? 'tableTrashIcon' : "tableCollapsIcon"} onClick={(e: any) => {
                       e.stopPropagation();
@@ -71,6 +69,7 @@ const ServiceDrawer = ({ curParent, parent, selected, setSelected, handleClickCa
                     <input
                       type='number'
                       className="quantityNumber"
+                      // disabled={secAttr.addOns.length > 0}
                       value={selected?.options[secAttr.id]?.count}
                       onClick={(e) => e.stopPropagation()}
                       onChange={(input: any) => setSelected(prev => {

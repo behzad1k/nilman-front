@@ -1,5 +1,5 @@
 import { AccountBalanceWalletOutlined, PrivacyTipOutlined } from '@mui/icons-material';
-import { PencilLine, SignOut } from '@phosphor-icons/react';
+import { MapPin, PencilLine, SignOut } from '@phosphor-icons/react';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -41,13 +41,17 @@ export default function Profile() {
         </div>
       </section>
       <section className="infoBox">
-        <div className="profileButton" onClick={() => navigate('/profile/edit')}>
-          <PencilLine size={20}/>
-          <span>ویرایش اطلاعات کاربری</span>
-        </div>
+        {/* <div className="profileButton" onClick={() => navigate('/profile/edit')}> */}
+        {/*   <PencilLine size={20}/> */}
+        {/*   <span>ویرایش اطلاعات کاربری</span> */}
+        {/* </div> */}
         <div className="profileButton" onClick={() => navigate('/privacy')}>
           <PrivacyTipOutlined/>
           <span>حریم خصوصی</span>
+        </div>
+        <div className="profileButton" onClick={() => navigate('/address')}>
+          <MapPin size={25}/>
+          <span>آدرس ها</span>
         </div>
         <div className="profileButton" onClick={handleLogout}>
           <SignOut
@@ -59,8 +63,6 @@ export default function Profile() {
           <span>خروج از حساب</span>
         </div>
       </section>
-      <h3>آدرس ها</h3>
-      <Addresses editable={true}/>
     </main>
   );
 }

@@ -1,3 +1,4 @@
+import { Timer10, TimerOutlined, TimerRounded } from '@mui/icons-material';
 import { Calendar, MapPin, Trash } from '@phosphor-icons/react';
 import { toast } from 'react-toastify';
 import { urls } from '../../services/endPoint';
@@ -47,26 +48,34 @@ const CartItem = ({ item }: comps.ICartItem) => {
   return (
     <article className="cartItemContainer">
       <span className="orderInfo">
-        <span>{item.isUrgent && <span className="isUrgent">فوری</span>}</span>
+        {item.isUrgent && <span className="isUrgent">فوری</span>}
         <h3>{item.service.title}</h3>
         <span className="trashCart" onClick={() => deleteCartItem(item.id)}>
-          <span>حذف همه</span>
+          <span>حذف سفارش</span>
           <Trash size="20"/>
         </span>
       </span>
-      {item.orderServices?.map((attribute, index) => (
+      {item.orderServices.filter(e => !e.isAddOn)?.map((attribute, index) => (
         <span className="orderInfo" key={index}>
-          <p>{attribute.service?.title + ' ' + attribute.count + 'x '} </p>
+          <span className="orderInfoAddon">
+            <p>{attribute.service?.title + ' ' + attribute.count + 'x '} </p>
+            {attribute.addOns?.map(e => <p>-{e.addOn?.title + ' ' + e.count + 'x'}</p>)}
+          </span>
           <span className="orderInfoDelete">
+          <span className="orderInfoAddon">
+
             <p>{formatPrice(attribute.price)} تومان</p>
-            <span className="trashCart" onClick={() => deleteOrderService(attribute.id)}>
-              <Trash size="20"/>
-            </span>
+            {attribute.addOns?.map(e => <p>{formatPrice(e.addOn?.price * e.count)} تومان </p>)}
+          </span>
+
+            {/* <span className="trashCart" onClick={() => deleteOrderService(attribute.id)}> */}
+            {/*   <Trash size="20"/> */}
+            {/* </span> */}
           </span>
         </span>
       ))}
       <span className="orderInfo">
-        <p>هزینه ایاب ذهاب</p>
+        <p> ایاب ذهاب</p>
         <p>{formatPrice(100000)} تومان</p>
       </span>
       {item.discountAmount &&
@@ -84,11 +93,17 @@ const CartItem = ({ item }: comps.ICartItem) => {
           <MapPin size={20}/>
           {item.address?.title}
         </span>
+        <div className='orderInfoCol'>
         <span className="orderInfoIcon">
-          {item.fromTime + ' - ' + item.toTime}{' '}
           {item.date}
           <Calendar size={20}/>
         </span>
+          <span className="orderInfoIcon">
+          {item.fromTime}{' '}
+            <TimerOutlined style={{ width: 20}}/>
+        </span>
+        </div>
+
       </span>
     </article>
   );

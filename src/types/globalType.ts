@@ -44,6 +44,7 @@ namespace globalType {
     transportation: number | string;
     status: 'ACCEPTED' | 'PAID' | 'Done' | 'CREATED' | 'ASSIGNED' | 'Canceled';
     worker: User;
+    serviceId: number;
     service: Service;
     attribute?: Service;
     address?: Address;
@@ -52,6 +53,7 @@ namespace globalType {
     done: boolean;
     isUrgent: boolean;
     orderServices?: OrderService[];
+    isFeedbacked: boolean
   }
 
   export interface User {
@@ -90,6 +92,7 @@ namespace globalType {
     description: string;
   }
   export interface OrderService {
+    id: number;
     serviceId: number;
     orderId: number;
     mediaId: number | null;
@@ -98,12 +101,23 @@ namespace globalType {
     pinterest: string | null;
     date: string | null;
     time: number | null;
+    isAddOn: boolean;
     order: Order;
     colors: Color[];
     service: Service;
+    addOns: OrderServiceAddOn[]
   };
 
-export interface ICartSlice {
+  export interface OrderServiceAddOn {
+    price: number;
+    singlePrice: number;
+    count: number;
+    addOnId: number;
+    orderServiceId: number;
+    addOn: Service;
+  };
+
+  export interface ICartSlice {
     cartItems: Order[];
   }
 }

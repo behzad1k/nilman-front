@@ -10,9 +10,9 @@ import { api } from '../../../services/http';
 import { SET_LOADING } from '../../../services/redux/reducers/loadingSlice';
 import { addresses } from '../../../services/redux/reducers/userSlice';
 import { useAppDispatch, useAppSelector } from '../../../services/redux/store';
-import global from 'src/types/globalType.ts';
+import globalType from '../../../types/globalType';
 
-const defaultPosition: globalEnum.IPosition = {
+const defaultPosition: globalType.Position = {
   lat: '35.80761631591913',
   lng: '51.4319429449887'
 };
@@ -25,7 +25,7 @@ const AddressManage = () => {
   const address = userReducer.addresses.find(e => e.id == Number(paramId));
   const [step, setStep] = useState(1);
 
-  const [position, setPosition] = useState<globalEnum.IPosition>(address?.longitude && address?.longitude ? {
+  const [position, setPosition] = useState<globalType.Position>(address?.longitude && address?.longitude ? {
     lat: address?.latitude,
     lng: address?.longitude
   } : defaultPosition);
@@ -36,7 +36,8 @@ const AddressManage = () => {
     // postalCode: address?.postalCode,
     pelak: address?.pelak,
     vahed: address?.vahed,
-    districtId: address?.districtId
+    districtId: address?.districtId,
+    floor: address?.floor
   });
 
   const submit = async () => {
@@ -88,7 +89,8 @@ const AddressManage = () => {
         vahed: form?.vahed,
         longitude: position.lng,
         latitude: position.lat,
-        district: form?.districtId
+        district: form?.districtId,
+        floor: form?.floor
       }
     }, true);
 
@@ -203,6 +205,25 @@ const AddressManage = () => {
                 onChange={(input) => setForm(prev => ({
                   ...prev,
                   vahed: input.target.value
+                }))}
+                variant="outlined"
+                className="textInput half"
+                required
+
+              /><TextField
+                // helperText={!form.vahed && 'لطفا واحد را وارد کنید'}
+                onInvalid={(e) => {
+                  // @ts-ignore
+                  document.getElementById('vahed-textfield').setCustomValidity('لطفا واحد را وارد کنید');
+                }}
+                id="vahed-textfield"
+                onError={(e) => console.log(e)}
+                size="small"
+                value={form?.floor}
+                label="طبقه"
+                onChange={(input) => setForm(prev => ({
+                  ...prev,
+                  floor: input.target.value
                 }))}
                 variant="outlined"
                 className="textInput half"

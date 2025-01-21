@@ -10,13 +10,12 @@ export function ProfileCard() {
       <div className="profileCardContainer">
         <div className="profileCardDetails">
           <span className="iconInput">
-            {profile.name || 'نام'}
-          </span>
-          <span className="iconInput">
-            {profile.lastName || 'نام خانوادگی'}
+            {profile.name + " " + profile.lastName || 'نام خانوادگی'}
           </span>
           <span className="iconInput">
             {profile.nationalCode || 'کد ملی'}
+          </span><span className="iconInput">
+            {profile.phoneNumber || 'شماره تلفن'}
           </span>
         </div>
         <div className="profileCardPicture">

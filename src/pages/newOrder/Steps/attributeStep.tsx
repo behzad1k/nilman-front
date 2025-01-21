@@ -1,11 +1,11 @@
 import { DeleteOutline } from '@mui/icons-material';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
-import { useAppSelector } from '../../services/redux/store';
-import comp from '../../types/comp';
-import globalType from '../../types/globalType';
-import { findAncestors } from '../../utils/utils';
-import SecAttrDrawer from './secAttrDrawer';
+import { useAppSelector } from '../../../services/redux/store';
+import comp from '../../../types/comp';
+import globalType from '../../../types/globalType';
+import { findAncestors } from '../../../utils/utils';
+import SecAttrDrawer from '../Drawers/secAttrDrawer';
 import IAttributeStep = comp.IAttributeStep;
 
 export default function AttributeStep({
@@ -46,19 +46,15 @@ export default function AttributeStep({
     e.stopPropagation();
     cardRef.current[index]?.classList.remove('selected');
 
-    let slugsToRemove = [attribute.slug];
+    let slugsToRemove = [attribute.id];
     if (attribute.attributes) {
-      slugsToRemove = [...slugsToRemove, ...attribute.attributes.map((atr) => atr.slug)];
+      slugsToRemove = [...slugsToRemove, ...attribute.attributes.map((atr) => atr.id)];
     }
     setSelected((prev: globalType.Form) => {
-      const newSelectedAttrs = prev.attributes.filter(
-        (selected) => !slugsToRemove.includes(selected.slug),
-      );
-      if (newSelectedAttrs.length === 0) setIsNextStepAllowed(false);
-      return {
-        ...prev,
-        attributes: newSelectedAttrs
-      };
+      const cp = { ...prev };
+      slugsToRemove.map(e => delete cp.options[e]);
+      if (Object.keys(cp).length === 0) setIsNextStepAllowed(false);
+      return cp;
     });
   };
 
@@ -67,9 +63,9 @@ export default function AttributeStep({
   }, [drawerOpen]);
 
   useEffect(() => {
-    if (selected.attributes?.length > 0) setIsNextStepAllowed(true);
+    if (Object.keys(selected.options)?.length > 0) setIsNextStepAllowed(true);
     else setIsNextStepAllowed(false);
-  }, []);
+  }, [JSON.stringify(selected.options)]);
 
   return (
     <div className="service-step-container">
@@ -80,7 +76,7 @@ export default function AttributeStep({
             ref={(el) => (cardRef.current[index] = el)}
             onClick={() => handleSelectAttribute(index, attribute)}
             className={`card ${
-              attribute.attributes?.find(e => selected?.attributes?.map(p => p.id)?.includes(e.id)) ? 'selected' : ''
+              Object.keys(selected.options)?.find(e => attribute.id.toString() == e || findAncestors(services, e)?.map(k => k?.id)?.includes(attribute.id)) ? 'selected' : ''
             } ${index % 2 == 0 ? 'reversed' : ''}`}
           >
             <img src={'/img/' + attribute.slug + '.png'}/>

@@ -1,6 +1,6 @@
 import { Box, Container, Tab, Tabs, Typography } from '@mui/material';
 import { useState } from 'react';
-import globalType from '../../types/globalType.ts';
+import globalType from '../../types/globalType';
 import emptyList from '../../assets/img/svg/emptylist.svg';
 import { useAppSelector } from '../../services/redux/store';
 import Cart from './cart';

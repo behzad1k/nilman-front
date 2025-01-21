@@ -8,9 +8,11 @@ import NewOrder from '../pages/newOrder/newOrder';
 import Orders from '../pages/orders/orders';
 import Payment from '../pages/payment/Payment';
 import Privacy from '../pages/privacy';
+import Address from '../pages/profile/Address/Address';
 import AddressManage from '../pages/profile/AddressManage';
 import EditProfile from '../pages/profile/EditProfile';
 import Profile from '../pages/profile/profile';
+import Rules from '../pages/rules';
 import { initialApis } from '../services/apis/global';
 import { AppDispatch, useAppDispatch, useAppSelector } from '../services/redux/store';
 import Layout from './layout';
@@ -43,9 +45,7 @@ export default function Website() {
       <Route
         path="/"
         element={
-          <Layout>
             <NewOrder/>
-          </Layout>
         }
       />
       <Route
@@ -74,6 +74,8 @@ export default function Website() {
       <Route path="/profile/edit" element={<EditProfile/>}/>
       <Route path="/address/edit/:id" element={<AddressManage/>}/>
       <Route path="/address/add" element={<AddressManage/>}/>
+      <Route path="/address" element={<Address/>}/>
+      <Route path="/rules" element={<Rules/>}/>
       <Route
         path="/login"
         element={

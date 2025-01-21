@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 import { toast } from 'react-toastify';
-import { useAppSelector } from '../../services/redux/store';
-import comp from '../../types/comp';
-import globalType from '../../types/globalType';
+import { useAppSelector } from '../../../services/redux/store';
+import comp from '../../../types/comp';
+import globalType from '../../../types/globalType';
 
 
 export default function ServiceStep({

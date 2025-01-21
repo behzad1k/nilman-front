@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import globalType from '../../../types/globalType.ts';
+import globalType from '../../../types/globalType';
 import {urls} from '../../endPoint';
 import {api} from '../../http';
 

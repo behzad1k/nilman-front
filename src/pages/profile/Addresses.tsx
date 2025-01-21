@@ -8,8 +8,8 @@ import { urls } from '../../services/endPoint';
 import { api } from '../../services/http';
 import { addresses } from '../../services/redux/reducers/userSlice';
 import { useAppDispatch, useAppSelector } from '../../services/redux/store';
-import comp from 'src/types/comp.ts';
-import global from 'src/types/globalType.ts';
+import comp from '../../types/comp';
+import globalType from '../../types/globalType';
 import { AddressRow } from './addressRow';
 
 export const Addresses = ({
@@ -24,7 +24,7 @@ export const Addresses = ({
     open: false,
     content: undefined
   });
-  const [selected, setSelected] = useState<globalEnum.IAddress>();
+  const [selected, setSelected] = useState<globalType.Address>();
   const [confirmModal, setConfirmModal] = useState(false);
 
   const deleteAddress = async (id) => {
@@ -46,7 +46,14 @@ export const Addresses = ({
 
   return (
     <section className="addressSection">
-      {userAddresses.map((value: globalEnum.IAddress, index) => (
+      <div className="addressContainer add" onClick={() => userReducer.isLoggedIn ? navigate('/address/add') : toast('لطفا ابتدا وارد شوید!', {
+        onClose: () => navigate('/login'),
+        type: 'error'
+      })}>
+        <PlusCircle weight={'fill'} color="green" size={20}/>
+        <Button>افزودن آدرس</Button>
+      </div>
+      {userAddresses.map((value: globalType.Address, index) => (
         <AddressRow
           isSelected={selected == value && onClick != undefined}
           address={value}
@@ -57,13 +64,7 @@ export const Addresses = ({
           setModal={setModal}
         />
       ))}
-      <div className="addressContainer add" onClick={() => userReducer.isLoggedIn ? navigate('/address/add') : toast('لطفا ابتدا وارد شوید!', {
-        onClose: () => navigate('/login'),
-        type: 'error'
-      })}>
-        <PlusCircle weight={'fill'} color="green" size={20}/>
-        <Button>افزودن آدرس</Button>
-      </div>
+
 
       <SwipeableDrawer
         anchor="bottom"

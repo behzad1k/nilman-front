@@ -1,13 +1,16 @@
 import { Button, SwipeableDrawer, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { X } from '@phosphor-icons/react';
+import { Trash, X } from '@phosphor-icons/react';
 import { useEffect, useRef, useState } from 'react';
+import Switch from 'react-ios-switch';
 import { toast } from 'react-toastify';
 import emptyCart from '../../assets/img/empty-cart.png';
 import { urls } from '../../services/endPoint';
 import { api } from '../../services/http';
 import { SET_LOADING } from '../../services/redux/reducers/loadingSlice';
 import { useAppDispatch, useAppSelector } from '../../services/redux/store';
+import { formatPrice } from '../../utils/utils';
+import cartItem from './cartItem';
 import CartItem from './cartItem';
 
 export default function Cart() {
@@ -16,6 +19,7 @@ export default function Cart() {
   const linkRef = useRef(null);
   const formRef = useRef(null);
   const apFormRef = useRef(null);
+  const userReducer = useAppSelector((state) => state.userReducer);
   const [isCredit, setIsCredit] = useState(false);
   const [creditModel, setCreditModal] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('sep');
@@ -73,8 +77,37 @@ export default function Cart() {
           {cartItems.map((order, index) => (
             <CartItem key={index} item={order}/>
           ))}
-
+          <article className="cartItemContainer">
+            <span className="orderInfo">
+              <h3>فاکتور نهایی</h3>
+            </span>
+            <span className="orderInfo">
+          <p>جمع کل </p>
+          <span className="orderInfoDelete">
+            <p>{formatPrice(cartItems.reduce((acc, curr) => acc + curr.finalPrice, 0))} تومان</p>
+          </span>
+              </span>
+            <span className="orderInfo dashedBottom">
+          <p>تخفیف</p>
+          <span className="orderInfoDelete">
+            <p>{formatPrice(cartItems.reduce((acc, curr) => acc + curr.discountAmount, 0))} تومان</p>
+          </span>
+        </span>
+            <span className="orderInfo">
+        <h4>مبلغ قابل پرداخت</h4>
+        <h4> {formatPrice(cartItems.reduce((acc, curr) => acc + curr.finalPrice, 0) - (isCredit ? userReducer.data?.walletBalance : 0))} تومان</h4>
+      </span>
+          </article>
           <a className="payLink" href="" ref={linkRef}></a>
+          {userReducer?.data?.walletBalance > 0 && (
+            <div className="cartIsCredit">
+              <span>استفاده از کیف پول {formatPrice(userReducer?.data?.walletBalance)} </span>
+              <Switch checked={isCredit}
+                      onChange={(checked) => {
+                        setIsCredit(checked)
+                      }}/>
+            </div>
+          )}
           <span className="payButtom" onClick={() => setCreditModal(true)}>
             پرداخت
           </span>
