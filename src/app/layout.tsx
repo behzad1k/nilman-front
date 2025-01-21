@@ -22,7 +22,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
             {children}
             <AppBar />
           </Box>
-          <Snow />
+          {/* <Snow /> */}
         </Box>
       {/* </PullToRefresh> */}
       {loading && <Loading/>}

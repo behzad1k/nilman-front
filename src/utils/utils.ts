@@ -1,4 +1,4 @@
-import { IService } from '../services/types';
+import { IService } from 'src/types/globalType.ts';
 
 type WorkerOff = {
   date: number;

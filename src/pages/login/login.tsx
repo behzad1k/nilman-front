@@ -104,7 +104,7 @@ export default function Login() {
           });
           toast('خوش آمدید', { type: 'success' });
           await userApis(dispatch);
-          navigate(`${localStorage.getItem('new-order') ? '/' : '/home'}`)        }
+          navigate(`/`)        }
       } else {
         toast('کد وارد شده صحیح نیست', { type: 'error' });
       }
@@ -258,7 +258,7 @@ export default function Login() {
                   },
                 }}
               />
-              <span>ورود به اپلیکشن به منزله پذیرش <a className='basicLink' href={'/privacy'}>قوانین حریم شخصی</a> می باشد</span>
+              <span>با ثبت نام در نیلمان،‌ <a className='basicLink' href={'/rules'}>قوانین و شرایط استفاده</a> و <a className='basicLink' href={'/privacy'}>قوانین حریم شخصی</a> می باشد</span>
               <Button
                 variant="contained"
                 type="submit"

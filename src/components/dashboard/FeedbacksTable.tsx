@@ -10,7 +10,7 @@ import {
   Button,
 } from '@mui/material';
 
-import {IOrder, IService} from '../../services/types';
+import {IOrder, IService} from 'src/types/globalType.ts';
 import moment from 'jalali-moment';
 import {formatPrice} from '../../utils/utils';
 

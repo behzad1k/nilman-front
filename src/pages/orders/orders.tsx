@@ -1,10 +1,10 @@
-import OrderCard from './orderCard';
-import Cart from './cart';
-import {IOrder, IService} from '../../services/types';
-import {Typography, Box, Container, Tabs, Tab} from '@mui/material';
-import {useAppSelector} from '../../services/redux/store';
+import { Box, Container, Tab, Tabs, Typography } from '@mui/material';
+import { useState } from 'react';
+import globalType from '../../types/globalType';
 import emptyList from '../../assets/img/svg/emptylist.svg';
-import {useState} from 'react';
+import { useAppSelector } from '../../services/redux/store';
+import Cart from './cart';
+import OrderCard from './orderCard';
 
 type ShowType = 'current' | 'previous';
 
@@ -12,9 +12,8 @@ export default function Orders() {
   const [value, setValue] = useState(0);
   const [showType, setShowType] = useState<ShowType>('current');
   const orders = [...useAppSelector((state) => state.orderReducer.orders)];
-  const userData = useAppSelector((state) => state.userReducer.data);
-  const currentOrders: IOrder[] = [];
-  const prevOrders: IOrder[] = [];
+  const currentOrders: globalType.Order[] = [];
+  const prevOrders: globalType.Order[] = [];
 
   orders.filter(e => e.status != 'Canceled').map((order) => {
     if (order.status !== 'Done') {
@@ -23,10 +22,6 @@ export default function Orders() {
       prevOrders.push(order);
     }
   });
-
-  // if (showType === 'current') {
-  //   // FILTER HERE
-  // }
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -42,37 +37,46 @@ export default function Orders() {
         alignItems: 'center',
       }}
     >
-      <Container sx={{px: '24px', display: 'flex', flexDirection: 'column', gap: 5}}>
-          <>
-            <Typography variant="h5" component="h1">لیست سفارشات</Typography>
-            <Cart />
-          </>
-        <Box component="section" sx={{display: 'flex', flexDirection: 'column', gap: 4}}>
+      <Container sx={{
+        px: '24px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 5
+      }}>
+        <>
+          <Typography variant="h5" component="h1">لیست سفارشات</Typography>
+          <Cart/>
+        </>
+        <Box component="section" sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 4
+        }}>
           <Tabs
             value={value}
             onChange={handleChange}
             indicatorColor="primary"
             variant="fullWidth"
             sx={{
-              '& .Mui-selected': {backgroundColor: 'var(--light-pink)'},
+              '& .Mui-selected': { backgroundColor: 'var(--light-pink)' },
             }}
           >
             <Tab
               onClick={() => setShowType('current')}
               label="سفارش های جاری"
-              sx={{fontSize: 16}}
+              sx={{ fontSize: 16 }}
             />
             <Tab
               onClick={() => setShowType('previous')}
               label="سفارش های پیشین"
-              sx={{fontSize: 16}}
+              sx={{ fontSize: 16 }}
             />
           </Tabs>
           {showType === 'current' ? (
             currentOrders.length > 0 ? (
               <>
-                {currentOrders.reverse().map((value: IOrder, index) => (
-                  <OrderCard item={value} key={index} />
+                {currentOrders.reverse().map((value: globalType.Order, index) => (
+                  <OrderCard item={value} key={index}/>
                 ))}
               </>
             ) : (
@@ -91,8 +95,8 @@ export default function Orders() {
             )
           ) : prevOrders.length > 0 ? (
             <>
-              {prevOrders.reverse().map((value: IOrder, index) => (
-                <OrderCard item={value} key={index} />
+              {prevOrders.reverse().map((value: globalType.Order, index) => (
+                <OrderCard item={value} key={index}/>
               ))}
             </>
           ) : (

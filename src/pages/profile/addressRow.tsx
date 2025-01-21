@@ -1,11 +1,15 @@
-import { DotsThree, HouseLine, MapTrifold, PencilLine, PhoneDisconnect } from '@phosphor-icons/react';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Map } from '../../components';
-import { MapView } from '../../components/common/map';
-import { IAddress, Position } from '../../services/types';
+import { DotsThree, Pencil } from '@phosphor-icons/react';
+import React from 'react';
+import comp from '../../types/comp';
 
-export function AddressRow({ address, isSelected, onClick , setSelected, editable = false, setModal = undefined }: {address: IAddress, isSelected: boolean, onClick?: (address: IAddress) => void, setSelected: React.Dispatch<React.SetStateAction<IAddress | undefined>>, editable?: boolean, setModal?: React.Dispatch<React.SetStateAction<any>>}) {
+export function AddressRow({
+                             address,
+                             isSelected,
+                             onClick,
+                             setSelected,
+                             editable = false,
+                             setModal = undefined
+                           }: comp.IAddressRow) {
 
   return (
     <article className={'addressContainer' + (isSelected ? ' selected' : '')} onClick={() => {
@@ -14,19 +18,24 @@ export function AddressRow({ address, isSelected, onClick , setSelected, editabl
     }}>
       {/* {isSelected && <i className="tick"></i>} */}
       <div className="addressDetails">
+        <div className="addressHeader">
         <span className="addressItem">
           {/* <HouseLine /> */}
           <h4>{address.title}</h4>
         </span>
+        {editable &&
+            <span className="addressDots">
+          <Pencil width={20} height={20} onClick={() => setModal && setModal({
+            open: true,
+            content: address
+          })}/>
+        </span>
+        }
+        </div>
         <span className="addressItem">
           {/* <MapTrifold width={30} height={30}/> */}
           <p>{address.description}</p>
         </span>
-        {editable &&
-        <span className='addressDots'>
-          <DotsThree width={40} height={40} onClick={() => setModal && setModal({ open: true, content: address })}/>
-        </span>
-        }
       </div>
     </article>
   );

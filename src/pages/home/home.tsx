@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import {initialApis} from '../../services/apis/global';
 import { useAppDispatch, useAppSelector } from '../../services/redux/store';
-import {ISliderCardInfo} from '../../services/types';
+import {ISliderCardInfo} from 'src/types/globalType.ts';
 import {Slider} from '../../components';
 import {BannerCard} from '../../components';
 import {Box, Stack, Typography} from '@mui/material';

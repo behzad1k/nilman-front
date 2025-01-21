@@ -1,34 +1,36 @@
-import {useRef, useEffect} from 'react';
+import { useRef } from 'react';
 import { toast } from 'react-toastify';
-import {useAppSelector} from '../../services/redux/store';
-import {IService} from '../../services/types';
-import {Selected} from './newOrder';
+import { useAppSelector } from '../../../services/redux/store';
+import comp from '../../../types/comp';
+import globalType from '../../../types/globalType';
 
-type Props = {
-  selected: Selected;
-  setSelected: (val: (prev: Selected) => Selected) => void;
-  setStep: (val: any) => void;
-};
 
 export default function ServiceStep({
-  selected,
-  setSelected,
-  setStep,
-}: Props) {
+                                      selected,
+                                      setSelected,
+                                      setStep,
+                                    }: comp.IServiceStep) {
   const services = useAppSelector((state) => state.serviceReducer.services);
   const cart = useAppSelector(state => state.cartReducer.cartItems);
   const cardRef = useRef<Array<HTMLElement | null>>([]);
 
-  const handleSelectService = (index: number, service: IService) => {
-    if(cart.find(e => e.serviceId == service.id)){
-      toast(`لطفا ابتدا سفارش ${service.title} فعلی خود را در سبد خرید پرداخت یا حذف کنید`)
-      return
+  const handleSelectService = (index: number, service: globalType.Service) => {
+    if (cart.find(e => e.serviceId == service.id)) {
+      toast(`لطفا ابتدا سفارش ${service.title} فعلی خود را در سبد خرید پرداخت یا حذف کنید`);
+      return;
     }
     cardRef.current.map((el, i) =>
       index === i ? el?.classList.add('selected') : el?.classList.remove('selected'),
     );
-    setSelected((prev: Selected) => ({...prev, service: service, attributes: []}));
-    setStep({ index: 1, name: 'attribute'})
+    setSelected((prev: globalType.Form) => ({
+      ...prev,
+      service: service,
+      attributes: []
+    }));
+    setStep({
+      index: 1,
+      name: 'attribute'
+    });
   };
 
   return (
@@ -41,7 +43,7 @@ export default function ServiceStep({
             onClick={() => handleSelectService(index, service)}
             className={`card service ${selected.service === service ? 'selected' : ''} ${index % 2 == 0 ? 'reversed' : ''}`}
           >
-            <img src={'/img/' + service.slug + '.png'} />
+            <img src={'/img/' + service.slug + '.png'}/>
             <p>{service.title}</p>
             {/* <i className='cardInfoIcon'></i> */}
           </div>

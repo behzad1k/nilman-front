@@ -1,5 +1,5 @@
-import { AccountBalanceWalletOutlined, PrivacyTip, PrivacyTipOutlined, WalletOutlined, WalletRounded } from '@mui/icons-material';
-import { PencilLine, SignOut } from '@phosphor-icons/react';
+import { AccountBalanceWalletOutlined, PrivacyTipOutlined } from '@mui/icons-material';
+import { MapPin, PencilLine, SignOut } from '@phosphor-icons/react';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +13,7 @@ export default function Profile() {
   const userReducer = useAppSelector((state) => state.userReducer);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const handleLogout = () => {
     sessionStorage.removeItem('new-order');
     sessionStorage.removeItem('step');
@@ -31,7 +32,7 @@ export default function Profile() {
     <main className="profileMain">
       <ProfileCard/>
       <section className="infoBox justifyCenter">
-        <div className='walletBalance'>
+        <div className="walletBalance">
           <div>
             <AccountBalanceWalletOutlined/>
             <span>موجودی کیف پول</span>
@@ -40,13 +41,17 @@ export default function Profile() {
         </div>
       </section>
       <section className="infoBox">
-        <div className="profileButton" onClick={() => navigate('/profile/edit')}>
-          <PencilLine size={20}/>
-          <span>ویرایش اطلاعات کاربری</span>
-        </div>
+        {/* <div className="profileButton" onClick={() => navigate('/profile/edit')}> */}
+        {/*   <PencilLine size={20}/> */}
+        {/*   <span>ویرایش اطلاعات کاربری</span> */}
+        {/* </div> */}
         <div className="profileButton" onClick={() => navigate('/privacy')}>
-          <PrivacyTipOutlined />
+          <PrivacyTipOutlined/>
           <span>حریم خصوصی</span>
+        </div>
+        <div className="profileButton" onClick={() => navigate('/address')}>
+          <MapPin size={25}/>
+          <span>آدرس ها</span>
         </div>
         <div className="profileButton" onClick={handleLogout}>
           <SignOut
@@ -58,8 +63,6 @@ export default function Profile() {
           <span>خروج از حساب</span>
         </div>
       </section>
-      <h3>آدرس ها</h3>
-      <Addresses editable={true} mini={true}/>
     </main>
   );
 }

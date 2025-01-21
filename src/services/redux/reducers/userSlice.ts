@@ -1,13 +1,8 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {urls} from '../../endPoint';
-import {IAddress, IUser} from '../../types';
 import {api} from '../../http';
+import globalType from '../../../types/globalType.ts';
 
-interface IUserSlice {
-  data: IUser;
-  addresses: IAddress[];
-  isLoggedIn: boolean;
-}
 
 const initialState: IUserSlice = {
   data: {
