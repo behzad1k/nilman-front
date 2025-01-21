@@ -71,12 +71,11 @@ export default function SecAttrDrawer({
       // NO COLOR - ADD TO ATTRIBUTES
     }
   };
-  console.log(selected.options);
   const handleAddAttribute = (secAttr: globalType.Service | null, color: string | null, isAddOn = false) => {
     if (!secAttr) return;
     const newAttr = { ...secAttr };
     if (color) newAttr.color = color;
-    if (!isAddOn && !Object.keys(selected.options)?.find(e => e == newAttr.id.toString()) && !(curParent || parent).isMulti && Object.keys(selected.options).find(e => services.allServices.find(j => e == j.id.toString()).parent.id == (curParent || parent).id)) {
+    if (!selected.isMulti && !isAddOn && !Object.keys(selected.options)?.find(e => e == newAttr.id.toString()) && !(curParent || parent).isMulti && Object.keys(selected.options).find(e => services.allServices.find(j => e == j.id.toString()).parent.id == (curParent || parent).id)) {
       toast(`انتخاب بیش از یک خدمت در ${(curParent || parent).title} مجاز نمی باشد`, { type: 'error' });
       return;
     }

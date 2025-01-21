@@ -209,7 +209,6 @@ export default function NewOrder() {
       isMulti: searchParams.get('isMulti') != null
     }));
   }, [searchParams]);
-  console.log(step.index);
   return (
     <>
       <WebsiteHeader onBack={step.index > 0 ? () => handleChangeStep('prev') : null}/>

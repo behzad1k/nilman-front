@@ -52,6 +52,9 @@ const AddressStep = ({selected, setSelected, setIsNextStepAllowed}) => {
                     },
                   }}
               >
+                  <MenuItem value={0}>
+                      انتخاب خودکار
+                  </MenuItem>
                 {Object.values(exWorkers)?.map((worker: any) => (
                   <MenuItem key={worker?.id} value={worker?.id}>
                     {worker?.name} {worker?.lastName}
