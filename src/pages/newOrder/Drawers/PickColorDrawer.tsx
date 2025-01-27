@@ -1,5 +1,6 @@
 import { Box, Button } from '@mui/material';
 import React from 'react';
+import { toast } from 'react-toastify';
 
 const PickColorDrawer = ({ colors, selected, setSelected, currentAttribute, pickingColor, setPickingColor, handleAddAttribute, color }) => {
   return (
@@ -7,21 +8,14 @@ const PickColorDrawer = ({ colors, selected, setSelected, currentAttribute, pick
       <p className='marginLeftAuto'> انتخاب رنگ</p>
       <div className='colorContainer'>
         {colors.map((color) =>
-          <div className={`colorRow ${selected.options[pickingColor.attr.slug]?.colors?.includes(color.slug) ? 'selected' : ''}`} key={color.slug} onClick={() => setSelected(prev => {
+          <div className={`colorRow ${selected.options[currentAttribute?.id]?.colors?.includes(color.slug) ? 'selected' : ''}`} key={color.slug} onClick={() => setSelected(prev => {
             const cp = {...prev}
 
-            if (!cp.options[currentAttribute?.id]){
-              cp.options[currentAttribute?.id] = {
-                colors: [],
-                media: undefined,
-                pinterest: ''
-              }
+            if (!cp.options[currentAttribute?.id]?.colors){
+              cp.options[currentAttribute?.id].colors = []
             }
 
             cp.options[currentAttribute?.id].colors = cp.options[currentAttribute?.id].colors?.includes(color.slug) ? cp.options[currentAttribute?.id].colors.filter(e => color.slug != e) : [...cp.options[currentAttribute?.id].colors, color.slug]
-            if (cp.options[currentAttribute?.id].colors?.length == 0){
-              delete cp.options[currentAttribute?.id]
-            }
 
             return cp;
           })}>
@@ -38,7 +32,15 @@ const PickColorDrawer = ({ colors, selected, setSelected, currentAttribute, pick
           size="large"
           sx={{flex: 1, backgroundColor: '#4b794b', color: '#FFF'}}
           variant="contained"
-          onClick={() => handleAddAttribute(pickingColor.attr, color)}
+          onClick={() => {
+            if (Array.isArray(selected.options[currentAttribute?.id]?.colors)) {
+              if (selected.options[currentAttribute?.id].colors.length > 0) {
+                setPickingColor({attr: null, open: false})
+                return;
+              }
+            }
+            toast('لطفا حداقل یک رنگ را انتخاب کنید', { type: 'error' });
+          }}
         >
           تایید
         </Button>

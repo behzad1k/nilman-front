@@ -2,7 +2,6 @@ import { MenuItem } from '@mui/material';
 import moment from 'jalali-moment';
 import { ReactElement, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { SelectInput, TextInput } from '../../../components';
 import { urls } from '../../../services/endPoint';
@@ -10,29 +9,12 @@ import { api } from '../../../services/http';
 import { SET_LOADING } from '../../../services/redux/reducers/loadingSlice';
 import { useAppDispatch, useAppSelector } from '../../../services/redux/store';
 import globalType from '../../../types/globalType';
+import comp from '../../../types/comp';
 
-type Props = {
-  selected: globalType.Form;
-  setSelected: (val: (prev: globalType.Form) => globalType.Form) => void;
-  setIsNextStepAllowed: (val: boolean) => void;
-  workers: globalType.User[];
-  section?: number;
-  nearest: any;
-};
-
-type Tab = {
-  name: string;
-  index: number;
-};
-
-export default function WorkerStep({
+export default function CalenderStep({
                                      setSelected,
-                                     setIsNextStepAllowed,
-                                     workers,
-                                     nearest,
                                      selected,
-                                     section = 3,
-                                   }: Props) {
+                                   }: comp.ICalenderStep) {
   // React
   const [schedules, setSchedules] = useState<any>(undefined);
   const [calTab, setCalTab] = useState(0);
@@ -60,15 +42,15 @@ export default function WorkerStep({
         </div>
       );
     }
-
+    
     const sections = [];
-    for (let i = 8; i < 20; i = i + 2) {
+    for (let i = 8; i < 22; i = i + 2) {
       const day = moment().add(calTab, 'day').format('jYYYY/jMM/jDD');
       const disabled =
         (schedules && schedules[day] ? schedules[day].includes(i) : false) ||
         (!selected.isUrgent ? (calTab == 0) || (calTab == 1 && Number(moment().add(24, 'h').format('HH')) > i) : false) ||
         (calTab == 0 && Number(moment().format('HH')) > (i - 5)) ||
-        // (calTab == 0 && Number(moment().format('HH')) > (i - 5)) ||
+        (selected.isUrgent && calTab == 0 && Number(moment().format('HH')) >= 0 && Number(moment().format('HH')) < 8) && (i == 8 || i == 10)||
         (calTab == 1 && Number(moment().format('HH')) >= 16 && Number(moment().format('HH')) < 18 && i < 10) ||
         (calTab == 1 && Number(moment().format('HH')) >= 18 && i < 12);
       sections.push(<span className={`calSectionsSpan${(selected.time == i && selected.date == day) ? ' selected' : ''} ${disabled ? 'disabled' : ''}`} onClick={() => {

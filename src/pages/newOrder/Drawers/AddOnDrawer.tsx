@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
+import { useAppSelector } from '../../../services/redux/store';
 import { formatPrice } from '../../../utils/utils';
 
 const AddOnDrawer = ({
@@ -8,7 +9,9 @@ const AddOnDrawer = ({
                        selected,
                        setShouldPickAddOns,
                        setSelected,
+                       setPickingColor,
                      }) => {
+  const serviceReducer = useAppSelector(state => state.serviceReducer);
 
     return (
       <>
@@ -135,13 +138,15 @@ const AddOnDrawer = ({
         };
         <button className="confirmButton order" onClick={() => {
           setShouldPickAddOns(false);
-          // if (selectedAddOn.hasColor) {
-          //   // PICK COLOR FIRST
-          //   setPickingColor({
-          //     attr: selectedAddOn,
-          //     open: true
-          //   });
-          // }
+          if (selected.options[currentAttribute.id]){
+            const colorService = Object.keys(selected.options[currentAttribute.id]?.addOns).find(e => serviceReducer.allServices?.find(j => e == j.id.toString())?.hasColor);
+            if (colorService) {
+              setPickingColor({
+                attr: serviceReducer.allServices?.find(j => j.id.toString() == colorService),
+                open: true
+              });
+            }
+          }
         }}>
           ثبت
         </button>;

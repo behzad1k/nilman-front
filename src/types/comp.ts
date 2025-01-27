@@ -34,6 +34,12 @@ namespace comp {
     setModal?: React.Dispatch<React.SetStateAction<any>>
   }
 
+  export interface ICalenderStep {
+    selected: globalType.Form;
+    setSelected: (val: (prev: globalType.Form) => globalType.Form) => void;
+  }
+
+
   export interface IOrderCardProps {
     item: globalType.Order;
   }

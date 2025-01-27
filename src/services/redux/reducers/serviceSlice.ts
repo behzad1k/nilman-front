@@ -2,10 +2,10 @@ import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import { extractChildren } from '../../../utils/utils';
 import {urls} from '../../endPoint';
 import {api} from '../../http';
-import {IService} from '../../types';
+import globalType from '../../../types/globalType';
 interface serviceState {
-  services: IService[];
-  allServices: IService[];
+  services: globalType.Service[];
+  allServices: globalType.Service[];
 }
 
 const initialState: serviceState = {

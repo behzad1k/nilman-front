@@ -49,8 +49,9 @@ const AddressManage = () => {
             lat: position.lat
           }
         });
+        const districts = [1, 2, 3, 4, 5, 6, 7, 8, 22]
         if (res.code == 200) {
-          if (Number(res.data.municipality_zone) > 8 || res.data.city != 'تهران') {
+          if (!districts.includes(Number(res.data.municipality_zone)) || res.data.city != 'تهران') {
             toast('موقعیت مکانی انتخاب شده در محدوده پشتیانی نیلمان نمی باشد', { type: 'error' });
             return;
           }

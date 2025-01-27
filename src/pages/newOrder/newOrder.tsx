@@ -12,13 +12,13 @@ import { api } from '../../services/http';
 import { cart } from '../../services/redux/reducers/cartSlice';
 import { SET_LOADING } from '../../services/redux/reducers/loadingSlice';
 import { order } from '../../services/redux/reducers/orderSlice';
-import { useAppDispatch, useAppSelector } from '../../services/redux/store';
+import { AppDispatch, useAppDispatch, useAppSelector } from '../../services/redux/store';
 import comp from '../../types/comp';
 import globalType from '../../types/globalType';
 import AddressStep from './Steps/addressStep';
 import AttributeStep from './Steps/attributeStep';
 import ServiceStep from './Steps/serviceStep';
-import WorkerStep from './Steps/workerStep';
+import CalenderStep from './Steps/calenderStep';
 
 const steps: comp.ServiceStep[] = [
   {
@@ -70,7 +70,7 @@ export default function NewOrder() {
   const [isNextStepAllowed, setIsNextStepAllowed] = useState(false);
   const [step, setStep] = useState<comp.ServiceStep>(prevStep || steps[0]);
   const services = useAppSelector(state => state.serviceReducer.allServices);
-  const dispatch = useAppDispatch();
+  const dispatch: AppDispatch = useAppDispatch();
   const navigate = useNavigate();
   let [searchParams, setSearchParams] = useSearchParams();
   let selectedRef = useRef(selected);
@@ -136,7 +136,6 @@ export default function NewOrder() {
 
     dispatch(SET_LOADING(true));
     const res = await api(urls.order, reqOptions, true);
-    dispatch(SET_LOADING(false));
 
     if (Object.values(selected.options).filter((e: any) => e?.media?.data)?.length > 0) {
       const formData = new FormData();
@@ -147,6 +146,8 @@ export default function NewOrder() {
         headers: { Authorization: `Bearer ${Cookies.get('token')}` }
       });
     }
+
+    dispatch(SET_LOADING(false));
 
     if (res.code === 201) {
       localStorage.removeItem('new-order');
@@ -203,6 +204,9 @@ export default function NewOrder() {
   }, [selected.attributes]);
 
   useEffect(() => {
+    if (!searchParams.get('isUrgent')){
+      setSelected(prev => ({ ...prev, date: null, time: null }))
+    }
     setSelected(prev => ({
       ...prev,
       isUrgent: searchParams.get('isUrgent') != null,
@@ -244,12 +248,9 @@ export default function NewOrder() {
           />
         )}
         {step.name === 'worker' && (
-          <WorkerStep
+          <CalenderStep
             selected={selected}
             setSelected={setSelected}
-            workers={workers}
-            nearest={nearest}
-            setIsNextStepAllowed={setIsNextStepAllowed}
           />
         )}
         <div className="bottom-section">
@@ -272,7 +273,7 @@ export default function NewOrder() {
             </div>
             {step.index < 2 &&
             <div className="newOrderBottomButtonsRow">
-              <span>سفارش چندگانه</span>
+              <span>سفارش گروهی</span>
               <Switch
                 checked={searchParams.get('isMulti') != null}
                 onChange={(checked) => {

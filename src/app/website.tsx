@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { AppBar } from '../components';
+import { AppBar, Loading } from '../components';
 import Home from '../pages/home/home';
 import Login from '../pages/login/login';
 import Mag from '../pages/mag/mag';
@@ -19,72 +19,77 @@ import Layout from './layout';
 
 export default function Website() {
   const dispatch: AppDispatch = useAppDispatch();
+  const loading = useAppSelector((state) => state.loadingReducer.loading);
 
   useEffect(() => {
     initialApis(dispatch);
   }, []);
 
   return (
-    <Routes>
-      <Route
-        path="/home"
-        element={
-          <Layout>
-            <Home/>
-          </Layout>
-        }
-      />
-      <Route
-        path="/orders"
-        element={
-          <Layout>
-            <Orders/>
-          </Layout>
-        }
-      />
-      <Route
-        path="/"
-        element={
+    <>
+      <Routes>
+        <Route
+          path="/home"
+          element={
+            <Layout>
+              <Home/>
+            </Layout>
+          }
+        />
+        <Route
+          path="/orders"
+          element={
+            <Layout>
+              <Orders/>
+            </Layout>
+          }
+        />
+        <Route
+          path="/"
+          element={
             <NewOrder/>
-        }
-      />
-      <Route
-        path="/profile"
-        element={
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <Layout>
+              <Profile/>
+            </Layout>
+          }
+        />
+        <Route
+          path="/mag"
+          element={
+            <>
+              <Mag/>
+              <AppBar/>
+            </>
+          }
+        />
+        <Route path="/payment/verify" element={
           <Layout>
-            <Profile/>
+            <Payment/>
           </Layout>
-        }
-      />
-      <Route
-        path="/mag"
-        element={
-          <>
-            <Mag/>
-            <AppBar/>
-          </>
-        }
-      />
-      <Route path="/payment/verify" element={
-        <Layout>
-          <Payment/>
-        </Layout>
-      }/>
-      <Route path="/privacy" element={<Privacy/>}/>
-      <Route path="/profile/edit" element={<EditProfile/>}/>
-      <Route path="/address/edit/:id" element={<AddressManage/>}/>
-      <Route path="/address/add" element={<AddressManage/>}/>
-      <Route path="/address" element={<Address/>}/>
-      <Route path="/rules" element={<Rules/>}/>
-      <Route
-        path="/login"
-        element={
-          <>
-            <Login/>
-            <AppBar/>
-          </>
-        }
-      />
-    </Routes>
+        }/>
+        <Route path="/privacy" element={<Privacy/>}/>
+        <Route path="/profile/edit" element={<EditProfile/>}/>
+        <Route path="/address/edit/:id" element={<AddressManage/>}/>
+        <Route path="/address/add" element={<AddressManage/>}/>
+        <Route path="/address" element={<Address/>}/>
+        <Route path="/rules" element={<Rules/>}/>
+        <Route
+          path="/login"
+          element={
+            <>
+              <Login/>
+              <AppBar/>
+            </>
+          }
+        />
+      </Routes>
+      {loading && <Loading/>}
+    </>
+
   );
 }
