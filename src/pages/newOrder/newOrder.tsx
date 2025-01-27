@@ -119,6 +119,10 @@ export default function NewOrder() {
       toast('لطفا تاریخ و ساعت را انتخاب کنید', { type: 'error' });
       return;
     }
+    if (Object.keys(selected.options).length === 0) {
+      toast('لطفا خدمات انتخاب شده را بررسی کنید', { type: 'error' });
+      return;
+    }
     const reqOptions = {
       method: 'post',
       body: {
