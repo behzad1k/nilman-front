@@ -25,7 +25,7 @@ export const initialApis = async (dispatch: any) => {
   }
   dispatch(SET_LOADING(false));
   dispatch(colors())
-  dispatch(posts())
+  // dispatch(posts())
 
 };
 export const userApis = async (dispatch: any) => {

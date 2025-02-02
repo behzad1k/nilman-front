@@ -62,11 +62,6 @@ export default function NewOrder() {
     ...initialSelected,
     options: {}
   });
-  const [workers, setWorkers] = useState<globalType.User[] | []>([]);
-  const [nearest, setNearest] = useState<{
-    date: string;
-    workerId: number
-  } | null>(null);
   const [isNextStepAllowed, setIsNextStepAllowed] = useState(false);
   const [step, setStep] = useState<comp.ServiceStep>(prevStep || steps[0]);
   const services = useAppSelector(state => state.serviceReducer.allServices);

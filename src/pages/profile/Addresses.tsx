@@ -50,8 +50,8 @@ export const Addresses = ({
         onClose: () => navigate('/login'),
         type: 'error'
       })}>
-        <PlusCircle weight={'fill'} color="green" size={20}/>
         <Button>افزودن آدرس</Button>
+        <PlusCircle weight={'fill'} color="green" size={20}/>
       </div>
       {userAddresses.map((value: globalType.Address, index) => (
         <AddressRow

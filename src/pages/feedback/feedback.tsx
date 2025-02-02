@@ -1,4 +1,3 @@
-import { X } from '@phosphor-icons/react';
 import Cookies from 'js-cookie';
 import { FormEvent, SyntheticEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -8,26 +7,17 @@ import {TextareaAutosize} from '@mui/base/TextareaAutosize';
 import {urls} from '../../services/endPoint';
 import {api} from '../../services/http';
 import { order as orderSlice } from '../../services/redux/reducers/orderSlice';
-import { useAppSelector } from '../../services/redux/store';
-import { IOrder } from 'src/types/globalType.ts';
-import Success from './success';
 import {toast} from 'react-toastify';
 
 export default function Feedback({ order }) {
   const [rate, setRate] = useState(0);
   const [didRate, setDidRate] = useState(false);
   const [comment, setComment] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [tab, setTab] = useState('good');
   const [factors, setFactors] = useState([]);
   const [selectedFactors, setSelectedFactors] = useState([]);
   const params = useParams();
   const dispatch: any = useDispatch()
   const navigate = useNavigate();
-  const tabTitles = {
-    good: 'نقاط قوت',
-    bad: 'نقاط ضعف',
-  }
 
   const handleRate = (e: SyntheticEvent, newRate: number | null) => {
     setDidRate(true);
@@ -96,7 +86,8 @@ export default function Feedback({ order }) {
         {/* <Button sx={{ marginLeft: 'auto'}} onClick={handleSubmit}> */}
         {/*   <X size={20}/> */}
         {/* </Button> */}
-            <Typography variant="body2" lineHeight="26px" component="h2" margin={'auto'}>{order.code}</Typography>
+            <Typography variant="body2" lineHeight="26px" component="h2" margin={'auto'}>{order.service?.title}</Typography>
+            <Typography variant="body2" lineHeight="26px" component="h2" margin={'auto'}>{order.worker?.name + ' ' + order.worker?.lastName}</Typography>
             <Typography variant="body2" lineHeight="26px" component="p">
               لطفا جهت نظارت و بهبود عملکرد، تجربه خود را با ما به اشتراک بگذارید.
             </Typography>

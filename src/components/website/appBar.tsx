@@ -35,14 +35,14 @@ export function AppBar() {
             />
             <p>ثبت سفارش</p>
           </NavLink>
-          <NavLink to="/mag" className="appBarIconContainer">
-            <Newspaper
-              className="appBarIcon"
-              weight={location.pathname === '/mag' ? 'fill' : 'regular'}
-              color={location.pathname === '/mag' ? 'rgb(255,255,255)' : '#ffffff'}
-            />
-            <p>مجله</p>
-          </NavLink>
+          {/* <NavLink to="/mag" className="appBarIconContainer"> */}
+          {/*   <Newspaper */}
+          {/*     className="appBarIcon" */}
+          {/*     weight={location.pathname === '/mag' ? 'fill' : 'regular'} */}
+          {/*     color={location.pathname === '/mag' ? 'rgb(255,255,255)' : '#ffffff'} */}
+          {/*   /> */}
+          {/*   <p>مجله</p> */}
+          {/* </NavLink> */}
         </>
       <NavLink
         to={userReducer.isLoggedIn ? '/profile' : '/login'}

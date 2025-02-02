@@ -23,20 +23,20 @@ export function AddressRow({
           {/* <HouseLine /> */}
           <h4>{address.title}</h4>
         </span>
-        {editable &&
-            <span className="addressDots">
-          <Pencil width={20} height={20} onClick={() => setModal && setModal({
-            open: true,
-            content: address
-          })}/>
-        </span>
-        }
         </div>
         <span className="addressItem">
           {/* <MapTrifold width={30} height={30}/> */}
           <p>{address.description}</p>
         </span>
       </div>
+      {editable &&
+          <span className="addressDots">
+          <Pencil width={20} height={20} onClick={() => setModal && setModal({
+            open: true,
+            content: address
+          })}/>
+        </span>
+      }
     </article>
   );
 }
