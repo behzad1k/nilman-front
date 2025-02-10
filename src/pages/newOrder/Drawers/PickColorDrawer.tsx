@@ -11,6 +11,9 @@ const PickColorDrawer = ({ colors, selected, setSelected, currentAttribute, pick
           <div className={`colorRow ${selected.options[currentAttribute?.id]?.colors?.includes(color.slug) ? 'selected' : ''}`} key={color.slug} onClick={() => setSelected(prev => {
             const cp = {...prev}
 
+            if (!cp.options[currentAttribute?.id]){
+              cp.options[currentAttribute?.id] = {}
+            }
             if (!cp.options[currentAttribute?.id]?.colors){
               cp.options[currentAttribute?.id].colors = []
             }
