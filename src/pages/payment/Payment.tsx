@@ -35,26 +35,28 @@ const Payment = () => {
     dispatch(SET_LOADING(false));
   };
   useEffect(() => {
-    const handleRequest = (event) => {
-      console.log('Event triggered:', event);
-      // Log all available data
-      console.log('Event detail:', event.detail);
-      console.log('Event data:', event.data);
-      console.log('Current URL:', window.location.href);
+    // Create a new XMLHttpRequest to read the current page's request
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', window.location.href, true);
+    xhr.onload = function() {
+      const body = xhr.responseText;
+      console.log('Request body:', body);
+      console.log(xhr);
     };
+    xhr.send();
 
-    // Try multiple events that might capture the request
-    window.addEventListener('load', handleRequest);
-    window.addEventListener('DOMContentLoaded', handleRequest);
-    window.addEventListener('submit', handleRequest);
-    window.addEventListener('message', handleRequest);
-
-    return () => {
-      window.removeEventListener('load', handleRequest);
-      window.removeEventListener('DOMContentLoaded', handleRequest);
-      window.removeEventListener('submit', handleRequest);
-      window.removeEventListener('message', handleRequest);
-    };
+    // Alternative using Fetch API
+    fetch(window.location.href, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.text())
+    .then(data => {
+      console.log('Request body from fetch:', data);
+      console.log(data);
+    });
   }, []);
 
 
