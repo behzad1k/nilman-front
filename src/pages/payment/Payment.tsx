@@ -34,6 +34,23 @@ const Payment = () => {
     }
     dispatch(SET_LOADING(false));
   };
+  useEffect(() => {
+    const handleRequest = (event) => {
+      // Access the request data from the event
+      console.log('Request received:', event);
+      const body = event.detail; // or event.data depending on how you dispatch the event
+      console.log(event.detail);
+      console.log(event.data);
+    };
+
+    // Add event listener
+    window.addEventListener('request-received', handleRequest);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('request-received', handleRequest);
+    };
+  }, []);
 
   useEffect(() => {
     if (isSuccessful) {
