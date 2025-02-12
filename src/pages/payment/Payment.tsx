@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { useRequestBody } from '../../hooks/useRequestBody';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { urls } from '../../services/endPoint';
 import { api } from '../../services/http';
 import { cart } from '../../services/redux/reducers/cartSlice';
@@ -13,9 +12,6 @@ const Payment = () => {
   const navigate = useNavigate();
   const [searchParam, setSearchParam] = useSearchParams();
   const [isSuccessful, setIsSuccessful] = useState(searchParam.get('Status') == 'OK' || searchParam.get('State') == 'OK');
-  const params = useParams();
-  const requestBody = useRequestBody();
-  console.log(requestBody);
   const send = async () => {
     dispatch(SET_LOADING(true));
 
@@ -38,41 +34,6 @@ const Payment = () => {
     }
     dispatch(SET_LOADING(false));
   };
-
-  console.log('heeeeeee');
-  useEffect(() => {
-    const handleCallback = async () => {
-      try {
-        const response = await fetch(window.location.href, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-        console.log(response);
-        const result = await response.json();
-        console.log(result);
-      } catch (error) {
-        console.log('Error fetching data:', error);
-      } finally {
-        console.log('finished');
-        // setLoading(false);
-      }
-      // if (window.performance.getEntriesByType("navigation")[0]?.type === "navigate") {
-      //   const request = window.performance.getEntriesByType("resource")
-      //   .find(entry => entry?.initiatorType === "fetch");
-      //
-      //   if (request) {
-      //     console.log(request);
-      //     const requestData = request.toJSON();
-      //     console.log(requestData);
-      //   }
-      // }
-    };
-
-    handleCallback();
-  }, []);
-
 
   useEffect(() => {
     if (isSuccessful) {
