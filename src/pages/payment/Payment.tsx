@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { urls } from '../../services/endPoint';
 import { api } from '../../services/http';
 import { cart } from '../../services/redux/reducers/cartSlice';
@@ -12,6 +12,9 @@ const Payment = () => {
   const navigate = useNavigate();
   const [searchParam, setSearchParam] = useSearchParams();
   const [isSuccessful, setIsSuccessful] = useState(searchParam.get('Status') == 'OK' || searchParam.get('State') == 'OK');
+  const params = useParams();
+  console.log(params);
+  console.log(params.ReturningParams);
 
   const send = async () => {
     dispatch(SET_LOADING(true));
