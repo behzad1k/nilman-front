@@ -14,7 +14,8 @@ const Payment = () => {
   const [searchParam, setSearchParam] = useSearchParams();
   const [isSuccessful, setIsSuccessful] = useState(searchParam.get('Status') == 'OK' || searchParam.get('State') == 'OK');
   const params = useParams();
-
+  const requestBody = useRequestBody();
+  console.log(requestBody);
   const send = async () => {
     dispatch(SET_LOADING(true));
 
@@ -37,6 +38,7 @@ const Payment = () => {
     }
     dispatch(SET_LOADING(false));
   };
+
   console.log('heeeeeee');
   useEffect(() => {
     const handleCallback = async () => {
