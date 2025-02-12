@@ -40,7 +40,7 @@ const Payment = () => {
     document.addEventListener('DOMContentLoaded', () => {
       // The request body data is typically available in a hidden input field
       // that the bank adds to the page
-      const hiddenField = document.querySelector('input[name="referenceID"]');
+      const hiddenField = document.querySelector('input[name="ReturningParams"]');
       if (hiddenField) {
         console.log(hiddenField);
       }
@@ -49,7 +49,7 @@ const Payment = () => {
     document.addEventListener('load', () => {
       // The request body data is typically available in a hidden input field
       // that the bank adds to the page
-      const hiddenField = document.querySelector('input[name="referenceID"]');
+      const hiddenField = document.querySelector('input[name="ReturningParams"]');
       if (hiddenField) {
         console.log(hiddenField);
       }
