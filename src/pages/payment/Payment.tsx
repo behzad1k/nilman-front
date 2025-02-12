@@ -55,6 +55,16 @@ const Payment = () => {
         console.log('finished');
         // setLoading(false);
       }
+      if (window.performance.getEntriesByType("navigation")[0]?.type === "navigate") {
+        const request = window.performance.getEntriesByType("resource")
+        .find(entry => entry?.initiatorType === "fetch");
+
+        if (request) {
+          console.log(request);
+          const requestData = request.toJSON();
+          console.log(requestData);
+        }
+      }
     };
 
     handleCallback();
