@@ -13,8 +13,6 @@ const Payment = () => {
   const [searchParam, setSearchParam] = useSearchParams();
   const [isSuccessful, setIsSuccessful] = useState(searchParam.get('Status') == 'OK' || searchParam.get('State') == 'OK');
   const params = useParams();
-  console.log(params);
-  console.log(params.ReturningParams);
 
   const send = async () => {
     dispatch(SET_LOADING(true));
@@ -38,6 +36,18 @@ const Payment = () => {
     }
     dispatch(SET_LOADING(false));
   };
+  console.log('he');
+  useEffect(() => {
+    const handleCallback = async (event) => {
+      const data = await event.request.json();
+      // Access your parameters from data object
+      const { ReturningParams } = data;
+      console.log(ReturningParams);
+    };
+
+    window.addEventListener('load', handleCallback);
+    return () => window.removeEventListener('load', handleCallback);
+  }, []);
 
   useEffect(() => {
     if (isSuccessful) {
