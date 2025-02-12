@@ -46,6 +46,7 @@ const Payment = () => {
             'Content-Type': 'application/json'
           }
         });
+        console.log(response);
         const result = await response.json();
         console.log(result);
       } catch (error) {
