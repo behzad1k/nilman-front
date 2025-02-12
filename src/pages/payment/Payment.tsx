@@ -36,18 +36,29 @@ const Payment = () => {
     }
     dispatch(SET_LOADING(false));
   };
-  console.log('he');
+  console.log('heeeeeee');
   useEffect(() => {
-    const handleCallback = async (event) => {
-      const data = await event.request.json();
-      // Access your parameters from data object
-      const { ReturningParams } = data;
-      console.log(ReturningParams);
+    const handleCallback = async () => {
+      try {
+        const response = await fetch(window.location.href, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        const result = await response.json();
+        console.log(result);
+      } catch (error) {
+        console.log('Error fetching data:', error);
+      } finally {
+        console.log('finished');
+        // setLoading(false);
+      }
     };
 
-    window.addEventListener('load', handleCallback);
-    return () => window.removeEventListener('load', handleCallback);
+    handleCallback();
   }, []);
+
 
   useEffect(() => {
     if (isSuccessful) {
