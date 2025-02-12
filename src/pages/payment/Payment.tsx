@@ -1,6 +1,6 @@
-//@ts-nocheck
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useRequestBody } from '../../hooks/useRequestBody';
 import { urls } from '../../services/endPoint';
 import { api } from '../../services/http';
 import { cart } from '../../services/redux/reducers/cartSlice';
@@ -58,16 +58,16 @@ const Payment = () => {
         console.log('finished');
         // setLoading(false);
       }
-      if (window.performance.getEntriesByType("navigation")[0]?.type === "navigate") {
-        const request = window.performance.getEntriesByType("resource")
-        .find(entry => entry?.initiatorType === "fetch");
-
-        if (request) {
-          console.log(request);
-          const requestData = request.toJSON();
-          console.log(requestData);
-        }
-      }
+      // if (window.performance.getEntriesByType("navigation")[0]?.type === "navigate") {
+      //   const request = window.performance.getEntriesByType("resource")
+      //   .find(entry => entry?.initiatorType === "fetch");
+      //
+      //   if (request) {
+      //     console.log(request);
+      //     const requestData = request.toJSON();
+      //     console.log(requestData);
+      //   }
+      // }
     };
 
     handleCallback();
