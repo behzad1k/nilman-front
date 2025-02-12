@@ -157,7 +157,7 @@ export default function Cart() {
             alignItems="center"
             padding="0 10px"
             bgcolor={selectedPaymentMethod == 'ap' ? 'rgba(210,253,191,0.99)' : '#FFF'}
-            // onClick={() => setSelectedPaymentMethod('ap')}
+            onClick={() => setSelectedPaymentMethod('ap')}
           >
             <img className="portalImage" src="img/ap.png"/>
             <span>آسان پرداخت (بزودی)</span>
