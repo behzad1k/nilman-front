@@ -34,31 +34,27 @@ const Payment = () => {
     }
     dispatch(SET_LOADING(false));
   };
-  useEffect(() => {
-    // Create a new XMLHttpRequest to read the current page's request
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', window.location.href, true);
-    xhr.onload = function() {
-      const body = xhr.responseText;
-      console.log('Request body:', body);
-      console.log(xhr);
-    };
-    xhr.send();
 
-    // Alternative using Fetch API
-    fetch(window.location.href, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
+  useEffect(() => {
+    // Access the current document's request body
+    document.addEventListener('DOMContentLoaded', () => {
+      // The request body data is typically available in a hidden input field
+      // that the bank adds to the page
+      const hiddenField = document.querySelector('input[name="referenceID"]');
+      if (hiddenField) {
+        console.log(hiddenField);
       }
-    })
-    .then(response => response.text())
-    .then(data => {
-      console.log('Request body from fetch:', data);
-      console.log(data);
+    });
+    // Access the current document's request body
+    document.addEventListener('load', () => {
+      // The request body data is typically available in a hidden input field
+      // that the bank adds to the page
+      const hiddenField = document.querySelector('input[name="referenceID"]');
+      if (hiddenField) {
+        console.log(hiddenField);
+      }
     });
   }, []);
-
 
   useEffect(() => {
     if (isSuccessful) {
