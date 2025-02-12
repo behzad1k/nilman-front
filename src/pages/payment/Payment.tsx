@@ -36,24 +36,21 @@ const Payment = () => {
   };
 
   useEffect(() => {
-    // Access the current document's request body
-    document.addEventListener('DOMContentLoaded', () => {
-      // The request body data is typically available in a hidden input field
-      // that the bank adds to the page
-      const hiddenField = document.querySelector('input[name="ReturningParams"]');
-      if (hiddenField) {
-        console.log(hiddenField);
-      }
-    });
-    // Access the current document's request body
-    document.addEventListener('load', () => {
-      // The request body data is typically available in a hidden input field
-      // that the bank adds to the page
-      const hiddenField = document.querySelector('input[name="ReturningParams"]');
-      if (hiddenField) {
-        console.log(hiddenField);
-      }
-    });
+    // Get all hidden inputs
+    const hiddenInputs = document.querySelectorAll('input[type="hidden"]');
+    console.log('All hidden inputs:', hiddenInputs);
+
+    // Get all inputs regardless of type
+    const allInputs = document.querySelectorAll('input');
+    console.log('All inputs:', allInputs);
+
+    // Get entire form if present
+    const forms = document.querySelectorAll('form');
+    console.log('All forms:', forms);
+
+    // Log entire DOM structure
+    console.log('Full DOM:', document.documentElement.innerHTML);
+
   }, []);
 
   useEffect(() => {
