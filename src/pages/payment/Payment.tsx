@@ -36,21 +36,27 @@ const Payment = () => {
   };
   useEffect(() => {
     const handleRequest = (event) => {
-      // Access the request data from the event
-      console.log('Request received:', event);
-      const body = event.detail; // or event.data depending on how you dispatch the event
-      console.log(event.detail);
-      console.log(event.data);
+      console.log('Event triggered:', event);
+      // Log all available data
+      console.log('Event detail:', event.detail);
+      console.log('Event data:', event.data);
+      console.log('Current URL:', window.location.href);
     };
 
-    // Add event listener
-    window.addEventListener('request-received', handleRequest);
+    // Try multiple events that might capture the request
+    window.addEventListener('load', handleRequest);
+    window.addEventListener('DOMContentLoaded', handleRequest);
+    window.addEventListener('submit', handleRequest);
+    window.addEventListener('message', handleRequest);
 
-    // Cleanup
     return () => {
-      window.removeEventListener('request-received', handleRequest);
+      window.removeEventListener('load', handleRequest);
+      window.removeEventListener('DOMContentLoaded', handleRequest);
+      window.removeEventListener('submit', handleRequest);
+      window.removeEventListener('message', handleRequest);
     };
   }, []);
+
 
   useEffect(() => {
     if (isSuccessful) {
