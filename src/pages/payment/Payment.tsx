@@ -5,13 +5,15 @@ import { api } from '../../services/http';
 import { cart } from '../../services/redux/reducers/cartSlice';
 import { SET_LOADING } from '../../services/redux/reducers/loadingSlice';
 import { order } from '../../services/redux/reducers/orderSlice';
-import { useAppDispatch } from '../../services/redux/store';
+import { setPaymentData } from '../../services/redux/reducers/paymentSlice';
+import { useAppDispatch, useAppSelector } from '../../services/redux/store';
 
 const Payment = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [searchParam, setSearchParam] = useSearchParams();
   const [isSuccessful, setIsSuccessful] = useState(searchParam.get('Status') == 'OK' || searchParam.get('State') == 'OK');
+  const paymentData = useAppSelector(state => state.paymentReducer.paymentData);
   const send = async () => {
     dispatch(SET_LOADING(true));
 
@@ -36,22 +38,45 @@ const Payment = () => {
   };
 
   useEffect(() => {
-    // Get all hidden inputs
-    const hiddenInputs = document.querySelectorAll('input[type="hidden"]');
-    console.log('All hidden inputs:', hiddenInputs);
+    const originalFetch = window.fetch;
+    window.fetch = async (...args) => {
+      const response = await originalFetch(...args);
+      const clone = response.clone();
+      try {
+        const body = await clone.json();
+        console.log('Payment Data:', body); // This will show your request body
+      } catch (error) {
+        console.log('Processing payment data...');
+      }
+      return response;
+    };
 
-    // Get all inputs regardless of type
-    const allInputs = document.querySelectorAll('input');
-    console.log('All inputs:', allInputs);
-
-    // Get entire form if present
-    const forms = document.querySelectorAll('form');
-    console.log('All forms:', forms);
-
-    // Log entire DOM structure
-    console.log('Full DOM:', document.documentElement.innerHTML);
-
+    return () => {
+      window.fetch = originalFetch;
+    };
   }, []);
+
+
+  console.log(paymentData);
+  useEffect(() => {
+    // Intercept and capture the POST request
+    const originalFetch = window.fetch;
+    window.fetch = async (...args) => {
+      const response = await originalFetch(...args);
+      const clone = response.clone();
+      try {
+        const body = await clone.json();
+        dispatch(setPaymentData(body));
+      } catch (error) {
+        console.log('Processing payment data...');
+      }
+      return response;
+    };
+
+    return () => {
+      window.fetch = originalFetch;
+    };
+  }, [dispatch]);
 
   useEffect(() => {
     if (isSuccessful) {

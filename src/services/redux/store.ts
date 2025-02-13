@@ -7,6 +7,7 @@ import orderReducer from './reducers/orderSlice';
 import cartReducer from './reducers/cartSlice';
 import loadingReducer from './reducers/loadingSlice';
 import globalReducer from './reducers/globalSlice';
+import paymentReducer from './reducers/paymentSlice';
 
 const rootReducer = combineReducers({
   userReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   cartReducer,
   loadingReducer,
   globalReducer,
+  paymentReducer,
 });
 
 const store = configureStore({
