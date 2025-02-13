@@ -81,13 +81,14 @@ export default function CalenderStep({
 
     const reqBody = {
       method: 'POST',
-      body: { attributes: selected.attributes.map(e => e.id) }
+      body: { attributes: Object.keys(selected.options) }
     };
     if (id) {
       reqBody.body['workerId'] = id;
     }
 
     const res = await api(urls.workersOffs, reqBody, true);
+
     if (res.code === 200) {
       setSchedules(res.data);
     }
