@@ -5,23 +5,22 @@ import { api } from '../../services/http';
 import { cart } from '../../services/redux/reducers/cartSlice';
 import { SET_LOADING } from '../../services/redux/reducers/loadingSlice';
 import { order } from '../../services/redux/reducers/orderSlice';
-import { setPaymentData } from '../../services/redux/reducers/paymentSlice';
-import { useAppDispatch, useAppSelector } from '../../services/redux/store';
+import { useAppDispatch } from '../../services/redux/store';
 
 const Payment = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [searchParam, setSearchParam] = useSearchParams();
-  const [isSuccessful, setIsSuccessful] = useState(searchParam.get('Status') == 'OK' || searchParam.get('State') == 'OK');
-  const paymentData = useAppSelector(state => state.paymentReducer.paymentData);
+  const [isSuccessful, setIsSuccessful] = useState(searchParam.get('Status') == 'OK' || searchParam.get('State') == 'OK' || searchParam.get('PayGateTranID') != null);
+
   const send = async () => {
     dispatch(SET_LOADING(true));
 
     const res = await api(urls.paymentVerify, {
       method: 'POST',
       body: {
-        authority: searchParam.get('Authority') || searchParam.get('Token'),
-        status: searchParam.get('Status') || searchParam.get('State'),
+        authority: searchParam.get('Authority') || searchParam.get('Token') || searchParam.get('ReturningParams'),
+        status: searchParam.get('Status') || searchParam.get('State') || searchParam.get('PayGateTranID') != null,
         terminalId: searchParam.get('TerminalId'),
         refNum: searchParam.get('RefNum')
       }
@@ -36,47 +35,6 @@ const Payment = () => {
     }
     dispatch(SET_LOADING(false));
   };
-
-  useEffect(() => {
-    const originalFetch = window.fetch;
-    window.fetch = async (...args) => {
-      const response = await originalFetch(...args);
-      const clone = response.clone();
-      try {
-        const body = await clone.json();
-        console.log('Payment Data:', body); // This will show your request body
-      } catch (error) {
-        console.log('Processing payment data...');
-      }
-      return response;
-    };
-
-    return () => {
-      window.fetch = originalFetch;
-    };
-  }, []);
-
-
-  console.log(paymentData);
-  useEffect(() => {
-    // Intercept and capture the POST request
-    const originalFetch = window.fetch;
-    window.fetch = async (...args) => {
-      const response = await originalFetch(...args);
-      const clone = response.clone();
-      try {
-        const body = await clone.json();
-        dispatch(setPaymentData(body));
-      } catch (error) {
-        console.log('Processing payment data...');
-      }
-      return response;
-    };
-
-    return () => {
-      window.fetch = originalFetch;
-    };
-  }, [dispatch]);
 
   useEffect(() => {
     if (isSuccessful) {
