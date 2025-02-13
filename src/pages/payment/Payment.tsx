@@ -22,7 +22,8 @@ const Payment = () => {
         authority: searchParam.get('Authority') || searchParam.get('Token') || searchParam.get('ReturningParams'),
         status: searchParam.get('Status') || searchParam.get('State') || searchParam.get('PayGateTranID') != null,
         terminalId: searchParam.get('TerminalId'),
-        refNum: searchParam.get('RefNum')
+        refNum: searchParam.get('RefNum'),
+        tranId: searchParam.get('PayGateTranID')
       }
     }, true);
 
