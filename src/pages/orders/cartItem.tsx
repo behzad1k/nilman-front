@@ -1,5 +1,6 @@
 import { Timer10, TimerOutlined, TimerRounded } from '@mui/icons-material';
 import { Calendar, MapPin, Trash } from '@phosphor-icons/react';
+import moment from 'jalali-moment';
 import { toast } from 'react-toastify';
 import { urls } from '../../services/endPoint';
 import { api } from '../../services/http';
@@ -76,7 +77,7 @@ const CartItem = ({ item }: comps.ICartItem) => {
       ))}
       <span className="orderInfo">
         <p> ایاب ذهاب</p>
-        <p>{formatPrice(100000)} تومان</p>
+        <p>{formatPrice(moment(item.date, 'jYYYY/jMM/jDD').unix() >= moment('1403/12/01', 'jYYYY/jMM/jDD').unix() ? 200000 : 100000)} تومان</p>
       </span>
       {item.discountAmount &&
           <span className="orderInfo">

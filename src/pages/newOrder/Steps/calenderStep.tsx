@@ -28,7 +28,7 @@ export default function CalenderStep({
   const calender = () => {
     const tabs: ReactElement[] = [];
 
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 37; i++) {
       tabs.push(
         <div className={`calTabCell${calTab == i ? ' selected' : ''}`} onClick={() => {
           setCalTab(i);
