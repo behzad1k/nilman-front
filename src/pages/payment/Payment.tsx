@@ -38,9 +38,9 @@ const Payment = () => {
   };
 
   useEffect(() => {
-    if (isSuccessful) {
+    // if (isSuccessful) {
       send();
-    }
+    // }
   }, []);
 
   return (

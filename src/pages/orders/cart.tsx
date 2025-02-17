@@ -160,7 +160,7 @@ export default function Cart() {
             onClick={() => setSelectedPaymentMethod('ap')}
           >
             <img className="portalImage" src="img/ap.png"/>
-            <span>آسان پرداخت (بزودی)</span>
+            <span>آسان پرداخت</span>
             {selectedPaymentMethod == 'ap' && <img className="checkIcon marginRightAuto" src="img/checked.png" alt="ap"/>}
           </Box>
           <Box
