@@ -50,8 +50,8 @@ export default function Cart() {
         apFormRef.current.elements.RefID.value = res.data.authority;
         setPortalToken(res.data.authority);
       } else {
-        // linkRef.current.href = res.data?.url;
-        // linkRef.current?.click();
+        linkRef.current.href = res.data?.url;
+        linkRef.current?.click();
       }
     } else {
       toast('مشکلی پیش آمده، لطفا مجددا امتحان کنید یا با اپراتور تماس بگیرید', { type: 'error' });
