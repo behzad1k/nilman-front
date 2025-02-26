@@ -15,6 +15,7 @@ import { order } from '../../services/redux/reducers/orderSlice';
 import { AppDispatch, useAppDispatch, useAppSelector } from '../../services/redux/store';
 import comp from '../../types/comp';
 import globalType from '../../types/globalType';
+import errors from '../../utils/errors';
 import AddressStep from './Steps/addressStep';
 import AttributeStep from './Steps/attributeStep';
 import ServiceStep from './Steps/serviceStep';
@@ -164,7 +165,7 @@ export default function NewOrder() {
       await new Promise(resolve => setTimeout(resolve, 300));
       navigate('/orders');
     } else {
-      toast('سفارش شما ثبت نشد, لطفا مجددا تلاش کنید.', { type: 'error' });
+      toast(errors[res.code] || 'سفارش شما ثبت نشد, لطفا مجددا تلاش کنید.', { type: 'error' });
     }
   };
 
