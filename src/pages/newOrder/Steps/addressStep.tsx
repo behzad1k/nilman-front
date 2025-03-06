@@ -8,7 +8,7 @@ import { Addresses } from '../../profile/Addresses';
 
 
 const AddressStep = ({selected, setSelected, setIsNextStepAllowed}) => {
-  const orderReducer = useAppSelector(state => state.orderReducer);
+  const userReducer = useAppSelector(state => state.userReducer);
   const {
     control,
     watch
@@ -18,15 +18,15 @@ const AddressStep = ({selected, setSelected, setIsNextStepAllowed}) => {
     setSelected((prev: globalType.Form) => ({...prev, address: address}));
     setIsNextStepAllowed(true);
   };
-  const exWorkers = {};
-  for (const exWorker of orderReducer.orders?.filter(e => e.serviceId == selected.service?.id)?.map(e => e.worker)) {
-    if (exWorker && exWorker?.id) {
-      exWorkers[exWorker.id] = exWorker;
-    }
-  }
+  const availableWorkers = userReducer.workers.filter(worker =>
+    Object.keys(selected.options).every(serviceId =>
+      worker.services.some(service => service.id == serviceId)
+    )
+  );
+
   return (
     <div className="service-step-container">
-      {orderReducer.orders?.filter(e => e.serviceId == selected?.service?.id)?.length > 0 &&
+      {availableWorkers.length > 0 && userReducer.data?.isWorkerChoosable &&
           <>
               <p className="hint-text">انتخاب از استایلیست های پیشین</p>
               <SelectInput
@@ -40,7 +40,6 @@ const AddressStep = ({selected, setSelected, setIsNextStepAllowed}) => {
                       ...prev,
                       worker: input.target.value
                     }));
-                    // fetchWorkersOff(input.target.value);
                   }}
                   size="medium"
                   sx={{
@@ -55,7 +54,7 @@ const AddressStep = ({selected, setSelected, setIsNextStepAllowed}) => {
                   <MenuItem value={0}>
                       انتخاب خودکار
                   </MenuItem>
-                {Object.values(exWorkers)?.map((worker: any) => (
+                {userReducer.workers?.map((worker: any) => (
                   <MenuItem key={worker?.id} value={worker?.id}>
                     {worker?.name} {worker?.lastName}
                   </MenuItem>

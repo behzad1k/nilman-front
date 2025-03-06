@@ -5,7 +5,7 @@ import {cart} from '../redux/reducers/cartSlice';
 import { colors, posts } from '../redux/reducers/globalSlice';
 import {order} from '../redux/reducers/orderSlice';
 import {services} from '../redux/reducers/serviceSlice';
-import { addresses, SET_LOGGED_IN, user } from '../redux/reducers/userSlice';
+import { addresses, getWorkers, SET_LOGGED_IN, user } from '../redux/reducers/userSlice';
 import {SET_LOADING} from '../redux/reducers/loadingSlice';
 
 export const initialApis = async (dispatch: any) => {
@@ -32,6 +32,7 @@ export const userApis = async (dispatch: any) => {
   await Promise.all([
     dispatch(order()),
     dispatch(cart()),
+    dispatch(getWorkers()),
     dispatch(addresses()),
   ]);
 };

@@ -1,4 +1,4 @@
-import { IService } from 'src/types/globalType.ts';
+import globalType from '../types/globalType';
 
 type WorkerOff = {
   date: number;
@@ -28,7 +28,7 @@ export const findRootCount = (arr: any[], value: any, key: string = 'id') => {
   }
   return count;
 }
-export const findAncestors = (arr: any[], value: any, key: string = 'id'): IService[] => {
+export const findAncestors = (arr: any[], value: any, key: string = 'id'): globalType.Service[] => {
   let obj = arr.find(e => e[key] == value);
   let ancestors = [obj];
 

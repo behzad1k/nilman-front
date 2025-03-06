@@ -1,10 +1,10 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {urls} from '../../endPoint';
 import {api} from '../../http';
-import globalType from '../../../types/globalType.ts';
+import globalType from '../../../types/globalType';
 
 
-const initialState: IUserSlice = {
+const initialState = {
   data: {
     id: 0,
     name: '',
@@ -12,13 +12,18 @@ const initialState: IUserSlice = {
     nationalCode: '',
     phoneNumber: '',
     role: 'USER',
-    profilePic: { url: ''}
+    profilePic: { url: ''},
+    isWorkerChoosable: false
   },
   addresses: [],
+  workers: [],
   isLoggedIn: false,
 };
 export const addresses = createAsyncThunk('address/fetchAddress', async () => {
   return await api(urls.address, {}, true);
+});
+export const getWorkers = createAsyncThunk('worker/fetchWorkers', async () => {
+  return await api(urls.userWorkers, {}, true);
 });
 
 const userSlice = createSlice({
@@ -37,6 +42,11 @@ const userSlice = createSlice({
       .addCase(addresses.fulfilled, (state, action) => {
         if (action.payload.code == 200) {
           state.addresses = action.payload.data;
+        }
+      })
+      .addCase(getWorkers.fulfilled, (state, action) => {
+        if (action.payload.code == 200) {
+          state.workers = action.payload.data;
         }
       });
   },

@@ -1,6 +1,19 @@
 {
   "short_name": "Nilman",
   "name": "Nilman",
+  "display": "standalone",
+  "protocol_handlers": [
+    {
+      "protocol": "web+yourapp",
+      "url": "/%s"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Open App",
+      "url": "/"
+    }
+  ],
   "icons": [
     {
       "src": "logo.png",
@@ -19,7 +32,6 @@
     }
   ],
   "start_url": ".",
-  "display": "standalone",
   "theme_color": "#FFFFFF",
   "background_color": "#ffffff"
 }
