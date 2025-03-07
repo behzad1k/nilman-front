@@ -121,6 +121,18 @@ s {
     /*border-bottom: var(--light-black) 1px solid;*/
 }
 
+.addressSelected {
+    width: 20px;
+    height: 20px;
+    content: url('/public/img/check-mark.png');
+}
+.addressNotSelected {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #000;
+    border-radius: 100px;
+}
+
 .backIcon {
     width: 20px;
     height: 20px;

@@ -31,7 +31,8 @@ namespace comp {
     onClick?: (address: globalType.Address) => void,
     setSelected: React.Dispatch<React.SetStateAction<globalType.Address | undefined>>,
     editable?: boolean,
-    setModal?: React.Dispatch<React.SetStateAction<any>>
+    setModal?: React.Dispatch<React.SetStateAction<any>>,
+    selectable?: boolean
   }
 
   export interface ICalenderStep {

@@ -8,7 +8,8 @@ export function AddressRow({
                              onClick,
                              setSelected,
                              editable = false,
-                             setModal = undefined
+                             setModal = undefined,
+  selectable = false
                            }: comp.IAddressRow) {
 
   return (
@@ -17,6 +18,7 @@ export function AddressRow({
       onClick && onClick(address);
     }}>
       {/* {isSelected && <i className="tick"></i>} */}
+      {selectable && <i className={isSelected ? 'addressSelected' : 'addressNotSelected'}></i>}
       <div className="addressDetails">
         <div className="addressHeader">
         <span className="addressItem">

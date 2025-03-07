@@ -46,13 +46,6 @@ export const Addresses = ({
 
   return (
     <section className="addressSection">
-      <div className="addressContainer add" onClick={() => userReducer.isLoggedIn ? navigate('/address/add') : toast('لطفا ابتدا وارد شوید!', {
-        onClose: () => navigate('/login'),
-        type: 'error'
-      })}>
-        <Button>افزودن آدرس</Button>
-        <PlusCircle weight={'fill'} color="green" size={20}/>
-      </div>
       {userAddresses.map((value: globalType.Address, index) => (
         <AddressRow
           isSelected={selected == value && onClick != undefined}
@@ -62,8 +55,16 @@ export const Addresses = ({
           onClick={onClick}
           editable={editable}
           setModal={setModal}
+          selectable={true}
         />
       ))}
+      <div className="addressContainer add" onClick={() => userReducer.isLoggedIn ? navigate('/address/add') : toast('لطفا ابتدا وارد شوید!', {
+        onClose: () => navigate('/login'),
+        type: 'error'
+      })}>
+        <Button>افزودن آدرس</Button>
+        <PlusCircle weight={'fill'} color="green" size={20}/>
+      </div>
 
 
       <SwipeableDrawer
