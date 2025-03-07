@@ -18,8 +18,8 @@ import globalType from '../../types/globalType';
 import errors from '../../utils/errors';
 import AddressStep from './Steps/addressStep';
 import AttributeStep from './Steps/attributeStep';
-import ServiceStep from './Steps/serviceStep';
 import CalenderStep from './Steps/calenderStep';
+import ServiceStep from './Steps/serviceStep';
 
 const steps: comp.ServiceStep[] = [
   {
@@ -166,6 +166,10 @@ export default function NewOrder() {
       navigate('/orders');
     } else {
       toast(errors[res.code] || 'سفارش شما ثبت نشد, لطفا مجددا تلاش کنید.', { type: 'error' });
+      if (res.code == 1015) {
+        dispatch(order());
+        dispatch(cart());
+      }
     }
   };
 
@@ -204,8 +208,12 @@ export default function NewOrder() {
   }, [selected.attributes]);
 
   useEffect(() => {
-    if (!searchParams.get('isUrgent')){
-      setSelected(prev => ({ ...prev, date: null, time: null }))
+    if (!searchParams.get('isUrgent')) {
+      setSelected(prev => ({
+        ...prev,
+        date: null,
+        time: null
+      }));
     }
     setSelected(prev => ({
       ...prev,
@@ -272,16 +280,16 @@ export default function NewOrder() {
               />
             </div>
             {step.index < 2 &&
-            <div className="newOrderBottomButtonsRow">
-              <span>سفارش گروهی</span>
-              <Switch
-                checked={searchParams.get('isMulti') != null}
-                onChange={(checked) => {
-                  checked ? searchParams.set('isMulti', '') : searchParams.delete('isMulti');
-                  setSearchParams(searchParams);
-                }}
-              />
-            </div>
+                <div className="newOrderBottomButtonsRow">
+                    <span>سفارش گروهی</span>
+                    <Switch
+                        checked={searchParams.get('isMulti') != null}
+                        onChange={(checked) => {
+                          checked ? searchParams.set('isMulti', '') : searchParams.delete('isMulti');
+                          setSearchParams(searchParams);
+                        }}
+                    />
+                </div>
             }
           </div>
           <div className="btn-section">
@@ -312,7 +320,7 @@ export default function NewOrder() {
                 color="success"
                 disabled={!isNextStepAllowed}
               >
-ادامه              </Button>
+                ادامه </Button>
             )}
           </div>
         </div>
