@@ -2,6 +2,12 @@
   "short_name": "Nilman",
   "name": "Nilman",
   "display": "standalone",
+  "scope": "/",
+  "related_applications": [{
+    "platform": "webapp",
+    "url": "https://app.nilman.co/manifest.json"
+  }],
+  "prefer_related_applications": true,
   "protocol_handlers": [
     {
       "protocol": "web+yourapp",
