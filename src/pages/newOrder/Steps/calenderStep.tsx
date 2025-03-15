@@ -47,7 +47,7 @@ export default function CalenderStep({
     for (let i = 8; i < 22; i = i + 2) {
       const day = moment().add(calTab, 'day').format('jYYYY/jMM/jDD');
       const disabled =
-        // (day == '1403/12/30') ||
+        (day == '1403/12/30') ||
         (schedules && schedules[day] ? schedules[day].includes(i) : false) ||
         (!selected.isUrgent ? (calTab == 0) || (calTab == 1 && Number(moment().add(24, 'h').format('HH')) > i) : false) ||
         (calTab == 0 && Number(moment().format('HH')) > (i - 5)) ||
