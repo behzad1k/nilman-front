@@ -24,7 +24,7 @@ export default function Cart() {
   const [creditModel, setCreditModal] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('sep');
   const [portalToken, setPortalToken] = useState('');
-
+  const finalPrice = cartItems.reduce((acc, curr) => acc + curr.finalPrice, 0);
   const pay = async () => {
     if (!selectedPaymentMethod) {
       toast('لطفا یکی از درگاه های زیر را انتخاب کنید', { type: 'error' });
@@ -69,6 +69,12 @@ export default function Cart() {
       }
     }
   }, [portalToken]);
+
+  useEffect(() => {
+    if (isCredit && userReducer?.data?.walletBalance >= finalPrice){
+      setSelectedPaymentMethod("wallet")
+    }
+  }, [isCredit]);
 
   return (
     <section className="cartContainer">
@@ -156,8 +162,8 @@ export default function Cart() {
             borderRadius="12px"
             alignItems="center"
             padding="0 10px"
-            bgcolor={selectedPaymentMethod == 'ap' ? 'rgba(210,253,191,0.99)' : '#FFF'}
-            onClick={() => setSelectedPaymentMethod('ap')}
+            bgcolor={selectedPaymentMethod == 'wallet' ? '#cecece' : (selectedPaymentMethod == 'ap' ? 'rgba(210,253,191,0.99)' : '#FFF')}
+            onClick={() => selectedPaymentMethod != 'wallet' && setSelectedPaymentMethod('ap')}
           >
             <img className="portalImage" src="img/ap.png"/>
             <span>آسان پرداخت</span>
@@ -170,8 +176,8 @@ export default function Cart() {
             borderRadius="12px"
             alignItems="center"
             padding="0 10px"
-            bgcolor={selectedPaymentMethod == 'sep' ? 'rgba(210,253,191,0.99)' : '#FFF'}
-            onClick={() => setSelectedPaymentMethod('sep')}
+            bgcolor={selectedPaymentMethod == 'wallet' ? '#cecece' : (selectedPaymentMethod == 'sep' ? 'rgba(210,253,191,0.99)' : '#FFF')}
+            onClick={() => selectedPaymentMethod != 'wallet' && setSelectedPaymentMethod('sep')}
           >
             <img className="portalImage" src="img/sep.png"/>
             <span>بانک سامان</span>
@@ -184,14 +190,29 @@ export default function Cart() {
             borderRadius="12px"
             alignItems="center"
             padding="0 10px"
-            bgcolor={selectedPaymentMethod == 'zarinpal' ? 'rgba(210,253,191,0.99)' : '#FFF'}
-            onClick={() => setSelectedPaymentMethod('zarinpal')}
+            bgcolor={selectedPaymentMethod == 'wallet' ? '#cecece' : (selectedPaymentMethod == 'zarinpal' ? 'rgba(210,253,191,0.99)' : '#FFF')}
+            onClick={() => selectedPaymentMethod != 'wallet' && setSelectedPaymentMethod('zarinpal')}
           >
             <img className="portalImage" src="img/zarinpal.png"/>
             <span>زرین پال</span>
             {selectedPaymentMethod == 'zarinpal' && <img className="checkIcon marginRightAuto" src="img/checked.png" alt="zarinpal"/>}
           </Box>
-
+          {selectedPaymentMethod == 'wallet' &&
+            <Box
+              display="flex"
+              gap="10px"
+              border="1px solid grey"
+              borderRadius="12px"
+              alignItems="center"
+              padding="0 10px"
+              bgcolor={selectedPaymentMethod == 'wallet' ? 'rgba(210,253,191,0.99)' : '#FFF'}
+              // onClick={() => selectedPaymentMethod != 'wallet' && setSelectedPaymentMethod('zarinpal')}
+            >
+              <img className="portalImage" src="img/wallet.png"/>
+              <span>کیف پول</span>
+              <img className="checkIcon marginRightAuto" src="img/checked.png" alt="zarinpal"/>
+            </Box>
+          }
           {/* sep submit form */}
           <form
             action="https://asan.shaparak.ir"
