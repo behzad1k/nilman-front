@@ -95,7 +95,7 @@ export default function Cart() {
         </span>
             <span className="orderInfo">
         <h4>مبلغ قابل پرداخت</h4>
-        <h4> {formatPrice(cartItems.reduce((acc, curr) => acc + curr.finalPrice, 0) - (isCredit ? userReducer.data?.walletBalance : 0))} تومان</h4>
+        <h4> {formatPrice(cartItems.reduce((acc, curr) => acc + curr.finalPrice, 0) - (isCredit ? userReducer.data?.walletBalance : 0) < 0 ? 0 : (cartItems.reduce((acc, curr) => acc + curr.finalPrice, 0) - (isCredit ? userReducer.data?.walletBalance : 0)))} تومان</h4>
       </span>
           </article>
           <a className="payLink" href="" ref={linkRef}></a>
