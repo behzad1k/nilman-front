@@ -10,10 +10,12 @@ import { SET_LOADING } from '../../../services/redux/reducers/loadingSlice';
 import { useAppDispatch, useAppSelector } from '../../../services/redux/store';
 import globalType from '../../../types/globalType';
 import comp from '../../../types/comp';
+import errors from '../../../utils/errors';
 
 export default function CalenderStep({
                                      setSelected,
                                      selected,
+                                       setStep,
                                    }: comp.ICalenderStep) {
   // React
   const [schedules, setSchedules] = useState<any>(undefined);
@@ -83,7 +85,7 @@ export default function CalenderStep({
 
     const reqBody = {
       method: 'POST',
-      body: { attributes: Object.keys(selected.options) }
+      body: { attributes: Object.keys(selected.options), addressId: selected.address.id },
     };
     if (id) {
       reqBody.body['workerId'] = id;
@@ -93,6 +95,13 @@ export default function CalenderStep({
 
     if (res.code === 200) {
       setSchedules(res.data);
+    } else {
+      toast(errors[res.code] || 'سفارش شما ثبت نشد, لطفا مجددا تلاش کنید.', { type: 'error' })
+      setStep({
+        index: 2,
+        name: 'address',
+      })
+
     }
     dispatch(SET_LOADING(false));
   };

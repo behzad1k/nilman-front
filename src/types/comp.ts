@@ -38,6 +38,7 @@ namespace comp {
   export interface ICalenderStep {
     selected: globalType.Form;
     setSelected: (val: (prev: globalType.Form) => globalType.Form) => void;
+    setStep: React.Dispatch<React.SetStateAction<comp.ServiceStep>>;
   }
 
 

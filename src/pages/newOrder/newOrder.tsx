@@ -259,6 +259,7 @@ export default function NewOrder() {
           <CalenderStep
             selected={selected}
             setSelected={setSelected}
+            setStep={setStep}
           />
         )}
         <div className="bottom-section">
