@@ -18,7 +18,6 @@ const AddressStep = ({selected, setSelected, setIsNextStepAllowed}) => {
     setSelected((prev: globalType.Form) => ({...prev, address: address}));
     setIsNextStepAllowed(true);
   };
-
   const availableWorkers = userReducer.workers.filter(worker =>
     Object.keys(selected.options).every(serviceId =>
       worker.services.some(service => service.id == serviceId)
@@ -55,7 +54,7 @@ const AddressStep = ({selected, setSelected, setIsNextStepAllowed}) => {
                   <MenuItem value={0}>
                       انتخاب خودکار
                   </MenuItem>
-                {userReducer.workers?.map((worker: any) => (
+                {availableWorkers?.map((worker: any) => (
                   <MenuItem key={worker?.id} value={worker?.id}>
                     {worker?.name} {worker?.lastName}
                   </MenuItem>
