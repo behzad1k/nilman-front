@@ -4,12 +4,12 @@ import {Box, Button, Typography} from '@mui/material';
 import {api} from '../../services/http';
 import {urls} from '../../services/endPoint';
 import {useForm} from 'react-hook-form';
-import {IOrder, IUser} from 'src/types/globalType.ts';
+import globalType from '../../types/globalType';
 import {MenuItem} from '@mui/material';
 
 type Props = {
-  editData: IOrder | null;
-  setEditData: (val: IOrder | null) => void;
+  editData: globalType.Order | null;
+  setEditData: (val: globalType.Order | null) => void;
   setOpenModal: (val: boolean) => void;
   fetchOrders: () => void;
 };
@@ -76,7 +76,7 @@ export function OrdersModalContent({
           defaultValue=""
           size="medium"
         >
-          {workers.map((worker: IUser) => (
+          {workers.map((worker: globalType.User) => (
             <MenuItem key={worker.id} value={worker.id}>
               {worker.name} {worker.lastName}
             </MenuItem>

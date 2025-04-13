@@ -282,7 +282,7 @@ export default function Login() {
                 gap: 6,
               }}
             >
-              <Typography component="p" variant="body2" textAlign="center">
+              <Typography component="p" variant="body2" textAlign="center" display="flex" flexDirection="row">
                 رمز یکبار مصرف به شماره
                 <Box component="span" fontSize={14} mx={0.75}>
                   {getValues().phoneNumber}
