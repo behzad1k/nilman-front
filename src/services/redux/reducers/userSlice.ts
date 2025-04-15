@@ -13,7 +13,8 @@ const initialState = {
     phoneNumber: '',
     role: 'USER',
     profilePic: { url: ''},
-    isWorkerChoosable: false
+    isWorkerChoosable: false,
+    walletBalance: 0
   },
   addresses: [],
   workers: [],
