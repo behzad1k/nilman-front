@@ -2405,6 +2405,7 @@ input[type=number] {
     .install-prompt {
         width: 85%;
     }
+}
 
 .login-container {
     display: flex;
@@ -2415,7 +2416,6 @@ input[type=number] {
     top: 0;
     left: 0;
     background-color: var(--light-pink);
-    }    
 }
 .login-box img {
     width: 64px;
@@ -2488,9 +2488,9 @@ color: var(--light-black);
 .login-nilman{
     font-family: yekan;
     color: var(--high-pink);
-    font-size: 32px;
+    font-size: 22px;
     font-weight: bold;
     display: flex;
-    margin-top: -15px;
+    margin-top: -25px;
     justify-content: center;
 }

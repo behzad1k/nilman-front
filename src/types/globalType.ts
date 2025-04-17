@@ -120,6 +120,28 @@ namespace globalType {
   export interface ICartSlice {
     cartItems: Order[];
   }
+  export type LoginState = 'phoneNumber' | 'otp' | 'complete-profile';
+
+  export interface LoginForm {
+    phoneNumber: string;
+    otp?: string;
+    name?: string;
+    lastName?: string;
+    nationalCode?: string;
+    birthday?: string;
+  }
+
+  export interface ApiResponse {
+    code: number;
+    token?: string;
+    data?: {
+      token?: string;
+      user?: {
+        isVerified?: boolean;
+      };
+    };
+  }
+
 }
 
 export default globalType;

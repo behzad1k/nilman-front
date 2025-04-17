@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { AppBar, Loading } from '../components';
 import InstallPrompt from '../components/common/InstallPrompt';
 import Home from '../pages/home/home';
-import Login from '../pages/login/login';
+import Login from '../pages/login';
 import Mag from '../pages/mag/mag';
 import NewOrder from '../pages/newOrder/newOrder';
 import Orders from '../pages/orders/orders';
