@@ -1,16 +1,15 @@
 import {ReactElement} from 'react';
-import {ISliderCardInfo} from 'src/types/globalType.ts';
 import {SliderCard} from './SliderCard';
 
 type IProps = {
   title: string;
-  cardInfos: ISliderCardInfo[];
+  cardInfos: any[];
 };
 export function Slider({title, cardInfos}: IProps) {
   const renderSliderCards = () => {
     const rows: ReactElement[] = [];
 
-    cardInfos.map((value: ISliderCardInfo, index) => {
+    cardInfos.map((value: any, index) => {
       rows.push(<SliderCard url={value.url} title={value.title} key={index}/>);
     });
 

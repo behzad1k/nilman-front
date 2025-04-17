@@ -71,6 +71,7 @@ body {
     /*  rgba(250, 234, 214, 0.65)*/
     /*);*/
 }
+
 body::before {
     content: '';
     position: fixed;
@@ -85,6 +86,7 @@ body::before {
     opacity: 0.5; /* Change this value between 0 and 1 */
     z-index: -1;
 }
+
 a {
     color: inherit;
     text-decoration: none;
@@ -141,6 +143,7 @@ s {
     height: 20px;
     content: url('/public/img/check-mark.png');
 }
+
 .addressNotSelected {
     width: 20px;
     height: 20px;
@@ -433,8 +436,8 @@ main {
 .orderInfoCol {
     display: flex;
     flex-direction: column;
-    justify-content: start;
-    align-items: end;
+    justify-content: flex-start;
+    align-items: flex-end;
 }
 
 .orderInfoIcon {
@@ -960,7 +963,7 @@ main {
     background-color: var(--mid-pink);
     border-radius: 12px;
     border: 0;
-    align-self: end;
+    align-self: flex-end;
     font-family: inherit;
 }
 
@@ -2274,6 +2277,7 @@ input[type=number] {
 .addressPage {
     padding: 100px 10px;
 }
+
 .install-prompt-overlay {
     position: fixed;
     top: 0;
@@ -2327,19 +2331,21 @@ input[type=number] {
     line-height: 1.4;
 }
 
-.install-prompt-row p{
-    text-align: start;
+.install-prompt-row p {
+    text-align: flex-start;
 }
-.install-prompt-row span{
+
+.install-prompt-row span {
     color: #0288d1;
     font-size: 10px;
     padding-right: 4px;
 }
-.install-prompt-row{
+
+.install-prompt-row {
     display: flex;
     gap: 10px;
     align-items: center;
-    justify-content: start;
+    justify-content: flex-start;
 }
 
 .install-prompt-buttons {
@@ -2408,63 +2414,68 @@ input[type=number] {
 }
 
 .login-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
+    height: 75vh;
     width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: var(--light-pink);
+    padding: 0;
+    padding-block: 0;
 }
+
+.login-form {
+    height: 75vh;
+    width: 100%;
+    padding: 0;
+    padding-block: 0;
+}
+
 .login-box img {
     width: 64px;
     height: 64px;
     display: flex;
     align-self: center;
     margin-top: 4%;
-    
-}
-.login-box {
 
+}
+
+.login-box {
     display: flex;
     flex-direction: column;
-    position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     width: 100%;
-    height: 70%;
-    padding: 20px;
+    height: 100%;
+    padding: 0 20px;
+    background-color: var(--mid-pink);
+    justify-content: flex-start;
+    gap: 24px;
+
     border-top-left-radius: 32px;
     border-top-right-radius: 32px;
-    background-color: var(--mid-pink); 
-    justify-content: start;
-    gap: 24px;
-    
 }
 
 .login-block {
     width: 100%;
-    height:30%;
+    height: 30%;
     background-color: var(--light-pink);
     display: block;
 
 }
+
 .login-phone-input {
-    background-color: var(--light-pink) ;
+    background-color: var(--light-pink);
     height: 42px;
     width: 100%;
     border-radius: 8px;
     border: none;
     padding: 12px;
 }
+
 .login-phone-input::placeholder {
-font-family: yekan;
-color: var(--light-black);
+    font-family: yekan;
+    color: var(--light-black);
 }
 
-.login-span{
+.login-span {
     color: white;
 }
 
@@ -2473,19 +2484,20 @@ color: var(--light-black);
     color: white;
     font-size: 15px;
     font-weight: 700;
-    background-color: var(--high-pink) ;
+    background-color: var(--high-pink);
     height: 42px;
     width: 100%;
     border-radius: 8px;
     border: none;
 }
-.terms-condition{
+
+.terms-condition {
     text-align: right;
     margin-top: 24px;
     font-size: 14px;
 }
 
-.login-nilman{
+.login-nilman {
     font-family: yekan;
     color: var(--high-pink);
     font-size: 22px;
@@ -2493,4 +2505,8 @@ color: var(--light-black);
     display: flex;
     margin-top: -25px;
     justify-content: center;
+}
+.w-h-100pr{
+    height: 100%;
+    width: 100%;
 }

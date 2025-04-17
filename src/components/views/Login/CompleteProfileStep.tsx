@@ -89,7 +89,7 @@ export const CompleteProfileStep: React.FC<CompleteProfileStepProps> = ({
   };
 
   return (
-    <div>
+    <div className="login-box">
       <input
         placeholder="نام"
         {...register('name', { required: true, minLength: 3 })}

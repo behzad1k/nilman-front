@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import {ISliderCardInfo} from 'src/types/globalType.ts';
 import { Modal } from '../common/modal';
 
-export function SliderCard({url, title}: ISliderCardInfo) {
+export function SliderCard({url, title}: any) {
   const [openModal, setOpenModal] = useState(false);
   return (
     <>

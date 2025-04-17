@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Neshan from '../../../components/common/Neshan';
-import { Header } from '../../../components/website/header';
+import { Header } from '../../../components/layers/Header.tsx';
 import { urls } from '../../../services/endPoint';
 import { api } from '../../../services/http';
 import { SET_LOADING } from '../../../services/redux/reducers/loadingSlice';

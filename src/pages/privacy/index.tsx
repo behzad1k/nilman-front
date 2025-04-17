@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Header } from '../../components/website/header';
+import { Header } from '../../components/layers/Header.tsx';
 
 const Privacy = () => {
   const navigate = useNavigate();

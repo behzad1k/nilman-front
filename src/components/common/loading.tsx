@@ -1,4 +1,3 @@
-import {useAppSelector} from '../../services/redux/store';
 export function Loading() {
     return (
       <div className="loading-wrapper">

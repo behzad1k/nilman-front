@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Header } from '../../../components/website/header';
+import { Header } from '../../../components/layers/Header';
 import { urls } from '../../../services/endPoint';
 import { SET_LOADING } from '../../../services/redux/reducers/loadingSlice';
 import { user } from '../../../services/redux/reducers/userSlice';

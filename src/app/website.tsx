@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { AppBar, Loading } from '../components';
-import InstallPrompt from '../components/common/InstallPrompt';
+import { AppBar } from '../components/layers/AppBar.tsx';
+import InstallPrompt from '../components/layers/InstallPrompt';
 import Home from '../pages/home/home';
-import Login from '../pages/login';
 import Mag from '../pages/mag/mag';
 import NewOrder from '../pages/newOrder/newOrder';
 import Orders from '../pages/orders/orders';
@@ -79,15 +78,6 @@ export default function Website() {
         <Route path="/address/add" element={<AddressManage/>}/>
         <Route path="/address" element={<Address/>}/>
         <Route path="/rules" element={<Rules/>}/>
-        <Route
-          path="/login"
-          element={
-            <>
-              <Login/>
-              <AppBar/>
-            </>
-          }
-        />
       </Routes>
       <InstallPrompt />
       {/* {loading && <Loading/>} */}

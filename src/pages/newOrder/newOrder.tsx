@@ -6,7 +6,8 @@ import { useEffect, useRef, useState } from 'react';
 import Switch from 'react-ios-switch';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { AppBar, WebsiteHeader } from '../../components';
+import { AppBar } from '../../components/layers/AppBar.tsx';
+import { Header } from '../../components/layers/Header.tsx';
 import { urls } from '../../services/endPoint';
 import { api } from '../../services/http';
 import { cart } from '../../services/redux/reducers/cartSlice';
@@ -223,7 +224,7 @@ export default function NewOrder() {
   }, [searchParams]);
   return (
     <>
-      <WebsiteHeader onBack={step.index > 0 ? () => handleChangeStep('prev') : null}/>
+      <Header onBack={step.index > 0 ? () => handleChangeStep('prev') : null}/>
       <main className="newOrderMain">
         <div className="progress">
         <span

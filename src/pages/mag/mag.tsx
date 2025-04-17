@@ -1,6 +1,5 @@
 import {Box, Typography, Drawer, Container, Paper, Stack} from '@mui/material';
 import moment from 'jalali-moment';
-import { useDispatch } from 'react-redux';
 import {Swiper, SwiperSlide} from 'swiper/react';
 import {Autoplay} from 'swiper/modules';
 import 'swiper/css';
