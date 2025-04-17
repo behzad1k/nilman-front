@@ -86,7 +86,10 @@ export const OtpVerificationStep: React.FC<OtpVerificationStepProps> = ({
 
   return (
     <div className="login-box">
-      <p>
+      <img src="./img/newLogo.png" alt="Logo" />
+      <span className="login-nilman">nilman</span>
+      <h3 className="login-span">ارسال کد تایید</h3>
+      <p className="login-code-status">
         رمز یکبار مصرف به شماره
         <div>
           {getValues().phoneNumber}
@@ -99,23 +102,14 @@ export const OtpVerificationStep: React.FC<OtpVerificationStepProps> = ({
         onComplete={verifyOtp}
       />
       <div>
-        <p>
-          کد را دریافت نکردید ؟
-        </p>
-        <Button
-          fullWidth
-          variant="text"
-          sx={{ fontSize: 16 }}
-          onClick={() => setLoginState('phoneNumber')}
-        >
-          ارسال مجدد کد
-        </Button>
-        <Button
-          fullWidth
-          onClick={verifyOtp}
-        >
+        <button className="login-code-submit" type='submit'
+          onClick={verifyOtp}>
           ثبت
-        </Button>
+        </button>
+        <span className="login-resend" 
+          onClick={() => setLoginState('phoneNumber')}>
+          کد پیامکی دریافت نکرده اید؟
+        </span>
       </div>
     </div>
   );
