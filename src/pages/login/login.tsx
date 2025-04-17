@@ -1,4 +1,4 @@
-import { Box, Button, Container, SwipeableDrawer, Typography } from '@mui/material';
+import { div, Button, Container, SwipeableDrawer, Typography } from '@mui/material';
 import Cookies from 'js-cookie';
 import Picker, { MaskComponent } from 'react-simple-picker';
 import React, { CSSProperties, useEffect, useRef, useState } from 'react';
@@ -174,194 +174,65 @@ export default function Login() {
   }, [window]);
 
   return (
-    <Box
-      component="main"
-      bgcolor="white"
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh'
-      }}
-    >
-      <Container
-        sx={{
-          height: '50vh',
-          py: 4,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          gap: 4,
-        }}
-      >
-        <Typography
-          variant="h3"
-          component="h1"
-          textAlign="center"
-          color="var(--mid-pink)"
-          sx={{
-            color: '#a3238e'
-            // filter: 'drop-shadow(0px 4px 2px rgb(201, 182, 182))',
-          }}
-        >
-          nilman
-        </Typography>
-        <Box sx={{
-          display: 'grid',
-          placeItems: 'center'
-        }}>
-          {/*<Box*/}
-          {/*  p={2}*/}
-          {/*  borderRadius={50}*/}
-          {/*  sx={{backgroundColor: 'white'}}*/}
-          {/*>*/}
-          <Box width={180} height={180} component="img" src="./img/newLogo.png"/>
-          {/*</Box>*/}
-        </Box>
-      </Container>
-      <Container
-        sx={{
-          flex: 1,
-          bgcolor: 'var(--mid-pink)',
-          borderTopRightRadius: '80px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          pt: 8,
-          pb: 4,
-        }}
-      >
-        <Box
-          component="form"
-          width="100%"
+    <main>
+      <div className="login-container">
+        <div className="login-block">
+          </div>
+      <form
           onSubmit={handleSubmit(handleSubmitForm)}
           ref={formRef}
         >
+      <div>
+        
           {loginState === 'phoneNumber' ? (
-            <Box display="flex" flexDirection="column" gap={4}>
-              <TextInput
-                label="تلفن همراه"
-                name="phoneNumber"
-                control={control}
-                placeholder={'09121234567'}
-                defaultValue=""
-                size="medium"
-                autoComplete="off"
-                type="number"
-                sx={{
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'var(--mid-pink)',
-                    backgroundColor: 'var(--white-pink)',
-                    borderRadius: '10px',
-                  },
-                  '& .MuiOutlinedInput-input': {
-                    zIndex: 1,
-                  },
-                }}
-              />
-              <span>با ثبت نام در نیلمان،‌ <a className='basicLink' href={'/rules'}>قوانین و شرایط استفاده</a> و <a className='basicLink' href={'/privacy'}>قوانین حریم شخصی</a> می باشد</span>
-              <Button
-                variant="contained"
-                type="submit"
-                sx={{
-                  bgcolor: 'var(--light-pink)',
-                  py: 1,
-                  fontSize: 18,
-                  color: 'var(--light-black)',
-                  ':hover': { color: '#fff' },
-                }}
-                fullWidth
-              >
+            <div className="login-box">
+              <img src="./img/newLogo.png"/>
+              <span className="login-nilman">nilman</span>
+              <h3 className="login-span">ورود / ثبت نام</h3>
+              <input className="login-phone-input" placeholder='تلفن همراه' />
+              <button className="login-button" type="submit">
                 ارسال کد
-              </Button>
-            </Box>
+              </button>
+              <span className="terms-condition">ثبت نام در نیلمان، به منزله‌ پذیرش <a className='basicLink' href={'/rules'}>قوانین و شرایط استفاده </a> و <a className='basicLink' href={'/privacy'}>قوانین حریم شخصی</a> می باشد</span>
+
+            </div>
           ) : loginState === 'otp' ? (
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 6,
-              }}
-            >
-              <Typography component="p" variant="body2" textAlign="center" display="flex" flexDirection="row">
+            <div>
+              <p >
                 رمز یکبار مصرف به شماره
-                <Box component="span" fontSize={14} mx={0.75}>
+                <div>
                   {getValues().phoneNumber}
-                </Box>
+                </div>
                 ارسال شد
-              </Typography>
+              </p>
               <OTP
                 code={code}
                 setCode={setCode}
                 onComplete={() => handleSubmit(handleSubmitForm) as any}
               />
-              <Box>
-                <Typography
-                  color="var(--mid-pink)"
-                  textAlign="center"
-                  variant="subtitle2"
-                  mb={0}
-                >
+              <div>
+                <p>
                   کد را دریافت نکردید ؟
-                </Typography>
+                </p>
                 <Button fullWidth variant="text" sx={{ fontSize: 16 }} onClick={() => setLoginState('phoneNumber')}>
                   ارسال مجدد کد
                 </Button>
-                <Button
-                  variant="contained"
-                  type="submit"
-                  sx={{
-                    bgcolor: 'var(--light-pink)',
-                    py: 1,
-                    fontSize: 18,
-                    color: 'var(--light-black)',
-                    ':hover': { color: '#fff' },
-                  }}
-                  fullWidth
-                >ثبت</Button>
-              </Box>
-            </Box>
+                <Button fullWidth>ثبت</Button>
+              </div>
+            </div>
           ) : (
-            <Box display="flex" flexDirection="column" gap={4}>
-              <TextInput
+            <div>
+              <input
                 label="نام"
                 name="name"
-                control={control}
-                defaultValue=""
-                size="medium"
-                sx={{
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'var(--mid-pink)',
-                    backgroundColor: 'var(--white-pink)',
-                    borderRadius: '10px',
-                  },
-                  '& .MuiOutlinedInput-input': {
-                    zIndex: 1,
-                  },
-                }}
               />
-              <TextInput
+              <input
                 label="نام خانوادگی"
                 name="lastName"
-                control={control}
-                defaultValue=""
-                size="medium"
-                sx={{
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'var(--mid-pink)',
-                    backgroundColor: 'var(--white-pink)',
-                    borderRadius: '10px',
-                  },
-                  '& .MuiOutlinedInput-input': {
-                    zIndex: 1,
-                  },
-                }}
               />
-              <TextInput
+              <input
                 label="کد ملی"
                 name="nationalCode"
-                control={control}
-                defaultValue=""
-                size="medium"
                 sx={{
                   '& .MuiOutlinedInput-notchedOutline': {
                     borderColor: 'var(--mid-pink)',
@@ -407,10 +278,12 @@ export default function Login() {
               >
                 ثبت
               </Button>
-            </Box>
+            </div>
           )}
-        </Box>
-      </Container>
+        
+         </div>
+         </form>
+         </div>
     {/*   <SwipeableDrawer */}
     {/*   anchor="bottom" */}
     {/*   open={showDatePicker} */}
@@ -472,6 +345,6 @@ export default function Login() {
     {/*       /> */}
     {/*     </section> */}
     {/* </SwipeableDrawer> */}
-    </Box>
+    </main>
   );
 }

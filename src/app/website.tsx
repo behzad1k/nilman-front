@@ -90,7 +90,7 @@ export default function Website() {
         />
       </Routes>
       <InstallPrompt />
-      {loading && <Loading/>}
+      {/* {loading && <Loading/>} */}
     </>
 
   );
