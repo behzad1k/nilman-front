@@ -2442,6 +2442,8 @@ input[type=number] {
     width: 100%;
     padding: 0;
     padding-block: 0;
+    border-top-left-radius: 32px;
+    border-top-right-radius: 32px;
 }
 
 .login-form {
@@ -2463,9 +2465,6 @@ input[type=number] {
 .login-box {
     display: flex;
     flex-direction: column;
-    bottom: 0;
-    left: 0;
-    right: 0;
     width: 100%;
     height: 100%;
     padding: 20px 20px 44px;
@@ -2473,7 +2472,6 @@ input[type=number] {
     justify-content: flex-start;
     align-items: center;
     gap: 24px;
-
     border-top-left-radius: 32px;
     border-top-right-radius: 32px;
 }
