@@ -6,11 +6,13 @@ import {api} from '../../http';
 interface IGlobalSlice {
   postCategories: any[];
   colors: any[];
+  loginTicker: number;
 }
 
 const initialState: IGlobalSlice = {
   postCategories: [],
-  colors: []
+  colors: [],
+  loginTicker: 0,
 };
 export const posts = createAsyncThunk('Posts/fetchPosts', async () => {
   return await api(urls.posts, {});
@@ -27,6 +29,9 @@ const GlobalSlice = createSlice({
     SET_DATA: (state, action) => {
       state.postCategories = action.payload;
     },
+    loginTicker: (state, action: PayloadAction<number>) => {
+      state.loginTicker = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -42,7 +47,7 @@ const GlobalSlice = createSlice({
   },
 });
 
-export const {SET_DATA} = GlobalSlice.actions;
+export const {SET_DATA, loginTicker} = GlobalSlice.actions;
 
 const GlobalReducer = GlobalSlice.reducer;
 export default GlobalReducer;

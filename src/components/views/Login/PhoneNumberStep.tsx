@@ -7,6 +7,7 @@ import { api } from '../../../services/http';
 import { urls } from '../../../services/endPoint';
 import { SET_LOADING } from '../../../services/redux/reducers/loadingSlice';
 import { AppDispatch } from '../../../services/redux/store';
+import {useDrawer} from "../../layers/Drawer/DrawerContext";
 
 interface PhoneNumberStepProps {
   formMethods: UseFormReturn<globalType.LoginForm>;
@@ -22,7 +23,7 @@ export const PhoneNumberStep: React.FC<PhoneNumberStepProps> = ({
                                                                   dispatch
                                                                 }) => {
   const { handleSubmit, register } = formMethods;
-
+  const {closeDrawer} = useDrawer()
   const onSubmit = async (data: globalType.LoginForm) => {
     if (!data.phoneNumber || data.phoneNumber.length !== 11 || data.phoneNumber.charAt(0) !== '0' || data.phoneNumber.charAt(1) !== '9') {
       toast('لطفا شماره تلفن خود را به درستی وارد کنید', { type: 'warning' });
@@ -51,14 +52,20 @@ export const PhoneNumberStep: React.FC<PhoneNumberStepProps> = ({
 
   return (
     <div className="login-box">
-      <img src="./img/newLogo.png" alt="Logo" />
-      <span className="login-nilman">nilman</span>
+      <div className="login-nilman">
+        <img src="./img/newLogo.png" alt="Logo" />
+        <span>nilman</span>
+      </div>
       <h3 className="login-span">ورود / ثبت نام</h3>
       <input
         className="login-phone-input"
         placeholder="تلفن همراه"
         {...register('phoneNumber', { required: true })}
       />
+      <span className="terms-condition">
+        ثبت نام در نیلمان، به منزله‌ پذیرش <a className="basicLink" href="/rules">قوانین و شرایط استفاده</a> و <a className="basicLink" href="/privacy">قوانین حریم شخصی</a> می باشد
+      </span>
+      <div className="buttons-container">
       <button
         className="login-button"
         type="button"
@@ -66,9 +73,14 @@ export const PhoneNumberStep: React.FC<PhoneNumberStepProps> = ({
       >
         ارسال کد
       </button>
-      <span className="terms-condition">
-        ثبت نام در نیلمان، به منزله‌ پذیرش <a className="basicLink" href="/rules">قوانین و شرایط استفاده</a> و <a className="basicLink" href="/privacy">قوانین حریم شخصی</a> می باشد
-      </span>
+      <button
+        className="login-button cancel"
+        type="button"
+        onClick={() => closeDrawer()}
+      >
+        انصراف
+      </button>
+      </div>
     </div>
   );
 };
