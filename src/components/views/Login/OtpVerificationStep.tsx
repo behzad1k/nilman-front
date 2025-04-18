@@ -16,6 +16,7 @@ import Countdown from "react-countdown";
 import {AccessAlarm} from "@mui/icons-material";
 import moment from "jalali-moment";
 import {loginTicker} from "../../../services/redux/reducers/globalSlice";
+import { useDrawer } from '../../layers/Drawer/DrawerContext.tsx';
 
 interface OtpVerificationStepProps {
   formMethods: UseFormReturn<globalType.LoginForm>;
@@ -38,6 +39,8 @@ export const OtpVerificationStep: React.FC<OtpVerificationStepProps> = ({
   const globalReducer = useAppSelector(state => state.globalReducer);
   const [code, setCode] = useState<string[]>([]);
   const [startTime, setStartTime] = useState<number>(Date.now() - globalReducer.loginTicker > INTERVAL ? Date.now() : globalReducer.loginTicker)
+
+  const { closeDrawer } = useDrawer();
   const verifyOtp = async () => {
     if (!code.length) {
       toast('لطفا کد تایید را وارد کنید', {type: 'warning'});
@@ -78,7 +81,7 @@ export const OtpVerificationStep: React.FC<OtpVerificationStepProps> = ({
           }
           toast('خوش آمدید', {type: 'success'});
           await userApis(dispatch);
-          navigate('/');
+          closeDrawer()
         }
       } else {
         toast('کد وارد شده صحیح نیست', {type: 'error'});

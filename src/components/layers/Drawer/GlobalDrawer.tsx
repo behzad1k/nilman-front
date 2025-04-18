@@ -17,6 +17,9 @@ const GlobalDrawer: React.FC = () => {
       disableDiscovery={iOS}
       transitionDuration={durationTime}
       sx={{
+        '.muirtl-fy2uxz': {
+          background: 'rgba(0,0,0,0)'
+        },
         '.muirtl-9emuhu-MuiPaper-root-MuiDrawer-paper': {
           background: 'rgba(0,0,0,0)'
         }
