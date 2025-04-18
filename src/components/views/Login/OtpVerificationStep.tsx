@@ -145,7 +145,7 @@ export const OtpVerificationStep: React.FC<OtpVerificationStepProps> = ({
         <button
           className="login-button cancel"
           type="button"
-          disabled={startTime - globalReducer.loginTicker > INTERVAL}
+          disabled={startTime - globalReducer.loginTicker <= INTERVAL}
           onClick={() => setLoginState('phoneNumber')}
         >
           مرحله قبل
