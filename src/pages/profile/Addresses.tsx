@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Modal } from '../../components';
+import LoginDrawer from '../../components/drawers/LoginDrawer';
+import { useDrawer } from '../../components/layers/Drawer/DrawerContext';
 import { urls } from '../../services/endPoint';
 import { api } from '../../services/http';
 import { addresses } from '../../services/redux/reducers/userSlice';
@@ -17,6 +19,7 @@ export const Addresses = ({
                             editable = false,
                           }: comp.IAddress) => {
   const userReducer = useAppSelector((state) => state.userReducer);
+  const { openDrawer } = useDrawer();
   const userAddresses = userReducer.addresses;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -59,7 +62,7 @@ export const Addresses = ({
         />
       ))}
       <div className="addressContainer add" onClick={() => userReducer.isLoggedIn ? navigate('/address/add') : toast('لطفا ابتدا وارد شوید!', {
-        onClose: () => navigate('/login'),
+        onClose: () => openDrawer(<LoginDrawer />, 'bottom'),
         type: 'error'
       })}>
         <Button>افزودن آدرس</Button>

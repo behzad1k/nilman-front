@@ -9,7 +9,7 @@ import { PhoneNumberStep } from '../views/Login/PhoneNumberStep';
 
 const LoginDrawer: React.FC = () => {
   const [loginState, setLoginState] = useState<globalType.LoginState>(
-    (sessionStorage.getItem('login-step') as globalType.LoginState) || 'otp'
+    (sessionStorage.getItem('login-step') as globalType.LoginState) || 'phoneNumber'
   );
 
   const formRef = useRef<HTMLFormElement | null>(null);
