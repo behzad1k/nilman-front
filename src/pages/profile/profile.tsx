@@ -2,7 +2,7 @@ import { AccountBalanceWalletOutlined, PrivacyTipOutlined } from '@mui/icons-mat
 import { MapPin, PencilLine, SignOut } from '@phosphor-icons/react';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { logout } from '../../services/apis/global';
 import { useAppSelector } from '../../services/redux/store';
 import { formatPrice } from '../../utils/utils';
@@ -18,13 +18,13 @@ export default function Profile() {
     sessionStorage.removeItem('new-order');
     sessionStorage.removeItem('step');
     logout(dispatch);
-    navigate('/login');
+    navigate('/');
     window.location.reload();
   };
 
   useEffect(() => {
     if (!userReducer.isLoggedIn) {
-      navigate('/login');
+      navigate('/');
     }
   }, []);
 
@@ -45,14 +45,18 @@ export default function Profile() {
         {/*   <PencilLine size={20}/> */}
         {/*   <span>ویرایش اطلاعات کاربری</span> */}
         {/* </div> */}
-        <div className="profileButton" onClick={() => navigate('/privacy')}>
+        <NavLink className="profileButton" to="/past-orders">
+          <i className="checkoutIcon"></i>
+          <span>سفارش های پیشین</span>
+        </NavLink>
+        <NavLink className="profileButton" to="/privacy">
           <PrivacyTipOutlined/>
           <span>حریم خصوصی</span>
-        </div>
-        <div className="profileButton" onClick={() => navigate('/address')}>
+        </NavLink>
+        <NavLink className="profileButton" to="/address">
           <MapPin size={25}/>
           <span>آدرس ها</span>
-        </div>
+        </NavLink>
         <div className="profileButton" onClick={handleLogout}>
           <SignOut
             weight={'bold'}

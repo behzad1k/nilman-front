@@ -2241,6 +2241,13 @@ main {
     content: url("/public/svg/trash.svg");
 }
 
+.checkoutIcon {
+    width: 27px;
+    height: 27px;
+    color: #c89dc7;
+    content: url("/public/img/checkout.png");
+}
+
 .tablePlusIcon {
     color: #c89dc7;
     content: url("/public/svg/tablePlus.svg");

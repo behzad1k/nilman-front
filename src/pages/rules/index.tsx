@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Header } from '../../components/layers/Header.tsx';
+import { Header } from '../../components/layers/Header';
 
 const Rules = () => {
   const navigate = useNavigate();

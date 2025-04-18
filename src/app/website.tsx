@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { AppBar } from '../components/layers/AppBar.tsx';
+import { AppBar } from '../components/layers/AppBar';
 import InstallPrompt from '../components/layers/InstallPrompt';
 import Home from '../pages/home/home';
 import Mag from '../pages/mag/mag';
 import NewOrder from '../pages/newOrder/newOrder';
 import Orders from '../pages/orders/orders';
+import PastOrders from '../pages/pastOrders';
 import Payment from '../pages/payment/Payment';
 import Privacy from '../pages/privacy';
 import Address from '../pages/profile/Address/Address';
@@ -73,6 +74,7 @@ export default function Website() {
           </Layout>
         }/>
         <Route path="/privacy" element={<Privacy/>}/>
+        <Route path="/past-orders" element={<PastOrders/>}/>
         <Route path="/profile/edit" element={<EditProfile/>}/>
         <Route path="/address/edit/:id" element={<AddressManage/>}/>
         <Route path="/address/add" element={<AddressManage/>}/>
