@@ -21,6 +21,8 @@ import AddressStep from './Steps/addressStep';
 import AttributeStep from './Steps/attributeStep';
 import CalenderStep from './Steps/calenderStep';
 import ServiceStep from './Steps/serviceStep';
+import LoginDrawer from "../../components/drawers/LoginDrawer";
+import {useDrawer} from "../../components/layers/Drawer/DrawerContext";
 
 const steps: comp.ServiceStep[] = [
   {
@@ -72,7 +74,7 @@ export default function NewOrder() {
   let [searchParams, setSearchParams] = useSearchParams();
   let selectedRef = useRef(selected);
   let stepRef = useRef(step);
-
+  const { openDrawer } = useDrawer();
   const handleChangeStep = async (action: 'next' | 'prev') => {
     // handle next - prev logic
     if (action === 'next') {
@@ -80,10 +82,11 @@ export default function NewOrder() {
         localStorage.setItem('new-order', JSON.stringify(selectedRef.current));
         localStorage.setItem('step', JSON.stringify(stepRef.current));
         await new Promise(resolve => setTimeout(resolve, 300));
-        navigate('/login');
+        openDrawer(<LoginDrawer />, 'bottom')
+      }else {
+        setStep((prev) => (prev.index === steps.length - 1 ? prev : steps[prev.index + 1]));
+        setIsNextStepAllowed(false);
       }
-      setStep((prev) => (prev.index === steps.length - 1 ? prev : steps[prev.index + 1]));
-      setIsNextStepAllowed(false);
     } else if (action === 'prev') {
       if (!(selected?.attributeStep || selected?.service)) {
         localStorage.removeItem('new-order');

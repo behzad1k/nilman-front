@@ -36,7 +36,7 @@ const userSlice = createSlice({
     },
     user: (state, action: PayloadAction<any>) => {
       state.data = action.payload;
-    },
+    }
   },
   extraReducers: (builder) => {
     builder

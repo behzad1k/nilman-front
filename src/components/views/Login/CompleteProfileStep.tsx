@@ -10,6 +10,7 @@ import { urls } from '../../../services/endPoint';
 import { SET_LOADING } from '../../../services/redux/reducers/loadingSlice';
 import { AppDispatch } from '../../../services/redux/store';
 import Cookies from 'js-cookie';
+import {useDrawer} from "../../layers/Drawer/DrawerContext";
 
 interface CompleteProfileStepProps {
   formMethods: UseFormReturn<globalType.LoginForm>;
@@ -23,6 +24,7 @@ export const CompleteProfileStep: React.FC<CompleteProfileStepProps> = ({
                                                                           navigate
                                                                         }) => {
   const { register, handleSubmit } = formMethods;
+  const {closeDrawer} = useDrawer();
 
   const onSubmit = async (data: globalType.LoginForm) => {
     if (!data.name || data.name.length < 3) {
@@ -65,7 +67,7 @@ export const CompleteProfileStep: React.FC<CompleteProfileStepProps> = ({
     try {
       const res = await api(urls.updateSimpleUser, reqOptions) as globalType.ApiResponse;
 
-      if (res.code === 200) {
+      if (res.code == 200) {
         toast('اطلاعات شما با موفقیت ثبت شد، خوش آمدید', { type: 'success' });
 
         if (res.token) {
@@ -77,7 +79,7 @@ export const CompleteProfileStep: React.FC<CompleteProfileStepProps> = ({
 
         sessionStorage.removeItem('login-step');
         sessionStorage.removeItem('login-step-token');
-        navigate(localStorage.getItem('new-order') ? '/' : '/home');
+        closeDrawer();
       } else if (res.code === 1005) {
         toast('کد ملی با شماره تلفن تطابق ندارد', { type: 'error' });
       }
@@ -89,34 +91,42 @@ export const CompleteProfileStep: React.FC<CompleteProfileStepProps> = ({
   };
 
   return (
-    <div className="login-box">
-      <input
-        placeholder="نام"
+    <div className="login-box complete-step">
+      <div className="login-nilman">
+        <img src="./img/newLogo.png" alt="Logo" />
+        <span>nilman</span>
+      </div>
+      <label className="login-labels" htmlFor="name">نام</label>
+      <input id="name" className="login-phone-input"
+        placeholder="سارا"
         {...register('name', { required: true, minLength: 3 })}
       />
-      <input
-        placeholder="نام خانوادگی"
+      <label className="login-labels" htmlFor="lastName">نام خانوادگی</label>
+      <input id="lastName" className="login-phone-input"
+        placeholder="عباسی"
         {...register('lastName', { required: true, minLength: 3 })}
       />
-      <input
-        placeholder="کد ملی"
+      <label className="login-labels" htmlFor="nationalId">کد ملی</label>
+      <input id="nationalId" className="login-phone-input"
+        placeholder="4127341184"
         {...register('nationalCode', { required: true, minLength: 10, maxLength: 10 })}
       />
-      <Button
-        variant="contained"
-        type="button"
-        onClick={handleSubmit(onSubmit)}
-        sx={{
-          bgcolor: 'var(--light-pink)',
-          py: 1,
-          fontSize: 18,
-          color: 'var(--light-black)',
-          ':hover': { color: '#fff' },
-        }}
-        fullWidth
-      >
-        ثبت
-      </Button>
+      <div className="buttons-container">
+        <button
+          className="login-button"
+          type="button"
+          onClick={handleSubmit(onSubmit)}
+        >
+          تایید
+        </button>
+        <button
+          className="login-button cancel"
+          type="button"
+          onClick={() => closeDrawer()}
+        >
+          انصراف
+        </button>
+      </div>
     </div>
   );
 };

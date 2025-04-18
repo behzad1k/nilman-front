@@ -9,7 +9,7 @@ import { PhoneNumberStep } from '../views/Login/PhoneNumberStep';
 
 const LoginDrawer: React.FC = () => {
   const [loginState, setLoginState] = useState<globalType.LoginState>(
-    (sessionStorage.getItem('login-step') as globalType.LoginState) || 'phoneNumber'
+    (sessionStorage.getItem('login-step') as globalType.LoginState) || 'otp'
   );
 
   const formRef = useRef<HTMLFormElement | null>(null);
@@ -40,10 +40,9 @@ const LoginDrawer: React.FC = () => {
 
   return (
     <main className="login-container">
-      <form
+      <form className="w-h-100pr"
         onSubmit={formMethods.handleSubmit(() => {})}
         ref={formRef}
-        className="wh100pr"
       >
       {loginState === 'phoneNumber' && (
         <PhoneNumberStep
