@@ -85,7 +85,7 @@ export default function CalenderStep({
 
     const reqBody = {
       method: 'POST',
-      body: { attributes: Object.keys(selected.options), addressId: selected.address.id },
+      body: { attributes: Object.keys(selected.options), addressId: selected.address?.id },
     };
     if (id) {
       reqBody.body['workerId'] = id;

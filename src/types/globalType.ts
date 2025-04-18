@@ -102,6 +102,8 @@ namespace globalType {
     date: string | null;
     time: number | null;
     isAddOn: boolean;
+    finalPrice: number;
+    discountPrice: number;
     order: Order;
     colors: Color[];
     service: Service;

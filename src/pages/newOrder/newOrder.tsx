@@ -6,7 +6,9 @@ import { useEffect, useRef, useState } from 'react';
 import Switch from 'react-ios-switch';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import LoginDrawer from '../../components/drawers/LoginDrawer';
 import { AppBar } from '../../components/layers/AppBar';
+import { useDrawer } from '../../components/layers/Drawer/DrawerContext';
 import { Header } from '../../components/layers/Header';
 import { urls } from '../../services/endPoint';
 import { api } from '../../services/http';
@@ -21,8 +23,6 @@ import AddressStep from './Steps/addressStep';
 import AttributeStep from './Steps/attributeStep';
 import CalenderStep from './Steps/calenderStep';
 import ServiceStep from './Steps/serviceStep';
-import LoginDrawer from "../../components/drawers/LoginDrawer";
-import {useDrawer} from "../../components/layers/Drawer/DrawerContext";
 
 const steps: comp.ServiceStep[] = [
   {
@@ -78,15 +78,18 @@ export default function NewOrder() {
   const handleChangeStep = async (action: 'next' | 'prev') => {
     // handle next - prev logic
     if (action === 'next') {
-      if (step.index == 1 && !Cookies.get('token')) {
+      if (step.index == 1) {
         localStorage.setItem('new-order', JSON.stringify(selectedRef.current));
         localStorage.setItem('step', JSON.stringify(stepRef.current));
-        await new Promise(resolve => setTimeout(resolve, 300));
-        openDrawer(<LoginDrawer />, 'bottom')
-      }else {
-        setStep((prev) => (prev.index === steps.length - 1 ? prev : steps[prev.index + 1]));
-        setIsNextStepAllowed(false);
       }
+      // await new Promise(resolve => setTimeout(resolve, 300));
+      if (!Cookies.get('token')) {
+        openDrawer(<LoginDrawer/>, 'bottom');
+        return;
+      }
+
+      setStep((prev) => (prev.index === steps.length - 1 ? prev : steps[prev.index + 1]));
+      setIsNextStepAllowed(false);
     } else if (action === 'prev') {
       if (!(selected?.attributeStep || selected?.service)) {
         localStorage.removeItem('new-order');
@@ -225,6 +228,7 @@ export default function NewOrder() {
       isMulti: searchParams.get('isMulti') != null
     }));
   }, [searchParams]);
+
   return (
     <>
       <Header onBack={step.index > 0 ? () => handleChangeStep('prev') : null}/>

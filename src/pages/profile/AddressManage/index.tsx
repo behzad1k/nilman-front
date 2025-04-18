@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Neshan from '../../../components/common/Neshan';
-import { Header } from '../../../components/layers/Header.tsx';
+import { Header } from '../../../components/layers/Header';
 import { urls } from '../../../services/endPoint';
 import { api } from '../../../services/http';
 import { SET_LOADING } from '../../../services/redux/reducers/loadingSlice';
@@ -98,7 +98,7 @@ const AddressManage = () => {
     if (res.code == 200) {
       toast('اطلاعات آدرس با موفقیت ذخیره شد.', { type: 'success' });
       dispatch(addresses());
-      navigate(-1);
+      navigate('/');
     } else {
       toast('مشکلی پیش آمده، لطفا مجددا امتحان کنید یا با اپراتور تماس بگیرید', { type: 'error' });
     }
