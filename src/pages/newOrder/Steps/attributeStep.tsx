@@ -104,7 +104,7 @@ export default function AttributeStep({
   return (
     <section className="service-step-container">
       <div className="cards">
-        {nailHeader()}
+        {/* {nailHeader()} */}
         {[...(selected?.attributeStep || selected?.service)?.attributes || []]?.filter(e => e.showInList).sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000))?.map((attribute, index) => (
           <div
             key={attribute.slug}
