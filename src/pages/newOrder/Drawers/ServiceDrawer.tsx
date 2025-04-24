@@ -3,6 +3,7 @@ import React from 'react';
 import { formatPrice } from '../../../utils/utils';
 
 const ServiceDrawer = ({ curParent, parent, selected, setSelected, handleClickCard, deleteAttribute, toggleDrawer, boxEl}) => {
+  console.log('hehzad');
   return (
     <>
       <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -52,13 +53,13 @@ const ServiceDrawer = ({ curParent, parent, selected, setSelected, handleClickCa
                           تومان
                       </Box>
                   </Box>
-                {Object.keys(selected.options).includes(secAttr.id.toString()) && selected.isMulti ?
+                {Object.keys(selected.options).includes(secAttr.id?.toString()) && selected.isMulti ?
                   <div className="quantityButtom">
                     <i className={selected?.options[secAttr.id].count == 1 ? 'tableTrashIcon' : "tableCollapsIcon"} onClick={(e: any) => {
                       e.stopPropagation();
-                      if (selected?.options[secAttr.id].count > 1) {
+                      if (selected?.options[secAttr.id]?.count > 1) {
                         setSelected(prev => {
-                          const cp = { ...prev };
+                          const cp = { ...selected };
                           cp.options[secAttr.id].count = Number(cp.options[secAttr.id].count) - 1;
                           return cp;
                         });
@@ -73,7 +74,7 @@ const ServiceDrawer = ({ curParent, parent, selected, setSelected, handleClickCa
                       value={selected?.options[secAttr.id]?.count}
                       onClick={(e) => e.stopPropagation()}
                       onChange={(input: any) => setSelected(prev => {
-                        const cp = { ...prev }
+                        const cp = { ...selected }
                         cp.options[secAttr.id].count = input.target.value
                         return cp;
                       })}
@@ -81,7 +82,7 @@ const ServiceDrawer = ({ curParent, parent, selected, setSelected, handleClickCa
                     <i className="tablePlusIcon" onClick={(e: any) => {
                       e.stopPropagation();
                       setSelected(prev => {
-                        const cp = { ...prev };
+                        const cp = { ...selected };
                         cp.options[secAttr.id].count = Number(cp.options[secAttr.id].count) + 1;
                         return cp;
                       });

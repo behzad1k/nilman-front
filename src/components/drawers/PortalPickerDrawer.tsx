@@ -1,31 +1,32 @@
 import { Button, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { X } from '@phosphor-icons/react';
-import { useEffect, useRef, useState } from 'react';
+import React, { SetStateAction, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { PaymentMethods } from '../../enums/enums';
 import { urls } from '../../services/endPoint';
 import { api } from '../../services/http';
 import { SET_LOADING } from '../../services/redux/reducers/loadingSlice';
+import { useAppSelector } from '../../services/redux/store';
 import { useDrawer } from '../layers/Drawer/DrawerContext';
 
 type PortalPickerDrawerProps = {
-  selectedPaymentMethod: keyof typeof PaymentMethods,
-  setSelectedPaymentMethod: any,
+  finalPrice: number,
   isCredit?: boolean,
 }
 
-const PortalPickerDrawer = ({ selectedPaymentMethod, setSelectedPaymentMethod, isCredit = false }: PortalPickerDrawerProps) => {
+const PortalPickerDrawer = ({ finalPrice, isCredit = false }: PortalPickerDrawerProps) => {
   const { closeDrawer } = useDrawer();
   const [portalToken, setPortalToken] = useState('');
+  const [portal, setPortal] = useState<PaymentMethods>(PaymentMethods.sep);
   const formRef = useRef(null);
   const apFormRef = useRef(null);
   const linkRef = useRef(null);
-
+  const userReducer = useAppSelector(state => state.userReducer.data)
   const dispatch = useDispatch();
   const pay = async () => {
-    if (!selectedPaymentMethod) {
+    if (!portal) {
       toast('لطفا یکی از درگاه های زیر را انتخاب کنید', { type: 'error' });
     }
     dispatch(SET_LOADING(true));
@@ -35,17 +36,17 @@ const PortalPickerDrawer = ({ selectedPaymentMethod, setSelectedPaymentMethod, i
         method: 'POST',
         body: {
           isCredit: isCredit,
-          method: selectedPaymentMethod
+          method: portal
         }
       },
       true,
     );
 
     if (res.code == 200) {
-      if (selectedPaymentMethod == 'sep') {
+      if (portal == PaymentMethods.sep) {
         formRef.current.elements.Token.value = res.data.authority;
         setPortalToken(res.data.authority);
-      } else if (selectedPaymentMethod == 'ap') {
+      } else if (portal == PaymentMethods.ap) {
         apFormRef.current.elements.RefID.value = res.data.authority;
         setPortalToken(res.data.authority);
       } else {
@@ -61,7 +62,7 @@ const PortalPickerDrawer = ({ selectedPaymentMethod, setSelectedPaymentMethod, i
 
   useEffect(() => {
     if (portalToken != '') {
-      if (selectedPaymentMethod == 'sep') {
+      if (portal == PaymentMethods.sep) {
         formRef.current.submit();
       } else {
         apFormRef.current.submit();
@@ -69,6 +70,11 @@ const PortalPickerDrawer = ({ selectedPaymentMethod, setSelectedPaymentMethod, i
     }
   }, [portalToken]);
 
+  useEffect(() => {
+    if (isCredit && userReducer?.walletBalance >= finalPrice) {
+      setPortal(PaymentMethods.credit);
+    }
+  }, [isCredit]);
 
   return (
     <Box
@@ -78,7 +84,7 @@ const PortalPickerDrawer = ({ selectedPaymentMethod, setSelectedPaymentMethod, i
       p={2}
       overflow="auto"
       className="attr-drawer-content"
-      sx={{ paddingBottom: '65px' }}
+      sx={{ paddingBottom: '65px', background: '#FFF', minHeight: 300 }}
     >
       <Box
         display="flex"
@@ -97,12 +103,12 @@ const PortalPickerDrawer = ({ selectedPaymentMethod, setSelectedPaymentMethod, i
         borderRadius="12px"
         alignItems="center"
         padding="0 10px"
-        bgcolor={selectedPaymentMethod == 'credit' ? '#cecece' : (selectedPaymentMethod == 'ap' ? 'rgba(210,253,191,0.99)' : '#FFF')}
-        onClick={() => selectedPaymentMethod != 'credit' && setSelectedPaymentMethod('ap')}
+        bgcolor={portal == PaymentMethods.credit ? '#cecece' : (portal == PaymentMethods.ap ? 'rgba(210,253,191,0.99)' : '#FFF')}
+        onClick={() => portal != PaymentMethods.credit && setPortal(PaymentMethods.ap)}
       >
         <img className="portalImage" src="img/ap.png"/>
         <span>آسان پرداخت</span>
-        {selectedPaymentMethod == 'ap' && <img className="checkIcon marginRightAuto" src="img/checked.png" alt="ap"/>}
+        {portal == PaymentMethods.ap && <img className="checkIcon marginRightAuto" src="img/checked.png" alt="ap"/>}
       </Box>
       <Box
         display="flex"
@@ -111,12 +117,12 @@ const PortalPickerDrawer = ({ selectedPaymentMethod, setSelectedPaymentMethod, i
         borderRadius="12px"
         alignItems="center"
         padding="0 10px"
-        bgcolor={selectedPaymentMethod == 'credit' ? '#cecece' : (selectedPaymentMethod == 'sep' ? 'rgba(210,253,191,0.99)' : '#FFF')}
-        onClick={() => selectedPaymentMethod != 'credit' && setSelectedPaymentMethod('sep')}
+        bgcolor={portal == PaymentMethods.credit ? '#cecece' : (portal == PaymentMethods.sep ? 'rgba(210,253,191,0.99)' : '#FFF')}
+        onClick={() => portal != PaymentMethods.credit && setPortal(PaymentMethods.sep)}
       >
         <img className="portalImage" src="img/sep.png"/>
         <span>بانک سامان</span>
-        {selectedPaymentMethod == 'sep' && <img className="checkIcon marginRightAuto" src="img/checked.png" alt="sep"/>}
+        {portal == PaymentMethods.sep && <img className="checkIcon marginRightAuto" src="img/checked.png" alt="sep"/>}
       </Box>
       <Box
         display="flex"
@@ -125,14 +131,14 @@ const PortalPickerDrawer = ({ selectedPaymentMethod, setSelectedPaymentMethod, i
         borderRadius="12px"
         alignItems="center"
         padding="0 10px"
-        bgcolor={selectedPaymentMethod == 'credit' ? '#cecece' : (selectedPaymentMethod == 'zarinpal' ? 'rgba(210,253,191,0.99)' : '#FFF')}
-        onClick={() => selectedPaymentMethod != 'credit' && setSelectedPaymentMethod('zarinpal')}
+        bgcolor={portal == PaymentMethods.credit ? '#cecece' : (portal == PaymentMethods.zarinpal ? 'rgba(210,253,191,0.99)' : '#FFF')}
+        onClick={() => portal != PaymentMethods.credit && setPortal(PaymentMethods.zarinpal)}
       >
         <img className="portalImage" src="img/zarinpal.png"/>
         <span>زرین پال</span>
-        {selectedPaymentMethod == 'zarinpal' && <img className="checkIcon marginRightAuto" src="img/checked.png" alt="zarinpal"/>}
+        {portal == PaymentMethods.zarinpal && <img className="checkIcon marginRightAuto" src="img/checked.png" alt="zarinpal"/>}
       </Box>
-      {selectedPaymentMethod == 'credit' &&
+      {portal == PaymentMethods.credit &&
           <Box
               display="flex"
               gap="10px"
@@ -140,8 +146,8 @@ const PortalPickerDrawer = ({ selectedPaymentMethod, setSelectedPaymentMethod, i
               borderRadius="12px"
               alignItems="center"
               padding="0 10px"
-              bgcolor={selectedPaymentMethod == 'credit' ? 'rgba(210,253,191,0.99)' : '#FFF'}
-            // onClick={() => selectedPaymentMethod != 'credit' && setSelectedPaymentMethod('zarinpal')}
+              bgcolor={portal == PaymentMethods.credit ? 'rgba(210,253,191,0.99)' : '#FFF'}
+            // onClick={() => portal != PaymentMethods.credit && setPortal(PaymentMethods.zarinpal)}
           >
               <img className="portalImage" src="img/wallet.png"/>
               <span>کیف پول</span>

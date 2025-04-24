@@ -1,15 +1,16 @@
 import { Clipboard, House, PlusCircle, User } from '@phosphor-icons/react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../services/redux/store';
-import { useDrawer } from './Drawer/DrawerContext';
+import { useDrawer, useRegisterDrawerComponent } from './Drawer/DrawerContext';
 import LoginDrawer from '../drawers/LoginDrawer';
 
 export function AppBar() {
   const userReducer = useAppSelector((state) => state.userReducer);
   const location = useLocation();
   const { openDrawer } = useDrawer();
+  useRegisterDrawerComponent('loginDrawer', LoginDrawer);
   const navigate = useNavigate();
-  
+
   return (
     <nav className="appBar plusHighlight">
       <NavLink to="/home" className="appBarIconContainer">
@@ -52,7 +53,7 @@ export function AppBar() {
         onClick={(e) => {
           e.preventDefault();
           if (!userReducer.isLoggedIn) {
-            openDrawer(<LoginDrawer />, 'bottom', 500);
+            openDrawer('loginDrawer', {});
           } else {
             navigate('/profile')
           }

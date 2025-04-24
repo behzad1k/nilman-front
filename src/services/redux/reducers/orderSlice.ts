@@ -16,10 +16,10 @@ export const order = createAsyncThunk('order/fetchOrder', async () => {
 
 const orderSlice = createSlice({
   name: 'orderSlice',
-  initialState,
+  initialState: initialState,
   reducers: {
-    SET_DATA: (state, action: PayloadAction<IOrderSlice>) => {
-      state = action.payload;
+    SET_DATA: (state, action: PayloadAction<globalType.Order[]>) => {
+      state.orders = action.payload;
     },
   },
   extraReducers: (builder) => {

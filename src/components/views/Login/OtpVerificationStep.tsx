@@ -16,7 +16,7 @@ import Countdown from "react-countdown";
 import {AccessAlarm} from "@mui/icons-material";
 import moment from "jalali-moment";
 import {loginTicker} from "../../../services/redux/reducers/globalSlice";
-import { useDrawer } from '../../layers/Drawer/DrawerContext.tsx';
+import { useDrawer } from '../../layers/Drawer/DrawerContext';
 
 interface OtpVerificationStepProps {
   formMethods: UseFormReturn<globalType.LoginForm>;

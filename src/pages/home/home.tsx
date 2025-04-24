@@ -113,7 +113,7 @@ export default function Home() {
         </Box>
         <span className="banner-row">
           <Phone/>
-          شماره تماس : <a className="dirLtr" href="tel:02122753005">۰۲۱۲۲۷۵۳۰۰۵ - ۶</a>
+          شماره تماس : <a className="dirLtr" href="tel:09991840871">۰۹۹۹۱۸۴۰۸۷۱</a>
         </span>
         <span className="banner-row">
           <MapPin/>

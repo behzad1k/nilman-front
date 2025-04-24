@@ -1,4 +1,4 @@
-import { Timer10, TimerOutlined, TimerRounded } from '@mui/icons-material';
+import { TimerOutlined } from '@mui/icons-material';
 import { Calendar, MapPin, Trash } from '@phosphor-icons/react';
 import moment from 'jalali-moment';
 import { toast } from 'react-toastify';
@@ -6,6 +6,7 @@ import { urls } from '../../services/endPoint';
 import { api } from '../../services/http';
 import { cart } from '../../services/redux/reducers/cartSlice';
 import { SET_LOADING } from '../../services/redux/reducers/loadingSlice';
+import { order } from '../../services/redux/reducers/orderSlice';
 import { useAppDispatch } from '../../services/redux/store';
 import comps from '../../types/comp';
 import { formatPrice } from '../../utils/utils';
@@ -26,26 +27,12 @@ const CartItem = ({ item }: comps.ICartItem) => {
     );
     if (res.code == 200) {
       dispatch(cart());
+      dispatch(order())
       toast('سفارش با موفقیت از سبد خرید حذف شد', { type: 'success' });
     }
     dispatch(SET_LOADING(false));
   };
-  const deleteOrderService = async (id: number) => {
-    dispatch(SET_LOADING(true));
-    const res = await api(
-      urls.orderService + id,
-      {
-        method: 'DELETE',
-        body: {},
-      },
-      true,
-    );
-    if (res.code == 200) {
-      dispatch(cart());
-      toast('آیتم با موفقیت از سبد خرید حذف شد', { type: 'success' });
-    }
-    dispatch(SET_LOADING(false));
-  };
+
   return (
     <article className="cartItemContainer">
       <span className="orderInfo">
@@ -104,7 +91,6 @@ const CartItem = ({ item }: comps.ICartItem) => {
             <TimerOutlined style={{ width: 20}}/>
         </span>
         </div>
-
       </span>
     </article>
   );

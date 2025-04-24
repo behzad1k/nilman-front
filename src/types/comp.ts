@@ -55,8 +55,6 @@ namespace comp {
   };
 
   export interface IAttrDrawer {
-    open: boolean;
-    setOpen: (val: boolean) => void;
     parent: globalType.Service;
     selected: globalType.Form;
     setSelected: (value: (prev: globalType.Form) => globalType.Form) => void;

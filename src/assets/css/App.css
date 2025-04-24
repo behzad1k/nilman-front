@@ -842,6 +842,15 @@ main {
     padding-top: 70px;
 }
 
+.attr-drawer-content{
+    height: max-content;
+    overflow: visible;
+    min-height: 60vh;
+    background: #FFF;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+}
+
 .moreInfo {
     background-color: var(--white-pink);
     border-radius: 100px;
@@ -1779,6 +1788,7 @@ main {
 }
 
 .infoModal {
+    background: #FFF;
     display: flex;
     flex-direction: column;
     gap: 10px;

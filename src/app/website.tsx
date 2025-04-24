@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { Loading } from '../components';
 import { AppBar } from '../components/layers/AppBar';
 import InstallPrompt from '../components/layers/InstallPrompt';
 import Home from '../pages/home/home';
@@ -82,7 +83,7 @@ export default function Website() {
         <Route path="/rules" element={<Rules/>}/>
       </Routes>
       <InstallPrompt />
-      {/* {loading && <Loading/>} */}
+      {loading && <Loading/>}
     </>
 
   );

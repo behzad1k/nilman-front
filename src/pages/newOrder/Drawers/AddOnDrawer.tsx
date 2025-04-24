@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppSelector } from '../../../services/redux/store';
 import { formatPrice } from '../../../utils/utils';
 
@@ -11,9 +11,8 @@ const AddOnDrawer = ({
                        setSelected,
                        setPickingColor,
                      }) => {
-  const serviceReducer = useAppSelector(state => state.serviceReducer);
-
-    return (
+    const serviceReducer = useAppSelector(state => state.serviceReducer);
+  return (
       <>
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Typography variant="body1" component="h3" mb={1}>
@@ -25,7 +24,7 @@ const AddOnDrawer = ({
         </Typography>
         {[...currentAttribute?.addOns]?.sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000))?.map((secAttr, index) => (
           <Box
-            key={secAttr.slug}
+            key={secAttr?.slug}
             className={`attr-box`}
             onClick={() => {
               setSelected(prev => {
@@ -53,8 +52,7 @@ const AddOnDrawer = ({
                   return cp;
                 }
               );
-            }
-            }
+            }}
             sx={{
               backgroundColor: 'var(--white-pink)',
               borderRadius: '6px',
@@ -135,10 +133,10 @@ const AddOnDrawer = ({
             </Box>
           </Box>
         ))
-        };
+        }
         <button className="confirmButton order" onClick={() => {
           setShouldPickAddOns(false);
-          if (selected.options[currentAttribute.id]){
+          if (selected.options[currentAttribute.id]) {
             const colorService = Object.keys(selected.options[currentAttribute.id]?.addOns).find(e => serviceReducer.allServices?.find(j => e == j.id.toString())?.hasColor);
             if (colorService) {
               setPickingColor({
@@ -149,10 +147,11 @@ const AddOnDrawer = ({
           }
         }}>
           ثبت
-        </button>;
+        </button>
+        ;
       </>
-    )
-      ;
+    );
+
   }
 ;
 

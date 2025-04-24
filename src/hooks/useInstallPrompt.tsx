@@ -6,6 +6,7 @@ export const useInstallPrompt = (expirationDays = 7) => {
   useEffect(() => {
     const checkMobileAndInstallation = () => {
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      // @ts-ignore
       const isInstalled = window.matchMedia('(display-mode: standalone)').matches || (window.navigator && window.navigator.standalone && window.navigator.standalone === true);
       const dismissedTimestamp = localStorage.getItem('installPromptDismissedAt');
 

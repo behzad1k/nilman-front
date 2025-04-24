@@ -1,6 +1,8 @@
 import { DeleteOutline } from '@mui/icons-material';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
+import { useDrawer, useRegisterDrawerComponent } from '../../../components/layers/Drawer/DrawerContext';
+import { ServiceEnum } from '../../../enums/enums';
 import { useAppSelector } from '../../../services/redux/store';
 import comp from '../../../types/comp';
 import globalType from '../../../types/globalType';
@@ -18,16 +20,31 @@ export default function AttributeStep({
   const [stepCounter, setStepCounter] = useState(0);
   const services = useAppSelector(state => state.serviceReducer.allServices);
   const cardRef = useRef<Array<HTMLElement | null>>([]);
+  useRegisterDrawerComponent('secAttrDrawer', SecAttrDrawer)
+  const { openDrawer } = useDrawer();
   const handleSelectAttribute = (index: number, attribute: globalType.Service) => {
     if (attribute.attributes && attribute.attributes?.length > 0 && attribute.openDrawer) {
       if (selected.attributes.length == 0) {
         setCurId(attribute);
-        setDrawerOpen(true);
+        openDrawer('secAttrDrawer', {
+          parent: attribute,
+          form: selected,
+          setForm: setSelected,
+          setIsNextStepAllowed: setIsNextStepAllowed
+        }, 'bottom', 500)
+        // setDrawerOpen(true);
       } else if (!attribute.parent.isMulti && !selected.attributes.map(e => findAncestors(services, e.id)).flat(1).map(e => e.id).includes(attribute.id)) {
         toast(`انتخاب بیش از یک خدمت در ${attribute.parent.title} مجاز نمی باشد`, { type: 'error' });
       } else {
         setCurId(attribute);
-        setDrawerOpen(true);
+        openDrawer('secAttrDrawer', {
+          parent: attribute,
+          form: selected,
+          setForm: setSelected,
+          setIsNextStepAllowed: setIsNextStepAllowed
+        }, 'bottom', 500)
+        // setDrawerOpen(true);
+
       }
     } else if (attribute.attributes && attribute.attributes.length > 0 && attribute.attributes[0]?.attributes?.length > 0) {
       setStepCounter(prev => prev + 1);
@@ -58,6 +75,23 @@ export default function AttributeStep({
     });
   };
 
+  const nailHeader = () => {
+    if (selected?.service?.slug != ServiceEnum.Nail){
+      return (<></>)
+    } else {
+      const hand = selected?.service?.attributes.find(e => e.slug == ServiceEnum.Hand)
+      const feet = selected?.service?.attributes.find(e => e.slug == ServiceEnum.Feet)
+
+      return(
+        <div className="new-order-nail-header">
+          <span>{hand?.title}</span>
+          <span>{feet?.title}</span>
+          <span></span>
+        </div>
+      )
+    }
+  };
+
   useEffect(() => {
     if (!drawerOpen) setCurId(null);
   }, [drawerOpen]);
@@ -68,8 +102,9 @@ export default function AttributeStep({
   }, [JSON.stringify(selected.options)]);
 
   return (
-    <div className="service-step-container">
-      <section className="cards">
+    <section className="service-step-container">
+      <div className="cards">
+        {nailHeader()}
         {[...(selected?.attributeStep || selected?.service)?.attributes || []]?.filter(e => e.showInList).sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000))?.map((attribute, index) => (
           <div
             key={attribute.slug}
@@ -87,15 +122,7 @@ export default function AttributeStep({
             />
           </div>
         ))}
-      </section>
-      <SecAttrDrawer
-        selected={selected}
-        setSelected={setSelected}
-        parent={curId}
-        open={drawerOpen}
-        setOpen={setDrawerOpen}
-        setIsNextStepAllowed={setIsNextStepAllowed}
-      />
-    </div>
+      </div>
+    </section>
   );
 }

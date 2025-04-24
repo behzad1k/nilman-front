@@ -1,8 +1,8 @@
-import { Global } from '@emotion/react';
 import { ArrowBack, Close } from '@mui/icons-material';
-import { Box, SwipeableDrawer } from '@mui/material';
+import { Box } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
+import { useDrawer } from '../../../components/layers/Drawer/DrawerContext';
 import { useAppSelector } from '../../../services/redux/store';
 import comp from '../../../types/comp';
 import globalType from '../../../types/globalType';
@@ -13,13 +13,11 @@ import PickColorDrawer from '../Drawers/PickColorDrawer';
 import ServiceDrawer from '../Drawers/ServiceDrawer';
 
 export default function SecAttrDrawer({
-                                        open,
-                                        setOpen,
                                         parent,
-                                        selected,
-                                        setSelected,
+                                        form,
+                                        setForm,
                                         setIsNextStepAllowed
-                                      }: comp.IAttrDrawer) {
+                                      }: any) {
   const colors = useAppSelector(state => state.globalReducer.colors);
   const services = useAppSelector(state => state.serviceReducer);
   const [shouldPickAddOns, setShouldPickAddOns] = useState(false);
@@ -34,11 +32,17 @@ export default function SecAttrDrawer({
   const [currentAttribute, setCurrentAttriubte] = useState<globalType.Service>();
   const [selectedAddOn, setSelectedAddOn] = useState<globalType.Service>(null);
   const [infoModal, setInfoModal] = useState(false);
+  const [selected, setSelected] = useState(form);
   const boxEl = useRef<Array<HTMLElement | null>>([]);
+
+  const { closeDrawer } = useDrawer();
+
   const toggleDrawer = (newOpen: boolean) => () => {
     setPage(1);
     setCurParent(undefined);
-    setOpen(newOpen);
+    if (!newOpen){
+      closeDrawer()
+    }
   };
   const handleClickCard = (index: number, secAttr: globalType.Service) => {
     setCurrentAttriubte(secAttr);
@@ -77,6 +81,16 @@ export default function SecAttrDrawer({
     if (color) newAttr.color = color;
     if (!selected.isMulti && !isAddOn && !Object.keys(selected.options)?.find(e => e == newAttr.id.toString()) && !(curParent || parent).isMulti && Object.keys(selected.options).find(e => services.allServices.find(j => e == j.id.toString()).parent.id == (curParent || parent).id)) {
       toast(`انتخاب بیش از یک خدمت در ${(curParent || parent).title} مجاز نمی باشد`, { type: 'error' });
+      return;
+    }
+    if (Object.keys(selected.options).includes(secAttr.id.toString())){
+      setSelected((prev: globalType.Form) => {
+        const cp = { ...prev };
+
+        delete cp.options[newAttr.id]
+
+        return cp;
+      });
       return;
     }
     setCurParent(undefined);
@@ -122,6 +136,17 @@ export default function SecAttrDrawer({
       };
     });
   };
+
+  const content = () => {
+    if (pickingColor.open){
+      return <PickColorDrawer colors={colors} color={color} selected={selected} setSelected={setSelected} currentAttribute={currentAttribute} pickingColor={pickingColor} setPickingColor={setPickingColor} handleAddAttribute={handleAddAttribute}/>
+    } else if (shouldPickAddOns){
+      return <AddOnDrawer setSelected={setSelected} selected={selected} parent={curParent || parent} currentAttribute={currentAttribute} setShouldPickAddOns={setShouldPickAddOns} setPickingColor={setPickingColor}/>
+    } else {
+      return <ServiceDrawer curParent={curParent} parent={parent} selected={selected} setSelected={setSelected} handleClickCard={handleClickCard} deleteAttribute={deleteAttribute} toggleDrawer={toggleDrawer} boxEl={boxEl}/>
+    }
+  };
+
   const handleCloseDrawer = () => {
     setCurParent(undefined);
     setPage(1);
@@ -130,38 +155,21 @@ export default function SecAttrDrawer({
       attr: null,
       open: false
     });
-    setOpen(false);
+
+    closeDrawer();
   };
 
   useEffect(() => {
     setSelectedAddOn(currentAttribute?.addOns?.find(e => Object.keys(selected.options)?.includes(e.id.toString())));
   }, [currentAttribute]);
 
-  if (curParent || parent) {
+  useEffect(() => {
+    setForm(selected)
+  }, [selected])
+
+  if (selected && (curParent || parent)) {
     return (
       <>
-        <Global
-          styles={{
-            '.MuiDrawer-root > .MuiPaper-root': {
-              height: 'max-content',
-              overflow: 'visible',
-              minHeight: `60vh`,
-              background: '#FFF',
-              borderTopRightRadius: 20,
-              borderTopLeftRadius: 20,
-            },
-          }}
-        />
-        <SwipeableDrawer
-          anchor="bottom"
-          open={open}
-          onClose={toggleDrawer(false)}
-          onOpen={toggleDrawer(true)}
-          // disableSwipeToOpen={false}
-          ModalProps={{
-            // keepMounted: true,
-          }}
-        >
           <Box
             display="flex"
             flexDirection="column"
@@ -192,20 +200,10 @@ export default function SecAttrDrawer({
               }}/>}
               <Close onClick={handleCloseDrawer}/>
             </Box>
-            {pickingColor.open ?
-              <PickColorDrawer colors={colors} color={color} selected={selected} setSelected={setSelected} currentAttribute={currentAttribute} pickingColor={pickingColor} setPickingColor={setPickingColor}
-                               handleAddAttribute={handleAddAttribute}/>
-              : shouldPickAddOns ?
-                <AddOnDrawer setSelected={setSelected} selected={selected} parent={curParent || parent} currentAttribute={currentAttribute} setShouldPickAddOns={setShouldPickAddOns} setPickingColor={setPickingColor}/>
-                :
-                <ServiceDrawer curParent={curParent} parent={parent} selected={selected} setSelected={setSelected} handleClickCard={handleClickCard} deleteAttribute={deleteAttribute} toggleDrawer={toggleDrawer}
-                               boxEl={boxEl}/>
-            }
+            {content()}
           </Box>
-        </SwipeableDrawer>
         <InfoDrawer infoModal={infoModal} setInfoModal={setInfoModal} curParent={curParent} parent={parent}/>
-
       </>
-    );
-  } else return null;
+    )
+  } else return <></>
 }

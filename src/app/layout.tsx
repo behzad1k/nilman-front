@@ -1,6 +1,6 @@
 import {Box} from '@mui/material';
-import { AppBar } from '../components/layers/AppBar.tsx';
-import { Header } from '../components/layers/Header.tsx';
+import { AppBar } from '../components/layers/AppBar';
+import { Header } from '../components/layers/Header';
 import {useAppDispatch, useAppSelector} from '../services/redux/store';
 import Feedback from '../pages/feedback/feedback';
 

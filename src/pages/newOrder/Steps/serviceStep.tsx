@@ -44,7 +44,7 @@ export default function ServiceStep({
             className={`card service ${selected.service === service ? 'selected' : ''} ${index % 2 == 0 ? 'reversed' : ''}`}
           >
             <img src={'/img/' + service.slug + '.png'}/>
-            <p>{service.title}</p>
+            <span>{service.title}</span>
             {/* <i className='cardInfoIcon'></i> */}
           </div>
         ))}

@@ -8,7 +8,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import LoginDrawer from '../../components/drawers/LoginDrawer';
 import { AppBar } from '../../components/layers/AppBar';
-import { useDrawer } from '../../components/layers/Drawer/DrawerContext';
+import { useDrawer, useRegisterDrawerComponent } from '../../components/layers/Drawer/DrawerContext';
 import { Header } from '../../components/layers/Header';
 import { urls } from '../../services/endPoint';
 import { api } from '../../services/http';
@@ -66,6 +66,7 @@ export default function NewOrder() {
     ...initialSelected,
     options: {}
   });
+  useRegisterDrawerComponent('loginDrawer', LoginDrawer)
   const [isNextStepAllowed, setIsNextStepAllowed] = useState(false);
   const [step, setStep] = useState<comp.ServiceStep>(prevStep || steps[0]);
   const services = useAppSelector(state => state.serviceReducer.allServices);
@@ -84,7 +85,7 @@ export default function NewOrder() {
       }
       // await new Promise(resolve => setTimeout(resolve, 300));
       if (!Cookies.get('token')) {
-        openDrawer(<LoginDrawer/>, 'bottom');
+        openDrawer('loginDrawer');
         return;
       }
 
@@ -229,15 +230,17 @@ export default function NewOrder() {
     }));
   }, [searchParams]);
 
+  console.log(selected);
+
   return (
     <>
       <Header onBack={step.index > 0 ? () => handleChangeStep('prev') : null}/>
       <main className="newOrderMain">
         <div className="progress">
-        <span
-          className="progress-active"
-          style={{ width: `${((step.index + 1) / 4) * 100}%` }}
-        ></span>
+          <span
+            className="progress-active"
+            style={{ width: `${((step.index + 1) / 4) * 100}%` }}
+          ></span>
         </div>
         {/* <Typography component="span" variant="subtitle2" fontWeight="400" mt={-1} mb={1}> */}
         {/*   مرحله {Intl.NumberFormat('fa').format(step.index + 1)} */}
@@ -278,7 +281,7 @@ export default function NewOrder() {
               </div>
           }
           <div className="newOrderBottomButtons">
-            <div className="newOrderBottomButtonsRow">
+            {step.index > 0 && <div className="newOrderBottomButtonsRow">
               <span>سفارش فوری</span>
               <Switch
                 checked={searchParams.get('isUrgent') != null}
@@ -287,8 +290,8 @@ export default function NewOrder() {
                   setSearchParams(searchParams);
                 }}
               />
-            </div>
-            {step.index < 2 &&
+            </div>}
+            {step.index < 2 && step.index > 0 &&
                 <div className="newOrderBottomButtonsRow">
                     <span>سفارش گروهی</span>
                     <Switch
@@ -329,7 +332,8 @@ export default function NewOrder() {
                 color="success"
                 disabled={!isNextStepAllowed}
               >
-                ادامه </Button>
+                ادامه
+              </Button>
             )}
           </div>
         </div>

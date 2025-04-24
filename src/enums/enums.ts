@@ -53,3 +53,8 @@ export enum PaymentMethodNames {
   ZarinPal = 'زرین پال',
   Credit = 'کیف پول',
 };
+export enum ServiceEnum {
+  Nail = 'ناخن',
+  Feet = 'پا',
+  Hand = 'دست'
+};

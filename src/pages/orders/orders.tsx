@@ -16,7 +16,7 @@ export default function Orders() {
         display: 'flex',
         flexDirection: 'column',
         gap: 4,
-        paddingTop: '70px',
+        paddingTop: '90px',
         alignItems: 'center',
       }}
     >
@@ -26,37 +26,8 @@ export default function Orders() {
         flexDirection: 'column',
         gap: 5
       }}>
-        <>
-          <Typography variant="h5" component="h1">لیست سفارشات</Typography>
+          <Typography variant="h5" component="h3">سبد خرید</Typography>
           <Cart/>
-        </>
-        <Box component="section" sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 4
-        }}>
-          {currentOrders.length > 0 ? (
-              <>
-                {currentOrders.reverse().map((value: globalType.Order, index) => (
-                  <CartItem item={value} key={index}/>
-                ))}
-              </>
-            ) : (
-              <>
-                <Box
-                  component="img"
-                  src={emptyList as any}
-                  width="40%"
-                  mx="auto"
-                  maxWidth={160}
-                />
-                <Typography variant="body1" component="p" textAlign="center" mt={2}>
-                  سفارش فعالی وجود ندارد
-                </Typography>
-              </>
-            )
-          }
-        </Box>
       </Container>
     </Box>
   );

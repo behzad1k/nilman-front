@@ -1,32 +1,52 @@
 import React from 'react';
-import { SwipeableDrawer } from '@mui/material';
 import { useDrawer } from './DrawerContext';
+import CustomDrawer from './CustomDrawer';
+import DrawerContentWrapper from './DrawerContentWrapper';
 
-const iOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
+// Define animation presets
+export const DRAWER_ANIMATIONS = {
+  SLIDE: 'slide',
+  FADE: 'fade',
+  SCALE: 'scale',
+  REVEAL: 'reveal'
+};
 
 const GlobalDrawer: React.FC = () => {
-  const { isOpen, content, position, closeDrawer, durationTime } = useDrawer();
+  const {
+    isOpen,
+    activeComponentId,
+    position,
+    closeDrawer,
+    durationTime,
+    getProps
+  } = useDrawer();
+
+  // Get animation settings from props if available
+  const props: any = getProps() || {};
+  const {
+    animationType = DRAWER_ANIMATIONS.SLIDE,
+    backdropColor,
+    backdropOpacity,
+    width,
+    height,
+    borderRadius
+  } = props.drawerSettings || {};
 
   return (
-    <SwipeableDrawer
-      anchor={position}
+    <CustomDrawer
       open={isOpen}
       onClose={closeDrawer}
-      onOpen={() => {}}
-      disableBackdropTransition={!iOS}
-      disableDiscovery={iOS}
+      position={position}
       transitionDuration={durationTime}
-      sx={{
-        '.muirtl-fy2uxz': {
-          background: 'rgba(0,0,0,0)'
-        },
-        '.muirtl-9emuhu-MuiPaper-root-MuiDrawer-paper': {
-          background: 'rgba(0,0,0,0)'
-        }
-      }}
+      animationType={animationType}
+      backdropColor={backdropColor}
+      backdropOpacity={backdropOpacity}
+      width={width}
+      height={height}
+      borderRadius={borderRadius}
     >
-      {content}
-    </SwipeableDrawer>
+      <DrawerContentWrapper componentId={activeComponentId} />
+    </CustomDrawer>
   );
 };
 
