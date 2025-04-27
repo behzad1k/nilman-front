@@ -25,6 +25,7 @@ const PortalPickerDrawer = ({ finalPrice, isCredit = false }: PortalPickerDrawer
   const linkRef = useRef(null);
   const userReducer = useAppSelector(state => state.userReducer.data)
   const dispatch = useDispatch();
+
   const pay = async () => {
     if (!portal) {
       toast('لطفا یکی از درگاه های زیر را انتخاب کنید', { type: 'error' });
@@ -118,7 +119,7 @@ const PortalPickerDrawer = ({ finalPrice, isCredit = false }: PortalPickerDrawer
         alignItems="center"
         padding="0 10px"
         bgcolor={portal == PaymentMethods.credit ? '#cecece' : (portal == PaymentMethods.sep ? 'rgba(210,253,191,0.99)' : '#FFF')}
-        // onClick={() => portal != PaymentMethods.credit && setPortal(PaymentMethods.sep)}
+        onClick={() => portal != PaymentMethods.credit && setPortal(PaymentMethods.sep)}
       >
         <img className="portalImage" src="img/sep.png"/>
         <span>بانک سامان</span>
@@ -147,7 +148,7 @@ const PortalPickerDrawer = ({ finalPrice, isCredit = false }: PortalPickerDrawer
               alignItems="center"
               padding="0 10px"
               bgcolor={portal == PaymentMethods.credit ? 'rgba(210,253,191,0.99)' : '#FFF'}
-            // onClick={() => portal != PaymentMethods.credit && setPortal(PaymentMethods.zarinpal)}
+            onClick={() => portal != PaymentMethods.credit && setPortal(PaymentMethods.zarinpal)}
           >
               <img className="portalImage" src="img/wallet.png"/>
               <span>کیف پول</span>
