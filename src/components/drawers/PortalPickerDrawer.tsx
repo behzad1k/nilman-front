@@ -19,7 +19,7 @@ type PortalPickerDrawerProps = {
 const PortalPickerDrawer = ({ finalPrice, isCredit = false }: PortalPickerDrawerProps) => {
   const { closeDrawer } = useDrawer();
   const [portalToken, setPortalToken] = useState('');
-  const [portal, setPortal] = useState<PaymentMethods>(PaymentMethods.ap);
+  const [portal, setPortal] = useState<PaymentMethods>(PaymentMethods.sep);
   const formRef = useRef(null);
   const apFormRef = useRef(null);
   const linkRef = useRef(null);
