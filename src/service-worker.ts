@@ -1,6 +1,5 @@
 /// <reference lib="webworker" />
 /* eslint-disable no-restricted-globals */
-
 import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL, cleanupOutdatedCaches } from 'workbox-precaching';
@@ -111,21 +110,16 @@ registerRoute(
   })
 );
 
-// API calls with network-first strategy
+// IMPORTANT: Disable caching for ALL API calls by using NetworkOnly strategy
 registerRoute(
-  ({ url }) => url.pathname.startsWith('/api/'),
-  new NetworkFirst({
-    cacheName: `api-responses-${APP_VERSION}`,
-    plugins: [
-      new CacheableResponsePlugin({
-        statuses: [0, 200],
-      }),
-      new ExpirationPlugin({
-        maxEntries: 50,
-        maxAgeSeconds: 5 * 60, // 5 minutes
-      }),
-    ],
-  })
+  ({ url }) => url.hostname.includes('api'),
+  new NetworkOnly()
+);
+
+// Handle bank callbacks with network-only strategy
+registerRoute(
+  ({ url }) => url.pathname.includes('payment/verify') || url.search.includes('payment/verify'),
+  new NetworkOnly()
 );
 
 // Background sync for failed POST requests
@@ -133,18 +127,9 @@ const bgSyncPlugin = new BackgroundSyncPlugin('post-requests-queue', {
   maxRetentionTime: 24 * 60, // Retry for up to 24 hours (in minutes)
 });
 
+// Handle POST requests with background sync
 registerRoute(
-  ({ url }) => url.pathname.includes('/callback') || url.search.includes('callback'),
-  new NetworkOnly()
-);
-
-self.addEventListener('controllerchange', () => {
-  window.location.reload();
-});
-
-
-registerRoute(
-  ({ url }) => url.pathname.startsWith('/api/') && url.pathname.includes('/submit'),
+  ({ url }) => url.hostname.includes('api') && url.pathname.includes('/submit'),
   new NetworkOnly({
     plugins: [bgSyncPlugin],
   }),
@@ -158,6 +143,11 @@ setDefaultHandler(
   })
 );
 
+// Reload the page when the service worker is updated
+self.addEventListener('controllerchange', () => {
+  window.location.reload();
+});
+
 // Add custom cache invalidation logic
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
@@ -169,11 +159,11 @@ self.addEventListener('message', (event) => {
 self.addEventListener('activate', (event) => {
   console.log('Service worker activated with version:', APP_VERSION);
 });
+
 // Notify clients when an update is ready
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'CHECK_VERSION') {
     const clientVersion = event.data.version;
-
     // Check if we have message ports (MessageChannel was used)
     if (event.ports && event.ports[0]) {
       // Send response through the port
