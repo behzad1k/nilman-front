@@ -34,6 +34,10 @@ registerRoute(
     if (url.pathname.startsWith('/_')) {
       return false;
     }
+    // Skip bank callback URLs
+    if (url.pathname.includes('payment/verify') || url.search.includes('payment/verify')) {
+      return false;
+    }
     // If this looks like a URL for a resource, because it contains
     // a file extension, skip.
     if (fileExtensionRegexp.test(url.pathname)) {
@@ -128,6 +132,16 @@ registerRoute(
 const bgSyncPlugin = new BackgroundSyncPlugin('post-requests-queue', {
   maxRetentionTime: 24 * 60, // Retry for up to 24 hours (in minutes)
 });
+
+registerRoute(
+  ({ url }) => url.pathname.includes('/callback') || url.search.includes('callback'),
+  new NetworkOnly()
+);
+
+self.addEventListener('controllerchange', () => {
+  window.location.reload();
+});
+
 
 registerRoute(
   ({ url }) => url.pathname.startsWith('/api/') && url.pathname.includes('/submit'),
