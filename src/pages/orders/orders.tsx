@@ -18,6 +18,7 @@ export default function Orders() {
   const userReducer = useAppSelector((state) => state.userReducer);
   const finalPrice = cartItems.reduce((acc, curr) => acc + curr.finalPrice, 0);
   const [isCredit, setIsCredit] = useState(false);
+  const [success, setSuccess] = useState(false);
   const dispatch = useAppDispatch();
 
   useRegisterDrawerComponent('portalDrawer', PortalPickerDrawer)
@@ -35,6 +36,7 @@ export default function Orders() {
       true,
     );
     if (res.code == 200) {
+      setSuccess(!success)
       dispatch(cart());
       dispatch(order())
       toast('سفارش با موفقیت از سبد خرید حذف شد', { type: 'success' });

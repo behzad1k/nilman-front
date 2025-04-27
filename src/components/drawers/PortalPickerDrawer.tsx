@@ -104,8 +104,8 @@ const PortalPickerDrawer = ({ finalPrice, isCredit = false }: PortalPickerDrawer
         borderRadius="12px"
         alignItems="center"
         padding="0 10px"
-        bgcolor={portal == PaymentMethods.credit ? '#cecece' : (portal == PaymentMethods.ap ? 'rgba(210,253,191,0.99)' : '#FFF')}
-        onClick={() => portal != PaymentMethods.credit && setPortal(PaymentMethods.ap)}
+        bgcolor={true ? '#cecece' : (portal == PaymentMethods.ap ? 'rgba(210,253,191,0.99)' : '#FFF')}
+        // onClick={() => portal != PaymentMethods.credit && setPortal(PaymentMethods.ap)}
       >
         <img className="portalImage" src="img/ap.png"/>
         <span>آسان پرداخت</span>
