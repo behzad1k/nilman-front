@@ -19,7 +19,7 @@ type PortalPickerDrawerProps = {
 const PortalPickerDrawer = ({ finalPrice, isCredit = false }: PortalPickerDrawerProps) => {
   const { closeDrawer } = useDrawer();
   const [portalToken, setPortalToken] = useState('');
-  const [portal, setPortal] = useState<PaymentMethods>(PaymentMethods.sep);
+  const [portal, setPortal] = useState<PaymentMethods>(PaymentMethods.ap);
   const formRef = useRef(null);
   const apFormRef = useRef(null);
   const linkRef = useRef(null);
@@ -118,7 +118,7 @@ const PortalPickerDrawer = ({ finalPrice, isCredit = false }: PortalPickerDrawer
         alignItems="center"
         padding="0 10px"
         bgcolor={portal == PaymentMethods.credit ? '#cecece' : (portal == PaymentMethods.sep ? 'rgba(210,253,191,0.99)' : '#FFF')}
-        onClick={() => portal != PaymentMethods.credit && setPortal(PaymentMethods.sep)}
+        // onClick={() => portal != PaymentMethods.credit && setPortal(PaymentMethods.sep)}
       >
         <img className="portalImage" src="img/sep.png"/>
         <span>بانک سامان</span>
