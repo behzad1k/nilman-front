@@ -18,7 +18,7 @@ const cartSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(cart.fulfilled, (state, action) => {
       if (action.payload.code === 200) {
-        state.cartItems = action.payload.data;
+        state.cartItems = [...action.payload.data];
       }
     });
   },

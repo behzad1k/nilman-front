@@ -20,8 +20,10 @@ const rootReducer = combineReducers({
 const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
+
     getDefaultMiddleware({
-      serializableCheck: false,
+      immutableCheck: true,  // Force immutability checks even in production
+      serializableCheck: true, // Force serialization checks even in production
     }),
 });
 

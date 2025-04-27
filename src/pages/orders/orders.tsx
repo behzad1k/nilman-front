@@ -14,9 +14,9 @@ import { formatPrice } from '../../utils/utils';
 import CartItem from './cartItem';
 
 export default function Orders() {
-  const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
+  const cartReducer = useAppSelector((state) => state.cartReducer);
   const userReducer = useAppSelector((state) => state.userReducer);
-  const finalPrice = cartItems.reduce((acc, curr) => acc + curr.finalPrice, 0);
+  const finalPrice = cartReducer.cartItems.reduce((acc, curr) => acc + curr.finalPrice, 0);
   const [isCredit, setIsCredit] = useState(false);
   const [success, setSuccess] = useState(false);
   const dispatch = useAppDispatch();
@@ -64,9 +64,9 @@ export default function Orders() {
       }}>
           <Typography variant="h5" component="h3">سبد خرید</Typography>
         <section className="cartContainer">
-          {cartItems.length > 0 ? (
+          {cartReducer.cartItems.length > 0 ? (
             <>
-              {cartItems.map((order, index) => (
+              {cartReducer.cartItems.map((order, index) => (
                 <CartItem key={order.id} item={order} deleteCartItem={deleteCartItem}/>
               ))}
               <article className="cartItemContainer">
@@ -76,18 +76,18 @@ export default function Orders() {
                 <div className="orderInfo">
                   <p>جمع کل </p>
                   <span className="orderInfoDelete">
-                <p>{formatPrice(cartItems.reduce((acc, curr) => acc + curr.finalPrice, 0))} تومان</p>
+                <p>{formatPrice(cartReducer.cartItems.reduce((acc, curr) => acc + curr.finalPrice, 0))} تومان</p>
               </span>
                 </div>
                 <span className="orderInfo dashedBottom">
               <p>تخفیف</p>
               <span className="orderInfoDelete">
-                <p>{formatPrice(cartItems.reduce((acc, curr) => acc + curr.discountAmount, 0))} تومان</p>
+                <p>{formatPrice(cartReducer.cartItems.reduce((acc, curr) => acc + curr.discountAmount, 0))} تومان</p>
               </span>
             </span>
                 <span className="orderInfo">
               <h4>مبلغ قابل پرداخت</h4>
-              <h4> {formatPrice(cartItems.reduce((acc, curr) => acc + curr.finalPrice, 0) - (isCredit ? userReducer.data?.walletBalance : 0) < 0 ? 0 : (cartItems.reduce((acc, curr) => acc + curr.finalPrice, 0) - (isCredit ? userReducer.data?.walletBalance : 0)))} تومان</h4>
+              <h4> {formatPrice(cartReducer.cartItems.reduce((acc, curr) => acc + curr.finalPrice, 0) - (isCredit ? userReducer.data?.walletBalance : 0) < 0 ? 0 : (cartReducer.cartItems.reduce((acc, curr) => acc + curr.finalPrice, 0) - (isCredit ? userReducer.data?.walletBalance : 0)))} تومان</h4>
             </span>
               </article>
               {userReducer?.data?.walletBalance > 0 && (
