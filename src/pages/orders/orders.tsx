@@ -1,9 +1,15 @@
 import { Box, Container, Typography } from '@mui/material';
 import { useState } from 'react';
 import Switch from 'react-ios-switch';
+import { toast } from 'react-toastify';
 import PortalPickerDrawer from '../../components/drawers/PortalPickerDrawer';
 import { useDrawer, useRegisterDrawerComponent } from '../../components/layers/Drawer/DrawerContext';
-import { useAppSelector } from '../../services/redux/store';
+import { urls } from '../../services/endPoint';
+import { api } from '../../services/http';
+import { cart } from '../../services/redux/reducers/cartSlice';
+import { SET_LOADING } from '../../services/redux/reducers/loadingSlice';
+import { order } from '../../services/redux/reducers/orderSlice';
+import { useAppDispatch, useAppSelector } from '../../services/redux/store';
 import { formatPrice } from '../../utils/utils';
 import CartItem from './cartItem';
 
@@ -12,8 +18,29 @@ export default function Orders() {
   const userReducer = useAppSelector((state) => state.userReducer);
   const finalPrice = cartItems.reduce((acc, curr) => acc + curr.finalPrice, 0);
   const [isCredit, setIsCredit] = useState(false);
+  const dispatch = useAppDispatch();
 
   useRegisterDrawerComponent('portalDrawer', PortalPickerDrawer)
+
+  const deleteCartItem = async (id: number) => {
+    dispatch(SET_LOADING(true));
+    const res = await api(
+      urls.order,
+      {
+        method: 'DELETE',
+        body: {
+          orderId: id,
+        },
+      },
+      true,
+    );
+    if (res.code == 200) {
+      dispatch(cart());
+      dispatch(order())
+      toast('سفارش با موفقیت از سبد خرید حذف شد', { type: 'success' });
+    }
+    dispatch(SET_LOADING(false));
+  };
 
   const { openDrawer } = useDrawer();
 
@@ -38,7 +65,7 @@ export default function Orders() {
           {cartItems.length > 0 ? (
             <>
               {cartItems.map((order, index) => (
-                <CartItem key={order.id} item={order}/>
+                <CartItem key={order.id} item={order} deleteCartItem={deleteCartItem}/>
               ))}
               <article className="cartItemContainer">
             <span className="orderInfo">

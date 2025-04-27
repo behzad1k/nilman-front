@@ -11,27 +11,7 @@ import { useAppDispatch } from '../../services/redux/store';
 import comps from '../../types/comp';
 import { formatPrice } from '../../utils/utils';
 
-const CartItem = ({ item }: comps.ICartItem) => {
-  const dispatch = useAppDispatch();
-  const deleteCartItem = async (id: number) => {
-    dispatch(SET_LOADING(true));
-    const res = await api(
-      urls.order,
-      {
-        method: 'DELETE',
-        body: {
-          orderId: id,
-        },
-      },
-      true,
-    );
-    if (res.code == 200) {
-      dispatch(cart());
-      dispatch(order())
-      toast('سفارش با موفقیت از سبد خرید حذف شد', { type: 'success' });
-    }
-    dispatch(SET_LOADING(false));
-  };
+const CartItem = ({ item, deleteCartItem }: comps.ICartItem) => {
 
   return (
     <article className="cartItemContainer">

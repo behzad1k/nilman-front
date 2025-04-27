@@ -16,6 +16,7 @@ namespace comp {
 
   export interface ICartItem {
     item: globalType.Order;
+    deleteCartItem: any;
   }
 
   export interface ServiceStep {
