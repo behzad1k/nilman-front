@@ -18,6 +18,7 @@ export default function AttributeStep({
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [curId, setCurId] = useState<globalType.Service | null>(null);
   const [stepCounter, setStepCounter] = useState(0);
+  const [attributes, setAttributes] = useState<globalType.Service[]>([])
   const services = useAppSelector(state => state.serviceReducer.allServices);
   const cardRef = useRef<Array<HTMLElement | null>>([]);
   useRegisterDrawerComponent('secAttrDrawer', SecAttrDrawer)
@@ -84,9 +85,14 @@ export default function AttributeStep({
 
       return(
         <div className="new-order-nail-header">
-          <span>{hand?.title}</span>
-          <span>{feet?.title}</span>
-          <span></span>
+          <span className={`nail-header-button ${selected.attributeStep?.slug == hand.slug ? "selected" : ''}`} onClick={() => {
+            setSelected(prev => ({ ...prev, attributeStep: hand }))
+            setAttributes(hand.attributes)
+            }}>{hand?.title}</span>
+          <span className={`nail-header-button ${selected.attributeStep?.slug == feet.slug ? "selected" : ''}`} onClick={() => {
+            setSelected(prev => ({ ...prev, attributeStep: feet }))
+            setAttributes(feet.attributes)
+            }}>{feet?.title}</span>
         </div>
       )
     }
@@ -101,11 +107,21 @@ export default function AttributeStep({
     else setIsNextStepAllowed(false);
   }, [JSON.stringify(selected.options)]);
 
+  useEffect(() => {
+    if (selected?.service?.slug == ServiceEnum.Nail){
+      const hand = selected?.service?.attributes.find(e => e.slug == ServiceEnum.Hand)
+      setSelected(prev => ({ ...prev, attributeStep: hand }))
+      setAttributes(hand.attributes)
+    } else {
+      setAttributes([...(selected?.attributeStep || selected?.service)?.attributes || []])
+    }
+  }, [])
+  
   return (
     <section className="service-step-container">
       <div className="cards">
-        {/* {nailHeader()} */}
-        {[...(selected?.attributeStep || selected?.service)?.attributes || []]?.filter(e => e.showInList).sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000))?.map((attribute, index) => (
+        {nailHeader()}
+        {attributes?.filter(e => e.showInList).sort((a, b) => (a?.sort || 1000) - (b?.sort || 1000))?.map((attribute, index) => (
           <div
             key={attribute.slug}
             ref={(el) => (cardRef.current[index] = el)}

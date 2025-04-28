@@ -2600,3 +2600,26 @@ input:focus{
     font-size: 15px;
     font-weight: 300;
 }
+.new-order-nail-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+    
+}
+.nail-header-button{
+    border: 2px solid var(--logo-pink);
+    background-color: white;
+    border-radius:6px;
+    font-weight: 400;
+    font-size: 14px;
+    padding: 4px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.nail-header-button.selected{
+    background: var(--logo-pink);
+    color: white;
+}
