@@ -3,7 +3,6 @@ import React from 'react';
 import { formatPrice } from '../../../utils/utils';
 
 const ServiceDrawer = ({ curParent, parent, selected, setSelected, handleClickCard, deleteAttribute, toggleDrawer, boxEl}) => {
-  console.log('hehzad');
   return (
     <>
       <Box display="flex" alignItems="center" justifyContent="space-between">
