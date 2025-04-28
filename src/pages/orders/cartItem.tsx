@@ -1,11 +1,12 @@
 import { TimerOutlined } from '@mui/icons-material';
 import { Calendar, MapPin, Trash } from '@phosphor-icons/react';
 import moment from 'jalali-moment';
+import { useAppSelector } from '../../services/redux/store';
 import comps from '../../types/comp';
-import { formatPrice } from '../../utils/utils';
+import { findAncestors, formatPrice } from '../../utils/utils';
 
 const CartItem = ({ item, deleteCartItem }: comps.ICartItem) => {
-
+  const services = useAppSelector(state => state.serviceReducer.allServices)
   return (
     <article className="cartItemContainer">
       <span className="orderInfo">
@@ -19,7 +20,7 @@ const CartItem = ({ item, deleteCartItem }: comps.ICartItem) => {
       {item.orderServices.filter(e => !e.isAddOn)?.map((attribute, index) => (
         <span className="orderInfo" key={index}>
           <span className="orderInfoAddon">
-            <p>{attribute.service?.title + ' ' + attribute.count + 'x '} </p>
+            <p className="orderInfoTitle">{findAncestors(services, attribute.serviceId).slice(0,3).reverse().reduce((acc, curr, index) => acc + (index != 0 ? ' -> ' : '') + curr.title, '') + ' ' + attribute.count + 'x '} </p>
             {attribute.addOns?.map(e => <p>-{e.addOn?.title + ' ' + e.count + 'x'}</p>)}
           </span>
           <span className="orderInfoDelete">

@@ -1,88 +1,73 @@
 import { TimerOutlined } from '@mui/icons-material';
 import { Calendar, MapPin, Trash } from '@phosphor-icons/react';
 import moment from 'jalali-moment';
+import { useNavigate } from 'react-router-dom';
+import { ProfilePicture } from '../../components';
+import OrderDetail from '../../components/drawers/OrderDetail';
+import { useDrawer, useRegisterDrawerComponent } from '../../components/layers/Drawer/DrawerContext';
+import { useAppSelector } from '../../services/redux/store';
 import comp from '../../types/comp';
-import { formatPrice } from '../../utils/utils';
+import globalType from '../../types/globalType';
+import { findAncestors, formatPrice, getServiceIcon } from '../../utils/utils';
 import IOrderCardProps = comp.IOrderCardProps;
 
-export default function OrderCard({ item, userBalance = 0, isCredit = false }: IOrderCardProps) {
+export default function OrderCard({ item }: IOrderCardProps) {
+  const services = useAppSelector(state => state.serviceReducer.allServices)
+  const navigate = useNavigate()
+
+  useRegisterDrawerComponent('orderDetail', OrderDetail)
+
+  const { openDrawer } = useDrawer();
 
   return (
     <>
-      <article className="cartItemContainer">
-      <span className="orderInfo">
-        {item.isUrgent && <span className="isUrgent">فوری</span>}
-        <h3>{item.service.title}</h3>
-        <span></span>
-      </span>
-        {item.orderServices.filter(e => !e.isAddOn)?.map((attribute, index) => (
-          <div className="orderInfo" key={index}>
-          <span className="orderInfoAddon">
-            <p>{attribute.service?.title + ' ' + attribute.count + 'x '} </p>
-            {attribute.addOns?.map(e => <p>-{e.addOn?.title + ' ' + e.count + 'x'}</p>)}
-          </span>
-          <span className="orderInfoDelete">
-          <span className="orderInfoAddon">
-
-            <p>{formatPrice(attribute.price)} تومان</p>
-            {attribute.addOns?.map(e => <p>{formatPrice(e.addOn?.price * e.count)} تومان </p>)}
-          </span>
-
-            {/* <span className="trashCart" onClick={() => deleteOrderService(attribute.id)}> */}
-            {/*   <Trash size="20"/> */}
-            {/* </span> */}
-          </span>
+      <article className="orderCardContainer">
+      <div className="orderCardInfo">
+        <div className="profilePicture">
+          <img src={item?.worker?.profilePic?.url}/>
         </div>
-        ))}
-        <span className="orderInfo">
-        <p> ایاب ذهاب</p>
-        <p>{formatPrice(moment(item.date, 'jYYYY/jMM/jDD').unix() >= moment('1403/12/01', 'jYYYY/jMM/jDD').unix() ? 200000 : 100000)} تومان</p>
-      </span>
-        {item.discountAmount &&
-            <span className="orderInfo">
-        <p>تخفیف</p>
-        <p>{formatPrice(item.discountAmount)}- تومان</p>
-      </span>
-        }
-        <span className="orderInfo dashedBottom">
-        <h4>جمع کل</h4>
-        <h4> {formatPrice(item.finalPrice)} تومان</h4>
-      </span>
-        <div className="orderInfo dashedBottom">
-        <span className="orderInfoIcon">
-          <Calendar size={20}/>
-          {item.date}
-        </span>
-          <span className="orderInfoIcon">
-            <TimerOutlined style={{ width: 20}}/>
-            {item.fromTime}{':00 '}
-        </span>
-          <span className="orderInfoIcon">
-            {item.address?.title}
-            <MapPin size={20}/>
-
-        </span>
-
+        <div className="orderCardInfoHeader">
+          <h3>{item.service.title}</h3>
+          <span className="orderCardDate">{moment(item.date + ' ' + item.fromTime, 'jYYYY/jMM/jDD HH').locale('fa').format('dddd jD jMMMM  .  ساعت HH')}</span>
+          <span className="orderCardAddress">آدرس: {item.address?.title}</span>
+          <span className="orderCardAddress">استایلیست: {item.worker?.name + ' ' + item?.worker?.lastName}</span>
+        </div>
+        {item.isUrgent && <span className="isUrgent">فوری</span>}
       </div>
-            <span className="orderInfo">
-              <h3>فاکتور نهایی</h3>
-            </span>
-        <span className="orderInfo">
-          <p>جمع کل </p>
-          <span className="orderInfoDelete">
-            <p>{formatPrice(item.orderServices?.reduce((acc, curr) => acc + curr.price, 0))} تومان</p>
-          </span>
-              </span>
-        <span className="orderInfo">
-          <p>تخفیف</p>
-          <span className="orderInfoDelete">
-            <p>{formatPrice(item.orderServices?.reduce((acc, curr) => acc + curr?.discountPrice || 0, 0))} تومان</p>
-          </span>
-        </span>
-        <span className="orderInfo">
-        <h4>مبلغ قابل پرداخت</h4>
-        <h4> {formatPrice(item.orderServices?.reduce((acc, curr) => acc + curr.price, 0) < 0 ? 0 : (item.orderServices?.reduce((acc, curr) => acc + curr.price, 0)))} تومان</h4>
-      </span>
+        <div className="orderCardSecRow">
+          <div className="orderCardService">
+            {item.orderServices?.filter(e => !e.isAddOn).slice(0, 3)?.map((attribute, index) =>
+              <div className="orderCardServiceIcon">
+                <span>{attribute.count}</span>
+                <img src={getServiceIcon(findAncestors(services, attribute.serviceId).find(e => e?.showInList && e?.openDrawer)?.slug)}/>
+              </div>
+            )}
+          </div>
+          <span>{formatPrice(item?.finalPrice)} تومان</span>
+        </div>
+
+        <div className="orderCardButtons">
+          <button onClick={() => openDrawer('orderDetail', { item })}>مشاهده فاکتور</button>
+          <button className="reOrder" onClick={() => {
+            const options: any = {}
+            item.orderServices.map(e => options[e.serviceId] = {
+              count: e.count,
+              colors: e.colors?.map(j => j.id)
+            })
+            localStorage.setItem('step', JSON.stringify({
+              name: 'address',
+              index: 2
+            }));
+            localStorage.setItem('new-order', JSON.stringify({
+              service: item?.service,
+              addressId: item?.addressId,
+              isUrgent: item?.isUrgent,
+              attributes: item?.attributes,
+              options
+            }));
+            navigate('/')
+          }}>سفارش مجدد</button>
+        </div>
       </article>
     </>
   );

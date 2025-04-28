@@ -109,18 +109,16 @@ export default function AttributeStep({
   }, [JSON.stringify(selected.options)]);
 
   useEffect(() => {
-    if (selected?.service?.slug == ServiceEnum.Nail){     
-      console.log(selected?.service?.slug);
-       
+    if (selected?.service?.slug == ServiceEnum.Nail){
       const hand = selected?.service?.attributes.find(e => e.slug == ServiceEnum.Hand)
+
       setNailTab(hand)
       setAttributes(hand.attributes)
     } else {      
-      console.log(selected?.service?.slug);
       setAttributes([...(selected?.attributeStep || selected?.service)?.attributes || []])
     }
   }, [selected?.attributeStep])
-  
+
   return (
     <section className="service-step-container">
       <div className="cards">

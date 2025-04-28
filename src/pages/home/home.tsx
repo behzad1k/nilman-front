@@ -120,7 +120,7 @@ export default function Home() {
           <span>آدرس : تهران - زعفرانیه - خیابان مقدس اردبیلی - پلاک ۳۱ - طبقه ۶</span>
         </span>
         <div className="banner-row">
-          <a className="whatsapp-btn" href="https://wa.me/09351007201">
+          <a className="whatsapp-btn" href="https://wa.me/989351007201">
             <WhatsApp/>
             <span>واتس اپ</span>
           </a>

@@ -62,7 +62,7 @@ export const Addresses = ({
         />
       ))}
       <div className="addressContainer add" onClick={() => userReducer.isLoggedIn ? navigate('/address/add') : toast('لطفا ابتدا وارد شوید!', {
-        onClose: () => openDrawer(<LoginDrawer />, 'bottom'),
+        onClose: () => openDrawer('loginDrawer'),
         type: 'error'
       })}>
         <Button>افزودن آدرس</Button>

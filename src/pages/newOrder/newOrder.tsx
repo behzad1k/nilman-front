@@ -183,7 +183,7 @@ export default function NewOrder() {
 
   const getPrice = () => {
     let final = 0;
-    selected.attributes.map((attr) => (final += attr.price));
+    selected.attributes?.map((attr) => (final += attr.price));
     return final;
   };
 

@@ -45,8 +45,6 @@ namespace comp {
 
   export interface IOrderCardProps {
     item: globalType.Order;
-    isCredit: boolean;
-    userBalance: number;
   }
 
   export interface IAttributeStep {

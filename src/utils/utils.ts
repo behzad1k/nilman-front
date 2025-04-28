@@ -100,3 +100,7 @@ export const isEmpty = (obj) => {
 }
 
 export const persianNumToEn = (str: any) => str.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+
+
+
+export const getServiceIcon = (slug: string) => '/img/' + slug + '.png'

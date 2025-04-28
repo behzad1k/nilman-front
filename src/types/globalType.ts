@@ -1,3 +1,5 @@
+import { OrderStatus } from '../enums/enums';
+
 namespace globalType {
 
   export interface Address {
@@ -33,6 +35,7 @@ namespace globalType {
   export interface Order {
     attributes: Service[];
     id: number;
+    addressId: number;
     title: string;
     price: number;
     finalPrice: number;
@@ -42,7 +45,7 @@ namespace globalType {
     discount: number;
     discountAmount: number;
     transportation: number | string;
-    status: 'ACCEPTED' | 'PAID' | 'Done' | 'CREATED' | 'ASSIGNED' | 'Canceled';
+    status: OrderStatus;
     worker: User;
     serviceId: number;
     service: Service;
@@ -53,7 +56,8 @@ namespace globalType {
     done: boolean;
     isUrgent: boolean;
     orderServices?: OrderService[];
-    isFeedbacked: boolean
+    isFeedbacked: boolean;
+    createdAt: Date
   }
 
   export interface User {
