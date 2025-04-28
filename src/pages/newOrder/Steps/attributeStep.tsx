@@ -86,11 +86,11 @@ export default function AttributeStep({
 
       return(
         <div className="new-order-nail-header">
-          <span className={`nail-header-button ${nailTab?.slug == hand.slug ? "selected" : ''}`} onClick={() => {
+          <span className={`nail-header-button ${nailTab?.slug == hand.slug ? "selectedRight" : ''}`} onClick={() => {
             setNailTab(hand)
             setAttributes(hand.attributes)
             }}>{hand?.title}</span>
-          <span className={`nail-header-button ${nailTab?.slug == feet.slug ? "selected" : ''}`} onClick={() => {
+          <span className={`nail-header-button ${nailTab?.slug == feet.slug ? "selectedLeft" : ''}`} onClick={() => {
             setNailTab(feet)
             setAttributes(feet.attributes)
             }}>{feet?.title}</span>

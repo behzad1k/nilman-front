@@ -1,13 +1,6 @@
 import { TimerOutlined } from '@mui/icons-material';
 import { Calendar, MapPin, Trash } from '@phosphor-icons/react';
 import moment from 'jalali-moment';
-import { toast } from 'react-toastify';
-import { urls } from '../../services/endPoint';
-import { api } from '../../services/http';
-import { cart } from '../../services/redux/reducers/cartSlice';
-import { SET_LOADING } from '../../services/redux/reducers/loadingSlice';
-import { order } from '../../services/redux/reducers/orderSlice';
-import { useAppDispatch } from '../../services/redux/store';
 import comps from '../../types/comp';
 import { formatPrice } from '../../utils/utils';
 

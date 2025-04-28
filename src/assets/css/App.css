@@ -2608,9 +2608,7 @@ input:focus{
     
 }
 .nail-header-button{
-    border: 2px solid var(--logo-pink);
     background-color: white;
-    border-radius:6px;
     font-weight: 400;
     font-size: 14px;
     padding: 4px;
@@ -2619,7 +2617,17 @@ input:focus{
     justify-content: center;
 }
 
-.nail-header-button.selected{
-    background: var(--logo-pink);
+.nail-header-button.selectedRight{
+    border: 2px solid var(--mid-pink);
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+    background: var(--mid-pink);
+    color: white;
+}
+.nail-header-button.selectedLeft{
+    border: 2px solid var(--mid-pink);
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+    background: var(--mid-pink);
     color: white;
 }

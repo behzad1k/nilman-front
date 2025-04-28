@@ -230,8 +230,6 @@ export default function NewOrder() {
     }));
   }, [searchParams]);
 
-  console.log(selected);
-
   return (
     <>
       <Header onBack={step.index > 0 ? () => handleChangeStep('prev') : null}/>
