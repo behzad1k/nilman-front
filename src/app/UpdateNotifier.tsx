@@ -41,12 +41,12 @@ const UpdateNotifier: React.FC = () => {
 
   return (
     <div className="update-notification">
-      <p>A new version is available! ({updateInfo.currentVersion})</p>
+      <p>نسخه جدید اپلیکشین موجود است. ({updateInfo.currentVersion})</p>
       <button
         onClick={handleUpdate}
         disabled={isUpdating}
       >
-        {isUpdating ? 'Updating...' : 'Update Now'}
+        {isUpdating ? 'در حال بروزرسانی...' : 'بروزرسانی'}
       </button>
     </div>
   );
