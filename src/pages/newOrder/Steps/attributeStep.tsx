@@ -81,18 +81,18 @@ export default function AttributeStep({
     if (selected?.service?.slug != ServiceEnum.Nail){
       return (<></>)
     } else {
-      const hand = selected?.service?.attributes.find(e => e.slug == ServiceEnum.Hand)
-      const feet = selected?.service?.attributes.find(e => e.slug == ServiceEnum.Feet)
+      const hand = selected?.service?.attributes?.find(e => e.slug == ServiceEnum.Hand)
+      const feet = selected?.service?.attributes?.find(e => e.slug == ServiceEnum.Feet)
 
       return(
         <div className="new-order-nail-header">
-          <span className={`nail-header-button ${nailTab?.slug == hand.slug ? "selectedRight" : ''}`} onClick={() => {
+          <span className={`nail-header-button ${nailTab?.slug == hand?.slug ? "selectedRight" : ''}`} onClick={() => {
             setNailTab(hand)
-            setAttributes(hand.attributes)
+            setAttributes(hand?.attributes)
             }}>{hand?.title}</span>
-          <span className={`nail-header-button ${nailTab?.slug == feet.slug ? "selectedLeft" : ''}`} onClick={() => {
+          <span className={`nail-header-button ${nailTab?.slug == feet?.slug ? "selectedLeft" : ''}`} onClick={() => {
             setNailTab(feet)
-            setAttributes(feet.attributes)
+            setAttributes(feet?.attributes)
             }}>{feet?.title}</span>
         </div>
       )
@@ -110,10 +110,10 @@ export default function AttributeStep({
 
   useEffect(() => {
     if (selected?.service?.slug == ServiceEnum.Nail){
-      const hand = selected?.service?.attributes.find(e => e.slug == ServiceEnum.Hand)
+      const hand = selected?.service?.attributes?.find(e => e.slug == ServiceEnum.Hand)
 
       setNailTab(hand)
-      setAttributes(hand.attributes)
+      setAttributes(hand?.attributes)
     } else {      
       setAttributes([...(selected?.attributeStep || selected?.service)?.attributes || []])
     }
