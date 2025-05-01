@@ -2847,3 +2847,10 @@ input:focus{
     background: var(--mid-pink);
     color: white;
 }
+.saramad{
+    align-self: flex-end;
+}
+.saramad img{
+    width: 80px;
+    height: 80px;
+}

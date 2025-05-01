@@ -94,15 +94,21 @@ export default function Home() {
         {/* <Slider title={'خدمات مژه'} cardInfos={cardInfos4} /> */}
       </section>
       <section className="banners">
-        <BannerCard
-          title={'مناطق سرویس‌دهی'}
-          description={'مناطق ۱ تا ۸'}
-          button={'مشاهده'}
-          icon={<Percent/>}
-          bgColor1={'rgb(234, 99, 146)'}
-          bgColor2={'rgba(255, 163, 195, 0.2)'}
-
-        />
+        <article
+          className="bannerCard"
+          style={{background: `linear-gradient(282deg, rgb(234, 99, 146), rgba(255, 163, 195, 0.2))`}}
+        >
+          <div className="bannerCardRow">
+            <Percent/>
+            <h2>مناطق سرویس‌دهی</h2>
+          </div>
+          <p>مناطق ۱ تا ۸ و ۲۲</p>
+          <a className="saramad" href="https://logo.saramad.ir/verify.aspx?CodeShamad=1-2-896696-63-0-1" target="_blank">
+            <img src="https://logo.saramad.ir/logo.aspx?CodeShamad=1-2-896696-63-0-1"
+              alt="https://logo.saramad.ir/logo.aspx?CodeShamad=1-2-896696-63-0-1"
+            />
+          </a>
+        </article>
       </section>
       <Box component="section" className="banners contact-us" mt={2.5}>
         <Box display="flex" gap={2} alignItems="center">
