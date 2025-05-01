@@ -2828,7 +2828,7 @@ input:focus{
     width: 100%;
     display: flex;
     justify-content: center;
-    border-radius: 8px;
+    border-radius: 10px;
 }
 
 .nail-header-button.selectedRight{
