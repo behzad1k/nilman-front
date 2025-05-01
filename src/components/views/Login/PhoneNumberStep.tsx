@@ -1,6 +1,7 @@
 import React from 'react';
 import { toast } from 'react-toastify';
 import { UseFormReturn } from 'react-hook-form';
+import { loginTicker } from '../../../services/redux/reducers/globalSlice';
 import globalType from '../../../types/globalType';
 import { persianNumToEn } from '../../../utils/utils';
 import { api } from '../../../services/http';
@@ -43,6 +44,8 @@ export const PhoneNumberStep: React.FC<PhoneNumberStepProps> = ({
       const res = await api(urls.login, reqOptions);
       tokenRef.current = res.token || null;
       setLoginState('otp');
+      dispatch(loginTicker(0))
+
     } catch (error) {
       toast('خطا در ارسال کد تایید', { type: 'error' });
     } finally {

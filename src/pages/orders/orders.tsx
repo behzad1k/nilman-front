@@ -98,7 +98,7 @@ export default function Orders() {
             </span>
               <span className="orderInfo">
               <h4>مبلغ قابل پرداخت</h4>
-              <h4> {formatPrice(cartReducer.cartItems.reduce((acc, curr) => acc + curr.finalPrice, 0) - (isCredit ? userReducer.data?.walletBalance : 0) < 0 ? 0 : (cartReducer.cartItems.reduce((acc, curr) => acc + curr.finalPrice, 0) - (isCredit ? userReducer.data?.walletBalance : 0)))} تومان</h4>
+              <span className="finalPrice"> {formatPrice(cartReducer.cartItems.reduce((acc, curr) => acc + curr.finalPrice, 0) - (isCredit ? userReducer.data?.walletBalance : 0) < 0 ? 0 : (cartReducer.cartItems.reduce((acc, curr) => acc + curr.finalPrice, 0) - (isCredit ? userReducer.data?.walletBalance : 0)))} تومان</span>
             </span>
             </article>
             {userReducer?.data?.walletBalance > 0 && (

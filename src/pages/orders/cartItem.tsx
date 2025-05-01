@@ -7,6 +7,7 @@ import { findAncestors, formatPrice } from '../../utils/utils';
 
 const CartItem = ({ item, deleteCartItem }: comps.ICartItem) => {
   const services = useAppSelector(state => state.serviceReducer.allServices)
+  console.log(item);
   return (
     <article className="cartItemContainer">
       <span className="orderInfo">
@@ -48,7 +49,7 @@ const CartItem = ({ item, deleteCartItem }: comps.ICartItem) => {
       }
       <span className="orderInfo dashedBottom">
         <h4>جمع کل</h4>
-        <h4> {formatPrice(item.finalPrice)} تومان</h4>
+        <span className="finalPrice"> {formatPrice(item.finalPrice)} تومان</span>
       </span>
       <span className="orderInfo">
         <span className="orderInfoIcon">
