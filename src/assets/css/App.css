@@ -17,30 +17,27 @@
 @font-face {
     font-family: 'yekan';
     font-weight: bold;
-    src: url('../../../public/fonts/yekan-font/yekan-regular.woff') format('woff');
+    src: url('../../../public/fonts/yekan-font/Yekan.woff') format('woff');
+    src: url('../../../public/fonts/yekan-font/Yekan.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'vazir';
     font-weight: bold;
+    unicode-range: U+0030-0039; /* ASCII digits 0-9 */
     src: url('../../../public/fonts/Vazir-Bold.woff') format('woff');
 }
-
-@font-face {
-    font-family: 'vazir';
-    font-weight: normal;
-    src: url('../../../public/fonts/Vazir-Medium.woff') format('woff');
-}
-
 @font-face {
     font-family: 'vazir';
     font-weight: 300;
+    unicode-range: U+0030-0039; /* ASCII digits 0-9 */
     src: url('../../../public/fonts/Vazir-Light.woff') format('woff');
 }
 
 @font-face {
     font-family: 'vazir';
     font-weight: 150;
+    unicode-range: U+0030-0039; /* ASCII digits 0-9 */
     src: url('../../../public/fonts/Vazir-Thin.woff') format('woff');
 }
 
@@ -56,8 +53,8 @@
 
 body {
     direction: rtl;
-    font-family: yekan, poppins, serif;
-    font-weight: 600;
+    font-family: Vazir, yekan, poppins, serif;
+    font-weight: 400;
     /*background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('/public/img/7sin.jpg') no-repeat center;*/
     /*background: linear-gradient(*/
     /*  180deg,*/
@@ -297,7 +294,7 @@ main {
 /* newOrder page */
 .newOrderMain {
     display: flex;
-    padding: 60px 20px 205px;
+    padding: 60px 20px 80px;
     flex-direction: column;
     align-items: center;
     height: 100vh;
@@ -1547,7 +1544,7 @@ main {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 40px 0 250px;
+    padding: 40px 0 230px;
     width: 100%;
 }
 
@@ -1577,20 +1574,29 @@ main {
     height: 70px;
     font-weight: 300;
     font-size: 17px;
+    opacity: 1;
+    transform: translateX(-70px); /* Start position - off to the left */
+}
+
+@keyframes slideInFade {
+    from {
+        /*opacity: 0;*/
+        transform: translateX(-70px); /* Start from left */
+    }
+    to {
+        /*opacity: 1;*/
+        transform: translateX(0); /* End at normal position */
+    }
 }
 
 .service-step-container .card.service {
-    height: 120px;
+    height: 100px;
     justify-content: space-between;
 }
 
 .service-step-container .card.service img {
-    width: 80px;
-    height: 80px;
-}
-
-.service-step-container .card.reversed {
-    /*background: linear-gradient( 270deg, #f4c8bc, rgba(242, 224, 221, 0.65) );*/
+    width: 60px;
+    height: 60px;
 }
 
 .attributeTitle {
@@ -1633,6 +1639,7 @@ main {
     flex-direction: column;
     gap: 32px;
 }
+
 
 .workers-schedule {
     display: flex;
@@ -2809,6 +2816,8 @@ input:focus{
     flex-direction: row;
     justify-content: space-between;
     gap: 10px;
+    border: 0.5px solid var(--mid-pink);
+    border-radius: 10px;
     
 }
 .nail-header-button{
@@ -2819,19 +2828,18 @@ input:focus{
     width: 100%;
     display: flex;
     justify-content: center;
+    border-radius: 8px;
 }
 
 .nail-header-button.selectedRight{
-    border: 2px solid var(--mid-pink);
-    border-top-left-radius: 100px;
-    border-bottom-left-radius: 100px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
     background: var(--mid-pink);
     color: white;
 }
 .nail-header-button.selectedLeft{
-    border: 2px solid var(--mid-pink);
-    border-top-right-radius: 100px;
-    border-bottom-right-radius: 100px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
     background: var(--mid-pink);
     color: white;
 }

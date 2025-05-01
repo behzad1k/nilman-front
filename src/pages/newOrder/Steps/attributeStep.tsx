@@ -131,6 +131,9 @@ export default function AttributeStep({
             className={`card ${
               Object.keys(selected.options)?.find(e => attribute.id.toString() == e || findAncestors(services, e)?.map(k => k?.id)?.includes(attribute.id)) ? 'selected' : ''
             } ${index % 2 == 0 ? 'reversed' : ''}`}
+            style={{
+              animation: `slideInFade ${index * 100}ms ease-out forwards`
+            }}
           >
             <img src={'/img/' + attribute.slug + '.png'}/>
             <p className="attributeTitle">{attribute.title}</p>

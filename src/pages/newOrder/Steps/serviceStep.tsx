@@ -41,7 +41,10 @@ export default function ServiceStep({
             key={service.slug}
             ref={(el) => (cardRef.current[index] = el)}
             onClick={() => handleSelectService(index, service)}
-            className={`card service ${selected.service === service ? 'selected' : ''} ${index % 2 == 0 ? 'reversed' : ''}`}
+            className={`card service ${selected.service === service ? 'selected' : ''}`}
+            style={{
+              animation: `slideInFade ${index * 100}ms ease-out forwards`
+            }}
           >
             <img src={'/img/' + service.slug + '.png'}/>
             <span>{service.title}</span>
