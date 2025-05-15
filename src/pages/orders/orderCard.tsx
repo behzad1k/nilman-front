@@ -1,13 +1,9 @@
-import { TimerOutlined } from '@mui/icons-material';
-import { Calendar, MapPin, Trash } from '@phosphor-icons/react';
 import moment from 'jalali-moment';
 import { useNavigate } from 'react-router-dom';
-import { ProfilePicture } from '../../components';
 import OrderDetail from '../../components/drawers/OrderDetail';
 import { useDrawer, useRegisterDrawerComponent } from '../../components/layers/Drawer/DrawerContext';
 import { useAppSelector } from '../../services/redux/store';
 import comp from '../../types/comp';
-import globalType from '../../types/globalType';
 import { findAncestors, formatPrice, getServiceIcon } from '../../utils/utils';
 import IOrderCardProps = comp.IOrderCardProps;
 
@@ -30,7 +26,7 @@ export default function OrderCard({ item }: IOrderCardProps) {
           <h3>{item.service.title}</h3>
           <span className="orderCardDate">{moment(item.date + ' ' + item.fromTime, 'jYYYY/jMM/jDD HH').locale('fa').format('dddd jD jMMMM  .  ساعت HH')}</span>
           <span className="orderCardAddress">آدرس: {item.address?.title}</span>
-          <span className="orderCardAddress">استایلیست: {item.worker?.name + ' ' + item?.worker?.lastName}</span>
+          {item.worker?.name && <span className="orderCardAddress">استایلیست: {item.worker?.name + ' ' + item?.worker?.lastName}</span>}
         </div>
         {item.isUrgent && <span className="isUrgent">فوری</span>}
       </div>
@@ -43,7 +39,7 @@ export default function OrderCard({ item }: IOrderCardProps) {
               </div>
             )}
           </div>
-          <span>{formatPrice(item?.finalPrice)} تومان</span>
+          {item?.finalPrice && <span>{formatPrice(item?.finalPrice)} تومان</span>}
         </div>
 
         <div className="orderCardButtons">
