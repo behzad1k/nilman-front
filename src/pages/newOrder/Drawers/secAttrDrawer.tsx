@@ -4,13 +4,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useDrawer } from '../../../components/layers/Drawer/DrawerContext';
 import { useAppSelector } from '../../../services/redux/store';
-import comp from '../../../types/comp';
 import globalType from '../../../types/globalType';
 import orderType from '../../../types/orderType';
 import AddOnDrawer from '../Drawers/AddOnDrawer';
 import InfoDrawer from '../Drawers/InfoDrawer';
 import PickColorDrawer from '../Drawers/PickColorDrawer';
 import ServiceDrawer from '../Drawers/ServiceDrawer';
+import MediaDrawer from './MediaDrawer';
 
 export default function SecAttrDrawer({
                                         parent,
@@ -202,7 +202,8 @@ export default function SecAttrDrawer({
             </Box>
             {content()}
           </Box>
-        <InfoDrawer infoModal={infoModal} setInfoModal={setInfoModal} curParent={curParent} parent={parent}/>
+        <InfoDrawer infoModal={infoModal} setInfoModal={setInfoModal} curParent={curParent} parent={parent} />
+        <MediaDrawer pickMedia={pickMedia} setPickMedia={setPickMedia} selected={selected} setSelected={setSelected} currentAttribute={currentAttribute} />
       </>
     )
   } else return <></>

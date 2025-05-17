@@ -39,7 +39,6 @@ export const OtpVerificationStep: React.FC<OtpVerificationStepProps> = ({
   const globalReducer = useAppSelector(state => state.globalReducer);
   const [code, setCode] = useState<string[]>([]);
   const [startTime, setStartTime] = useState<number>(Date.now() - globalReducer.loginTicker > INTERVAL ? Date.now() : globalReducer.loginTicker)
-  console.log(startTime, 'start', globalReducer.loginTicker, 'loginTicker');
 
   const { closeDrawer } = useDrawer();
   const verifyOtp = async () => {

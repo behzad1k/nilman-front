@@ -26,7 +26,7 @@ export const PhoneNumberStep: React.FC<PhoneNumberStepProps> = ({
   const { handleSubmit, register } = formMethods;
   const {closeDrawer} = useDrawer()
   const onSubmit = async (data: globalType.LoginForm) => {
-    if (!data.phoneNumber || data.phoneNumber.length !== 11 || data.phoneNumber.charAt(0) !== '0' || data.phoneNumber.charAt(1) !== '9') {
+    if (!data.phoneNumber || data.phoneNumber.length !== 11) {
       toast('لطفا شماره تلفن خود را به درستی وارد کنید', { type: 'warning' });
       return;
     }

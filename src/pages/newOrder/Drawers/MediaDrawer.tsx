@@ -8,7 +8,9 @@ const MediaDrawer = ({ pickMedia, setPickMedia, selected, setSelected, currentAt
       onClose={() => setPickMedia(false)}
       onOpen={() => setPickMedia(true)}
       open={pickMedia}
-      sx={{}}
+      sx={{
+        zIndex: 1301
+      }}
     >
       <section className='infoModal mediaModal'>
         <p className='fontWeight400 marginBottom10'>اگر طرح خاصی برای خدمت انتخابی خود در نظر دارید عکس آن را در اینجا بارگزاری نمایید و یا لینک پینترست آن را وارد کنید</p>
