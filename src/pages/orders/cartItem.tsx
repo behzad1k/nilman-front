@@ -7,7 +7,6 @@ import { findAncestors, formatPrice } from '../../utils/utils';
 
 const CartItem = ({ item, deleteCartItem }: comps.ICartItem) => {
   const services = useAppSelector(state => state.serviceReducer.allServices)
-  console.log(item);
   return (
     <article className="cartItemContainer">
       <span className="orderInfo">
