@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UpdateNotifier from './app/UpdateNotifier';
 import Website from './app/website';
@@ -35,6 +35,8 @@ function App() {
             <Route path="*" element={<Website/>}/>
           </Routes>
           <ToastContainer
+            limit={1}
+            transition={Zoom}
             progressStyle={{
               background:
                 'linear-gradient( to right, rgb(255, 177, 177), rgb(255, 60, 60))',

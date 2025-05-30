@@ -41,14 +41,6 @@ export default function Profile() {
         </div>
       </section>
       <section className="infoBox">
-        {/* <div className="profileButton" onClick={() => navigate('/profile/edit')}> */}
-        {/*   <PencilLine size={20}/> */}
-        {/*   <span>ویرایش اطلاعات کاربری</span> */}
-        {/* </div> */}
-        {/* <NavLink className="profileButton" to="/past-orders"> */}
-        {/*   <i className="checkoutIcon"></i> */}
-        {/*   <span>سفارش های پیشین</span> */}
-        {/* </NavLink> */}
         <NavLink className="profileButton" to="/privacy">
           <PrivacyTipOutlined/>
           <span>حریم خصوصی</span>
