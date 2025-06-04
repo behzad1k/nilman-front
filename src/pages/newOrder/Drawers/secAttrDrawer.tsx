@@ -40,8 +40,8 @@ export default function SecAttrDrawer({
   const toggleDrawer = (newOpen: boolean) => () => {
     setPage(1);
     setCurParent(undefined);
-    if (!newOpen){
-      closeDrawer()
+    if (!newOpen) {
+      closeDrawer();
     }
   };
   const handleClickCard = (index: number, secAttr: globalType.Service) => {
@@ -66,7 +66,7 @@ export default function SecAttrDrawer({
           //   handleAddAttribute(secAttr, null);
           //   handleAddAttribute(secAttr?.addOns?.find(e => Object.keys(selected.options)?.includes(e.id.toString())), null);
           // } else {
-            setShouldPickAddOns(true);
+          setShouldPickAddOns(true);
           // }
         } else {
           handleAddAttribute(secAttr, null);
@@ -83,11 +83,11 @@ export default function SecAttrDrawer({
       toast(`انتخاب بیش از یک خدمت در ${(curParent || parent).title} مجاز نمی باشد`, { type: 'error' });
       return;
     }
-    if (Object.keys(selected.options).includes(secAttr.id.toString())){
+    if (Object.keys(selected.options).includes(secAttr.id.toString())) {
       setSelected((prev: globalType.Form) => {
         const cp = { ...prev };
 
-        delete cp.options[newAttr.id]
+        delete cp.options[newAttr.id];
 
         return cp;
       });
@@ -99,7 +99,7 @@ export default function SecAttrDrawer({
       const cp = { ...prev };
       cp.options[newAttr.id] = {
         count: 1
-      }
+      };
       return cp;
     });
     // if (!color) {
@@ -138,19 +138,21 @@ export default function SecAttrDrawer({
   };
 
   const content = () => {
-    if (pickingColor.open){
-      return <PickColorDrawer colors={colors} color={color} selected={selected} setSelected={setSelected} currentAttribute={currentAttribute} pickingColor={pickingColor} setPickingColor={setPickingColor} handleAddAttribute={handleAddAttribute}/>
-    } else if (shouldPickAddOns){
-      return <AddOnDrawer setSelected={setSelected} selected={selected} parent={curParent || parent} currentAttribute={currentAttribute} setShouldPickAddOns={setShouldPickAddOns} setPickingColor={setPickingColor}/>
+    if (pickingColor.open) {
+      return <PickColorDrawer colors={colors} color={color} selected={selected} setSelected={setSelected} currentAttribute={currentAttribute} pickingColor={pickingColor} setPickingColor={setPickingColor}
+                              handleAddAttribute={handleAddAttribute}/>;
+    } else if (shouldPickAddOns) {
+      return <AddOnDrawer setSelected={setSelected} selected={selected} parent={curParent || parent} currentAttribute={currentAttribute} setShouldPickAddOns={setShouldPickAddOns} setPickingColor={setPickingColor}/>;
     } else {
-      return <ServiceDrawer curParent={curParent} parent={parent} selected={selected} setSelected={setSelected} handleClickCard={handleClickCard} deleteAttribute={deleteAttribute} toggleDrawer={toggleDrawer} boxEl={boxEl}/>
+      return <ServiceDrawer curParent={curParent} parent={parent} selected={selected} setSelected={setSelected} handleClickCard={handleClickCard} deleteAttribute={deleteAttribute} toggleDrawer={toggleDrawer}
+                            boxEl={boxEl}/>;
     }
   };
 
   const handleCloseDrawer = () => {
     setCurParent(undefined);
     setPage(1);
-    setShouldPickAddOns(false)
+    setShouldPickAddOns(false);
     setPickingColor({
       attr: null,
       open: false
@@ -164,47 +166,47 @@ export default function SecAttrDrawer({
   }, [currentAttribute]);
 
   useEffect(() => {
-    setForm(selected)
-  }, [selected])
+    setForm(selected);
+  }, [selected]);
 
   if (selected && (curParent || parent)) {
     return (
       <>
-          <Box
-            display="flex"
-            flexDirection="column"
-            gap={0.75}
-            p={2}
-            overflow="auto"
-            className="attr-drawer-content"
-            sx={{ paddingBottom: '65px' }}
-          >
-            <Box sx={{
-              display: 'flex',
-              position: 'absolute',
-              right: 24,
-              alignItems: 'center',
-              gap: 2
-            }}>
+        <Box
+          display="flex"
+          flexDirection="column"
+          gap={0.75}
+          p={2}
+          overflow="auto"
+          className="attr-drawer-content"
+          sx={{ paddingBottom: '65px' }}
+        >
+          <Box sx={{
+            display: 'flex',
+            position: 'absolute',
+            right: 24,
+            alignItems: 'center',
+            gap: 2
+          }}>
               <span className="moreInfo" onClick={() => setInfoModal(true)}>
                 <span>توضیحات</span>
                 <i className="infoIcon"></i>
               </span>
-              {page > 1 && <ArrowBack onClick={() => {
-                setPage(prev => prev - 1);
-                setCurParent(prev => services.allServices.find(e => e.id == prev.parent?.id));
-              }}/>}
-              {shouldPickAddOns && <ArrowBack onClick={() => {
-                setSelectedAddOn(null);
-                setShouldPickAddOns(false);
-              }}/>}
-              <Close onClick={handleCloseDrawer}/>
-            </Box>
-            {content()}
+            {page > 1 && <ArrowBack onClick={() => {
+              setPage(prev => prev - 1);
+              setCurParent(prev => services.allServices.find(e => e.id == prev.parent?.id));
+            }}/>}
+            {shouldPickAddOns && <ArrowBack onClick={() => {
+              setSelectedAddOn(null);
+              setShouldPickAddOns(false);
+            }}/>}
+            <Close onClick={handleCloseDrawer}/>
           </Box>
-        <InfoDrawer infoModal={infoModal} setInfoModal={setInfoModal} curParent={curParent} parent={parent} />
-        <MediaDrawer pickMedia={pickMedia} setPickMedia={setPickMedia} selected={selected} setSelected={setSelected} currentAttribute={currentAttribute} />
+          {content()}
+        </Box>
+        <InfoDrawer infoModal={infoModal} setInfoModal={setInfoModal} curParent={curParent} parent={parent}/>
+        <MediaDrawer pickMedia={pickMedia} setPickMedia={setPickMedia} selected={selected} setSelected={setSelected} currentAttribute={currentAttribute}/>
       </>
-    )
-  } else return <></>
+    );
+  } else return <></>;
 }

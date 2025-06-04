@@ -73,6 +73,7 @@ export default function NewOrder() {
   const dispatch: AppDispatch = useAppDispatch();
   const navigate = useNavigate();
   let [searchParams, setSearchParams] = useSearchParams();
+  const orderSubmittedRef = useRef(false);
   let selectedRef = useRef(selected);
   let stepRef = useRef(step);
   const { openDrawer } = useDrawer();
@@ -158,6 +159,7 @@ export default function NewOrder() {
     dispatch(SET_LOADING(false));
 
     if (res.code === 201) {
+      orderSubmittedRef.current = true;
       localStorage.removeItem('new-order');
       localStorage.removeItem('step');
       setSelected(initialSelected);
@@ -197,13 +199,9 @@ export default function NewOrder() {
 
   useEffect(() => {
     return () => {
-      if (selected.service != null) {
+      if (!orderSubmittedRef.current && selected.service != null) {
         localStorage.setItem('new-order', JSON.stringify(selectedRef.current));
         localStorage.setItem('step', JSON.stringify(stepRef.current));
-      } else {
-        // console.log('there');
-        // localStorage.removeItem('new-order');
-        // localStorage.removeItem('step');
       }
     };
   }, []);
