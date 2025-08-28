@@ -44,10 +44,7 @@ const PortalPickerDrawer = ({ finalPrice, isCredit = false }: PortalPickerDrawer
     );
 
     if (res.code == 200) {
-      if (portal == PaymentMethods.sep) {
-        formRef.current.elements.Token.value = res.data.authority;
-        setPortalToken(res.data.authority);
-      } else if (portal == PaymentMethods.ap) {
+      if (portal == PaymentMethods.ap) {
         apFormRef.current.elements.RefID.value = res.data.authority;
         setPortalToken(res.data.authority);
       } else {
