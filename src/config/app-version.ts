@@ -1,3 +1,3 @@
 // This file contains the version information used across the application
-export const APP_VERSION = 'v1.6.47';
+export const APP_VERSION = 'v1.6.48';
 export const CACHE_NAME = `app-cache-${APP_VERSION}`;
